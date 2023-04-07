@@ -1,11 +1,11 @@
 package com.serviceops.assetdiscovery.entity;
 
+import com.serviceops.assetdiscovery.entity.mapped.PnpDevicesBase;
 import jakarta.persistence.Entity;
-import jakarta.validation.constraints.Email;
 
 import java.sql.Date;
 @Entity
-public class Monitor extends SinglePnpDevice {
+public class Monitor extends PnpDevicesBase {
 
     private String monitorType;
     private float size;

@@ -1,9 +1,10 @@
 package com.serviceops.assetdiscovery.entity;
 
+import com.serviceops.assetdiscovery.entity.mapped.ExternalAssetBase;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Processor extends ExternalAssetBase{
+public class Processor extends ExternalAssetBase {
     private String processorName;
     private int width;
     private float cpuSpeed;

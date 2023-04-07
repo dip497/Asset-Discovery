@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.entity;
 
+import com.serviceops.assetdiscovery.entity.mapped.SingleAssetBase;
 import jakarta.persistence.Entity;
-import org.aspectj.lang.annotation.Aspect;
 
 import java.net.InetAddress;
 @Entity

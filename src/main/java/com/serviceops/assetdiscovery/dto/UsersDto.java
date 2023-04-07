@@ -2,13 +2,14 @@ package com.serviceops.assetdiscovery.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
+import com.serviceops.assetdiscovery.entity.Users;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link com.serviceops.assetdiscovery.entity.Users} entity
+ * A DTO for the {@link Users} entity
  */
 public class UsersDto extends BaseDto implements Serializable {
     private final String name;

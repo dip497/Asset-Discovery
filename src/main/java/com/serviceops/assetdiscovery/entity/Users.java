@@ -1,11 +1,12 @@
 package com.serviceops.assetdiscovery.entity;
 
+import com.serviceops.assetdiscovery.entity.mapped.Base;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 import java.sql.Timestamp;
 @Entity
-public class Users extends Base{
+public class Users extends Base {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)

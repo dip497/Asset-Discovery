@@ -1,10 +1,12 @@
 package com.serviceops.assetdiscovery.dto;
 
+import com.serviceops.assetdiscovery.entity.mapped.SingleBase;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link com.serviceops.assetdiscovery.entity.SingleBase} entity
+ * A DTO for the {@link SingleBase} entity
  */
 public class SingleBaseDto implements Serializable {
     private final Long id;

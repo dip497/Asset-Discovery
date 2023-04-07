@@ -1,9 +1,10 @@
 package com.serviceops.assetdiscovery.entity;
 
+import com.serviceops.assetdiscovery.entity.mapped.SingleAssetBase;
 import jakarta.persistence.Entity;
 
 @Entity
-public class ComputerProperties extends SingleAssetBase{
+public class ComputerProperties extends SingleAssetBase {
     private String osName;
     private String osVersion;
     private String servicePackName;

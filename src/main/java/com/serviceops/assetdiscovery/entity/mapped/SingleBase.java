@@ -1,4 +1,4 @@
-package com.serviceops.assetdiscovery.entity;
+package com.serviceops.assetdiscovery.entity.mapped;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

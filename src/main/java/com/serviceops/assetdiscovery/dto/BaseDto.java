@@ -1,11 +1,13 @@
 package com.serviceops.assetdiscovery.dto;
 
+import com.serviceops.assetdiscovery.entity.mapped.Base;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link com.serviceops.assetdiscovery.entity.Base} entity
+ * A DTO for the {@link Base} entity
  */
 public class BaseDto extends SingleBaseDto implements Serializable {
     private final String createdBy;

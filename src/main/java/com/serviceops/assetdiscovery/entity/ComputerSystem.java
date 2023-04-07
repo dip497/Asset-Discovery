@@ -1,5 +1,6 @@
 package com.serviceops.assetdiscovery.entity;
 
+import com.serviceops.assetdiscovery.entity.mapped.ExternalAssetBase;
 import jakarta.persistence.Entity;
 
 @Entity
