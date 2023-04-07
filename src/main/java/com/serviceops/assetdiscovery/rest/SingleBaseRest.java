@@ -1,28 +1,17 @@
-package com.serviceops.assetdiscovery.dto;
-
-import com.serviceops.assetdiscovery.entity.mapped.Base;
+package com.serviceops.assetdiscovery.rest;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link Base} entity
+ * A DTO for the {@link com.serviceops.assetdiscovery.entity.mapped.SingleBase} entity
  */
-public class BaseDto extends SingleBaseDto implements Serializable {
-    private final String createdBy;
-    private final Timestamp createdTime;
-    private final String updatedBy;
-    private final Timestamp updatedTime;
-
-
-    public BaseDto(Long id, String createdBy, Timestamp createdTime, String updatedBy, Timestamp updatedTime) {
-        super(id);
-        this.createdBy = createdBy;
-        this.createdTime = createdTime;
-        this.updatedBy = updatedBy;
-        this.updatedTime = updatedTime;
-    }
+public class SingleBaseRest extends BaseRest implements Serializable {
+    private  String createdBy;
+    private  Timestamp createdTime;
+    private  String updatedBy;
+    private  Timestamp updatedTime;
 
     public String getCreatedBy() {
         return createdBy;
@@ -40,12 +29,29 @@ public class BaseDto extends SingleBaseDto implements Serializable {
         return updatedTime;
     }
 
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public void setUpdatedTime(Timestamp updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BaseDto entity = (BaseDto) o;
-        return Objects.equals(this.createdBy, entity.createdBy) &&
+        SingleBaseRest entity = (SingleBaseRest) o;
+        return
+                Objects.equals(this.createdBy, entity.createdBy) &&
                 Objects.equals(this.createdTime, entity.createdTime) &&
                 Objects.equals(this.updatedBy, entity.updatedBy) &&
                 Objects.equals(this.updatedTime, entity.updatedTime);
@@ -53,7 +59,7 @@ public class BaseDto extends SingleBaseDto implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(createdBy, createdTime, updatedBy, updatedTime);
+        return Objects.hash( createdBy, createdTime, updatedBy, updatedTime);
     }
 
     @Override

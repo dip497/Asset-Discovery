@@ -1,59 +1,50 @@
 package com.serviceops.assetdiscovery.entity.mapped;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
 @MappedSuperclass
-public class Base extends SingleBase{
-    private String createdBy;
-    @CreationTimestamp
-    private Timestamp createdTime;
-    private String updatedBy;
-    @UpdateTimestamp
-    private Timestamp updatedTime;
+public class Base {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     protected Base() {
     }
 
-    public Base(String createdBy, Timestamp createdTime, String updatedBy, Timestamp updatedTime) {
-        super();
-        this.createdBy = createdBy;
-        this.createdTime = createdTime;
-        this.updatedBy = updatedBy;
-        this.updatedTime = updatedTime;
+    public Base(Long id) {
+        this.id = id;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public Long getId() {
+        return id;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Timestamp getCreatedTime() {
-        return createdTime;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Base base = (Base) o;
+
+        return getId() != null ? getId().equals(base.getId()) : base.getId() == null;
     }
 
-    public void setCreatedTime(Timestamp createdTime) {
-        this.createdTime = createdTime;
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
     }
 
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public Timestamp getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Timestamp updatedTime) {
-        this.updatedTime = updatedTime;
+    @Override
+    public String toString() {
+        return "Base{" +
+                "id=" + id +
+                '}';
     }
 }

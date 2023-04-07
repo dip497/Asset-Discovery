@@ -1,12 +1,11 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.mapped.Base;
+import com.serviceops.assetdiscovery.entity.mapped.SingleBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
-import java.sql.Timestamp;
 @Entity
-public class Users extends Base {
+public class Users extends SingleBase {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -14,12 +13,6 @@ public class Users extends Base {
     @Column(nullable = false)
     private String password;
 
-    public Users(String createdBy, Timestamp createdTime, String updatedBy, Timestamp updatedTime, String name, String email, String password) {
-        super(createdBy, createdTime, updatedBy, updatedTime);
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
 
     protected Users() {
     }

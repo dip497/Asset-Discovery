@@ -1,22 +1,26 @@
-package com.serviceops.assetdiscovery.entity.mapped;
+package com.serviceops.assetdiscovery.rest;
 
-import jakarta.persistence.MappedSuperclass;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Objects;
 
-@MappedSuperclass
-public class AssetBase extends SingleBase {
-    private Long refId;
-    private String serialNumber;
+/**
+ * A DTO for the {@link com.serviceops.assetdiscovery.entity.mapped.AssetBase} entity
+ */
+public class AssetBaseRest extends SingleBaseRest implements Serializable {
+    private  Long refId;
+    private  String serialNumber;
 
     public Long getRefId() {
         return refId;
     }
 
-    public void setRefId(Long refId) {
-        this.refId = refId;
-    }
-
     public String getSerialNumber() {
         return serialNumber;
+    }
+
+    public void setRefId(Long refId) {
+        this.refId = refId;
     }
 
     public void setSerialNumber(String serialNumber) {
@@ -29,10 +33,10 @@ public class AssetBase extends SingleBase {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        AssetBase assetBase = (AssetBase) o;
+        AssetBaseRest that = (AssetBaseRest) o;
 
-        if (getRefId() != null ? !getRefId().equals(assetBase.getRefId()) : assetBase.getRefId() != null) return false;
-        return getSerialNumber() != null ? getSerialNumber().equals(assetBase.getSerialNumber()) : assetBase.getSerialNumber() == null;
+        if (getRefId() != null ? !getRefId().equals(that.getRefId()) : that.getRefId() != null) return false;
+        return getSerialNumber() != null ? getSerialNumber().equals(that.getSerialNumber()) : that.getSerialNumber() == null;
     }
 
     @Override
@@ -45,7 +49,7 @@ public class AssetBase extends SingleBase {
 
     @Override
     public String toString() {
-        return "AssetBase{" +
+        return "AssetBaseRest{" +
                 "refId=" + refId +
                 ", serialNumber='" + serialNumber + '\'' +
                 '}';

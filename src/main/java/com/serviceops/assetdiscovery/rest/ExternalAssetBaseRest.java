@@ -1,22 +1,27 @@
-package com.serviceops.assetdiscovery.entity.mapped;
+package com.serviceops.assetdiscovery.rest;
 
-import jakarta.persistence.MappedSuperclass;
+import com.serviceops.assetdiscovery.entity.mapped.ExternalAssetBase;
 
-@MappedSuperclass
-public class ExternalAssetBase extends AssetBase {
-    private String manufacturer;
-    private String deviceStatus;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Objects;
 
+/**
+ * A Rest for the {@link ExternalAssetBase} entity
+ */
+public class ExternalAssetBaseRest extends AssetBaseRest implements Serializable {
+    private  String manufacturer;
+    private  String deviceStatus;
     public String getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
     public String getDeviceStatus() {
         return deviceStatus;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     public void setDeviceStatus(String deviceStatus) {
@@ -29,7 +34,7 @@ public class ExternalAssetBase extends AssetBase {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        ExternalAssetBase that = (ExternalAssetBase) o;
+        ExternalAssetBaseRest that = (ExternalAssetBaseRest) o;
 
         if (getManufacturer() != null ? !getManufacturer().equals(that.getManufacturer()) : that.getManufacturer() != null)
             return false;
@@ -46,7 +51,7 @@ public class ExternalAssetBase extends AssetBase {
 
     @Override
     public String toString() {
-        return "ExternalAssetBase{" +
+        return "ExternalAssetBaseRest{" +
                 "manufacturer='" + manufacturer + '\'' +
                 ", deviceStatus='" + deviceStatus + '\'' +
                 '}';
