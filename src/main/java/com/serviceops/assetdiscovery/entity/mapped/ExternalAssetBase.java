@@ -49,6 +49,6 @@ public class ExternalAssetBase extends AssetBase {
         return "ExternalAssetBase{" +
                 "manufacturer='" + manufacturer + '\'' +
                 ", deviceStatus='" + deviceStatus + '\'' +
-                '}';
+                '}'+ super.toString();
     }
 }

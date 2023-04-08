@@ -52,6 +52,6 @@ public class AssetBaseRest extends SingleBaseRest implements Serializable {
         return "AssetBaseRest{" +
                 "refId=" + refId +
                 ", serialNumber='" + serialNumber + '\'' +
-                '}';
+                "} " + super.toString();
     }
 }
