@@ -54,6 +54,6 @@ public class ExternalAssetBaseRest extends AssetBaseRest implements Serializable
         return "ExternalAssetBaseRest{" +
                 "manufacturer='" + manufacturer + '\'' +
                 ", deviceStatus='" + deviceStatus + '\'' +
-                '}';
+                "} " + super.toString();
     }
 }

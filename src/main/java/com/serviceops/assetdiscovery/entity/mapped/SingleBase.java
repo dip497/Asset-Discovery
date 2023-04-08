@@ -89,6 +89,6 @@ public class SingleBase extends Base {
                 ", createdTime=" + createdTime +
                 ", updatedBy='" + updatedBy + '\'' +
                 ", updatedTime=" + updatedTime +
-                '}';
+                '}' + super.toString();
     }
 }

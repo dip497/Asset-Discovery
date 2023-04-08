@@ -63,10 +63,11 @@ public class PointingDeviceRest extends ExternalAssetBaseRest implements Seriali
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "numberOfButtons = " + numberOfButtons + ", " +
-                "description = " + description + ", " +
-                "pointingType = " + pointingType + ", " +
-                "pnpDeviceId = " + pnpDeviceId + ")";
+        return "PointingDeviceRest{" +
+                "numberOfButtons=" + numberOfButtons +
+                ", description='" + description + '\'' +
+                ", pointingType='" + pointingType + '\'' +
+                ", pnpDeviceId='" + pnpDeviceId + '\'' +
+                "} " + super.toString();
     }
 }

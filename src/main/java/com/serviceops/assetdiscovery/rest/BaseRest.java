@@ -32,7 +32,8 @@ public class BaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ")";
+        return "BaseRest{" +
+                "id=" + id +
+                '}';
     }
 }

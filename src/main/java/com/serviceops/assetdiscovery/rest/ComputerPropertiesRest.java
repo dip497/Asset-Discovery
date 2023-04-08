@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-/**
- * A Rest for the {@link com.serviceops.assetdiscovery.entity.ComputerProperties} entity
- */
 public class ComputerPropertiesRest extends AssetBaseRest implements Serializable {
     private  String osName;
     private  String osVersion;
