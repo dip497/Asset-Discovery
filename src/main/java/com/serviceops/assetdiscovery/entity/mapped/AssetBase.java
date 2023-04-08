@@ -48,6 +48,6 @@ public class AssetBase extends SingleBase {
         return "AssetBase{" +
                 "refId=" + refId +
                 ", serialNumber='" + serialNumber + '\'' +
-                '}';
+                "} " + super.toString();
     }
 }

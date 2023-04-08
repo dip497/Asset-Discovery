@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * A Rest for the {@link com.serviceops.assetdiscovery.entity.HardwareProperties} entity
+ * A Rest for the entity
  */
 public class HardwarePropertiesRest extends AssetBaseRest implements Serializable {
     private  Date warrentyExpirationDate;

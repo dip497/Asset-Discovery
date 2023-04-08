@@ -64,10 +64,11 @@ public class SingleBaseRest extends BaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "createdBy = " + createdBy + ", " +
-                "createdTime = " + createdTime + ", " +
-                "updatedBy = " + updatedBy + ", " +
-                "updatedTime = " + updatedTime + ")";
+        return "SingleBaseRest{" +
+                "createdBy='" + createdBy + '\'' +
+                ", createdTime=" + createdTime +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", updatedTime=" + updatedTime +
+                "} " + super.toString();
     }
 }

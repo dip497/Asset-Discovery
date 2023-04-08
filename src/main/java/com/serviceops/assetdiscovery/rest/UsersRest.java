@@ -1,7 +1,6 @@
 package com.serviceops.assetdiscovery.rest;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 /**

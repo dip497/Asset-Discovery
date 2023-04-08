@@ -73,6 +73,6 @@ public class PointingDevice extends ExternalAssetBase {
                 ", description='" + description + '\'' +
                 ", pointingType='" + pointingType + '\'' +
                 ", pnpDeviceId='" + pnpDeviceId + '\'' +
-                '}';
+                '}' + super.toString();
     }
 }
