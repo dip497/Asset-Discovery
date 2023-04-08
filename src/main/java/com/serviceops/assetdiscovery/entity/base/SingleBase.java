@@ -1,4 +1,4 @@
-package com.serviceops.assetdiscovery.entity.mapped;
+package com.serviceops.assetdiscovery.entity.base;
 
 import jakarta.persistence.MappedSuperclass;
 import org.hibernate.annotations.CreationTimestamp;

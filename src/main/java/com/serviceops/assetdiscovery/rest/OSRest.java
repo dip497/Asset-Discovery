@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.OS} entity
  */
-public class OSRest extends ExternalAssetBaseRest implements Serializable {
+public class OSRest extends AssetBaseRest implements Serializable {
     private String osName;
     private String osVersion;
     private String osArchitecture;

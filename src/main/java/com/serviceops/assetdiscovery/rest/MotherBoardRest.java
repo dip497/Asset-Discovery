@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.MotherBoard} entity
  */
-public class MotherBoardRest implements Serializable {
+public class MotherBoardRest extends AssetBaseRest implements Serializable {
     private  String version;
     private  Date installedDate;
     private  String partNumber;

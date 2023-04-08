@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Monitor} entity
  */
-public class MonitorRest extends ExternalAssetBaseRest implements Serializable {
+public class MonitorRest extends AssetBaseRest implements Serializable {
     private  String monitorType;
     private  String description;
     private  float size;

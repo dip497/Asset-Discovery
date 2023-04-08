@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.PointingDevice} entity
  */
-public class PointingDeviceRest extends ExternalAssetBaseRest implements Serializable {
+public class PointingDeviceRest extends AssetBaseRest implements Serializable {
     private   int numberOfButtons;
     private   String description;
     private   String pointingType;

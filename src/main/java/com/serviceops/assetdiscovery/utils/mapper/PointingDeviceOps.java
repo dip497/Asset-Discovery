@@ -2,7 +2,7 @@ package com.serviceops.assetdiscovery.utils.mapper;
 import com.serviceops.assetdiscovery.entity.PointingDevice;
 import com.serviceops.assetdiscovery.rest.PointingDeviceRest;
 
-public class PointingDeviceOps extends ExternalAssetBaseOps<PointingDevice, PointingDeviceRest> {
+public class PointingDeviceOps extends AssetBaseOps<PointingDevice, PointingDeviceRest> {
     private PointingDevice pointingDevice;
     private PointingDeviceRest pointingDeviceRest;
 
@@ -30,21 +30,5 @@ public class PointingDeviceOps extends ExternalAssetBaseOps<PointingDevice, Poin
         pointingDeviceRest.setPointingType(pointingDevice.getPointingType());
         pointingDeviceRest.setPnpDeviceId(pointingDevice.getPnpDeviceId());
         return  pointingDeviceRest;
-    }
-
-    public PointingDevice getPointingDevice() {
-        return pointingDevice;
-    }
-
-    public void setPointingDevice(PointingDevice pointingDevice) {
-        this.pointingDevice = pointingDevice;
-    }
-
-    public PointingDeviceRest getPointingDeviceRest() {
-        return pointingDeviceRest;
-    }
-
-    public void setPointingDeviceRest(PointingDeviceRest pointingDeviceRest) {
-        this.pointingDeviceRest = pointingDeviceRest;
     }
 }

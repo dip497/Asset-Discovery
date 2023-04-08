@@ -1,10 +1,10 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.mapped.ExternalAssetBase;
+import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
 @Entity
-public class LogicalDisk extends ExternalAssetBase {
+public class LogicalDisk extends AssetBase {
     private String name;
     private String description;
     private String fileSystemType;

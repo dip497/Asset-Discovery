@@ -1,11 +1,11 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.mapped.ExternalAssetBase;
+import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
 import java.sql.Date;
 @Entity
-public class MotherBoard extends ExternalAssetBase {
+public class MotherBoard extends AssetBase {
     private String version;
     private Date installedDate;
     private String partNumber;

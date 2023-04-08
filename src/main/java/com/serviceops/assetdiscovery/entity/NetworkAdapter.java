@@ -1,11 +1,11 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.mapped.ExternalAssetBase;
+import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
 import java.util.Date;
 @Entity
-public class NetworkAdapter extends ExternalAssetBase {
+public class NetworkAdapter extends AssetBase {
     private String macAddress;
     private String description;
 

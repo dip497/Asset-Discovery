@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link NetworkAdapter} entity
  */
-public class NetworkAdapterRest extends ExternalAssetBaseRest implements Serializable {
+public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
     private   String macAddress;
     private   String description;
     private   String[] ipAddress;

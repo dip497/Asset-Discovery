@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link com.serviceops.assetdiscovery.entity.mapped.SingleBase} entity
+ * A DTO for the {@link com.serviceops.assetdiscovery.entity.base.SingleBase} entity
  */
 public class SingleBaseRest extends BaseRest implements Serializable {
     private  String createdBy;
