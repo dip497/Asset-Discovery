@@ -1,6 +1,6 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.mapped.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
 
 import java.net.InetAddress;

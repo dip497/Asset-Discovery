@@ -1,15 +1,15 @@
 package com.serviceops.assetdiscovery.rest;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Objects;
 
 /**
- * A DTO for the {@link com.serviceops.assetdiscovery.entity.mapped.AssetBase} entity
+ * A DTO for the {@link com.serviceops.assetdiscovery.entity.base.AssetBase} entity
  */
 public class AssetBaseRest extends SingleBaseRest implements Serializable {
     private  Long refId;
     private  String serialNumber;
+    private String manufacturer;
+    private String deviceStatus;
 
     public Long getRefId() {
         return refId;
@@ -27,6 +27,22 @@ public class AssetBaseRest extends SingleBaseRest implements Serializable {
         this.serialNumber = serialNumber;
     }
 
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public String getDeviceStatus() {
+        return deviceStatus;
+    }
+
+    public void setDeviceStatus(String deviceStatus) {
+        this.deviceStatus = deviceStatus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,7 +52,11 @@ public class AssetBaseRest extends SingleBaseRest implements Serializable {
         AssetBaseRest that = (AssetBaseRest) o;
 
         if (getRefId() != null ? !getRefId().equals(that.getRefId()) : that.getRefId() != null) return false;
-        return getSerialNumber() != null ? getSerialNumber().equals(that.getSerialNumber()) : that.getSerialNumber() == null;
+        if (getSerialNumber() != null ? !getSerialNumber().equals(that.getSerialNumber()) : that.getSerialNumber() != null)
+            return false;
+        if (getManufacturer() != null ? !getManufacturer().equals(that.getManufacturer()) : that.getManufacturer() != null)
+            return false;
+        return getDeviceStatus() != null ? getDeviceStatus().equals(that.getDeviceStatus()) : that.getDeviceStatus() == null;
     }
 
     @Override
@@ -44,6 +64,8 @@ public class AssetBaseRest extends SingleBaseRest implements Serializable {
         int result = super.hashCode();
         result = 31 * result + (getRefId() != null ? getRefId().hashCode() : 0);
         result = 31 * result + (getSerialNumber() != null ? getSerialNumber().hashCode() : 0);
+        result = 31 * result + (getManufacturer() != null ? getManufacturer().hashCode() : 0);
+        result = 31 * result + (getDeviceStatus() != null ? getDeviceStatus().hashCode() : 0);
         return result;
     }
 
@@ -52,6 +74,8 @@ public class AssetBaseRest extends SingleBaseRest implements Serializable {
         return "AssetBaseRest{" +
                 "refId=" + refId +
                 ", serialNumber='" + serialNumber + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", deviceStatus='" + deviceStatus + '\'' +
                 "} " + super.toString();
     }
 }
