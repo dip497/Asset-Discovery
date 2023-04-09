@@ -1,10 +1,10 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.mapped.ExternalAssetBase;
+import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Ram extends ExternalAssetBase {
+public class Ram extends AssetBase {
 
     private Long size;
     private String memoryType;

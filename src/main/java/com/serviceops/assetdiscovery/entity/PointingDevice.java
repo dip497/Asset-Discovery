@@ -1,10 +1,10 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.mapped.ExternalAssetBase;
+import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
 @Entity
-public class PointingDevice extends ExternalAssetBase {
+public class PointingDevice extends AssetBase {
     private int numberOfButtons;
     private String description;
     private String pointingType;

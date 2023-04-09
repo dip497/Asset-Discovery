@@ -7,20 +7,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class LinuxCommandExecutor {
-
     private Session session;
-
-
-    public void connect(String host, String username, String password) throws JSchException {
-        System.out.println("yes");
+    public void connect(String host, String username, String password,int port) throws JSchException {
         JSch jsch = new JSch();
-        session = jsch.getSession(username, host, 22);
+        session = jsch.getSession(username, host, port);
         session.setPassword(password);
         session.setConfig("StrictHostKeyChecking", "no");
         session.connect();
-        System.out.println("yes");
     }
-
     public String[] execute(String sudoCommand) throws JSchException, IOException {
         Channel channel = session.openChannel("exec");
         ((ChannelExec) channel).setCommand("sudo -S -p '' " + sudoCommand);

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link com.serviceops.assetdiscovery.entity.mapped.Base} entity
+ * A DTO for the {@link com.serviceops.assetdiscovery.entity.base.Base} entity
  */
 public class BaseRest implements Serializable {
     private  Long id;

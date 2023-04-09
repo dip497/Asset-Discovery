@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Keyboard} entity
  */
-public class KeyboardRest extends ExternalAssetBaseRest implements Serializable {
+public class KeyboardRest extends AssetBaseRest implements Serializable {
     private  String name;
     private  String description;
     private  Date installedDate;

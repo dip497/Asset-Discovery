@@ -1,11 +1,11 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.mapped.ExternalAssetBase;
+import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
 import java.sql.Date;
 @Entity
-public class Keyboard extends ExternalAssetBase {
+public class Keyboard extends AssetBase {
     private String name;
     private String description;
     private Date installedDate;

@@ -1,11 +1,11 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.mapped.ExternalAssetBase;
+import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
 import java.sql.Date;
 @Entity
-public class Monitor extends ExternalAssetBase {
+public class Monitor extends AssetBase {
 
     private String monitorType;
     private String description;

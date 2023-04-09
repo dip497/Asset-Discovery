@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.ComputerSystem} entity
  */
-public class ComputerSystemRest extends ExternalAssetBaseRest implements Serializable {
+public class ComputerSystemRest extends AssetBaseRest implements Serializable {
     private  String name;
     private  String description;
     private  String domainName;

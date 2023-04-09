@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.PhysicalDisk} entity
  */
-public class PhysicalDiskRest extends ExternalAssetBaseRest implements Serializable {
+public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
     private   String name;
     private   String description;
     private   long size;

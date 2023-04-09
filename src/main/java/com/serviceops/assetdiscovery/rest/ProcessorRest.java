@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Processor} entity
  */
-public class ProcessorRest extends ExternalAssetBaseRest implements Serializable {
+public class ProcessorRest extends AssetBaseRest implements Serializable {
     private   String processorName;
     private   String description;
     private   int width;

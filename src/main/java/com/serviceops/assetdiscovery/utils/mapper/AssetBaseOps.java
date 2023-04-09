@@ -1,6 +1,6 @@
 package com.serviceops.assetdiscovery.utils.mapper;
 
-import com.serviceops.assetdiscovery.entity.mapped.AssetBase;
+import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import com.serviceops.assetdiscovery.rest.AssetBaseRest;
 
 public class AssetBaseOps<T extends AssetBase,S extends AssetBaseRest>  extends SingleBaseOps<T,S> {
@@ -18,6 +18,8 @@ public class AssetBaseOps<T extends AssetBase,S extends AssetBaseRest>  extends 
         super.restToEntity(rest);
         assetBase.setRefId(rest.getRefId());
         assetBase.setSerialNumber(rest.getSerialNumber());
+        assetBase.setManufacturer(rest.getManufacturer());
+        assetBase.setDeviceStatus(rest.getDeviceStatus());
         return assetBase;
     }
 
@@ -26,22 +28,8 @@ public class AssetBaseOps<T extends AssetBase,S extends AssetBaseRest>  extends 
         super.entityToRest(assetBase);
         assetBaseRest.setRefId(assetBase.getRefId());
         assetBaseRest.setSerialNumber(assetBase.getSerialNumber());
+        assetBaseRest.setManufacturer(assetBase.getManufacturer());
+        assetBaseRest.setDeviceStatus(assetBase.getDeviceStatus());
         return assetBaseRest;
-    }
-
-    public T getAssetBase() {
-        return assetBase;
-    }
-
-    public void setAssetBase(T assetBase) {
-        this.assetBase = assetBase;
-    }
-
-    public S getAssetBaseRest() {
-        return assetBaseRest;
-    }
-
-    public void setAssetBaseRest(S assetBaseRest) {
-        this.assetBaseRest = assetBaseRest;
     }
 }

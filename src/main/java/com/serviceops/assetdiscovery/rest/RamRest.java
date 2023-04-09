@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link Ram} entity
  */
-public class RamRest extends ExternalAssetBaseRest implements Serializable {
+public class RamRest extends AssetBaseRest implements Serializable {
     private  Long size;
     private  String memoryType;
     private  int width;

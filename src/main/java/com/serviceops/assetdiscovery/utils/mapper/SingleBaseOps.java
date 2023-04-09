@@ -1,6 +1,6 @@
 package com.serviceops.assetdiscovery.utils.mapper;
 
-import com.serviceops.assetdiscovery.entity.mapped.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import com.serviceops.assetdiscovery.rest.SingleBaseRest;
 
 public class SingleBaseOps<T extends SingleBase,S extends SingleBaseRest> extends BaseOps<T,S>{
@@ -31,22 +31,5 @@ public class SingleBaseOps<T extends SingleBase,S extends SingleBaseRest> extend
         singleBase.setUpdatedBy(singleBaseRest.getUpdatedBy());
         singleBase.setUpdatedTime(singleBaseRest.getUpdatedTime());
         return singleBase;
-    }
-
-
-    public T getSingleBase() {
-        return singleBase;
-    }
-
-    public void setSingleBase(T singleBase) {
-        this.singleBase = singleBase;
-    }
-
-    public S getSingleBaseRest() {
-        return singleBaseRest;
-    }
-
-    public void setSingleBaseRest(S singleBaseRest) {
-        this.singleBaseRest = singleBaseRest;
     }
 }

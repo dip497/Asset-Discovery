@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Bios} entity
  */
-public class BiosRest extends ExternalAssetBaseRest implements Serializable {
+public class BiosRest extends AssetBaseRest implements Serializable {
     private  String name;
     private  String smBiosVersion;
     private  Date realeaseDate;
