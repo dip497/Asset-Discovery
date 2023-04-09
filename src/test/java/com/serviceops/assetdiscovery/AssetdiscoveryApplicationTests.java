@@ -34,7 +34,7 @@ class AssetdiscoveryApplicationTests {
 
         PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice,pointingDeviceRest);
         System.out.println("converting entity to rest");
-        pointingDeviceRest = pointingDeviceOps.entityToRest(pointingDevice);
+        pointingDeviceRest = pointingDeviceOps.entityToRest();
         System.out.println("entity");
         System.out.println(pointingDevice);
         System.out.println("base");
@@ -66,7 +66,7 @@ class AssetdiscoveryApplicationTests {
 
         System.out.println("converting rest to entity");
         PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice,pointingDeviceRest);
-        pointingDevice = pointingDeviceOps.restToEntity(pointingDeviceRest);
+        pointingDevice = pointingDeviceOps.restToEntity();
         System.out.println("entity");
         System.out.println(pointingDevice);
         System.out.println("base");

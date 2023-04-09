@@ -3,6 +3,7 @@ package com.serviceops.assetdiscovery.utils.mapper;
 import com.serviceops.assetdiscovery.entity.MotherBoard;
 import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
+import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +19,8 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
         this.motherBoardRest = motherBoardRest;
     }
 
-    @Override
-    public MotherBoard restToEntity(MotherBoardRest motherBoardRest) {
+
+    public MotherBoard restToEntity() {
          super.restToEntity(motherBoardRest);
          motherBoard.setVersion(motherBoardRest.getVersion());
          motherBoard.setInstalledDate(motherBoardRest.getInstalledDate());
@@ -30,9 +31,8 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
 
     }
 
-    @Override
-    public MotherBoardRest entityToRest(MotherBoard motherBoard) {
-         super.entityToRest(assetBase);
+    public MotherBoardRest entityToRest() {
+         super.entityToRest(motherBoard);
         motherBoardRest.setVersion(motherBoard.getVersion());
         motherBoardRest.setInstalledDate(motherBoard.getInstalledDate());
         motherBoardRest.setPartNumber(motherBoard.getPartNumber());

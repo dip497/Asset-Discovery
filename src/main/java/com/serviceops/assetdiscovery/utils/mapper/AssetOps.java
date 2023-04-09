@@ -3,12 +3,14 @@ package com.serviceops.assetdiscovery.utils.mapper;
 import com.serviceops.assetdiscovery.entity.Asset;
 import com.serviceops.assetdiscovery.rest.AssetRest;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
+import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AssetOps extends SingleBaseOps<Asset,AssetRest>{
+public class AssetOps extends SingleBaseOps<Asset,AssetRest> {
 
     private final Asset asset;
     private final AssetRest assetRest;
@@ -18,9 +20,7 @@ public class AssetOps extends SingleBaseOps<Asset,AssetRest>{
         this.asset = asset;
         this.assetRest = assetRest;
     }
-
-    @Override
-    public Asset restToEntity(AssetRest assetRest){
+    public Asset restToEntity(){
         super.restToEntity(assetRest);
         asset.setHostName(assetRest.getHostName());
         asset.setDomainName(assetRest.getDomainName());
@@ -32,8 +32,7 @@ public class AssetOps extends SingleBaseOps<Asset,AssetRest>{
         return asset;
     }
 
-    @Override
-    public AssetRest entityToRest(Asset asset){
+    public AssetRest entityToRest(){
         super.entityToRest(asset);
         assetRest.setHostName(asset.getHostName());
         assetRest.setDomainName(asset.getDomainName());

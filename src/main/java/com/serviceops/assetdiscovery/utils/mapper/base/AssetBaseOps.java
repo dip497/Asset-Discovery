@@ -1,7 +1,7 @@
-package com.serviceops.assetdiscovery.utils.mapper;
+package com.serviceops.assetdiscovery.utils.mapper.base;
 
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
-import com.serviceops.assetdiscovery.rest.AssetBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 
 public class AssetBaseOps<T extends AssetBase,S extends AssetBaseRest>  extends SingleBaseOps<T,S> {
     T assetBase;

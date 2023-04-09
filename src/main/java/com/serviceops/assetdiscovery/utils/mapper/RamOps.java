@@ -2,8 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Ram;
 import com.serviceops.assetdiscovery.rest.RamRest;
+import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
-public class RamOps extends AssetBaseOps<Ram, RamRest>{
+public class RamOps extends AssetBaseOps<Ram, RamRest> {
     private Ram ram;
     private RamRest ramRest;
 

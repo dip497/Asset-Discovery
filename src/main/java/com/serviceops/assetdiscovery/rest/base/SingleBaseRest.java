@@ -1,4 +1,4 @@
-package com.serviceops.assetdiscovery.rest;
+package com.serviceops.assetdiscovery.rest.base;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.utils.mapper;
 import com.serviceops.assetdiscovery.entity.PointingDevice;
 import com.serviceops.assetdiscovery.rest.PointingDeviceRest;
+import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
 public class PointingDeviceOps extends AssetBaseOps<PointingDevice, PointingDeviceRest> {
     private PointingDevice pointingDevice;
@@ -12,8 +13,7 @@ public class PointingDeviceOps extends AssetBaseOps<PointingDevice, PointingDevi
         this.pointingDeviceRest = pointingDeviceRest;
     }
 
-    @Override
-    public PointingDevice restToEntity(PointingDeviceRest pointingDeviceRest) {
+    public PointingDevice restToEntity() {
         super.restToEntity(pointingDeviceRest);
         pointingDevice.setNumberOfButtons(pointingDeviceRest.getNumberOfButtons());
         pointingDevice.setDescription(pointingDeviceRest.getDescription());
@@ -22,8 +22,7 @@ public class PointingDeviceOps extends AssetBaseOps<PointingDevice, PointingDevi
         return pointingDevice;
     }
 
-    @Override
-    public PointingDeviceRest entityToRest(PointingDevice pointingDevice) {
+    public PointingDeviceRest entityToRest( ) {
         super.entityToRest(pointingDevice);
         pointingDeviceRest.setNumberOfButtons(pointingDevice.getNumberOfButtons());
         pointingDeviceRest.setDescription(pointingDevice.getDescription());
