@@ -1,8 +1,9 @@
 package com.serviceops.assetdiscovery.rest;
 
+import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+
 import java.io.Serializable;
 import java.net.Inet4Address;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 /**

@@ -2,8 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Users;
 import com.serviceops.assetdiscovery.rest.UsersRest;
+import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
-public class UsersOps extends SingleBaseOps<Users,UsersRest>{
+public class UsersOps extends SingleBaseOps<Users,UsersRest> {
     private Users users;
     private UsersRest usersRest;
 

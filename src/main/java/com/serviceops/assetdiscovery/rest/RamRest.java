@@ -1,9 +1,9 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.entity.Ram;
+import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 /**

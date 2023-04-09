@@ -2,13 +2,13 @@ package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.MotherBoard;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
-import com.serviceops.assetdiscovery.rest.AssetBaseRest;
 import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 import com.serviceops.assetdiscovery.service.interfaces.MotherBoardService;
 import com.serviceops.assetdiscovery.utils.mapper.MotherBoardOps;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class MotherBoardServiceImpl implements MotherBoardService{
     private MotherBoardOps  motherBoardOps;
     private CustomRepository customRepository;
