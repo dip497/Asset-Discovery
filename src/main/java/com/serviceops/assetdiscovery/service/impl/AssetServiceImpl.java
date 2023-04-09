@@ -5,8 +5,10 @@ import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.AssetRest;
 import com.serviceops.assetdiscovery.service.interfaces.AssetService;
 import com.serviceops.assetdiscovery.utils.mapper.AssetOps;
-import java.util.List;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+@Service
 public class AssetServiceImpl implements AssetService {
 
     AssetOps assetOps;
@@ -20,20 +22,17 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public Long save() {
-        List<String> parseResult = AssetOps.getParseResult();
-
-        AssetRest assetRest = new AssetRest();
-        assetRest.setHostName(parseResult.get(0));
-        assetRest.setDomainName(parseResult.get(1));
-        assetRest.setIpAddress(parseResult.get(2));
-        assetRest.setAssetType(parseResult.get(3));
-        assetRest.setSerialNumber(parseResult.get(4));
-        assetRest.setMacAddress(parseResult.get(5));
-        assetRest.setSubNetMask(parseResult.get(6));
         Asset asset = new Asset();
-        assetOps = new AssetOps(asset,assetRest);
+        List<String> parseResult = AssetOps.getParseResult();
+        AssetRest assetRest = new AssetRest();
+        asset.setHostName(parseResult.get(0));
+        asset.setDomainName(parseResult.get(1));
+        asset.setIpAddress(parseResult.get(2));
+        asset.setAssetType(parseResult.get(3));
+        asset.setSerialNumber(parseResult.get(4));
+        asset.setMacAddress(parseResult.get(5));
+        asset.setSubNetMask(parseResult.get(6));
 
-        asset = assetOps.restToEntity(assetRest);
 
         customRepository.save(asset);
 
@@ -43,7 +42,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public AssetRest findByIpAddress(String ipAddress) {
 
-        Asset asset = customRepository.findByColumn("ip_address",ipAddress,Asset.class);
+        Asset asset = customRepository.findByColumn("ipAddress",ipAddress,Asset.class).get();
         AssetRest assetRest = new AssetRest();
         assetOps = new AssetOps(asset,assetRest);
 
@@ -53,7 +52,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public AssetRest findById(Long id) {
 
-        Asset asset = customRepository.findByColumn("ip_address",id,Asset.class);
+        Asset asset = customRepository.findByColumn("ipAddress",id.toString(),Asset.class).get();
         AssetRest assetRest = new AssetRest();
         assetOps = new AssetOps(asset,assetRest);
 

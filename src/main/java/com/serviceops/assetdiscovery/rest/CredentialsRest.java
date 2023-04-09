@@ -12,7 +12,7 @@ import java.util.Objects;
 public class CredentialsRest extends SingleBaseRest implements Serializable {
     private  String username;
     private  String password;
-    private  Inet4Address ipAddress;
+    private  String ipAddress;
 
 
     public String getUsername() {
@@ -23,7 +23,7 @@ public class CredentialsRest extends SingleBaseRest implements Serializable {
         return password;
     }
 
-    public Inet4Address getIpAddress() {
+    public String getIpAddress() {
         return ipAddress;
     }
 
@@ -35,7 +35,7 @@ public class CredentialsRest extends SingleBaseRest implements Serializable {
         this.password = password;
     }
 
-    public void setIpAddress(Inet4Address ipAddress) {
+    public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 

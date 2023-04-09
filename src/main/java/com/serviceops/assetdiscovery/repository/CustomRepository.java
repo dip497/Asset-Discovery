@@ -2,11 +2,13 @@ package com.serviceops.assetdiscovery.repository;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CustomRepository {
@@ -25,12 +27,18 @@ public class CustomRepository {
         this.em = em;
     }
 
-    public <T,F> T findByColumn(final String column, final F value, final Class<T> clazz){
+    public <T> Optional<T> findByColumn(final String column, final String email, final Class<T> clazz) {
         CriteriaQuery<T> query = criteriaBuilder.createQuery(clazz);
         Root<T> from = query.from(clazz);
-        query.select(from).where(criteriaBuilder.equal(from.get(column), criteriaBuilder.parameter(String.class,column)));
-             return em.createQuery(query).setParameter(column, value).getSingleResult();
-
+        query.select(from)
+                .where(criteriaBuilder
+                        .equal(from.get(column), criteriaBuilder.parameter(String.class, column)));
+        try {
+            T result = em.createQuery(query).setParameter(column, email).getSingleResult();
+            return Optional.of(result);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
     public <F,T> List<T> findByColumns(List<String> column, List<F> value,Class<T> clazz) {
         CriteriaQuery<T> cq = criteriaBuilder.createQuery(clazz);

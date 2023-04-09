@@ -45,7 +45,7 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
         HashMap<String,String[]> commands = new HashMap<>();
         commands.put("sudo dmidecode --string baseboard-manufacturer",new String[]{});
         commands.put("sudo dmidecode --string baseboard-serial-number",new String[]{});
-        commands.put("sudo dmidecod)e --string baseboard-version",new String[]{});
+        commands.put("sudo dmidecode --string baseboard-version",new String[]{});
         LinuxCommandExecutorManager.add(MotherBoard.class,commands);
     }
     public static List<String> getParseResult(){

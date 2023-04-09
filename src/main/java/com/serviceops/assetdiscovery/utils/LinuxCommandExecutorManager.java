@@ -2,6 +2,8 @@ package com.serviceops.assetdiscovery.utils;
 
 import com.jcraft.jsch.JSchException;
 import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,6 +19,7 @@ public class LinuxCommandExecutorManager {
     private final String password;
     private final String username;
     private final int port;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     public LinuxCommandExecutorManager(String hostname, String username, String password, int port) {
         linuxCommandExecutor = new LinuxCommandExecutor() ;
         this.hostname = hostname;
