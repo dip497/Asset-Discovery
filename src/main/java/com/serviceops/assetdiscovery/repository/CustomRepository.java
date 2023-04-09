@@ -25,11 +25,11 @@ public class CustomRepository {
         this.em = em;
     }
 
-    public <T> T findByColumn(final String column, final String email, final Class<T> clazz){
+    public <T,F> T findByColumn(final String column, final F value, final Class<T> clazz){
         CriteriaQuery<T> query = criteriaBuilder.createQuery(clazz);
         Root<T> from = query.from(clazz);
         query.select(from).where(criteriaBuilder.equal(from.get(column), criteriaBuilder.parameter(String.class,column)));
-             return em.createQuery(query).setParameter(column, email).getSingleResult();
+             return em.createQuery(query).setParameter(column, value).getSingleResult();
 
     }
     public <F,T> List<T> findByColumns(List<String> column, List<F> value,Class<T> clazz) {

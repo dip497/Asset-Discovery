@@ -12,7 +12,7 @@ import java.util.Objects;
 public class AssetRest extends SingleBaseRest implements Serializable {
     private String hostName;
     private String domainName;
-    private InetAddress ipAddress;
+    private String ipAddress;
     private String assetType;
     private String serialNumber;
     private String macAddress;
@@ -34,11 +34,11 @@ public class AssetRest extends SingleBaseRest implements Serializable {
         this.domainName = domainName;
     }
 
-    public InetAddress getIpAddress() {
+    public String getIpAddress() {
         return ipAddress;
     }
 
-    public void setIpAddress(InetAddress ipAddress) {
+    public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
