@@ -11,8 +11,8 @@ import java.util.*;
 
 public class ComputerSystemOps extends AssetBaseOps<ComputerSystem, ComputerSystemRest> {
 
-    private static ComputerSystem computerSystem;
-    private static ComputerSystemRest computerSystemRest;
+    private final ComputerSystem computerSystem;
+    private final ComputerSystemRest computerSystemRest;
 
     public ComputerSystemOps(ComputerSystem computerSystem, ComputerSystemRest computerSystemRest) {
         super(computerSystem, computerSystemRest);
@@ -49,36 +49,8 @@ public class ComputerSystemOps extends AssetBaseOps<ComputerSystem, ComputerSyst
         return computerSystemRest;
     }
 
-    public static void setCommands() {
-        LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
-        commands.put("whoami", new String[]{});
-        commands.put("sudo dmidecode -s system-product-name", new String[]{});
-        commands.put("uname -m", new String[]{});
-//        commands.put() set to be later
-        commands.put("sudo dmidecode -s system-uuid", new String[]{});
-        commands.put("systemctl is-system-running", new String[]{});
-        commands.put("sudo dmidecode -s system-manufacturer", new String[]{});
-        LinuxCommandExecutorManager.add(ComputerSystem.class, commands);
-    }
 
-    public static List<String> getParseResults() {
-        Map<String, String[]> commandResults = LinuxCommandExecutorManager.get(ComputerSystem.class);
-        List<String> parsedResults = new ArrayList<>();
-        for (Map.Entry<String, String[]> commandResult : commandResults.entrySet()) {
-            String[] results = commandResult.getValue();
-            for (int i=0;i< results.length;i++) {
-                if(results[i].contains("admin"))
-                    i++;
-                else if(results[i].isEmpty())
-                    parsedResults.add(null);
-                else if(results[i].startsWith("Manu")){
-                    parsedResults.add(results[i].trim().substring(14, results[i].length()).trim());
-                }else {
-                    parsedResults.add(results[i]);
-                }
-            }
-        }
-        return parsedResults;
-    }
+
+
 
 }

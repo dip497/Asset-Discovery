@@ -5,15 +5,11 @@ import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.ComputerSystemRest;
 import com.serviceops.assetdiscovery.service.interfaces.ComputerSystemService;
+import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.ComputerSystemOps;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
-import static com.serviceops.assetdiscovery.utils.mapper.ComputerSystemOps.getParseResults;
-import static com.serviceops.assetdiscovery.utils.mapper.ComputerSystemOps.setCommands;
-
+import java.util.*;
 @Service
 public class ComputerSystemServiceImpl implements ComputerSystemService {
 
@@ -53,7 +49,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
         Optional<ComputerSystem> optionalComputerSystem = customRepository.findByColumn("refId", id, ComputerSystem.class);
         if (optionalComputerSystem.isPresent()) {
             ComputerSystemRest computerSystemRest = new ComputerSystemRest();
-            Optional<Processor> optionalProcessor = customRepository.findByColumn("ref_id", id, Processor.class);
+            Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
             if (optionalProcessor.isPresent()) {
                 computerSystemRest.setNumberOfProcessors(1);
                 computerSystemRest.setNumberOfLogicalProcessor(2 * optionalProcessor.get().getCoreCount());
@@ -62,10 +58,32 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
             return computerSystemRest;
             }
         return null;
+    }
+    private void setCommands() {
+        LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
+        commands.put("sudo who | cut -d' ' -f1", new String[]{});
+        commands.put("sudo dmidecode -s system-product-name", new String[]{});
+        commands.put("uname -m", new String[]{});
+//        commands.put() set to be later
+        commands.put("sudo dmidecode -s system-uuid", new String[]{});
+        commands.put("systemctl is-system-running", new String[]{});
+        commands.put("sudo dmidecode -s system-manufacturer", new String[]{});
+        LinuxCommandExecutorManager.add(ComputerSystem.class, commands);
+    }
+    private List<String> getParseResults() {
+        Map<String, String[]> commandResults = LinuxCommandExecutorManager.get(ComputerSystem.class);
+        List<String> parsedResults = new ArrayList<>();
+        for (Map.Entry<String, String[]> commandResult : commandResults.entrySet()) {
+            String[] results = commandResult.getValue();
+            for(String i:results){
+                parsedResults.add(i);
+            }
         }
+        return parsedResults;
+    }
     @Override
     public void deleteComputerSystemById(Long id){
-        customRepository.deleteById(ComputerSystem.class,id,"ref_id");
+        customRepository.deleteById(ComputerSystem.class,id,"refId");
     }
 
 
