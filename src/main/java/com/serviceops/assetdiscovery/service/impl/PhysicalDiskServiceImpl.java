@@ -27,12 +27,12 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
     public static void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
-        // command for parsing information about the disk description.
-        commands.put("sudo lshw -class disk | grep -i description: ", new String[]{});
         // command for parsing information about the disk size.
-        commands.put("sudo lshw -class disk | grep -i size: ", new String[]{});
+        commands.put("df -h | awk '$NF==\"/\"{printf \"%s\\n\", $2}'\n", new String[]{});
         // command for parsing information about the disk name.
-        commands.put("sudo lshw -class disk | grep -i product: ", new String[]{});
+        commands.put("lsblk -o NAME | grep -v \"^loop\" | awk 'NR>1{print}'\n", new String[]{});
+//        // command for parsing information about the disk size.
+//        commands.put("df -h | awk '$NF==\"/\"{printf \"%s\\n\", $2}'\n", new String[]{});
 
         LinuxCommandExecutorManager.add(PhysicalDisk.class, commands);
     }
@@ -55,10 +55,8 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
     public void save(Long id) {
         PhysicalDisk physicalDisk = new PhysicalDisk();
         physicalDisk.setRefId(id);
-        physicalDisk.setDescription(getParseResult().get(0).substring(getParseResult().get(0).length()- 25, getParseResult().get(0).length()));
-        physicalDisk.setSize(getParseResult().get(1).substring(getParseResult().get(1).length()- 7, getParseResult().get(1).length()-2));
-        physicalDisk.setName(getParseResult().get(2).substring(getParseResult().get(2).length()- 5, getParseResult().get(2).length()));
-//      While storing data in DB, there is long string attached to the output. so that we added string slicing while the saving data in DB
+        physicalDisk.setSize(getParseResult().get(0));
+        physicalDisk.setName(getParseResult().get(1));
         logger.info("Saving :" + physicalDisk);
         customRepository.save(physicalDisk);
     }
@@ -73,3 +71,4 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         customRepository.findByColumn("refId",id,PhysicalDisk.class);
     }
 }
+
