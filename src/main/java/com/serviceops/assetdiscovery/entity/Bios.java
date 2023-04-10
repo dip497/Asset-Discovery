@@ -8,7 +8,7 @@ import java.sql.Date;
 public class Bios extends AssetBase {
     private String name;
     private String smBiosVersion;
-    private Date realeaseDate;
+    private String  realeaseDate;
     private String version;
     private String description;
 
@@ -28,11 +28,11 @@ public class Bios extends AssetBase {
         this.smBiosVersion = smBiosVersion;
     }
 
-    public Date getRealeaseDate() {
+    public String  getRealeaseDate() {
         return realeaseDate;
     }
 
-    public void setRealeaseDate(Date realeaseDate) {
+    public void setRealeaseDate(String realeaseDate) {
         this.realeaseDate = realeaseDate;
     }
 
