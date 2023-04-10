@@ -56,16 +56,16 @@ public class AssetOps extends SingleBaseOps<Asset,AssetRest> {
         commands.put("ifconfig | grep 'inet ' | awk '{print $2}' | grep '^10\\.\\|^172\\.\\(1[6-9]\\|2[0-9]\\|3[01]\\)\\|^192\\.168\\.'",new String[]{});
 
         // Hardcoded command for getting the Asset Type.
-       // commands.put("",new String[]{"Hardware"});
+        commands.put("sudo dmidecode -t system | grep \"Product Name\" | cut -d \" \" -f 3-",new String[]{});
 
         // Command for getting the serial number of device.
         commands.put("sudo dmidecode -s system-serial-number",new String[]{});
 
-        // Command for getting the mac address.
-        //commands.put("ifconfig wlp2s0 | grep -oE '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'",new String[]{});
+//         Command for getting the mac address.
+        commands.put("ifconfig | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'",new String[]{});
 
         // Command for getting the subnet mask.
-        //commands.put("ifconfig <interface_name> | awk '/netmask/{print $4}'",new String[]{});
+        commands.put("ifconfig $(ip route | grep default | awk '{print $5}') | awk '/netmask/{print $4}'",new String[]{});
 
         // Adding all the commands to the Main HasMap where the class Asset is the key for all the commands
         LinuxCommandExecutorManager.add(Asset.class,commands);
@@ -76,13 +76,12 @@ public class AssetOps extends SingleBaseOps<Asset,AssetRest> {
         List<String> list= new ArrayList<>();
         for (Map.Entry<String ,String[]> result: stringMap.entrySet()) {
             String[] values = result.getValue();
-            for (int i = 0; i < values.length; i++) {
-                if(values[i].contains("admin")){
-                    i++;
-                }else{
-                    System.out.println(values[i]);
-                    list.add(values[i]);
-                }
+            for (int i = 0; i < values.length; i+=1) {
+               if(values[i].contains("admin"))
+                 i++;
+               else {
+                   list.add(values[i]);
+               }
             }
         }
         return list;
