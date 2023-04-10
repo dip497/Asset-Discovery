@@ -20,8 +20,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private final CustomRepository customRepository;
     private final AssetService assetService;
     private final MotherBoardService motherBoardService;
-
-    private final Logger logger = LoggerFactory.getLogger(NetworkScanController.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService) {
@@ -35,19 +34,21 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         List<Credentials> credentials = customRepository.findAll(Credentials.class);
         credentials.forEach(c -> {
             try {
-                logger.debug("Scanning credential -> {} " ,c.getIpAddress());
+                logger.debug("Scanning -> {} " ,c.getIpAddress());
                 new LinuxCommandExecutorManager(c.getIpAddress(),c.getUsername(),c.getPassword(),22).fetch();
-                saveAll();
+                saveToDB();
             } catch (JSchException | IOException e) {
+                logger.warn("failed to scan -> {}" ,c.getIpAddress());
                 throw new RuntimeException(e.getMessage());
             }
         });
     }
-    private void saveAll(){
+    private void saveToDB(){
         Long refId = saveAsset();
         motherBoardService.save(refId);
     }
     private Long  saveAsset(){
         return assetService.save();
     }
+
 }

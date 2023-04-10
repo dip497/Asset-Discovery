@@ -24,34 +24,42 @@ public class LinuxCommandExecutor {
     }
     public String[] execute(String sudoCommand) throws JSchException, IOException {
         Channel channel = session.openChannel("exec");
-        ((ChannelExec) channel).setCommand("sudo -S -p '' " + sudoCommand);
-        channel.setInputStream(null);
-        ((ChannelExec) channel).setErrStream(System.err);
-        InputStream in = channel.getInputStream();
-        OutputStream out = channel.getOutputStream();
-
-        ((ChannelExec) channel).setPty(true);
-        channel.connect();
-        logger.debug("executing command  -> {} ", sudoCommand ) ;
-        out.write((password + "\n").getBytes());
-        out.flush();
-
-        byte[] tmp = new byte[1024];
-        StringBuilder sb = new StringBuilder();
-        while (true) {
-            while (in.available() > 0) {
-                int i = in.read(tmp, 0, 1024);
-                if (i < 0) break;
-                sb.append(new String(tmp, 0, i));
-            }
-            if (channel.isClosed()) {
-                if (in.available() > 0) continue;
-                break;
-            }
+        if(sudoCommand.contains("sudo")){
+            ((ChannelExec) channel).setCommand("sudo -S -p '' " + sudoCommand);
         }
-        channel.disconnect();
-        return sb.toString().split("\n");
-    }
+        else{
+            ((ChannelExec) channel).setCommand(sudoCommand);
+        }
+            channel.setInputStream(null);
+            ((ChannelExec) channel).setErrStream(System.err);
+            InputStream in = channel.getInputStream();
+            OutputStream out = channel.getOutputStream();
+
+            ((ChannelExec) channel).setPty(true);
+            channel.connect();
+            logger.debug("executing command  -> {} ", sudoCommand);
+            if(sudoCommand.contains("sudo")) {
+                out.write((password + "\n").getBytes());
+                out.flush();
+            }
+
+            byte[] tmp = new byte[1024];
+            StringBuilder sb = new StringBuilder();
+            while (true) {
+                while (in.available() > 0) {
+                    int i = in.read(tmp, 0, 1024);
+                    if (i < 0) break;
+                    sb.append(new String(tmp, 0, i));
+                }
+                if (channel.isClosed()) {
+                    if (in.available() > 0) continue;
+                    break;
+                }
+            }
+            channel.disconnect();
+            return sb.toString().split("\n");
+        }
+
 
     public void disconnect() {
         session.disconnect();
