@@ -22,8 +22,8 @@ public class BiosOps extends AssetBaseOps<Bios, BiosRest> {
         this.biosRest = biosRest;
     }
 
-    @Override
-    public Bios restToEntity(BiosRest biosRest) {
+
+    public Bios restToEntity() {
         super.restToEntity(biosRest);
         bios.setName(biosRest.getName());
         bios.setSmBiosVersion(biosRest.getSmBiosVersion());
@@ -33,8 +33,8 @@ public class BiosOps extends AssetBaseOps<Bios, BiosRest> {
         return bios;
     }
 
-    @Override
-    public BiosRest entityToRest(Bios bios) {
+
+    public BiosRest entityToRest() {
         super.entityToRest(bios);
         biosRest.setName(bios.getName());
         biosRest.setSmBiosVersion(bios.getSmBiosVersion());
@@ -42,30 +42,6 @@ public class BiosOps extends AssetBaseOps<Bios, BiosRest> {
         biosRest.setVersion(bios.getVersion());
         biosRest.setDescription(bios.getDescription());
         return biosRest;
-    }
-
-    public static void setCommands(){
-        HashMap<String,String[]> commands = new HashMap<>();
-        commands.put("sudo dmidecode -s bios-release-date",new String[]{});
-        commands.put("sudo dmidecode -s bios-version",new String[]{});
-        commands.put("sudo dmidecode | awk '/SMBIOS/ {print $2}' FS='[ .]+' OFS='.'",new String[]{}); // extract the second string from the array
-    }
-
-    public static List<String> getParseResult(){
-        Map<String, String[]> stringMap = LinuxCommandExecutorManager.get(Bios.class);
-        List<String> list= new ArrayList<>();
-        for (Map.Entry<String ,String[]> result: stringMap.entrySet()) {
-            String[] values = result.getValue();
-            for (String value: values) {
-                if(value.isEmpty()){
-                    list.add(null);
-                }
-                else {
-                    list.add(value);
-                }
-            }
-        }
-        return list;
     }
 
 }

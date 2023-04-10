@@ -12,7 +12,7 @@ import java.util.Objects;
 public class BiosRest extends AssetBaseRest implements Serializable {
     private  String name;
     private  String smBiosVersion;
-    private  Date realeaseDate;
+    private  String realeaseDate;
     private  String version;
     private  String description;
 
@@ -24,7 +24,7 @@ public class BiosRest extends AssetBaseRest implements Serializable {
         return smBiosVersion;
     }
 
-    public Date getRealeaseDate() {
+    public String getRealeaseDate() {
         return realeaseDate;
     }
 
@@ -44,7 +44,7 @@ public class BiosRest extends AssetBaseRest implements Serializable {
         this.smBiosVersion = smBiosVersion;
     }
 
-    public void setRealeaseDate(Date realeaseDate) {
+    public void setRealeaseDate(String realeaseDate) {
         this.realeaseDate = realeaseDate;
     }
 

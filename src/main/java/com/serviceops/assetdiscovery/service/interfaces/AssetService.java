@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AssetService {
 
-    public Long save();
+    public AssetRest save();
 
     public AssetRest findByIpAddress(String ipAddress);
 
