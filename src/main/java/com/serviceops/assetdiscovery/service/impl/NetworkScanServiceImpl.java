@@ -1,12 +1,12 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.jcraft.jsch.JSchException;
-import com.serviceops.assetdiscovery.controller.NetworkScanController;
 import com.serviceops.assetdiscovery.entity.Credentials;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.service.interfaces.AssetService;
 import com.serviceops.assetdiscovery.service.interfaces.MotherBoardService;
 import com.serviceops.assetdiscovery.service.interfaces.NetworkScanService;
+import com.serviceops.assetdiscovery.service.interfaces.PhysicalDiskService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +20,16 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private final CustomRepository customRepository;
     private final AssetService assetService;
     private final MotherBoardService motherBoardService;
+    private final PhysicalDiskService physicalDiskService;
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService) {
+    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService) {
         this.customRepository = customRepository;
         this.assetService = assetService;
         this.motherBoardService = motherBoardService;
+        this.physicalDiskService = physicalDiskService;
     }
 
     @Override
@@ -46,6 +49,8 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private void saveToDB(){
         Long refId = saveAsset();
         motherBoardService.save(refId);
+        physicalDiskService.save(refId);
+
     }
     private Long  saveAsset(){
         return assetService.save();

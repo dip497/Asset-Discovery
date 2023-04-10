@@ -8,16 +8,17 @@ import java.sql.Date;
 @Entity
 public class PhysicalDisk extends AssetBase {
 
-    private String name;
-    private String description;
-    private long size;
-    private Date installedDate;
+    //   lshw -class disk
 
+    private String name;  // product name
+    private String description;  // description
+    private long size;       // size
+    private Date installedDate;
     private int partition;
     private String mediaType;
     private String model;
     private String interfaceType;
-    private String pnpDeviceId;
+    private String pnpDeviceId;  // serial number
 
     public String getName() {
         return name;
