@@ -57,9 +57,8 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         physicalDisk.setRefId(id);
         physicalDisk.setDescription(getParseResult().get(0).substring(getParseResult().get(0).length()- 25, getParseResult().get(0).length()));
         physicalDisk.setSize(getParseResult().get(1).substring(getParseResult().get(1).length()- 7, getParseResult().get(1).length()-2));
-
         physicalDisk.setName(getParseResult().get(2).substring(getParseResult().get(2).length()- 5, getParseResult().get(2).length()));
-
+//      While storing data in DB, there is long string attached to the output. so that we added string slicing while the saving data in DB
         logger.info("Saving :" + physicalDisk);
         customRepository.save(physicalDisk);
     }
