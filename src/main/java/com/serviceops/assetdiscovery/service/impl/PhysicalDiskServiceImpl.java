@@ -30,9 +30,13 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         // command for parsing information about the disk size.
         commands.put("df -h | awk '$NF==\"/\"{printf \"%s\\n\", $2}'\n", new String[]{});
         // command for parsing information about the disk name.
-        commands.put("lsblk -o NAME | grep -v \"^loop\" | awk 'NR>1{print}'\n", new String[]{});
-//        // command for parsing information about the disk size.
-//        commands.put("df -h | awk '$NF==\"/\"{printf \"%s\\n\", $2}'\n", new String[]{});
+        commands.put("blkid | awk -F: '{print $1}' | awk -F/ '{print $NF}'\n", new String[]{});
+        // command for parsing information about the pnp device id.
+        commands.put("udevadm info --query=property --name=/dev/sda | grep ID_SERIAL\n",new String[]{});
+        // command for parsing information about the interface.
+        commands.put("udevadm info --query=property --name=/dev/sda | grep ID_BUS\n",new String[]{});
+        // command for parsing information about the media type.
+        commands.put("udevadm info --query=property --name=/dev/sda | grep DEVTYPE\n",new String[]{});
 
         LinuxCommandExecutorManager.add(PhysicalDisk.class, commands);
     }
@@ -57,6 +61,9 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         physicalDisk.setRefId(id);
         physicalDisk.setSize(getParseResult().get(0));
         physicalDisk.setName(getParseResult().get(1));
+        physicalDisk.setPnpDeviceId(getParseResult().get(2));
+        physicalDisk.setInterfaceType(getParseResult().get(3));
+        physicalDisk.setMediaType(getParseResult().get(4));
         logger.info("Saving :" + physicalDisk);
         customRepository.save(physicalDisk);
     }
