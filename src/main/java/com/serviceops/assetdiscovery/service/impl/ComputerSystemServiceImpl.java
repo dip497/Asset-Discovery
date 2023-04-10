@@ -61,10 +61,9 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     }
     private void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
-        commands.put("sudo who | cut -d' ' -f1", new String[]{});
+        commands.put("sudo who | head -n1| cut -d' ' -f1", new String[]{});
         commands.put("sudo dmidecode -s system-product-name", new String[]{});
         commands.put("uname -m", new String[]{});
-//        commands.put() set to be later
         commands.put("sudo dmidecode -s system-uuid", new String[]{});
         commands.put("systemctl is-system-running", new String[]{});
         commands.put("sudo dmidecode -s system-manufacturer", new String[]{});
