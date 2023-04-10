@@ -1,8 +1,10 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.jcraft.jsch.JSchException;
+import com.serviceops.assetdiscovery.entity.Asset;
 import com.serviceops.assetdiscovery.entity.Credentials;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
+import com.serviceops.assetdiscovery.rest.AssetRest;
 import com.serviceops.assetdiscovery.service.interfaces.*;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import org.slf4j.Logger;
@@ -47,13 +49,13 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         });
     }
     private void saveToDB(){
-        Long refId = saveAsset();
-        motherBoardService.save(refId);
-        physicalDiskService.save(refId);
-        computerSystemService.save(refId);
-        keyboardService.save(refId);
+        AssetRest assetRest = saveAsset();
+        motherBoardService.save(assetRest.getId());
+        physicalDiskService.save(assetRest.getId());
+        computerSystemService.save(assetRest.getId());
+        keyboardService.save(assetRest.getId());
     }
-    private Long  saveAsset(){
+    private AssetRest  saveAsset(){
         return assetService.save();
     }
 
