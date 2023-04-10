@@ -51,7 +51,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         motherBoardService.save(refId);
         physicalDiskService.save(refId);
         computerSystemService.save(refId);
-        keyboardService.save(1L);
+        keyboardService.save(refId);
     }
     private Long  saveAsset(){
         return assetService.save();
