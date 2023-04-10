@@ -5,8 +5,8 @@ import com.serviceops.assetdiscovery.rest.KeyboardRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
 public class KeyboardOps extends AssetBaseOps<Keyboard, KeyboardRest> {
-    private static Keyboard keyboard = new Keyboard();
-    private static KeyboardRest keyboardRest = new KeyboardRest();
+    private static  Keyboard keyboard = new Keyboard();
+    private static  KeyboardRest keyboardRest = new KeyboardRest();
 
 
     public KeyboardOps() {

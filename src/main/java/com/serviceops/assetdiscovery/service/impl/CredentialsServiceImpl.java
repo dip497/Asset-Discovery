@@ -27,8 +27,9 @@ public class CredentialsServiceImpl implements CredentialsService {
             throw new ResourceAlreadyExistsException(this.getClass().getSimpleName(),"ipaddress",credentialsRest.getIpAddress());
 
         }else{
-            credentialsOps = new CredentialsOps();
-            customRepository.save(credentialsOps.restToEntity(credentialsRest));
+            Credentials credential = new Credentials();
+            credentialsOps = new CredentialsOps(credential, credentialsRest);
+            customRepository.save(credentialsOps.restToEntity());
         }
         //new ResourceNotFoundException(this.getClass().getSimpleName(),"ipaddress",credentialsRest.getIpAddress()));
         //new ResourceAlreadyExistsException(this.getClass().getSimpleName(),"ipaddress",credentialsRest.getIpAddress()));
@@ -40,17 +41,16 @@ public class CredentialsServiceImpl implements CredentialsService {
     public List<CredentialsRest> findAll() {
         List<Credentials> credential = customRepository.findAll(Credentials.class);
         credential.stream().forEach(System.out::println);
-        return credential.stream().map(c -> new CredentialsOps().entityToRest(new Credentials())).toList();
+        return credential.stream().map(c -> new CredentialsOps(c ,new CredentialsRest()).entityToRest()).toList();
     }
 
     @Override
     public CredentialsRest findByIpAddress(String inet4Address) {
-        Credentials credentials = customRepository.findByColumn("ipAddress", inet4Address.toString(), Credentials.class).get();
-        return new CredentialsOps().entityToRest(credentials);
+        return new CredentialsOps(customRepository.findByColumn("ipAddress", inet4Address.toString(), Credentials.class).get(),new CredentialsRest()).entityToRest();
     }
 
     @Override
     public CredentialsRest findById(Long id) {
-        return new CredentialsOps().entityToRest(customRepository.findByColumn("id", id.toString(), Credentials.class).get());
+        return new CredentialsOps(customRepository.findByColumn("id", id.toString(), Credentials.class).get(),new CredentialsRest()).entityToRest();
     }
 }

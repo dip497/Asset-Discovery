@@ -5,10 +5,12 @@ import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
 public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
-    private static  MotherBoard motherBoard = new MotherBoard();
-    private static MotherBoardRest motherBoardRest = new MotherBoardRest();
-    public MotherBoardOps() {
+    private final MotherBoard motherBoard;
+    private final MotherBoardRest motherBoardRest;
+    public MotherBoardOps(MotherBoard motherBoard, MotherBoardRest motherBoardRest) {
         super(motherBoard, motherBoardRest);
+        this.motherBoard = motherBoard;
+        this.motherBoardRest = motherBoardRest;
     }
 
 
@@ -23,7 +25,7 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
 
     }
 
-    public MotherBoardRest entityToRest(MotherBoard motherBoard) {
+    public MotherBoardRest entityToRest() {
          super.entityToRest(motherBoard);
         motherBoardRest.setVersion(motherBoard.getVersion());
         motherBoardRest.setInstalledDate(motherBoard.getInstalledDate());
@@ -32,4 +34,5 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
         motherBoardRest.setSecondaryBusType(motherBoard.getSecondaryBusType());
         return motherBoardRest;
     }
+
 }
