@@ -11,27 +11,41 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.serviceops.assetdiscovery.utils.mapper.ComputerSystemOps.getParseResults;
+import static com.serviceops.assetdiscovery.utils.mapper.ComputerSystemOps.setCommands;
+
 @Service
 public class ComputerSystemServiceImpl implements ComputerSystemService {
 
-    private ComputerSystemOps computerSystemOps;
-    private CustomRepository customRepository;
+    private final CustomRepository customRepository;
     public ComputerSystemServiceImpl(CustomRepository customRepository){
         this.customRepository = customRepository;
-        computerSystemOps.setCommands();
+        setCommands();
     }
     @Override
     public void save(Long Id) {
-        List<String> parsedResults = ComputerSystemOps.getParseResults();
-        ComputerSystem computerSystem = new ComputerSystem();
-        computerSystem.setRefId(Id);
-        computerSystem.setUserName(parsedResults.get(0));
-        computerSystem.setModelName(parsedResults.get(1));
-        computerSystem.setSystemType(parsedResults.get(2));
-        computerSystem.setUuid(parsedResults.get(3));
-        computerSystem.setBootUpState(parsedResults.get(4));
-        computerSystem.setManufacturer(parsedResults.get(5));
-        customRepository.save(computerSystem);
+        Optional<ComputerSystem> savedComputerSystem= customRepository.findByColumn("id", Id, ComputerSystem.class);
+        List<String> parsedResults = getParseResults();
+        if(savedComputerSystem.isPresent()) {
+           ComputerSystem computerSystem = savedComputerSystem.get();
+           computerSystem.setUserName(parsedResults.get(0));
+           computerSystem.setModelName(parsedResults.get(1));
+           computerSystem.setSystemType(parsedResults.get(2));
+           computerSystem.setUuid(parsedResults.get(3));
+           computerSystem.setBootUpState(parsedResults.get(4));
+           computerSystem.setManufacturer(parsedResults.get(5));
+           customRepository.save(computerSystem);
+        }else{
+            ComputerSystem computerSystem = new ComputerSystem();
+            computerSystem.setRefId(Id);
+            computerSystem.setUserName(parsedResults.get(0));
+            computerSystem.setModelName(parsedResults.get(1));
+            computerSystem.setSystemType(parsedResults.get(2));
+            computerSystem.setUuid(parsedResults.get(3));
+            computerSystem.setBootUpState(parsedResults.get(4));
+            computerSystem.setManufacturer(parsedResults.get(5));
+            customRepository.save(computerSystem);
+        }
     }
 
     @Override
@@ -43,7 +57,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
             if (optionalProcessor.isPresent()) {
                 computerSystemRest.setNumberOfProcessors(1);
                 computerSystemRest.setNumberOfLogicalProcessor(2 * optionalProcessor.get().getCoreCount());
-                computerSystemOps = new ComputerSystemOps(optionalComputerSystem.get(), computerSystemRest);
+                ComputerSystemOps computerSystemOps = new ComputerSystemOps(optionalComputerSystem.get(), computerSystemRest);
             }
             return computerSystemRest;
             }
