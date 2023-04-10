@@ -3,10 +3,8 @@ package com.serviceops.assetdiscovery.service.impl;
 import com.jcraft.jsch.JSchException;
 import com.serviceops.assetdiscovery.entity.Credentials;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
-import com.serviceops.assetdiscovery.service.interfaces.AssetService;
-import com.serviceops.assetdiscovery.service.interfaces.MotherBoardService;
-import com.serviceops.assetdiscovery.service.interfaces.NetworkScanService;
-import com.serviceops.assetdiscovery.service.interfaces.PhysicalDiskService;
+import com.serviceops.assetdiscovery.rest.AssetRest;
+import com.serviceops.assetdiscovery.service.interfaces.*;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +19,20 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private final AssetService assetService;
     private final MotherBoardService motherBoardService;
     private final PhysicalDiskService physicalDiskService;
-
+    private final ComputerSystemService computerSystemService;
+    private final KeyboardService keyboardService;
+    private final BiosService biosService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService) {
+    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService) {
         this.customRepository = customRepository;
         this.assetService = assetService;
         this.motherBoardService = motherBoardService;
         this.physicalDiskService = physicalDiskService;
+        this.computerSystemService =  computerSystemService;
+        this.keyboardService = keyboardService;
+        this.biosService = biosService;
     }
 
     @Override
@@ -47,12 +50,14 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         });
     }
     private void saveToDB(){
-        Long refId = saveAsset();
-        motherBoardService.save(refId);
-        physicalDiskService.save(refId);
-
+        AssetRest assetRest = saveAsset();
+        motherBoardService.save(assetRest.getId());
+        physicalDiskService.save(assetRest.getId());
+        computerSystemService.save(assetRest.getId());
+        keyboardService.save(assetRest.getId());
+        biosService.save(assetRest);
     }
-    private Long  saveAsset(){
+    private AssetRest  saveAsset(){
         return assetService.save();
     }
 
