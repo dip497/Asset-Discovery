@@ -5,18 +5,13 @@ import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 import com.serviceops.assetdiscovery.service.interfaces.MotherBoardService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
-import com.serviceops.assetdiscovery.utils.mapper.MotherBoardOps;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MotherBoardServiceImpl implements MotherBoardService{
-    private MotherBoardOps  motherBoardOps;
-    private CustomRepository customRepository;
+    private final CustomRepository customRepository;
 
     public MotherBoardServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -24,13 +19,23 @@ public class MotherBoardServiceImpl implements MotherBoardService{
     }
     @Override
     public void  save(Long id ) {
-        MotherBoard motherBoard = new MotherBoard();
-        motherBoard.setRefId(id);
-        List<String> parseResult = getParseResult();
-        motherBoard.setManufacturer(parseResult.get(0));
-        motherBoard.setSerialNumber(parseResult.get(1));
-        motherBoard.setVersion(parseResult.get(2));
-        customRepository.save(motherBoard);
+        Optional<MotherBoard> optionalfetchMotherBoard = customRepository.findByColumn("id", id, MotherBoard.class);
+        if(optionalfetchMotherBoard.isPresent()){
+            List<String> parseResult = getParseResult();
+            MotherBoard fetchMotherBoard = optionalfetchMotherBoard.get();
+            fetchMotherBoard.setManufacturer(parseResult.get(0));
+            fetchMotherBoard.setSerialNumber(parseResult.get(1));
+            fetchMotherBoard.setVersion(parseResult.get(2));
+            customRepository.save(fetchMotherBoard);
+        }else{
+            MotherBoard motherBoard = new MotherBoard();
+            motherBoard.setRefId(id);
+            List<String> parseResult = getParseResult();
+            motherBoard.setManufacturer(parseResult.get(0));
+            motherBoard.setSerialNumber(parseResult.get(1));
+            motherBoard.setVersion(parseResult.get(2));
+            customRepository.save(motherBoard);
+        }
     }
 
     @Override
