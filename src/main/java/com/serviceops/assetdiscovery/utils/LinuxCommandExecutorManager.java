@@ -7,13 +7,14 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 /**
  *
 
  */
 public class LinuxCommandExecutorManager {
-    private static  final HashMap<Class<? extends SingleBase>, HashMap<String,String[]>> commandResults  = new HashMap<>();
+    private static  final HashMap<Class<? extends SingleBase>, LinkedHashMap<String,String[]>> commandResults  = new HashMap<>();
     LinuxCommandExecutor linuxCommandExecutor;
     private final String hostname;
     private final String password;
@@ -30,8 +31,8 @@ public class LinuxCommandExecutorManager {
     // TODO : handle Exception
     public  void fetch() throws JSchException, IOException {
         linuxCommandExecutor.connect(hostname,username,password,port);
-        for (Map.Entry<Class<? extends SingleBase>, HashMap<String,String[]>> commandResultsLocal : commandResults.entrySet()){
-            HashMap<String, String[]> commands = commandResultsLocal.getValue();
+        for (Map.Entry<Class<? extends SingleBase>, LinkedHashMap<String,String[]>> commandResultsLocal : commandResults.entrySet()){
+            LinkedHashMap<String, String[]> commands = commandResultsLocal.getValue();
             for (Map.Entry<String,String[]> entry : commands.entrySet()) {
                 String[] result = linuxCommandExecutor.execute(entry.getKey());
                 commands.put(entry.getKey(), result);
@@ -40,7 +41,7 @@ public class LinuxCommandExecutorManager {
         linuxCommandExecutor.disconnect();
     }
 
-    public static <T extends SingleBase> void add(Class<T> key,HashMap<String,String[]> hashMap){
+    public static <T extends SingleBase> void add(Class<T> key,LinkedHashMap<String,String[]> hashMap){
         commandResults.put(key,hashMap);
     }
     public static <T extends SingleBase> Map<String,String[]> get(Class<T> key){

@@ -5,10 +5,7 @@ import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
     private final MotherBoard motherBoard;
@@ -42,7 +39,7 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
     }
 
     public static void setCommands(){
-        HashMap<String,String[]> commands = new HashMap<>();
+        LinkedHashMap<String,String[]> commands = new LinkedHashMap<>();
         commands.put("sudo dmidecode --string baseboard-manufacturer",new String[]{});
         commands.put("sudo dmidecode --string baseboard-serial-number",new String[]{});
         commands.put("sudo dmidecode --string baseboard-version",new String[]{});
@@ -53,14 +50,11 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
         List<String> list= new ArrayList<>();
         for (Map.Entry<String ,String[]> result: stringMap.entrySet()) {
             String[] values = result.getValue();
-            for (String value: values) {
-                if(value.isEmpty()){
-                    list.add(null);
-                }
-                else {
-                   list.add(value);
-                }
+            for (int i = 2; i < values.length; i+=2) {
+                    list.add(values[i]);
+
             }
+
         }
         return list;
     }

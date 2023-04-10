@@ -24,19 +24,18 @@ public class AssetServiceImpl implements AssetService {
     public Long save() {
         Asset asset = new Asset();
         List<String> parseResult = AssetOps.getParseResult();
-        AssetRest assetRest = new AssetRest();
         asset.setHostName(parseResult.get(0));
         asset.setDomainName(parseResult.get(1));
         asset.setIpAddress(parseResult.get(2));
-        asset.setAssetType(parseResult.get(3));
-        asset.setSerialNumber(parseResult.get(4));
-        asset.setMacAddress(parseResult.get(5));
-        asset.setSubNetMask(parseResult.get(6));
+       // asset.setAssetType(parseResult.get(3));
+        asset.setSerialNumber(parseResult.get(3));
+       // asset.setMacAddress(parseResult.get(5));
+       // asset.setSubNetMask(parseResult.get(6));
 
 
         customRepository.save(asset);
 
-        return findByIpAddress(assetRest.getIpAddress()).getId();
+        return findByIpAddress(asset.getIpAddress()).getId();
     }
 
     @Override
