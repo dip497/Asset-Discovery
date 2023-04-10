@@ -27,14 +27,14 @@ public class CustomRepository {
         this.em = em;
     }
 
-    public <T> Optional<T> findByColumn(final String column, final String email, final Class<T> clazz) {
+    public <F,T> Optional<T> findByColumn(final String column, final F value, final Class<T> clazz) {
         CriteriaQuery<T> query = criteriaBuilder.createQuery(clazz);
         Root<T> from = query.from(clazz);
         query.select(from)
                 .where(criteriaBuilder
-                        .equal(from.get(column), criteriaBuilder.parameter(String.class, column)));
+                        .equal(from.get(column), value));
         try {
-            T result = em.createQuery(query).setParameter(column, email).getSingleResult();
+            T result = em.createQuery(query).getSingleResult();
             return Optional.of(result);
         } catch (NoResultException e) {
             return Optional.empty();
@@ -57,7 +57,7 @@ public class CustomRepository {
         query.select(from);
         return em.createQuery(query).getResultList();
     }
-    public <T> List<T> findAllByColumnName(final Class<T> clazz,String foreignColumn,String foreignKey , String columnValue){
+    public <T> List<T> findAllByColumnName(final Class<T> clazz,String foreignColumn,String foreignKey, String columnValue){
         CriteriaQuery<T> query = criteriaBuilder.createQuery(clazz);
         Root<T> from = query.from(clazz);
         query.select(from).where(criteriaBuilder.equal(from.get(foreignColumn).get(foreignKey),criteriaBuilder.parameter(String.class,foreignKey)));
@@ -86,6 +86,14 @@ public class CustomRepository {
         em.createQuery(query).setParameter(columnName,id).executeUpdate();
     }
 
+    @Transactional
+    public <T> long countById(final Class<T> clazz,Long id, String columnName){
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<T> from = query.from(clazz);
+        query.select(criteriaBuilder.count(from));
+        query.where(criteriaBuilder.equal(from.get(columnName),id));
+        return em.createQuery(query).getSingleResult();
+    }
 
 
 

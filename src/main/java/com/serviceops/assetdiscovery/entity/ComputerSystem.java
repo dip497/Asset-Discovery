@@ -5,44 +5,21 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class ComputerSystem extends AssetBase {
-    private String name;
     private String description;
-    private String domainName;
     private String modelName;
     private String systemType;
     private String pcSystemType;
     private String uuid;
     private String bootUpState;
-    private int numberOfLogicalProcessor;
-    private int numberOfProcessors;
-
     private String partOfDomian;
     private String userName;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String getDomainName() {
-        return domainName;
-    }
-
-    public void setDomainName(String domainName) {
-        this.domainName = domainName;
-    }
-
     public String getModelName() {
         return modelName;
     }
@@ -82,27 +59,9 @@ public class ComputerSystem extends AssetBase {
     public void setBootUpState(String bootUpState) {
         this.bootUpState = bootUpState;
     }
-
-    public int getNumberOfLogicalProcessor() {
-        return numberOfLogicalProcessor;
-    }
-
-    public void setNumberOfLogicalProcessor(int numberOfLogicalProcessor) {
-        this.numberOfLogicalProcessor = numberOfLogicalProcessor;
-    }
-
-    public int getNumberOfProcessors() {
-        return numberOfProcessors;
-    }
-
-    public void setNumberOfProcessors(int numberOfProcessors) {
-        this.numberOfProcessors = numberOfProcessors;
-    }
-
     public String getPartOfDomian() {
         return partOfDomian;
     }
-
     public void setPartOfDomian(String partOfDomian) {
         this.partOfDomian = partOfDomian;
     }
@@ -122,12 +81,7 @@ public class ComputerSystem extends AssetBase {
 
         ComputerSystem that = (ComputerSystem) o;
 
-        if (getNumberOfLogicalProcessor() != that.getNumberOfLogicalProcessor()) return false;
-        if (getNumberOfProcessors() != that.getNumberOfProcessors()) return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
         if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
-            return false;
-        if (getDomainName() != null ? !getDomainName().equals(that.getDomainName()) : that.getDomainName() != null)
             return false;
         if (getModelName() != null ? !getModelName().equals(that.getModelName()) : that.getModelName() != null)
             return false;
@@ -145,16 +99,12 @@ public class ComputerSystem extends AssetBase {
 
     @Override
     public int hashCode() {
-        int result = getName() != null ? getName().hashCode() : 0;
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (getDomainName() != null ? getDomainName().hashCode() : 0);
+        int result = getDescription() != null ? getDescription().hashCode() : 0;
         result = 31 * result + (getModelName() != null ? getModelName().hashCode() : 0);
         result = 31 * result + (getSystemType() != null ? getSystemType().hashCode() : 0);
         result = 31 * result + (getPcSystemType() != null ? getPcSystemType().hashCode() : 0);
         result = 31 * result + (getUuid() != null ? getUuid().hashCode() : 0);
         result = 31 * result + (getBootUpState() != null ? getBootUpState().hashCode() : 0);
-        result = 31 * result + getNumberOfLogicalProcessor();
-        result = 31 * result + getNumberOfProcessors();
         result = 31 * result + (getPartOfDomian() != null ? getPartOfDomian().hashCode() : 0);
         result = 31 * result + (getUserName() != null ? getUserName().hashCode() : 0);
         return result;
@@ -163,16 +113,12 @@ public class ComputerSystem extends AssetBase {
     @Override
     public String toString() {
         return "ComputerSystem{" +
-                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", domainName='" + domainName + '\'' +
                 ", modelName='" + modelName + '\'' +
                 ", systemType='" + systemType + '\'' +
                 ", pcSystemType='" + pcSystemType + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", bootUpState='" + bootUpState + '\'' +
-                ", numberOfLogicalProcessor=" + numberOfLogicalProcessor +
-                ", numberOfProcessors=" + numberOfProcessors +
                 ", partOfDomian='" + partOfDomian + '\'' +
                 ", userName='" + userName + '\'' +
                 '}';
