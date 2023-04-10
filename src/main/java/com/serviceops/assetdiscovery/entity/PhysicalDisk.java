@@ -2,17 +2,22 @@ package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 import java.sql.Date;
+import java.util.Objects;
+
 @Entity
 public class PhysicalDisk extends AssetBase {
 
     //   lshw -class disk
-
+    @Column(length = 2048)
     private String name;  // product name
+    @Column(length = 2048)
     private String description;  // description
-    private long size;       // size
+    @Column(length = 2048)
+    private String size;       // size
     private Date installedDate;
     private int partition;
     private String mediaType;
@@ -36,11 +41,11 @@ public class PhysicalDisk extends AssetBase {
         this.description = description;
     }
 
-    public long getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(long size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
@@ -114,18 +119,10 @@ public class PhysicalDisk extends AssetBase {
         return getPnpDeviceId() != null ? getPnpDeviceId().equals(that.getPnpDeviceId()) : that.getPnpDeviceId() == null;
     }
 
+
     @Override
     public int hashCode() {
-        int result = getName() != null ? getName().hashCode() : 0;
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (int) (getSize() ^ (getSize() >>> 32));
-        result = 31 * result + (getInstalledDate() != null ? getInstalledDate().hashCode() : 0);
-        result = 31 * result + getPartition();
-        result = 31 * result + (getMediaType() != null ? getMediaType().hashCode() : 0);
-        result = 31 * result + (getModel() != null ? getModel().hashCode() : 0);
-        result = 31 * result + (getInterfaceType() != null ? getInterfaceType().hashCode() : 0);
-        result = 31 * result + (getPnpDeviceId() != null ? getPnpDeviceId().hashCode() : 0);
-        return result;
+        return Objects.hash(super.hashCode(), name, description, size, installedDate, partition, mediaType, model, interfaceType, pnpDeviceId);
     }
 
     @Override

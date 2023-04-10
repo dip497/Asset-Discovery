@@ -1,7 +1,6 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.controller.PhysicalDiskController;
-import com.serviceops.assetdiscovery.entity.MotherBoard;
 import com.serviceops.assetdiscovery.entity.PhysicalDisk;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.service.interfaces.PhysicalDiskService;
@@ -23,23 +22,23 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
     public PhysicalDiskServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        setCommands();
     }
 
     public static void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
         // command for parsing information about the disk description.
-        commands.put("udo lshw -class disk | grep -i description", new String[]{});
+        commands.put("sudo lshw -class disk | grep -i description: ", new String[]{});
         // command for parsing information about the disk size.
-        commands.put("sudo lshw -class disk | grep -i size:", new String[]{});
+        commands.put("sudo lshw -class disk | grep -i size: ", new String[]{});
         // command for parsing information about the disk name.
-        commands.put("sudo lshw -class disk | grep -i product:", new String[]{});
+        commands.put("sudo lshw -class disk | grep -i product: ", new String[]{});
 
-
-        LinuxCommandExecutorManager.add(MotherBoard.class, commands);
+        LinuxCommandExecutorManager.add(PhysicalDisk.class, commands);
     }
 
     public static List<String> getParseResult() {
-        Map<String, String[]> stringMap = LinuxCommandExecutorManager.get(MotherBoard.class);
+        Map<String, String[]> stringMap = LinuxCommandExecutorManager.get(PhysicalDisk.class);
         List<String> list = new ArrayList<>();
         for (Map.Entry<String, String[]> result : stringMap.entrySet()) {
             String[] values = result.getValue();
@@ -56,10 +55,10 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
     public void save(Long id) {
         PhysicalDisk physicalDisk = new PhysicalDisk();
         physicalDisk.setRefId(id);
-        physicalDisk.setDescription(getParseResult().get(0));
-        // todo: find a better way to parse the size of the disk.  // size showing is "L1HF97B03HS"
-        System.out.println(getParseResult().get(1));
-        physicalDisk.setName(getParseResult().get(2));
+        physicalDisk.setDescription(getParseResult().get(0).substring(getParseResult().get(0).length()- 25, getParseResult().get(0).length()));
+        physicalDisk.setSize(getParseResult().get(1).substring(getParseResult().get(1).length()- 7, getParseResult().get(1).length()-2));
+
+        physicalDisk.setName(getParseResult().get(2).substring(getParseResult().get(2).length()- 5, getParseResult().get(2).length()));
 
         logger.info("Saving :" + physicalDisk);
         customRepository.save(physicalDisk);

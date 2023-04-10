@@ -12,7 +12,7 @@ import java.util.Objects;
 public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
     private   String name;
     private   String description;
-    private   long size;
+    private   String size;
     private   Date installedDate;
     private   int partition;
     private   String mediaType;
@@ -29,7 +29,7 @@ public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
         return description;
     }
 
-    public long getSize() {
+    public String getSize() {
         return size;
     }
 
@@ -65,7 +65,7 @@ public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
         this.description = description;
     }
 
-    public void setSize(long size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
