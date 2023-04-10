@@ -18,16 +18,21 @@ public class MotherBoardServiceImpl implements MotherBoardService{
         MotherBoardOps.setCommands();
     }
     @Override
-    public void  save(MotherBoardRest motherBoardRest) {
-        List<String> parseResult = MotherBoardOps.getParseResult();
-        motherBoardRest.setManufacturer(parseResult.get(0));
-        motherBoardRest.setSerialNumber(parseResult.get(1));
-        motherBoardRest.setVersion(parseResult.get(2));
+    public void  save(Long id ) {
         MotherBoard motherBoard = new MotherBoard();
-        motherBoardOps = new MotherBoardOps(motherBoard, motherBoardRest);
-        motherBoard = motherBoardOps.restToEntity(motherBoardRest);
+        motherBoard.setRefId(id);
+        List<String> parseResult = MotherBoardOps.getParseResult();
+        motherBoard.setManufacturer(parseResult.get(0));
+        motherBoard.setSerialNumber(parseResult.get(1));
+        motherBoard.setVersion(parseResult.get(2));
+       // motherBoardOps = new MotherBoardOps(motherBoard, motherBoardRest);
+       // motherBoard = motherBoardOps.restToEntity(motherBoardRest);
         customRepository.save(motherBoard);
+    }
 
+    @Override
+    public MotherBoardRest getMotherBoard(Long id) {
+        return null;
     }
 
 }

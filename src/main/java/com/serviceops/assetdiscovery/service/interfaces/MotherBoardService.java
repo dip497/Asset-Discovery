@@ -1,7 +1,10 @@
 package com.serviceops.assetdiscovery.service.interfaces;
 
+import com.serviceops.assetdiscovery.entity.MotherBoard;
 import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 
 public interface MotherBoardService {
-    void  save(MotherBoardRest motherBoardRest);
+    void save(Long id);
+
+    MotherBoardRest getMotherBoard(Long id);
 }

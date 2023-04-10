@@ -8,7 +8,7 @@ import java.net.Inet4Address;
 public class Credentials extends SingleBase {
     private String username;
     private String password;
-    private Inet4Address ipAddress;
+    private String ipAddress;
 
     public String getUsername() {
         return username;
@@ -26,11 +26,11 @@ public class Credentials extends SingleBase {
         this.password = password;
     }
 
-    public Inet4Address getIpAddress() {
+    public String getIpAddress() {
         return ipAddress;
     }
 
-    public void setIpAddress(Inet4Address ipAddress) {
+    public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 

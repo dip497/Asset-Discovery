@@ -8,5 +8,6 @@ import java.util.List;
 public interface CredentialsService {
     void save(CredentialsRest credentialsRest);
     List<CredentialsRest> findAll();
-    CredentialsRest findByIpAddress(Inet4Address inet4Address);
+    CredentialsRest findByIpAddress(String inet4Address);
+    CredentialsRest findById(Long id);
 }
