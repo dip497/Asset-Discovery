@@ -119,11 +119,9 @@ public class AssetServiceImpl implements AssetService {
         for (Map.Entry<String ,String[]> result: stringMap.entrySet()) {
             String[] values = result.getValue();
             for (int i = 0; i < values.length; i++) {
-                if(values[i].contains("admin"))
-                    i++;
-                else {
+
                     list.add(values[i]);
-                }
+
             }
         }
         return list;
