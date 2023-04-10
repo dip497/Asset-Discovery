@@ -24,7 +24,8 @@ public class LinuxCommandExecutor {
     }
     public String[] execute(String sudoCommand) throws JSchException, IOException {
         Channel channel = session.openChannel("exec");
-        if(sudoCommand.contains("sudo")){
+        boolean useSudo = sudoCommand.contains("sudo");
+        if(useSudo){
             ((ChannelExec) channel).setCommand("sudo -S -p '' " + sudoCommand);
         }
         else{
@@ -49,7 +50,12 @@ public class LinuxCommandExecutor {
                 while (in.available() > 0) {
                     int i = in.read(tmp, 0, 1024);
                     if (i < 0) break;
-                    sb.append(new String(tmp, 0, i));
+                    String line = new String(tmp, 0, i);
+                    if(line.contains(password)) {
+                        in.read(tmp, 0, 1024);
+                        continue; // skip the line with the sudo command
+                    }
+                    sb.append(line);
                 }
                 if (channel.isClosed()) {
                     if (in.available() > 0) continue;
