@@ -14,7 +14,7 @@ class AssetdiscoveryApplicationTests {
     void entityToRest() {
 
         PointingDevice pointingDevice = new PointingDevice();
-        pointingDevice.setNumberOfButtons(0);
+        pointingDevice.setNumberOfButtons("0");
         pointingDevice.setDescription("description");
         pointingDevice.setPointingType("pointing type");
         pointingDevice.setPnpDeviceId("9");
@@ -48,7 +48,7 @@ class AssetdiscoveryApplicationTests {
     @Test
     void restToEntity(){
         PointingDeviceRest pointingDeviceRest = new PointingDeviceRest();
-        pointingDeviceRest.setNumberOfButtons(0);
+        pointingDeviceRest.setNumberOfButtons("0");
         pointingDeviceRest.setDescription("description");
         pointingDeviceRest.setPointingType("ll");
         pointingDeviceRest.setPnpDeviceId("kk");

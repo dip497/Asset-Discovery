@@ -42,7 +42,7 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         List<String> list = new ArrayList<>();
         for (Map.Entry<String, String[]> result : stringMap.entrySet()) {
             String[] values = result.getValue();
-            for (int i = 2; i < values.length; i += 2) {
+            for (int i = 0; i < values.length; i ++) {
                 list.add(values[i]);
 
             }

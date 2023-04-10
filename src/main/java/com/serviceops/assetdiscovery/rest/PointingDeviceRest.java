@@ -9,14 +9,10 @@ import java.util.Objects;
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.PointingDevice} entity
  */
 public class PointingDeviceRest extends AssetBaseRest implements Serializable {
-    private   int numberOfButtons;
+    private   String numberOfButtons; // TODO make it long or int if possible
     private   String description;
     private   String pointingType;
     private   String pnpDeviceId;
-
-    public int getNumberOfButtons() {
-        return numberOfButtons;
-    }
 
     public String getDescription() {
         return description;
@@ -30,7 +26,11 @@ public class PointingDeviceRest extends AssetBaseRest implements Serializable {
         return pnpDeviceId;
     }
 
-    public void setNumberOfButtons(int numberOfButtons) {
+    public String getNumberOfButtons() {
+        return numberOfButtons;
+    }
+
+    public void setNumberOfButtons(String numberOfButtons) {
         this.numberOfButtons = numberOfButtons;
     }
 
@@ -50,16 +50,14 @@ public class PointingDeviceRest extends AssetBaseRest implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PointingDeviceRest entity = (PointingDeviceRest) o;
-        return Objects.equals(this.numberOfButtons, entity.numberOfButtons) &&
-                Objects.equals(this.description, entity.description) &&
-                Objects.equals(this.pointingType, entity.pointingType) &&
-                Objects.equals(this.pnpDeviceId, entity.pnpDeviceId);
+        if (!super.equals(o)) return false;
+        PointingDeviceRest that = (PointingDeviceRest) o;
+        return Objects.equals(numberOfButtons, that.numberOfButtons) && Objects.equals(description, that.description) && Objects.equals(pointingType, that.pointingType) && Objects.equals(pnpDeviceId, that.pnpDeviceId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numberOfButtons, description, pointingType, pnpDeviceId);
+        return Objects.hash(super.hashCode(), numberOfButtons, description, pointingType, pnpDeviceId);
     }
 
     @Override

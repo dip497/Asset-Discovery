@@ -1,20 +1,23 @@
 package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+
+import java.util.Objects;
 
 @Entity
 public class PointingDevice extends AssetBase {
-    private int numberOfButtons;
+    private String numberOfButtons;
     private String description;
     private String pointingType;
     private String pnpDeviceId;
 
-    public int getNumberOfButtons() {
+    public String getNumberOfButtons() {
         return numberOfButtons;
     }
 
-    public void setNumberOfButtons(int numberOfButtons) {
+    public void setNumberOfButtons(String numberOfButtons) {
         this.numberOfButtons = numberOfButtons;
     }
 
@@ -46,24 +49,14 @@ public class PointingDevice extends AssetBase {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
+        if (!super.equals(o)) return false;
         PointingDevice that = (PointingDevice) o;
-
-        if (getNumberOfButtons() != that.getNumberOfButtons()) return false;
-        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
-            return false;
-        if (getPointingType() != null ? !getPointingType().equals(that.getPointingType()) : that.getPointingType() != null)
-            return false;
-        return getPnpDeviceId() != null ? getPnpDeviceId().equals(that.getPnpDeviceId()) : that.getPnpDeviceId() == null;
+        return Objects.equals(numberOfButtons, that.numberOfButtons) && Objects.equals(description, that.description) && Objects.equals(pointingType, that.pointingType) && Objects.equals(pnpDeviceId, that.pnpDeviceId);
     }
 
     @Override
     public int hashCode() {
-        int result = getNumberOfButtons();
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (getPointingType() != null ? getPointingType().hashCode() : 0);
-        result = 31 * result + (getPnpDeviceId() != null ? getPnpDeviceId().hashCode() : 0);
-        return result;
+        return Objects.hash(super.hashCode(), numberOfButtons, description, pointingType, pnpDeviceId);
     }
 
     @Override
