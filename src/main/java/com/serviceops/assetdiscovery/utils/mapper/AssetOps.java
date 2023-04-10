@@ -5,10 +5,7 @@ import com.serviceops.assetdiscovery.rest.AssetRest;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AssetOps extends SingleBaseOps<Asset,AssetRest> {
 
@@ -47,7 +44,7 @@ public class AssetOps extends SingleBaseOps<Asset,AssetRest> {
     public static void setCommands(){
 
         // HashMap for setting the Multiple commands and their value in String[]
-        HashMap<String,String[]> commands = new HashMap<>();
+        LinkedHashMap<String,String[]> commands = new LinkedHashMap<>();
 
         // Command for getting the hostName.
         commands.put("hostname",new String[]{});
@@ -59,16 +56,16 @@ public class AssetOps extends SingleBaseOps<Asset,AssetRest> {
         commands.put("ifconfig | grep 'inet ' | awk '{print $2}' | grep '^10\\.\\|^172\\.\\(1[6-9]\\|2[0-9]\\|3[01]\\)\\|^192\\.168\\.'",new String[]{});
 
         // Hardcoded command for getting the Asset Type.
-        commands.put("",new String[]{"Hardware"});
+       // commands.put("",new String[]{"Hardware"});
 
         // Command for getting the serial number of device.
         commands.put("sudo dmidecode -s system-serial-number",new String[]{});
 
         // Command for getting the mac address.
-        commands.put("ifconfig wlp2s0 | grep -oE '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'",new String[]{});
+        //commands.put("ifconfig wlp2s0 | grep -oE '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'",new String[]{});
 
         // Command for getting the subnet mask.
-        commands.put("ifconfig <interface_name> | awk '/netmask/{print $4}'",new String[]{});
+        //commands.put("ifconfig <interface_name> | awk '/netmask/{print $4}'",new String[]{});
 
         // Adding all the commands to the Main HasMap where the class Asset is the key for all the commands
         LinuxCommandExecutorManager.add(Asset.class,commands);
@@ -79,12 +76,12 @@ public class AssetOps extends SingleBaseOps<Asset,AssetRest> {
         List<String> list= new ArrayList<>();
         for (Map.Entry<String ,String[]> result: stringMap.entrySet()) {
             String[] values = result.getValue();
-            for (String value: values) {
-                if(value.isEmpty()){
-                    list.add(null);
-                }
-                else {
-                    list.add(value);
+            for (int i = 0; i < values.length; i++) {
+                if(values[i].contains("admin")){
+                    i++;
+                }else{
+                    System.out.println(values[i]);
+                    list.add(values[i]);
                 }
             }
         }

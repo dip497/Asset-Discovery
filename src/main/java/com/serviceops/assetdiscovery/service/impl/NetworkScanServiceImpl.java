@@ -37,11 +37,11 @@ public class NetworkScanServiceImpl implements NetworkScanService {
             try {
                 logger.debug("Scanning credential -> {} " ,c.getIpAddress());
                 new LinuxCommandExecutorManager(c.getIpAddress(),c.getUsername(),c.getPassword(),22).fetch();
+                saveAll();
             } catch (JSchException | IOException e) {
                 throw new RuntimeException(e.getMessage());
             }
         });
-        saveAll();
     }
     private void saveAll(){
         Long refId = saveAsset();

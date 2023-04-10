@@ -11,6 +11,7 @@ import java.io.OutputStream;
 public class LinuxCommandExecutor {
     private Session session;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private String password;
 
     public void connect(String host, String username, String password,int port) throws JSchException {
         JSch jsch = new JSch();
@@ -18,6 +19,7 @@ public class LinuxCommandExecutor {
         session.setPassword(password);
         session.setConfig("StrictHostKeyChecking", "no");
         session.connect();
+        this.password = password;
         logger.debug("Connected to -> {} ", host ) ;
     }
     public String[] execute(String sudoCommand) throws JSchException, IOException {
@@ -31,9 +33,7 @@ public class LinuxCommandExecutor {
         ((ChannelExec) channel).setPty(true);
         channel.connect();
         logger.debug("executing command  -> {} ", sudoCommand ) ;
-
-
-        out.write(("admin" + "\n").getBytes());
+        out.write((password + "\n").getBytes());
         out.flush();
 
         byte[] tmp = new byte[1024];
