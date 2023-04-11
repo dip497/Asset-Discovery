@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Asset;
+import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.AssetRest;
 import com.serviceops.assetdiscovery.service.interfaces.AssetService;
@@ -61,20 +62,32 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public AssetRest findByIpAddress(String ipAddress) {
-        Asset asset = customRepository.findByColumn("ipAddress",ipAddress,Asset.class).get();
-        AssetRest assetRest = new AssetRest();
-        AssetOps assetOps = new AssetOps(asset,assetRest);
-        logger.info("Asset found by IP ->{}",ipAddress);
-        return assetOps.entityToRest();
+        Optional<Asset> assetOptional = customRepository.findByColumn("ipAddress",ipAddress,Asset.class);
+
+        if(assetOptional.isPresent()) {
+            AssetRest assetRest = new AssetRest();
+            AssetOps assetOps = new AssetOps(assetOptional.get(), assetRest);
+            logger.info("Asset found by IP ->{}", ipAddress);
+            return assetOps.entityToRest();
+        }else {
+            throw new ResourceNotFoundException("AssetRest","ipAddress",ipAddress);
+        }
+
     }
 
     @Override
     public AssetRest findById(Long id) {
-        Asset asset = customRepository.findByColumn("id",id.toString(),Asset.class).get();
-        AssetRest assetRest = new AssetRest();
-        AssetOps assetOps = new AssetOps(asset,assetRest);
-        logger.info("Asset found by id ->{}",id);
-        return assetOps.entityToRest();
+
+        Optional<Asset> assetOptional = customRepository.findByColumn("id",id.toString(),Asset.class);
+
+        if(assetOptional.isPresent()) {
+            AssetRest assetRest = new AssetRest();
+            AssetOps assetOps = new AssetOps(assetOptional.get(), assetRest);
+            logger.info("Asset found by id ->{}", id);
+            return assetOps.entityToRest();
+        }else {
+            throw new ResourceNotFoundException("AssetRest","id",Long.toString(id));
+        }
     }
 
     @Override
@@ -91,16 +104,16 @@ public class AssetServiceImpl implements AssetService {
 
         int count = findTotalCount();
 
-        AllAssetResponse allAssetResponse = new AllAssetResponse();
+        AllAssetResponse data = new AllAssetResponse();
 
-        allAssetResponse.setAssetRestList(assetRests);
-        allAssetResponse.setPageNo(pageNo);
-        allAssetResponse.setTotalElements(count);
-        allAssetResponse.setPageSize(pageSize);
+        data.setAssetRestList(assetRests);
+        data.setPageNo(pageNo);
+        data.setTotalElements(count);
+        data.setPageSize(pageSize);
 
         logger.info("Assets found in {} order on {} page number {}",sortDir,sortBy,pageNo);
 
-        return allAssetResponse;
+        return data;
 
     }
 
@@ -154,7 +167,7 @@ public class AssetServiceImpl implements AssetService {
         commands.put("domainname",new String[]{});
 
         // Command for getting the ip address.
-        commands.put("ip a | grep -Eo 'inet (addr:)?(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.)([0-9]*\\.){1,3}[0-9]*' | awk '{print $2}'\n",new String[]{});
+        commands.put("sudo ip a | grep -Eo 'inet (addr:)?(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.)([0-9]*\\.){1,3}[0-9]*' | awk '{print $2}'",new String[]{});
 
         // Hardcoded command for getting the Asset Type.
         // uname -s
@@ -164,10 +177,10 @@ public class AssetServiceImpl implements AssetService {
         commands.put("sudo dmidecode -s system-serial-number",new String[]{});
 
         // Command for getting the mac address.
-        commands.put("ifconfig | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | head -n 1",new String[]{});
+        commands.put("sudo ifconfig | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | head -n 1",new String[]{});
 
         // Command for getting the subnet mask.
-        commands.put("ifconfig $(ip route | grep default | awk '{print $5}') | awk '/netmask/{print $4}'",new String[]{});
+        commands.put("sudo ifconfig $(ip route | grep default | awk '{print $5}') | awk '/netmask/{print $4}'",new String[]{});
 
         // Adding all the commands to the Main HasMap where the class Asset is the key for all the commands
         LinuxCommandExecutorManager.add(Asset.class,commands);
@@ -178,10 +191,10 @@ public class AssetServiceImpl implements AssetService {
         List<String> list= new ArrayList<>();
         for (Map.Entry<String ,String[]> result: stringMap.entrySet()) {
             String[] values = result.getValue();
-            for (int i = 0; i < values.length; i++) {
-                if (values[i]==null)
+            for (String value : values) {
+                if (value == null)
                     continue;
-                list.add(values[i]);
+                list.add(value);
 
             }
         }

@@ -11,7 +11,7 @@ public class OS extends AssetBase {
     private String osArchitecture;
     private String licenseKey;
     private String activationStatus;
-    private Date installedDate;
+    private String installedDate;
 
 
     public String getOsName() {
@@ -54,11 +54,11 @@ public class OS extends AssetBase {
         this.activationStatus = activationStatus;
     }
 
-    public Date getInstalledDate() {
+    public String getInstalledDate() {
         return installedDate;
     }
 
-    public void setInstalledDate(Date installedDate) {
+    public void setInstalledDate(String installedDate) {
         this.installedDate = installedDate;
     }
 

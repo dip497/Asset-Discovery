@@ -8,8 +8,10 @@ import com.serviceops.assetdiscovery.utils.AppConstants;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.*;
-import java.util.Map;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class AssetController {
@@ -33,14 +35,18 @@ public class AssetController {
     }
 
     @GetMapping("/asset/{id}")
-    public AssetRest getAssets(@PathVariable("id") long id){
+    public List<AssetRest> getAssets(@PathVariable("id") long id){
+
+        List<AssetRest> assetRests = new ArrayList<>();
+
+        assetRests.add(assetService.findById(id));
 
         logger.debug("Fetching Asset with id -> {}",id);
 
-        return assetService.findById(id);
+        return assetRests;
     }
 
-    @PatchMapping("/asset/{id}/update")
+    @PatchMapping("/asset/{id}")
     public void updateAssetField(@PathVariable Long id, @RequestBody Map<String, Object> fields){
 
         logger.debug("Updating Asset field -> {} for Asset id {}",fields,id);
@@ -49,7 +55,7 @@ public class AssetController {
 
     }
 
-    @DeleteMapping("/asset/{id}/delete")
+    @DeleteMapping("/asset/{id}")
     public void deleteAssetById(@PathVariable Long id){
 
         logger.debug("Deleting Asset with id -> {}",id);
