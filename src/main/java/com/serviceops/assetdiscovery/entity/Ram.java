@@ -6,17 +6,17 @@ import jakarta.persistence.Entity;
 @Entity
 public class Ram extends AssetBase {
 
-    private Long size;
+    private String size;
     private String memoryType;
-    private int width;
-    private float clockSpeed;
+    private String width;
+    private String clockSpeed;
     private String bankLocater;
 
-    public Long getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(Long size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
@@ -28,19 +28,19 @@ public class Ram extends AssetBase {
         this.memoryType = memoryType;
     }
 
-    public int getWidth() {
+    public String getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(String width) {
         this.width = width;
     }
 
-    public float getClockSpeed() {
+    public String getClockSpeed() {
         return clockSpeed;
     }
 
-    public void setClockSpeed(float clockSpeed) {
+    public void setClockSpeed(String clockSpeed) {
         this.clockSpeed = clockSpeed;
     }
 
@@ -56,23 +56,26 @@ public class Ram extends AssetBase {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         Ram ram = (Ram) o;
 
-        if (getWidth() != ram.getWidth()) return false;
-        if (Float.compare(ram.getClockSpeed(), getClockSpeed()) != 0) return false;
         if (getSize() != null ? !getSize().equals(ram.getSize()) : ram.getSize() != null) return false;
         if (getMemoryType() != null ? !getMemoryType().equals(ram.getMemoryType()) : ram.getMemoryType() != null)
+            return false;
+        if (getWidth() != null ? !getWidth().equals(ram.getWidth()) : ram.getWidth() != null) return false;
+        if (getClockSpeed() != null ? !getClockSpeed().equals(ram.getClockSpeed()) : ram.getClockSpeed() != null)
             return false;
         return getBankLocater() != null ? getBankLocater().equals(ram.getBankLocater()) : ram.getBankLocater() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getSize() != null ? getSize().hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (getSize() != null ? getSize().hashCode() : 0);
         result = 31 * result + (getMemoryType() != null ? getMemoryType().hashCode() : 0);
-        result = 31 * result + getWidth();
-        result = 31 * result + (getClockSpeed() != +0.0f ? Float.floatToIntBits(getClockSpeed()) : 0);
+        result = 31 * result + (getWidth() != null ? getWidth().hashCode() : 0);
+        result = 31 * result + (getClockSpeed() != null ? getClockSpeed().hashCode() : 0);
         result = 31 * result + (getBankLocater() != null ? getBankLocater().hashCode() : 0);
         return result;
     }

@@ -5,8 +5,8 @@ import com.serviceops.assetdiscovery.rest.RamRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
 public class RamOps extends AssetBaseOps<Ram, RamRest> {
-    private Ram ram;
-    private RamRest ramRest;
+    private final Ram ram;
+    private final RamRest ramRest;
 
     public RamOps(Ram ram, RamRest ramRest) {
         super(ram, ramRest);
@@ -14,8 +14,7 @@ public class RamOps extends AssetBaseOps<Ram, RamRest> {
         this.ramRest  = ramRest;
     }
 
-    @Override
-    public Ram restToEntity(RamRest ramRest) {
+    public Ram restToEntity() {
          super.restToEntity(ramRest);
          ram.setSize(ramRest.getSize());
          ram.setMemoryType(ramRest.getMemoryType());
@@ -26,8 +25,7 @@ public class RamOps extends AssetBaseOps<Ram, RamRest> {
 
     }
 
-    @Override
-    public RamRest entityToRest(Ram ram) {
+    public RamRest entityToRest() {
         super.entityToRest(ram);
         ramRest.setSize(ram.getSize());
         ramRest.setMemoryType(ram.getMemoryType());
@@ -35,6 +33,5 @@ public class RamOps extends AssetBaseOps<Ram, RamRest> {
         ramRest.setClockSpeed(ram.getClockSpeed());
         ramRest.setBankLocater(ram.getBankLocater());
         return ramRest;
-
     }
 }

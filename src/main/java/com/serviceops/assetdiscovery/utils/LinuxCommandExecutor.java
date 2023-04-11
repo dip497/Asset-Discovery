@@ -20,16 +20,16 @@ public class LinuxCommandExecutor {
         session.setConfig("StrictHostKeyChecking", "no");
         session.connect();
         this.password = password;
-        logger.debug("Connected to -> {} ", host ) ;
+        logger.info("Connected to -> {} ", host ); ;
     }
-    public String[] execute(String sudoCommand) throws JSchException, IOException {
+    public String[] execute(String command) throws JSchException, IOException {
         Channel channel = session.openChannel("exec");
-        boolean useSudo = sudoCommand.contains("sudo");
+        boolean useSudo = command.contains("sudo");
         if(useSudo){
-            ((ChannelExec) channel).setCommand("sudo -S -p '' " + sudoCommand);
+            ((ChannelExec) channel).setCommand("sudo -S -p '' " + command);
         }
         else{
-            ((ChannelExec) channel).setCommand(sudoCommand);
+            ((ChannelExec) channel).setCommand(command);
         }
             channel.setInputStream(null);
             ((ChannelExec) channel).setErrStream(System.err);
@@ -38,8 +38,8 @@ public class LinuxCommandExecutor {
 
             ((ChannelExec) channel).setPty(true);
             channel.connect();
-            logger.debug("executing command  -> {} ", sudoCommand);
-            if(sudoCommand.contains("sudo")) {
+            logger.debug("executing command  -> {} ", command);
+            if(useSudo) {
                 out.write((password + "\n").getBytes());
                 out.flush();
             }
@@ -51,10 +51,13 @@ public class LinuxCommandExecutor {
                     int i = in.read(tmp, 0, 1024);
                     if (i < 0) break;
                     String line = new String(tmp, 0, i);
+                    line = line.replaceAll("\\p{C}", "");
+                    line = line.replaceAll("^\\*+\\s*", "");
                     if(line.contains(password) || line.startsWith("[sudo]")) {
                         in.read(tmp, 0, 1024);
                         continue; // skip the line with the sudo command
                     }
+                    logger.debug("Command output -> {}", line);
                     sb.append(line);
                 }
                 if (channel.isClosed()) {
@@ -68,6 +71,7 @@ public class LinuxCommandExecutor {
 
 
     public void disconnect() {
+        logger.info("Disconnecting ");
         session.disconnect();
     }
 }

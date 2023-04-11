@@ -7,8 +7,8 @@ import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 public class KeyboardOps extends AssetBaseOps<Keyboard, KeyboardRest> {
     private final Keyboard keyboard;
     private final KeyboardRest keyboardRest;
-    public KeyboardOps(Keyboard assetBase, KeyboardRest assetBaseRest, Keyboard keyboard, KeyboardRest keyboardRest) {
-        super(assetBase, assetBaseRest);
+    public KeyboardOps(Keyboard keyboard, KeyboardRest keyboardRest) {
+        super(keyboard, keyboardRest);
         this.keyboard = keyboard;
         this.keyboardRest = keyboardRest;
     }
