@@ -1,7 +1,6 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.controller.PointingDeviceController;
-import com.serviceops.assetdiscovery.entity.MotherBoard;
 import com.serviceops.assetdiscovery.entity.PointingDevice;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.service.interfaces.PointingDeviceService;
@@ -16,7 +15,7 @@ import java.util.*;
 @Service
 public class PointingDeviceServiceImpl implements PointingDeviceService {
     private final Logger logger = LoggerFactory.getLogger(PointingDeviceController.class);
-    private  PointingDeviceOps pointingDeviceOps;
+//    private  PointingDeviceOps pointingDeviceOps;
     private final CustomRepository customRepository;
 
     public PointingDeviceServiceImpl(CustomRepository customRepository) {
@@ -56,10 +55,10 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
     public void save(Long id) {
         PointingDevice pointingDevice = new PointingDevice();
         pointingDevice.setRefId(id);
-        pointingDevice.setNumberOfButtons(getParseResult().get(6));
-        pointingDevice.setDescription(getParseResult().get(10)); // todo: should be description
-        pointingDevice.setPointingType(getParseResult().get(2));
-
+        pointingDevice.setNumberOfButtons(getParseResult().get(2));
+        pointingDevice.setDescription(getParseResult().get(4));
+        pointingDevice.setPointingType(getParseResult().get(0));
+        logger.info("saving pointing device with Asset Id:{} --> ", pointingDevice.getId());
         customRepository.save(pointingDevice);
     }
 }
