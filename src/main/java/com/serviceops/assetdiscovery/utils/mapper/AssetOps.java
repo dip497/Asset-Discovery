@@ -6,8 +6,8 @@ import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class AssetOps extends SingleBaseOps<Asset,AssetRest> {
 
-    private final Asset asset;
-    private final AssetRest assetRest;
+    private  Asset asset;
+    private  AssetRest assetRest;
 
     public AssetOps(Asset asset, AssetRest assetRest) {
         super(asset, assetRest);
@@ -34,7 +34,7 @@ public class AssetOps extends SingleBaseOps<Asset,AssetRest> {
         assetRest.setAssetType(asset.getAssetType());
         assetRest.setSerialNumber(asset.getSerialNumber());
         assetRest.setMacAddress(asset.getMacAddress());
-        assetRest.setSubNetMask(assetRest.getSubNetMask());
+        assetRest.setSubNetMask(asset.getSubNetMask());
         return assetRest;
     }
 

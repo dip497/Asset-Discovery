@@ -38,7 +38,7 @@ public class BiosServiceImpl implements BiosService {
             bios.setDescription(parseResult.get(2));
             bios.setManufacturer(parseResult.get(3));
             customRepository.save(bios);
-            logger.debug("Updating bios with Asset Id ->{}",assetRest.getId());
+            logger.info("Updating bios with Asset Id ->{}",assetRest.getId());
         }
         else{
             Bios bios = new Bios();
@@ -52,7 +52,7 @@ public class BiosServiceImpl implements BiosService {
             bios.setDescription(parseResult.get(2));
             bios.setManufacturer(parseResult.get(3));
             customRepository.save(bios);
-            logger.debug("Saving bios with Asset Id ->{}",assetRest.getId());
+            logger.info("Saving bios with Asset Id ->{}",assetRest.getId());
         }
 
     }
@@ -66,11 +66,23 @@ public class BiosServiceImpl implements BiosService {
     }
 
     private void setCommands(){
+
+        // HashMap for setting the Multiple commands and their value in String[]
         LinkedHashMap<String,String[]> commands = new LinkedHashMap<>();
+
+        // Command for getting the bios release date.
         commands.put("sudo dmidecode -s bios-release-date",new String[]{});
+
+        // Command for getting the bios version.
         commands.put("sudo dmidecode -s bios-version",new String[]{});
+
+        // Command for getting the sm version.
         commands.put("sudo dmidecode -t bios | sed -n '3p'",new String[]{});
+
+        // Command for getting the vendor.
         commands.put("sudo dmidecode -t bios | awk '/Vendor:/ {print $2}'",new String[]{});
+
+        // Adding all the commands to the Main HasMap where the class Bios is the key for all the commands
         LinuxCommandExecutorManager.add(Bios.class,commands);
     }
 
@@ -80,8 +92,9 @@ public class BiosServiceImpl implements BiosService {
         for (Map.Entry<String ,String[]> result: stringMap.entrySet()) {
             String[] values = result.getValue();
             for (int i=0;i<values.length;++i) {
-
-                    list.add(values[i]);
+                if(values[i]==null)
+                    continue;
+                list.add(values[i]);
 
             }
         }

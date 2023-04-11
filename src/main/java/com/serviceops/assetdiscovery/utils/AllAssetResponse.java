@@ -1,0 +1,46 @@
+package com.serviceops.assetdiscovery.utils;
+
+import com.serviceops.assetdiscovery.rest.AssetRest;
+
+import java.util.List;
+
+public class AllAssetResponse {
+
+    List<AssetRest> assetRestList;
+    private int pageNo;
+    private int pageSize;
+    private long totalElements;
+
+    public List<AssetRest> getAssetRestList() {
+        return assetRestList;
+    }
+
+    public void setAssetRestList(List<AssetRest> assetRestList) {
+        this.assetRestList = assetRestList;
+    }
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public long getTotalElements() {
+        return totalElements;
+    }
+
+    public void setTotalElements(long totalElements) {
+        this.totalElements = totalElements;
+    }
+
+}

@@ -4,11 +4,17 @@ import com.serviceops.assetdiscovery.entity.Asset;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.AssetRest;
 import com.serviceops.assetdiscovery.service.interfaces.AssetService;
+import com.serviceops.assetdiscovery.utils.AllAssetResponse;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.AssetOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Field;
 import java.util.*;
 
 @Service
@@ -23,7 +29,6 @@ public class AssetServiceImpl implements AssetService {
         setCommands();
     }
 
-
     @Override
     public AssetRest save() {
         List<String> parseResult = getParseResult();
@@ -35,7 +40,7 @@ public class AssetServiceImpl implements AssetService {
             updatedAsset.setMacAddress(parseResult.get(5));
             updatedAsset.setSubNetMask(parseResult.get(6));
             customRepository.save(updatedAsset);
-            logger.debug("Updating asset with IP ->{}",parseResult.get(2));
+            logger.info("Updated asset with IP ->{}",parseResult.get(2));
             return findByIpAddress(updatedAsset.getIpAddress());
         }
         else {
@@ -48,11 +53,9 @@ public class AssetServiceImpl implements AssetService {
             asset.setMacAddress(parseResult.get(5));
             asset.setSubNetMask(parseResult.get(6));
             customRepository.save(asset);
-            logger.debug("Saving asset with IP ->{}",parseResult.get(2));
+            logger.info("Saved asset with IP ->{}",parseResult.get(2));
             return findByIpAddress(asset.getIpAddress());
         }
-
-
 
     }
 
@@ -61,27 +64,83 @@ public class AssetServiceImpl implements AssetService {
         Asset asset = customRepository.findByColumn("ipAddress",ipAddress,Asset.class).get();
         AssetRest assetRest = new AssetRest();
         AssetOps assetOps = new AssetOps(asset,assetRest);
+        logger.info("Asset found by IP ->{}",ipAddress);
         return assetOps.entityToRest();
     }
 
     @Override
     public AssetRest findById(Long id) {
-        Asset asset = customRepository.findByColumn("ipAddress",id.toString(),Asset.class).get();
+        Asset asset = customRepository.findByColumn("id",id.toString(),Asset.class).get();
         AssetRest assetRest = new AssetRest();
         AssetOps assetOps = new AssetOps(asset,assetRest);
+        logger.info("Asset found by id ->{}",id);
         return assetOps.entityToRest();
     }
 
     @Override
-    public List<AssetRest> findAll() {
-        AssetOps assetOps = new AssetOps(new Asset(),new AssetRest());
-        List<Asset> assets = customRepository.findAll(Asset.class);
+    public  AllAssetResponse findPaginatedData(int pageNo,int pageSize,String sortBy,String sortDir) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        List<Asset> assets = customRepository.findPaginatedData(pageable,sortBy,sortDir,Asset.class);
         List<AssetRest> assetRests = new ArrayList<>();
 
+        for(Asset asset : assets){
+            AssetRest rest = new AssetRest();
+            AssetOps assetOps = new AssetOps(asset,rest);
+            assetRests.add(assetOps.entityToRest());
+        }
 
+        int count = findTotalCount();
 
-        return assets.stream().map(assetOps::entityToRest).toList();
+        AllAssetResponse allAssetResponse = new AllAssetResponse();
+
+        allAssetResponse.setAssetRestList(assetRests);
+        allAssetResponse.setPageNo(pageNo);
+        allAssetResponse.setTotalElements(count);
+        allAssetResponse.setPageSize(pageSize);
+
+        logger.info("Assets found in {} order on {} page number {}",sortDir,sortBy,pageNo);
+
+        return allAssetResponse;
+
     }
+
+    @Override
+    public int findTotalCount() {
+
+        int count = customRepository.getCount(Asset.class);
+
+        logger.info("Total Assets found -> {}",count);
+
+        return count;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+
+        customRepository.deleteById(Asset.class,id,"id");
+
+        logger.info("Asset deleted with id ->{}",id);
+    }
+
+    @Override
+    public void update(Long id,Map<String, Object> fields) {
+
+        AssetRest assetRest = findById(id);
+
+        fields.forEach((key, value) -> {
+            Field field = ReflectionUtils.findRequiredField(AssetRest.class, key);
+            field.setAccessible(true);
+            ReflectionUtils.setField(field, assetRest, value);
+        });
+
+        AssetOps assetOps = new AssetOps(new Asset(),assetRest);
+
+        customRepository.update(assetOps.restToEntity());
+
+        logger.info("Updated Asset field -> {} for Asset id {}",fields,id);
+
+    }
+
 
     private  void setCommands(){
 
@@ -95,16 +154,17 @@ public class AssetServiceImpl implements AssetService {
         commands.put("domainname",new String[]{});
 
         // Command for getting the ip address.
-        commands.put("ifconfig | grep 'inet ' | awk '{print $2}' | grep '^10\\.\\|^172\\.\\(1[6-9]\\|2[0-9]\\|3[01]\\)\\|^192\\.168\\.'",new String[]{});
+        commands.put("ip a | grep -Eo 'inet (addr:)?(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.)([0-9]*\\.){1,3}[0-9]*' | awk '{print $2}'\n",new String[]{});
 
         // Hardcoded command for getting the Asset Type.
+        // uname -s
         commands.put("sudo dmidecode -t system | grep \"Product Name\" | cut -d \" \" -f 3-",new String[]{});
 
         // Command for getting the serial number of device.
         commands.put("sudo dmidecode -s system-serial-number",new String[]{});
 
-//         Command for getting the mac address.
-        commands.put("ifconfig | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'",new String[]{});
+        // Command for getting the mac address.
+        commands.put("ifconfig | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | head -n 1",new String[]{});
 
         // Command for getting the subnet mask.
         commands.put("ifconfig $(ip route | grep default | awk '{print $5}') | awk '/netmask/{print $4}'",new String[]{});
@@ -119,13 +179,13 @@ public class AssetServiceImpl implements AssetService {
         for (Map.Entry<String ,String[]> result: stringMap.entrySet()) {
             String[] values = result.getValue();
             for (int i = 0; i < values.length; i++) {
-
-                    list.add(values[i]);
+                if (values[i]==null)
+                    continue;
+                list.add(values[i]);
 
             }
         }
         return list;
     }
-
 
 }
