@@ -3,20 +3,22 @@ package com.serviceops.assetdiscovery.entity;
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
+import java.util.Objects;
+
 @Entity
 public class Processor extends AssetBase {
     private String processorName;
     private String description;
-    private int width;
-    private float cpuSpeed;
+    private String width;
+    private String cpuSpeed;
     private int coreCount;
-    private float externalClock;
-    private long l1CacheSize;
-    private long l2CacheSize;
-    private long l3CacheSize;
+    private String externalClock;
+    private String l1CacheSize;
+    private String l2CacheSize;
+    private String l3CacheSize;
     private String family;
     private String deviceId;
-    private String socketDesignatio;
+    private String socketDesignation;
 
     public String getProcessorName() {
         return processorName;
@@ -34,19 +36,19 @@ public class Processor extends AssetBase {
         this.description = description;
     }
 
-    public int getWidth() {
+    public String getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(String width) {
         this.width = width;
     }
 
-    public float getCpuSpeed() {
+    public String getCpuSpeed() {
         return cpuSpeed;
     }
 
-    public void setCpuSpeed(float cpuSpeed) {
+    public void setCpuSpeed(String cpuSpeed) {
         this.cpuSpeed = cpuSpeed;
     }
 
@@ -58,35 +60,35 @@ public class Processor extends AssetBase {
         this.coreCount = coreCount;
     }
 
-    public float getExternalClock() {
+    public String getExternalClock() {
         return externalClock;
     }
 
-    public void setExternalClock(float externalClock) {
+    public void setExternalClock(String externalClock) {
         this.externalClock = externalClock;
     }
 
-    public long getL1CacheSize() {
+    public String getL1CacheSize() {
         return l1CacheSize;
     }
 
-    public void setL1CacheSize(long l1CacheSize) {
+    public void setL1CacheSize(String l1CacheSize) {
         this.l1CacheSize = l1CacheSize;
     }
 
-    public long getL2CacheSize() {
+    public String getL2CacheSize() {
         return l2CacheSize;
     }
 
-    public void setL2CacheSize(long l2CacheSize) {
+    public void setL2CacheSize(String l2CacheSize) {
         this.l2CacheSize = l2CacheSize;
     }
 
-    public long getL3CacheSize() {
+    public String getL3CacheSize() {
         return l3CacheSize;
     }
 
-    public void setL3CacheSize(long l3CacheSize) {
+    public void setL3CacheSize(String l3CacheSize) {
         this.l3CacheSize = l3CacheSize;
     }
 
@@ -106,54 +108,26 @@ public class Processor extends AssetBase {
         this.deviceId = deviceId;
     }
 
-    public String getSocketDesignatio() {
-        return socketDesignatio;
+    public String getSocketDesignation() {
+        return socketDesignation;
     }
 
-    public void setSocketDesignatio(String socketDesignatio) {
-        this.socketDesignatio = socketDesignatio;
+    public void setSocketDesignation(String socketDesignation) {
+        this.socketDesignation = socketDesignation;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
+        if (!super.equals(o)) return false;
         Processor processor = (Processor) o;
-
-        if (getWidth() != processor.getWidth()) return false;
-        if (Float.compare(processor.getCpuSpeed(), getCpuSpeed()) != 0) return false;
-        if (getCoreCount() != processor.getCoreCount()) return false;
-        if (Float.compare(processor.getExternalClock(), getExternalClock()) != 0) return false;
-        if (getL1CacheSize() != processor.getL1CacheSize()) return false;
-        if (getL2CacheSize() != processor.getL2CacheSize()) return false;
-        if (getL3CacheSize() != processor.getL3CacheSize()) return false;
-        if (getProcessorName() != null ? !getProcessorName().equals(processor.getProcessorName()) : processor.getProcessorName() != null)
-            return false;
-        if (getDescription() != null ? !getDescription().equals(processor.getDescription()) : processor.getDescription() != null)
-            return false;
-        if (getFamily() != null ? !getFamily().equals(processor.getFamily()) : processor.getFamily() != null)
-            return false;
-        if (getDeviceId() != null ? !getDeviceId().equals(processor.getDeviceId()) : processor.getDeviceId() != null)
-            return false;
-        return getSocketDesignatio() != null ? getSocketDesignatio().equals(processor.getSocketDesignatio()) : processor.getSocketDesignatio() == null;
+        return coreCount == processor.coreCount && Objects.equals(processorName, processor.processorName) && Objects.equals(description, processor.description) && Objects.equals(width, processor.width) && Objects.equals(cpuSpeed, processor.cpuSpeed) && Objects.equals(externalClock, processor.externalClock) && Objects.equals(l1CacheSize, processor.l1CacheSize) && Objects.equals(l2CacheSize, processor.l2CacheSize) && Objects.equals(l3CacheSize, processor.l3CacheSize) && Objects.equals(family, processor.family) && Objects.equals(deviceId, processor.deviceId) && Objects.equals(socketDesignation, processor.socketDesignation);
     }
 
     @Override
     public int hashCode() {
-        int result = getProcessorName() != null ? getProcessorName().hashCode() : 0;
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + getWidth();
-        result = 31 * result + (getCpuSpeed() != +0.0f ? Float.floatToIntBits(getCpuSpeed()) : 0);
-        result = 31 * result + getCoreCount();
-        result = 31 * result + (getExternalClock() != +0.0f ? Float.floatToIntBits(getExternalClock()) : 0);
-        result = 31 * result + (int) (getL1CacheSize() ^ (getL1CacheSize() >>> 32));
-        result = 31 * result + (int) (getL2CacheSize() ^ (getL2CacheSize() >>> 32));
-        result = 31 * result + (int) (getL3CacheSize() ^ (getL3CacheSize() >>> 32));
-        result = 31 * result + (getFamily() != null ? getFamily().hashCode() : 0);
-        result = 31 * result + (getDeviceId() != null ? getDeviceId().hashCode() : 0);
-        result = 31 * result + (getSocketDesignatio() != null ? getSocketDesignatio().hashCode() : 0);
-        return result;
+        return Objects.hash(super.hashCode(), processorName, description, width, cpuSpeed, coreCount, externalClock, l1CacheSize, l2CacheSize, l3CacheSize, family, deviceId, socketDesignation);
     }
 
     @Override
@@ -170,7 +144,7 @@ public class Processor extends AssetBase {
                 ", l3CacheSize=" + l3CacheSize +
                 ", family='" + family + '\'' +
                 ", deviceId='" + deviceId + '\'' +
-                ", socketDesignatio='" + socketDesignatio + '\'' +
+                ", socketDesignatio='" + socketDesignation + '\'' +
                 '}';
     }
 }
