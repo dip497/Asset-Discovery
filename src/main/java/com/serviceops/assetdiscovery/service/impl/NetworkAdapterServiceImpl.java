@@ -69,7 +69,6 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
                 String[] result = commandResult.getValue();
                 System.out.println(result.length);
                 System.out.println("==================================================================================================================================================================================");
-//                for (int i = 0; i < 5; i++) {
                 for (int i = 0; i < result.length; i++) {
                     String results = result[i];
                     switch (count) {
@@ -84,7 +83,7 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
                                 break;
                             }
                         case 3:
-                            if (results.contains("serial")) {
+                            if (results.contains("serial:")) {
                                 parseResult[i][j] = results.substring(results.indexOf(":") + 1);
                                 break;
                             } else {
@@ -96,16 +95,14 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
                                 parseResult[i][j] = results.substring(results.indexOf("ip=") + 3,results.indexOf("ip=")+17);
                                 break;
                             }
-                            else {
-                                parseResult[i][j] = result[i];
-                            }
+//                            else {
+//                                parseResult[i][j] = result[i];
+//                            }
                     }
                 }
                 count++;
                 j++;
             }
-
-
             return parseResult;
         }
     }
@@ -128,28 +125,25 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
                 for (NetworkAdapter networkAdapter : networkAdapters) {
                     customRepository.deleteById(NetworkAdapter.class, networkAdapter.getId(), "id");
                 }
-                for (String[] updateNetworkAdapter : parseResult) {
-                    NetworkAdapter networkAdapter = new NetworkAdapter();
-                    networkAdapter.setRefId(id);
-                    networkAdapter.setDescription(updateNetworkAdapter[1]);
-                    networkAdapter.setManufacturer(updateNetworkAdapter[2]);
-                    networkAdapter.setMacAddress(updateNetworkAdapter[3]);
-                    customRepository.save(networkAdapter);
-                }
+                saveNetworkAdapter(id, parseResult);
             }
         } else {
 
-            for (String[] updateNetworkAdapter : parseResult) {
-                NetworkAdapter networkAdapter = new NetworkAdapter();
-                networkAdapter.setRefId(id);
-                networkAdapter.setDescription(updateNetworkAdapter[1]);
-                networkAdapter.setManufacturer(updateNetworkAdapter[2]);
-                networkAdapter.setMacAddress(updateNetworkAdapter[3]);
-                customRepository.save(networkAdapter);
-            }
+            saveNetworkAdapter(id, parseResult);
         }
 
         logger.info("Saving Network adapter with id: ==> {}", id);
+    }
+
+    private void saveNetworkAdapter(Long id, String[][] parseResult) {
+        for (String[] updateNetworkAdapter : parseResult) {
+            NetworkAdapter networkAdapter = new NetworkAdapter();
+            networkAdapter.setRefId(id);
+            networkAdapter.setDescription(updateNetworkAdapter[1]);
+            networkAdapter.setManufacturer(updateNetworkAdapter[2]);
+            networkAdapter.setMacAddress(updateNetworkAdapter[3]);
+            customRepository.save(networkAdapter);
+        }
     }
 
     @Override
