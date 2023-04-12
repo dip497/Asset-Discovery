@@ -3,8 +3,10 @@ package com.serviceops.assetdiscovery.service.impl;
 import com.serviceops.assetdiscovery.controller.PhysicalDiskController;
 import com.serviceops.assetdiscovery.entity.PhysicalDisk;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
+import com.serviceops.assetdiscovery.rest.PhysicalDiskRest;
 import com.serviceops.assetdiscovery.service.interfaces.PhysicalDiskService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
+import com.serviceops.assetdiscovery.utils.mapper.PhysicalDiskOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -64,17 +66,26 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         physicalDisk.setPnpDeviceId(getParseResult().get(2));
         physicalDisk.setInterfaceType(getParseResult().get(3));
         physicalDisk.setMediaType(getParseResult().get(4));
-        logger.info("Saving :" + physicalDisk);
+        logger.info("Saving PhysicalDisk with Id : --> {}",physicalDisk.getId());
         customRepository.save(physicalDisk);
     }
 
     @Override
     public void delete(Long id) {
+        logger.info("Deleted PhysicalDisk with Id : --> {}",id);
         customRepository.deleteById(PhysicalDisk.class,id,"refId");
     }
 
     @Override
+    public void update(Long id, PhysicalDiskRest physicalDiskRest) {
+        PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps(new PhysicalDisk(),physicalDiskRest);
+        logger.info("Updating PhysicalDisk with Id : --> {}",id);
+        customRepository.update(physicalDiskOps);
+    }
+
+    @Override
     public void findByRefId(Long id) {
+        logger.info("Find PhysicalDisk with Id : --> {}",id);
         customRepository.findByColumn("refId",id,PhysicalDisk.class);
     }
 }

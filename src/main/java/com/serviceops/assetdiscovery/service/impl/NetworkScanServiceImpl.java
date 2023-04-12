@@ -22,10 +22,15 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private final ComputerSystemService computerSystemService;
     private final KeyboardService keyboardService;
     private final BiosService biosService;
+    private final PointingDeviceService pointingDeviceService;
+    private final RamService ramService;
+    private final MonitorService monitorService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final OsService osService;
+    private final NetworkAdapterService networkAdapterService;
 
 
-    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService) {
+    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, PointingDeviceService pointingDeviceService, NetworkAdapterService networkAdapterService, RamService ramService, MonitorService monitorService, OsServiceImpl osService) {
         this.customRepository = customRepository;
         this.assetService = assetService;
         this.motherBoardService = motherBoardService;
@@ -33,6 +38,11 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         this.computerSystemService =  computerSystemService;
         this.keyboardService = keyboardService;
         this.biosService = biosService;
+        this.pointingDeviceService = pointingDeviceService;
+        this.ramService = ramService;
+        this.monitorService=monitorService;
+        this.osService = osService;
+        this.networkAdapterService = networkAdapterService;
     }
 
     @Override
@@ -56,6 +66,11 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         computerSystemService.save(assetRest.getId());
         keyboardService.save(assetRest.getId());
         biosService.save(assetRest);
+        networkAdapterService.save(assetRest.getId());
+        ramService.save(assetRest.getId());
+        monitorService.save(assetRest.getId());
+        osService.save(assetRest.getId());
+        pointingDeviceService.save(assetRest.getId());
     }
     private AssetRest  saveAsset(){
         return assetService.save();

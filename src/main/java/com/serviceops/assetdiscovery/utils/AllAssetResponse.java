@@ -6,17 +6,17 @@ import java.util.List;
 
 public class AllAssetResponse {
 
-    List<AssetRest> assetRestList;
+    List<AssetRest> data;
     private int pageNo;
     private int pageSize;
     private long totalElements;
 
     public List<AssetRest> getAssetRestList() {
-        return assetRestList;
+        return data;
     }
 
     public void setAssetRestList(List<AssetRest> assetRestList) {
-        this.assetRestList = assetRestList;
+        this.data = assetRestList;
     }
 
     public int getPageNo() {

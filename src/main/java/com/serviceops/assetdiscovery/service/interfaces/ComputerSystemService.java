@@ -6,6 +6,8 @@ import com.serviceops.assetdiscovery.rest.ComputerSystemRest;
 public interface ComputerSystemService {
 
     void save(Long Id);
-    ComputerSystemRest getComputerSystem(Long id);
-    void deleteComputerSystemById(Long id);
+    ComputerSystemRest get(Long id);
+    void deleteById(Long id);
+    void update(ComputerSystemRest computerSystemRest);
+
 }

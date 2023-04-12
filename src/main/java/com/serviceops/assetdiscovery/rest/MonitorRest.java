@@ -14,8 +14,8 @@ public class MonitorRest extends AssetBaseRest implements Serializable {
     private  String description;
     private  float size;
     private  Date installedDate;
-    private  int screenHeight;
-    private  int screenWidth;
+    private  String screenHeight;
+    private  String screenWidth;
     private  int weekOfManufacture;
     private  int yearOfManufacture;
     private  String pnpDeviceId;
@@ -38,11 +38,11 @@ public class MonitorRest extends AssetBaseRest implements Serializable {
         return installedDate;
     }
 
-    public int getScreenHeight() {
+    public String getScreenHeight() {
         return screenHeight;
     }
 
-    public int getScreenWidth() {
+    public String getScreenWidth() {
         return screenWidth;
     }
 
@@ -74,11 +74,11 @@ public class MonitorRest extends AssetBaseRest implements Serializable {
         this.installedDate = installedDate;
     }
 
-    public void setScreenHeight(int screenHeight) {
+    public void setScreenHeight(String screenHeight) {
         this.screenHeight = screenHeight;
     }
 
-    public void setScreenWidth(int screenWidth) {
+    public void setScreenWidth(String screenWidth) {
         this.screenWidth = screenWidth;
     }
 
