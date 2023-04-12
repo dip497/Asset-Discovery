@@ -25,6 +25,8 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
 
     private static void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
+        //command for getting number of pointing device by counting number of buttons
+        commands.put("sudo dmidecode -t 21 | grep -i Buttons: | wc -l",new String[]{});
         // Command for getting information about pointing device Type.
         commands.put("sudo dmidecode -t 21 | grep -i Type: ", new String[]{});
         // Command for getting information about pointing device button.
