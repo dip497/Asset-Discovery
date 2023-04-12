@@ -192,11 +192,17 @@ public class AssetServiceImpl implements AssetService {
         Map<String, String[]> stringMap = LinuxCommandExecutorManager.get(Asset.class);
         List<String> list = new ArrayList<>();
         for (Map.Entry<String, String[]> result : stringMap.entrySet()) {
+
             String[] values = result.getValue();
+
+            if(values.length==0){
+                list.add(null);
+            }
 
             if (values.length == 1) {
                 list.add(values[0]);
             } else {
+
                 StringBuilder line = new StringBuilder();
                 for (String s : values) {
                     line.append(s);
@@ -206,19 +212,15 @@ public class AssetServiceImpl implements AssetService {
                 if (line.toString().contains(status)) {
                     String stateUpString = line.substring(line.indexOf(status));
 
-                    System.out.println("State Up :" + stateUpString);
-
                     String mac = stateUpString.substring(stateUpString.indexOf("ether"), stateUpString.indexOf("brd"));
-
-                    System.out.println("Mac : " + mac);
 
                     String ipPartial = stateUpString.substring(stateUpString.indexOf("inet"));
                     String ip = ipPartial.substring(ipPartial.indexOf("inet"), ipPartial.indexOf("/"));
 
-                    list.add(ip.substring(5));
-                    list.add(mac.substring(6));
+                    list.add(ip.substring(5).trim());
+                    list.add(mac.substring(6).trim());
 
-                    continue;
+//                    continue;
 
                 }
 
