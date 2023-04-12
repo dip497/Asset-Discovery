@@ -63,7 +63,6 @@ public class ProcessorServiceImpl implements ProcessorService {
         processor.setId(id);
         processor.setL2CacheSize(getParseResult().get(0));
         processor.setL3CacheSize(getParseResult().get(1));
-
         processor.setManufacturer(getParseResult().get(3));
         processor.setFamily(getParseResult().get(4));
         processor.setWidth(getParseResult().get(5));
