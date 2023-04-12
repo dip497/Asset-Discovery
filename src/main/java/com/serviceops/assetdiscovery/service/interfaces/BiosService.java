@@ -5,8 +5,12 @@ import com.serviceops.assetdiscovery.rest.BiosRest;
 
 public interface BiosService {
 
-    public void save(AssetRest assetRest);
+    void save(AssetRest assetRest);
 
-    public BiosRest findByRefId(Long refId);
+    BiosRest findByRefId(Long refId);
+
+    void deleteByRefId(Long refId);
+
+    void update(BiosRest biosRest);
 
 }

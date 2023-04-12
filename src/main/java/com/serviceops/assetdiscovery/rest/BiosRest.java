@@ -3,7 +3,6 @@ package com.serviceops.assetdiscovery.rest;
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.Objects;
 
 /**
@@ -12,7 +11,7 @@ import java.util.Objects;
 public class BiosRest extends AssetBaseRest implements Serializable {
     private  String name;
     private  String smBiosVersion;
-    private  String realeaseDate;
+    private  String releaseDate;
     private  String version;
     private  String description;
 
@@ -24,8 +23,8 @@ public class BiosRest extends AssetBaseRest implements Serializable {
         return smBiosVersion;
     }
 
-    public String getRealeaseDate() {
-        return realeaseDate;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
     public String getVersion() {
@@ -44,8 +43,8 @@ public class BiosRest extends AssetBaseRest implements Serializable {
         this.smBiosVersion = smBiosVersion;
     }
 
-    public void setRealeaseDate(String realeaseDate) {
-        this.realeaseDate = realeaseDate;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public void setVersion(String version) {
@@ -63,14 +62,14 @@ public class BiosRest extends AssetBaseRest implements Serializable {
         BiosRest entity = (BiosRest) o;
         return Objects.equals(this.name, entity.name) &&
                 Objects.equals(this.smBiosVersion, entity.smBiosVersion) &&
-                Objects.equals(this.realeaseDate, entity.realeaseDate) &&
+                Objects.equals(this.releaseDate, entity.releaseDate) &&
                 Objects.equals(this.version, entity.version) &&
                 Objects.equals(this.description, entity.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, smBiosVersion, realeaseDate, version, description);
+        return Objects.hash(name, smBiosVersion, releaseDate, version, description);
     }
 
     @Override
@@ -78,7 +77,7 @@ public class BiosRest extends AssetBaseRest implements Serializable {
         return getClass().getSimpleName() + "(" +
                 "name = " + name + ", " +
                 "smBiosVersion = " + smBiosVersion + ", " +
-                "realeaseDate = " + realeaseDate + ", " +
+                "realeaseDate = " + releaseDate + ", " +
                 "version = " + version + ", " +
                 "description = " + description + ")";
     }

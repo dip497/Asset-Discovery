@@ -2,11 +2,14 @@ package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.ComputerSystem;
 import com.serviceops.assetdiscovery.entity.Processor;
+import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.ComputerSystemRest;
 import com.serviceops.assetdiscovery.service.interfaces.ComputerSystemService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.ComputerSystemOps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,13 +17,15 @@ import java.util.*;
 public class ComputerSystemServiceImpl implements ComputerSystemService {
 
     private final CustomRepository customRepository;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     public ComputerSystemServiceImpl(CustomRepository customRepository){
         this.customRepository = customRepository;
         setCommands();
     }
     @Override
-    public void save(Long Id) {
-        Optional<ComputerSystem> savedComputerSystem= customRepository.findByColumn("id", Id, ComputerSystem.class);
+    public void save(Long id) {
+        Optional<ComputerSystem> savedComputerSystem= customRepository.findByColumn("id", id, ComputerSystem.class);
         List<String> parsedResults = getParseResults();
         if(savedComputerSystem.isPresent()) {
            ComputerSystem computerSystem = savedComputerSystem.get();
@@ -30,24 +35,27 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
            computerSystem.setUuid(parsedResults.get(3));
            computerSystem.setBootUpState(parsedResults.get(4));
            computerSystem.setManufacturer(parsedResults.get(5));
+            logger.info("Updated ComputerSystem with refId ->{}",id);
            customRepository.save(computerSystem);
         }else{
             ComputerSystem computerSystem = new ComputerSystem();
-            computerSystem.setRefId(Id);
+            computerSystem.setRefId(id);
             computerSystem.setUserName(parsedResults.get(0));
             computerSystem.setModelName(parsedResults.get(1));
             computerSystem.setSystemType(parsedResults.get(2));
             computerSystem.setUuid(parsedResults.get(3));
             computerSystem.setBootUpState(parsedResults.get(4));
             computerSystem.setManufacturer(parsedResults.get(5));
+            logger.info("Saved monitor with refId ->{}",id);
             customRepository.save(computerSystem);
         }
     }
 
     @Override
-    public ComputerSystemRest getComputerSystem(Long id) {
+    public ComputerSystemRest get(Long id) {
         Optional<ComputerSystem> optionalComputerSystem = customRepository.findByColumn("refId", id, ComputerSystem.class);
         if (optionalComputerSystem.isPresent()) {
+            logger.info("Retrieving Computer System of refId -> {}",id);
             ComputerSystemRest computerSystemRest = new ComputerSystemRest();
             Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
             if (optionalProcessor.isPresent()) {
@@ -57,14 +65,29 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
             }
             return computerSystemRest;
             }
-        return null;
+        else{
+            logger.info("Computer System Resource not found -> {}",id);
+            throw new ResourceNotFoundException("Computer System","refId",String.valueOf(id));
+        }
+    }
+
+    @Override
+    public void update(ComputerSystemRest computerSystemRest){
+        ComputerSystemOps computerSystemOps = new ComputerSystemOps(new ComputerSystem(),computerSystemRest);
+        logger.info("Updating computerSystemOps of refId -> {}",computerSystemRest.getId());
+        customRepository.update(computerSystemOps.restToEntity(computerSystemRest));
+    }
+
+    @Override
+    public void deleteById(Long id){
+        logger.info("Deleting Computer Sytem with refId -> {}",id);
+        customRepository.deleteById(ComputerSystem.class,id,"refId");
     }
     private void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
-        commands.put("sudo who | cut -d' ' -f1", new String[]{});
+        commands.put("sudo who | head -n1| cut -d' ' -f1", new String[]{});
         commands.put("sudo dmidecode -s system-product-name", new String[]{});
         commands.put("uname -m", new String[]{});
-//        commands.put() set to be later
         commands.put("sudo dmidecode -s system-uuid", new String[]{});
         commands.put("systemctl is-system-running", new String[]{});
         commands.put("sudo dmidecode -s system-manufacturer", new String[]{});
@@ -80,10 +103,6 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
             }
         }
         return parsedResults;
-    }
-    @Override
-    public void deleteComputerSystemById(Long id){
-        customRepository.deleteById(ComputerSystem.class,id,"refId");
     }
 
 

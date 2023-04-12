@@ -2,9 +2,10 @@ package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
+import org.hibernate.annotations.DynamicUpdate;
 
-import java.net.InetAddress;
 @Entity
+@DynamicUpdate
 public class Asset extends SingleBase {
     private String hostName;
     private String domainName;
