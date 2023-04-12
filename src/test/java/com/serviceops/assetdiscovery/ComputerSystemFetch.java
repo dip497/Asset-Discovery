@@ -35,7 +35,7 @@ public class ComputerSystemFetch {
         linuxCommandExecutorManager.fetch();
 
         computerSystemService.save(1L);
-        String string = computerSystemService.getComputerSystem(1L).toString();
+        String string = computerSystemService.get(1L).toString();
     }
     @Test
     public void parseResults() throws JSchException, IOException {
@@ -58,6 +58,10 @@ public class ComputerSystemFetch {
                 System.out.println(results[i]);;
             }
         }
+
+    }
+    @Test
+    public void save(){
 
     }
 

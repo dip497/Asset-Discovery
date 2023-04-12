@@ -23,10 +23,11 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private final KeyboardService keyboardService;
     private final BiosService biosService;
     private final RamService ramService;
+    private final MonitorService monitorService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, RamService ramService) {
+    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, RamService ramService, MonitorService monitorService) {
         this.customRepository = customRepository;
         this.assetService = assetService;
         this.motherBoardService = motherBoardService;
@@ -35,6 +36,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         this.keyboardService = keyboardService;
         this.biosService = biosService;
         this.ramService = ramService;
+        this.monitorService=monitorService;
     }
 
     @Override
@@ -59,6 +61,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         keyboardService.save(assetRest.getId());
         biosService.save(assetRest);
         ramService.save(assetRest.getId());
+        monitorService.save(assetRest.getId());
     }
     private AssetRest  saveAsset(){
         return assetService.save();

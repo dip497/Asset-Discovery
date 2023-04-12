@@ -1,19 +1,22 @@
 package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 import java.sql.Date;
+import java.util.Objects;
+
 @Entity
 public class Monitor extends AssetBase {
 
     private String monitorType;
+    @Column(length=1024)
     private String description;
     private float size;
-
     private Date installedDate;
-    private int screenHeight;
-    private int screenWidth;
+    private String screenHeight;
+    private String screenWidth;
     private int weekOfManufacture;
     private int yearOfManufacture;
     private String pnpDeviceId;
@@ -50,19 +53,18 @@ public class Monitor extends AssetBase {
         this.installedDate = installedDate;
     }
 
-    public int getScreenHeight() {
-        return screenHeight;
+    public String getScreenHeight() { return screenHeight;
     }
 
-    public void setScreenHeight(int screenHeight) {
+    public void setScreenHeight(String screenHeight) {
         this.screenHeight = screenHeight;
     }
 
-    public int getScreenWidth() {
+    public String getScreenWidth() {
         return screenWidth;
     }
 
-    public void setScreenWidth(int screenWidth) {
+    public void setScreenWidth(String screenWidth) {
         this.screenWidth = screenWidth;
     }
 
@@ -94,12 +96,11 @@ public class Monitor extends AssetBase {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         Monitor monitor = (Monitor) o;
 
         if (Float.compare(monitor.getSize(), getSize()) != 0) return false;
-        if (getScreenHeight() != monitor.getScreenHeight()) return false;
-        if (getScreenWidth() != monitor.getScreenWidth()) return false;
         if (getWeekOfManufacture() != monitor.getWeekOfManufacture()) return false;
         if (getYearOfManufacture() != monitor.getYearOfManufacture()) return false;
         if (getMonitorType() != null ? !getMonitorType().equals(monitor.getMonitorType()) : monitor.getMonitorType() != null)
@@ -108,17 +109,22 @@ public class Monitor extends AssetBase {
             return false;
         if (getInstalledDate() != null ? !getInstalledDate().equals(monitor.getInstalledDate()) : monitor.getInstalledDate() != null)
             return false;
+        if (getScreenHeight() != null ? !getScreenHeight().equals(monitor.getScreenHeight()) : monitor.getScreenHeight() != null)
+            return false;
+        if (getScreenWidth() != null ? !getScreenWidth().equals(monitor.getScreenWidth()) : monitor.getScreenWidth() != null)
+            return false;
         return getPnpDeviceId() != null ? getPnpDeviceId().equals(monitor.getPnpDeviceId()) : monitor.getPnpDeviceId() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getMonitorType() != null ? getMonitorType().hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (getMonitorType() != null ? getMonitorType().hashCode() : 0);
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         result = 31 * result + (getSize() != +0.0f ? Float.floatToIntBits(getSize()) : 0);
         result = 31 * result + (getInstalledDate() != null ? getInstalledDate().hashCode() : 0);
-        result = 31 * result + getScreenHeight();
-        result = 31 * result + getScreenWidth();
+        result = 31 * result + (getScreenHeight() != null ? getScreenHeight().hashCode() : 0);
+        result = 31 * result + (getScreenWidth() != null ? getScreenWidth().hashCode() : 0);
         result = 31 * result + getWeekOfManufacture();
         result = 31 * result + getYearOfManufacture();
         result = 31 * result + (getPnpDeviceId() != null ? getPnpDeviceId().hashCode() : 0);
