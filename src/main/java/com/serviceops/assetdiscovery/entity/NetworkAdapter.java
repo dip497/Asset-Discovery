@@ -17,7 +17,7 @@ public class NetworkAdapter extends AssetBase {
     private Date dhcpLeaseObtained;
     private Date dhcpLeaseExpires;
     private String dhcpServer;
-    private String defualtIpGateway;
+    private String defaultIpGateway;
     private String ipSubnet;
     private String connectionStatus;
 
@@ -101,12 +101,12 @@ public class NetworkAdapter extends AssetBase {
         this.dhcpServer = dhcpServer;
     }
 
-    public String getDefualtIpGateway() {
-        return defualtIpGateway;
+    public String getDefaultIpGateway() {
+        return defaultIpGateway;
     }
 
-    public void setDefualtIpGateway(String defualtIpGateway) {
-        this.defualtIpGateway = defualtIpGateway;
+    public void setDefaultIpGateway(String defaultIpGateway) {
+        this.defaultIpGateway = defaultIpGateway;
     }
 
     public String getIpSubnet() {
@@ -151,7 +151,7 @@ public class NetworkAdapter extends AssetBase {
             return false;
         if (getDhcpServer() != null ? !getDhcpServer().equals(that.getDhcpServer()) : that.getDhcpServer() != null)
             return false;
-        if (getDefualtIpGateway() != null ? !getDefualtIpGateway().equals(that.getDefualtIpGateway()) : that.getDefualtIpGateway() != null)
+        if (getDefaultIpGateway() != null ? !getDefaultIpGateway().equals(that.getDefaultIpGateway()) : that.getDefaultIpGateway() != null)
             return false;
         if (getIpSubnet() != null ? !getIpSubnet().equals(that.getIpSubnet()) : that.getIpSubnet() != null)
             return false;
@@ -170,7 +170,7 @@ public class NetworkAdapter extends AssetBase {
         result = 31 * result + (getDhcpLeaseObtained() != null ? getDhcpLeaseObtained().hashCode() : 0);
         result = 31 * result + (getDhcpLeaseExpires() != null ? getDhcpLeaseExpires().hashCode() : 0);
         result = 31 * result + (getDhcpServer() != null ? getDhcpServer().hashCode() : 0);
-        result = 31 * result + (getDefualtIpGateway() != null ? getDefualtIpGateway().hashCode() : 0);
+        result = 31 * result + (getDefaultIpGateway() != null ? getDefaultIpGateway().hashCode() : 0);
         result = 31 * result + (getIpSubnet() != null ? getIpSubnet().hashCode() : 0);
         result = 31 * result + (getConnectionStatus() != null ? getConnectionStatus().hashCode() : 0);
         return result;
@@ -189,7 +189,7 @@ public class NetworkAdapter extends AssetBase {
                 ", dhcpLeaseObtained=" + dhcpLeaseObtained +
                 ", dhcpLeaseExpires=" + dhcpLeaseExpires +
                 ", dhcpServer='" + dhcpServer + '\'' +
-                ", defualtIpGateway='" + defualtIpGateway + '\'' +
+                ", defualtIpGateway='" + defaultIpGateway + '\'' +
                 ", ipSubnet='" + ipSubnet + '\'' +
                 ", connectionStatus='" + connectionStatus + '\'' +
                 '}';

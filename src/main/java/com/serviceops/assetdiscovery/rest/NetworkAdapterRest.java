@@ -4,6 +4,7 @@ import com.serviceops.assetdiscovery.entity.NetworkAdapter;
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
 public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
     private   String macAddress;
     private   String description;
-    private   String[] ipAddress;
+    private   String ipAddress;
     private   String dnsDomain;
     private   String dnsHostName;
     private   String dnsServerSearchOrders;
@@ -21,8 +22,8 @@ public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
     private   Date dhcpLeaseObtained;
     private   Date dhcpLeaseExpires;
     private   String dhcpServer;
-    private   String[] defualtIpGateway;
-    private   String[] ipSubnet;
+    private   String defaultIpGateway;
+    private   String ipSubnet;
     private   String connectionStatus;
 
     public String getMacAddress() {
@@ -33,9 +34,7 @@ public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
         return description;
     }
 
-    public String[] getIpAddress() {
-        return ipAddress;
-    }
+
 
     public String getDnsDomain() {
         return dnsDomain;
@@ -65,14 +64,6 @@ public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
         return dhcpServer;
     }
 
-    public String[] getDefualtIpGateway() {
-        return defualtIpGateway;
-    }
-
-    public String[] getIpSubnet() {
-        return ipSubnet;
-    }
-
     public String getConnectionStatus() {
         return connectionStatus;
     }
@@ -83,10 +74,6 @@ public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setIpAddress(String[] ipAddress) {
-        this.ipAddress = ipAddress;
     }
 
     public void setDnsDomain(String dnsDomain) {
@@ -117,41 +104,50 @@ public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
         this.dhcpServer = dhcpServer;
     }
 
-    public void setDefualtIpGateway(String[] defualtIpGateway) {
-        this.defualtIpGateway = defualtIpGateway;
+    public void setConnectionStatus(String connectionStatus) {
+        this.connectionStatus = connectionStatus;
     }
 
-    public void setIpSubnet(String[] ipSubnet) {
+    public boolean isDhcpEnable() {
+        return dhcpEnable;
+    }
+
+    public String getDefaultIpGateway() {
+        return defaultIpGateway;
+    }
+
+    public void setDefaultIpGateway(String defaultIpGateway) {
+        this.defaultIpGateway = defaultIpGateway;
+    }
+
+    public String getIpSubnet() {
+        return ipSubnet;
+    }
+
+    public void setIpSubnet(String ipSubnet) {
         this.ipSubnet = ipSubnet;
     }
 
-    public void setConnectionStatus(String connectionStatus) {
-        this.connectionStatus = connectionStatus;
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NetworkAdapterRest entity = (NetworkAdapterRest) o;
-        return Objects.equals(this.macAddress, entity.macAddress) &&
-                Objects.equals(this.description, entity.description) &&
-                Objects.equals(this.ipAddress, entity.ipAddress) &&
-                Objects.equals(this.dnsDomain, entity.dnsDomain) &&
-                Objects.equals(this.dnsHostName, entity.dnsHostName) &&
-                Objects.equals(this.dnsServerSearchOrders, entity.dnsServerSearchOrders) &&
-                Objects.equals(this.dhcpEnable, entity.dhcpEnable) &&
-                Objects.equals(this.dhcpLeaseObtained, entity.dhcpLeaseObtained) &&
-                Objects.equals(this.dhcpLeaseExpires, entity.dhcpLeaseExpires) &&
-                Objects.equals(this.dhcpServer, entity.dhcpServer) &&
-                Objects.equals(this.defualtIpGateway, entity.defualtIpGateway) &&
-                Objects.equals(this.ipSubnet, entity.ipSubnet) &&
-                Objects.equals(this.connectionStatus, entity.connectionStatus);
+        if (!super.equals(o)) return false;
+        NetworkAdapterRest that = (NetworkAdapterRest) o;
+        return dhcpEnable == that.dhcpEnable && Objects.equals(macAddress, that.macAddress) && Objects.equals(description, that.description) && Objects.equals(ipAddress, that.ipAddress) && Objects.equals(dnsDomain, that.dnsDomain) && Objects.equals(dnsHostName, that.dnsHostName) && Objects.equals(dnsServerSearchOrders, that.dnsServerSearchOrders) && Objects.equals(dhcpLeaseObtained, that.dhcpLeaseObtained) && Objects.equals(dhcpLeaseExpires, that.dhcpLeaseExpires) && Objects.equals(dhcpServer, that.dhcpServer) && Objects.equals(defaultIpGateway, that.defaultIpGateway) && Objects.equals(ipSubnet, that.ipSubnet) && Objects.equals(connectionStatus, that.connectionStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(macAddress, description, ipAddress, dnsDomain, dnsHostName, dnsServerSearchOrders, dhcpEnable, dhcpLeaseObtained, dhcpLeaseExpires, dhcpServer, defualtIpGateway, ipSubnet, connectionStatus);
+        return Objects.hash(super.hashCode(), macAddress, description, ipAddress, dnsDomain, dnsHostName, dnsServerSearchOrders, dhcpEnable, dhcpLeaseObtained, dhcpLeaseExpires, dhcpServer, defaultIpGateway, ipSubnet, connectionStatus);
     }
 
     @Override
@@ -167,7 +163,7 @@ public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
                 "dhcpLeaseObtained = " + dhcpLeaseObtained + ", " +
                 "dhcpLeaseExpires = " + dhcpLeaseExpires + ", " +
                 "dhcpServer = " + dhcpServer + ", " +
-                "defualtIpGateway = " + defualtIpGateway + ", " +
+                "defualtIpGateway = " + defaultIpGateway + ", " +
                 "ipSubnet = " + ipSubnet + ", " +
                 "connectionStatus = " + connectionStatus + ")";
     }
