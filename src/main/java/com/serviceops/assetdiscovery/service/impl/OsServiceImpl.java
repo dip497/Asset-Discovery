@@ -62,6 +62,7 @@ public class OsServiceImpl implements OsService {
             return osOps.entityToRest();
         }
         else{
+            logger.error("OS not found for Asset with ID ->{}", refId);
             throw new ResourceNotFoundException("OSRest","refId",Long.toString(refId));
         }
 
