@@ -56,12 +56,12 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
         Optional<ComputerSystem> optionalComputerSystem = customRepository.findByColumn("refId", id, ComputerSystem.class);
         if (optionalComputerSystem.isPresent()) {
             logger.info("Retrieving Computer System of refId -> {}",id);
-            ComputerSystemRest computerSystemRest = new ComputerSystemRest();
+            ComputerSystemOps computerSystemOps = new ComputerSystemOps(optionalComputerSystem.get(),new ComputerSystemRest());
+            ComputerSystemRest computerSystemRest = computerSystemOps.entityToRest();
             Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
             if (optionalProcessor.isPresent()) {
                 computerSystemRest.setNumberOfProcessors(1);
-                computerSystemRest.setNumberOfLogicalProcessor(2 * optionalProcessor.get().getCoreCount());
-                ComputerSystemOps computerSystemOps = new ComputerSystemOps(optionalComputerSystem.get(), computerSystemRest);
+                computerSystemRest.setNumberOfLogicalProcessor(2 * Integer.parseInt(optionalProcessor.get().getCoreCount()));
             }
             return computerSystemRest;
             }
@@ -75,7 +75,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     public void update(ComputerSystemRest computerSystemRest){
         ComputerSystemOps computerSystemOps = new ComputerSystemOps(new ComputerSystem(),computerSystemRest);
         logger.info("Updating computerSystemOps of refId -> {}",computerSystemRest.getId());
-        customRepository.update(computerSystemOps.restToEntity(computerSystemRest));
+        customRepository.update(computerSystemOps.restToEntity());
     }
 
     @Override

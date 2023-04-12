@@ -10,8 +10,8 @@ public class LogicalDisk extends AssetBase {
     private String fileSystemType;
     private String driveType;
 
-    private long size;
-    private long freeSpace;
+    private String size;
+    private String freeSpace;
 
     public String getName() {
         return name;
@@ -45,19 +45,19 @@ public class LogicalDisk extends AssetBase {
         this.driveType = driveType;
     }
 
-    public long getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(long size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
-    public long getFreeSpace() {
+    public String getFreeSpace() {
         return freeSpace;
     }
 
-    public void setFreeSpace(long freeSpace) {
+    public void setFreeSpace(String freeSpace) {
         this.freeSpace = freeSpace;
     }
 
@@ -80,12 +80,13 @@ public class LogicalDisk extends AssetBase {
 
     @Override
     public int hashCode() {
-        int result = getName() != null ? getName().hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         result = 31 * result + (getFileSystemType() != null ? getFileSystemType().hashCode() : 0);
         result = 31 * result + (getDriveType() != null ? getDriveType().hashCode() : 0);
-        result = 31 * result + (int) (getSize() ^ (getSize() >>> 32));
-        result = 31 * result + (int) (getFreeSpace() ^ (getFreeSpace() >>> 32));
+        result = 31 * result + (getSize() != null ? getSize().hashCode() : 0);
+        result = 31 * result + (getFreeSpace() != null ? getFreeSpace().hashCode() : 0);
         return result;
     }
 

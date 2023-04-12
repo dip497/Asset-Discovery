@@ -16,7 +16,7 @@ public class PhysicalDiskTest {
         PhysicalDisk physicalDisk = new PhysicalDisk();
 
         physicalDisk.setDescription("description...");
-        physicalDisk.setSize(133);
+        physicalDisk.setSize("133");
         physicalDisk.setName("name...");
 
 

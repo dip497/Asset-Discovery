@@ -13,8 +13,8 @@ public class LogicalDiskRest extends AssetBaseRest implements Serializable {
     private  String description;
     private  String fileSystemType;
     private  String driveType;
-    private  long size;
-    private  long freeSpace;
+    private  String size;
+    private  String freeSpace;
 
     public String getName() {
         return name;
@@ -32,11 +32,11 @@ public class LogicalDiskRest extends AssetBaseRest implements Serializable {
         return driveType;
     }
 
-    public long getSize() {
+    public String getSize() {
         return size;
     }
 
-    public long getFreeSpace() {
+    public String getFreeSpace() {
         return freeSpace;
     }
 
@@ -56,11 +56,11 @@ public class LogicalDiskRest extends AssetBaseRest implements Serializable {
         this.driveType = driveType;
     }
 
-    public void setSize(long size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
-    public void setFreeSpace(long freeSpace) {
+    public void setFreeSpace(String freeSpace) {
         this.freeSpace = freeSpace;
     }
 
