@@ -152,6 +152,7 @@ public class RamServiceImpl implements RamService {
                 strings[0] = element.replaceAll("\\s","");
             }
         }
+        int ramCount = Integer.parseInt(strings[0]);
         String[][] parsedResult = new String[Integer.parseInt(strings[0].trim())][commandResults.size()];
         int j=0;
         for (Map.Entry<String, String[]> commandResult : commandResults.entrySet()) {
@@ -162,7 +163,9 @@ public class RamServiceImpl implements RamService {
                 continue;
             }
             for(int i=0;i<result.length;i++){
-                parsedResult[i][j]=result[i].trim();
+                if(i<ramCount) {
+                    parsedResult[i][j] = result[i].trim();
+                }
             }
             j++;
         }
