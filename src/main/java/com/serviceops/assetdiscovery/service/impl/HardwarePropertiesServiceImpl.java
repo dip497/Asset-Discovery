@@ -23,23 +23,41 @@ public class HardwarePropertiesServiceImpl implements HardwarePropertiesService 
 
     @Override
     public HardwarePropertiesRest findByRefId(Long refId) {
-        Optional<Asset> optionalAssetRest = customRepository.findByColumn("id",refId, Asset.class);
+        Optional<Asset> optionalAsset = customRepository.findByColumn("id",refId, Asset.class);
 
-        if(optionalAssetRest.isPresent()){
-            Asset asset = optionalAssetRest.get();
+        if(optionalAsset.isPresent()){
+            Asset asset = optionalAsset.get();
             HardwarePropertiesRest hardwarePropertiesRest = new HardwarePropertiesRest();
             hardwarePropertiesRest.setSerialNumber(asset.getSerialNumber());
             logger.info("Hardware Properties fetched with Asset Id ->{}",refId);
             return  hardwarePropertiesRest;
         }
         else {
+            logger.error("No asset found with id ->{}",refId);
             throw new ResourceNotFoundException("AssetRest","id",Long.toString(refId));
         }
 
     }
 
     @Override
-    public void update(HardwarePropertiesRest hardwarePropertiesRest) {
+    public void update(Long refId,HardwarePropertiesRest hardwarePropertiesRest) {
+
+        Optional<Asset> optionalAsset = customRepository.findByColumn("id",refId, Asset.class);
+
+        if(optionalAsset.isPresent()){
+            Asset asset = optionalAsset.get();
+
+            asset.setSerialNumber(hardwarePropertiesRest.getSerialNumber());
+
+            customRepository.update(asset);
+
+            logger.info("Hardware Properties updated with Asset Id ->{}",refId);
+
+        }
+        else {
+            logger.error("No asset found with id ->{}",refId);
+            throw new ResourceNotFoundException("AssetRest","id",Long.toString(refId));
+        }
 
     }
 }

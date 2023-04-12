@@ -15,7 +15,7 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
     private  String bootUpState;
     private  long memorySize;
     private  long diskSize;
-    private  long cpuSpeed;
+    private  float cpuSpeed;
     private  int cpuCoreCount;
     private  boolean partOfDomain;
     private  String domainName;
@@ -61,7 +61,7 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         return diskSize;
     }
 
-    public long getCpuSpeed() {
+    public float getCpuSpeed() {
         return cpuSpeed;
     }
 
@@ -133,7 +133,7 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         this.diskSize = diskSize;
     }
 
-    public void setCpuSpeed(long cpuSpeed) {
+    public void setCpuSpeed(float cpuSpeed) {
         this.cpuSpeed = cpuSpeed;
     }
 
