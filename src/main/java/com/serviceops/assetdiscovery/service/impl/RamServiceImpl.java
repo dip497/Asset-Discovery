@@ -34,8 +34,14 @@ public class RamServiceImpl implements RamService {
             for (String[] string: strings) {
                 if (strings[0][0].equals(String.valueOf(rams.size()))) {
                     for (Ram ram : rams) {
+                        ram.setRefId(id);
                         ram.setSize(string[1]);
                         ram.setWidth(string[2]);
+                        ram.setSerialNumber(string[3]);
+                        ram.setBankLocater(string[4]);
+                        ram.setClockSpeed(string[5]);
+                        ram.setManufacturer(string[6]);
+                        ram.setMemoryType(string[7]);
                         customRepository.save(ram);
                         logger.debug("Updated ram with Asset Id -> {}" ,id);
                     }
@@ -48,6 +54,11 @@ public class RamServiceImpl implements RamService {
                     ram.setRefId(id);
                     ram.setSize(string[1]);
                     ram.setWidth(string[2]);
+                    ram.setSerialNumber(string[3]);
+                    ram.setBankLocater(string[4]);
+                    ram.setClockSpeed(string[5]);
+                    ram.setManufacturer(string[6]);
+                    ram.setMemoryType(string[7]);
                     customRepository.save(ram);
                     logger.debug("saved ram with Asset Id -> {}" ,id);
                 }

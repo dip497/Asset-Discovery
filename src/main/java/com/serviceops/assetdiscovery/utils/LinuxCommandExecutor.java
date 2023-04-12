@@ -51,7 +51,7 @@ public class LinuxCommandExecutor {
                     int i = in.read(tmp, 0, 1024);
                     if (i < 0) break;
                     String line = new String(tmp, 0, i);
-                    line = line.replaceAll("\\p{C}", "");
+                    line = line.replaceAll("[\\p{C}&&[^\n\t]]", "");
                     line = line.replaceAll("^\\*+\\s*", "");
                     if(line.contains(password) || line.startsWith("[sudo]")) {
                         in.read(tmp, 0, 1024);
