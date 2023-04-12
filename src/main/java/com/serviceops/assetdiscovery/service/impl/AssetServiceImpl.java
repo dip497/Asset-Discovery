@@ -193,15 +193,25 @@ public class AssetServiceImpl implements AssetService {
         List<String> list = new ArrayList<>();
         for (Map.Entry<String, String[]> result : stringMap.entrySet()) {
             String[] values = result.getValue();
-            for (String value : values) {
-                if (value == null)
-                    continue;
 
-                // Helps in fetching the MAC and IP
+            if (values.length == 1) {
+                list.add(values[0]);
+            } else {
+                StringBuilder line = new StringBuilder();
+                for (String s : values) {
+                    line.append(s);
+                }
+
                 String status = "state UP";
-                if (value.contains(status)) {
-                    String stateUpString = value.substring(value.indexOf(status));
+                if (line.toString().contains(status)) {
+                    String stateUpString = line.substring(line.indexOf(status));
+
+                    System.out.println("State Up :" + stateUpString);
+
                     String mac = stateUpString.substring(stateUpString.indexOf("ether"), stateUpString.indexOf("brd"));
+
+                    System.out.println("Mac : " + mac);
+
                     String ipPartial = stateUpString.substring(stateUpString.indexOf("inet"));
                     String ip = ipPartial.substring(ipPartial.indexOf("inet"), ipPartial.indexOf("/"));
 
@@ -209,22 +219,23 @@ public class AssetServiceImpl implements AssetService {
                     list.add(mac.substring(6));
 
                     continue;
+
                 }
 
                 // Helps in fetching the Subnet
                 String runningState = "<UP,BROADCAST,RUNNING,MULTICAST>";
-                if (value.contains(runningState)) {
-                    String partialSubnetMask = value.substring(value.indexOf(runningState));
+                if (line.toString().contains(runningState)) {
+                    String partialSubnetMask = line.substring(line.indexOf(runningState));
                     String subnetMask = partialSubnetMask.substring(partialSubnetMask.indexOf("netmask"), partialSubnetMask.indexOf("broadcast"));
 
                     list.add(subnetMask.substring(8));
-                    continue;
+
                 }
 
-                list.add(value);
-
             }
+
         }
+
         return list;
     }
 
