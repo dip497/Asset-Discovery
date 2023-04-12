@@ -31,9 +31,10 @@ public class RamServiceImpl implements RamService {
         String[][] strings = parseResults();
         List<Ram> rams = customRepository.findAllByColumnName(Ram.class, "refId", id);
         if(!rams.isEmpty()) {
-            for (String[] string: strings) {
-                if (strings[0][0].equals(String.valueOf(rams.size()))) {
-                    for (Ram ram : rams) {
+            if (strings[0][0].equals(String.valueOf(rams.size()))) {
+                for (Ram ram : rams) {
+                    for (String[] string : strings) {
+
                         ram.setRefId(id);
                         ram.setSize(string[1]);
                         ram.setWidth(string[2]);
@@ -43,13 +44,16 @@ public class RamServiceImpl implements RamService {
                         ram.setManufacturer(string[6]);
                         ram.setMemoryType(string[7]);
                         customRepository.save(ram);
-                        logger.debug("Updated ram with Asset Id -> {}" ,id);
+                        logger.debug("Updated ram with Asset Id -> {}", id);
                     }
-                } else {
-                    for (Ram ram : rams) {
-                        customRepository.deleteById(Ram.class, ram.getId(), "id");
-                        logger.debug("deleted ram with Asset Id -> {}" , id);
-                    }
+
+                }
+            } else {
+                for (Ram ram : rams) {
+                    customRepository.deleteById(Ram.class, ram.getId(), "id");
+                    logger.debug("deleted ram with Asset Id -> {}", id);
+                }
+                for (String[] string : strings) {
                     Ram ram = new Ram();
                     ram.setRefId(id);
                     ram.setSize(string[1]);
@@ -60,7 +64,7 @@ public class RamServiceImpl implements RamService {
                     ram.setManufacturer(string[6]);
                     ram.setMemoryType(string[7]);
                     customRepository.save(ram);
-                    logger.debug("saved ram with Asset Id -> {}" ,id);
+                    logger.debug("saved ram with Asset Id -> {}", id);
                 }
             }
         } else {
@@ -114,7 +118,7 @@ public class RamServiceImpl implements RamService {
     public void update(RamRest ramRest) {
         Ram ram = new Ram();
         RamOps ramOps = new RamOps(ram,ramRest);
-        customRepository.save(ramOps.restToEntity());
+        customRepository.update(ramOps.restToEntity());
         logger.info("Ram Updated with Asset Id ->{}",ram.getRefId());
     }
 
@@ -148,17 +152,25 @@ public class RamServiceImpl implements RamService {
                 strings[0] = element.replaceAll("\\s","");
             }
         }
+        int ramCount = Integer.parseInt(strings[0]);
         String[][] parsedResult = new String[Integer.parseInt(strings[0].trim())][commandResults.size()];
         int j=0;
         for (Map.Entry<String, String[]> commandResult : commandResults.entrySet()) {
             String[] result = commandResult.getValue();
+            if(ramCount<result.length){
+                for(int i=1;i<result.length;i++){
+                    if(result[i-1].trim().isEmpty()){
+                        result[i-1]=result[i];
+                    }
+                }
+            }
             if(j==0){
                 parsedResult[0][j] = String.valueOf(strings[0].charAt(0)).trim();
                 j++;
                 continue;
             }
-            for(int i=0;i<result.length;i++){
-                parsedResult[i][j]=result[i].trim();
+            for(int i=0;i<ramCount;i++){
+               parsedResult[i][j] = result[i];
             }
             j++;
         }

@@ -21,7 +21,7 @@ public class MonitorTest {
     @Test
     public void save() throws JSchException, IOException {
         MonitorServiceImpl monitorService1 = new MonitorServiceImpl(customRepository);
-        LinuxCommandExecutorManager linuxCommandExecutorManager = new LinuxCommandExecutorManager("172.16.12.101","flotomate","admin",22);
+        LinuxCommandExecutorManager linuxCommandExecutorManager = new LinuxCommandExecutorManager("172.16.8.89","motadata","admin",22);
         linuxCommandExecutorManager.fetch();
         monitorService1.save(1l);
 

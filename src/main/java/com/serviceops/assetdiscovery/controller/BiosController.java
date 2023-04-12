@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/{refId}/bios")
 public class BiosController {
 
     private final BiosServiceImpl biosService;
@@ -19,20 +20,20 @@ public class BiosController {
         this.biosService = biosService;
     }
 
-    @GetMapping("/bios/{redId}")
-    public List<BiosRest> getBios(@PathVariable("redId") long refId){
+    @GetMapping()
+    public List<BiosRest> getBios(@PathVariable("refId") Long refId){
 
         List<BiosRest> biosRests = new ArrayList<>();
 
-        biosRests.add(biosService.findByRefId(refId));
-
         logger.debug("Fetching Bios with Asset id -> {}",refId);
+
+        biosRests.add(biosService.findByRefId(refId));
 
         return biosRests;
     }
 
-    @DeleteMapping("/bios/{refId}")
-    public void deleteBios(@PathVariable("refId") long refId){
+    @DeleteMapping()
+    public void deleteBios(@PathVariable("refId") Long refId){
 
         logger.debug("Deleting Bios with Asset id -> {}",refId);
 
@@ -40,7 +41,7 @@ public class BiosController {
 
     }
 
-    @PutMapping("/bios/{refId}")
+    @PutMapping()
     public void updateBios(@PathVariable("refId") long refId,@RequestBody BiosRest biosRest){
 
         logger.debug("Updating Bios with Asset id -> {}",refId);

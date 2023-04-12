@@ -129,15 +129,18 @@ public class MonitorServiceImpl implements MonitorService{
         }
         else{
         Pattern pattern = Pattern.compile("(?<=\\s|^)\\d+(?=\\s|$)");
-
         int numberOfMonitor = 0;
-        for(int i=0;i<numberOfMonitors.length;i++) {
-            Matcher matcher = pattern.matcher(numberOfMonitors[0]);
-            if (matcher.find()) {
-                String number = matcher.group();
-                numberOfMonitor = Integer.parseInt(number);
+        for(String numOfDesc: numberOfMonitors) {
+            if (!numOfDesc.trim().isEmpty()) {
+                    Matcher matcher = pattern.matcher(numOfDesc);
+                    if (matcher.find()) {
+                        String number = matcher.group();
+                        numberOfMonitor = Integer.parseInt(number);
+                        break;
+                    }
             }
         }
+
         String[][] parsedResult = new String[numberOfMonitor][commandResults.size()];
         int j=0;
         int count=1;
@@ -147,7 +150,12 @@ public class MonitorServiceImpl implements MonitorService{
                 continue;
             }
             String[] result = commandResult.getValue();
-           for(int i=0;i<result.length;i++){
+            if(numberOfMonitor!=result.length){
+                for(int i=1;i<result.length;i++){
+                    result[i-1]=result[i];
+                }
+            }
+           for(int i=0;i<numberOfMonitor;i++){
                String results = result[i];
                switch(count) {
                    case 1:
