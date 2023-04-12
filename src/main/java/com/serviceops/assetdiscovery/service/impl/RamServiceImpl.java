@@ -157,15 +157,20 @@ public class RamServiceImpl implements RamService {
         int j=0;
         for (Map.Entry<String, String[]> commandResult : commandResults.entrySet()) {
             String[] result = commandResult.getValue();
+            if(ramCount<result.length){
+                for(int i=1;i<result.length;i++){
+                    if(result[i-1].trim().isEmpty()){
+                        result[i-1]=result[i];
+                    }
+                }
+            }
             if(j==0){
                 parsedResult[0][j] = String.valueOf(strings[0].charAt(0)).trim();
                 j++;
                 continue;
             }
-            for(int i=0;i<result.length;i++){
-                if(i<ramCount) {
-                    parsedResult[i][j] = result[i].trim();
-                }
+            for(int i=0;i<ramCount;i++){
+               parsedResult[i][j] = result[i];
             }
             j++;
         }
