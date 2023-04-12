@@ -125,13 +125,13 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
     @Override
     public void update(Long id, PointingDeviceRest pointingDeviceRest) {
         PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(new PointingDevice(),pointingDeviceRest);
-        logger.info("Updating PointingDevice with id --> {}",pointingDeviceRest.getId());
+        logger.info("Updated PointingDevice with id --> {}",pointingDeviceRest.getId());
         customRepository.update(pointingDeviceOps.restToEntity(pointingDeviceRest));
     }
 
     @Override
     public void deleteById(Long id) {
-        logger.info("Deleting pointing device with id --> {}", id);
+        logger.info("Deleted pointing device with id --> {}", id);
         customRepository.deleteById(PointingDevice.class,id,"id");
     }
 
@@ -160,6 +160,8 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
             pointingDevice.setPointingType(updatePointIngDevice[2]);
             pointingDevice.setDescription(updatePointIngDevice[3]);
             System.out.println(pointingDevice);
+
+            logger.info("Saved pointing device with id: --> {}",id);
             customRepository.save(pointingDevice);
         }
     }
