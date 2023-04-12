@@ -1,8 +1,6 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.controller.NetworkAdapterController;
 import com.serviceops.assetdiscovery.controller.ProcessorController;
-import com.serviceops.assetdiscovery.entity.NetworkAdapter;
 import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.service.interfaces.ProcessorService;
@@ -55,7 +53,6 @@ public class ProcessorServiceImpl implements ProcessorService {
             String[] values = result.getValue();
             for (int i = 0; i < values.length; i++) {
                 list.add(values[i]);
-//                System.out.println(values[i]);
             }
         }
         return list;
@@ -74,6 +71,6 @@ public class ProcessorServiceImpl implements ProcessorService {
         processor.setCpuSpeed(getParseResult().get(6));
         processor.setCoreCount(coreCount);
 
-        customRepository.update(processor);
+        customRepository.save(processor);
     }
 }
