@@ -3,8 +3,10 @@ package com.serviceops.assetdiscovery.service.impl;
 import com.serviceops.assetdiscovery.controller.ProcessorController;
 import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
+import com.serviceops.assetdiscovery.rest.ProcessorRest;
 import com.serviceops.assetdiscovery.service.interfaces.ProcessorService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
+import com.serviceops.assetdiscovery.utils.mapper.ProcessorOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -69,6 +71,26 @@ public class ProcessorServiceImpl implements ProcessorService {
         processor.setCpuSpeed(getParseResult().get(6));
         processor.setCoreCount(getParseResult().get(7));
 
+        logger.info("Processor saved with id -->{}",id);
         customRepository.save(processor);
+    }
+
+    @Override
+    public void update(Long id, ProcessorRest processorRest) {
+        ProcessorOps processorOps = new ProcessorOps(new Processor(),processorRest);
+        logger.info("Processor updated with id -->{}",id);
+        customRepository.save(processorOps.restToEntity(processorRest));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        logger.info("Processor deleted with id -->{}",id);
+        customRepository.deleteById(Processor.class,id,"id");
+    }
+
+    @Override
+    public void findByRefId(Long id) {
+        logger.info("Processor found with id -->{}",id);
+        customRepository.findByColumn("id",id,Processor.class);
     }
 }

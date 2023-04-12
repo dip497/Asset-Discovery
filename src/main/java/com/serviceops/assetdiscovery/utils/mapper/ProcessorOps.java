@@ -8,8 +8,8 @@ public class ProcessorOps extends AssetBaseOps<Processor, ProcessorRest> {
     private final Processor processor;
     private final ProcessorRest  processorRest;
 
-    public ProcessorOps(Processor assetBase, ProcessorRest assetBaseRest, Processor processor, ProcessorRest processorRest) {
-        super(assetBase, assetBaseRest);
+    public ProcessorOps( Processor processor, ProcessorRest processorRest) {
+        super(processor, processorRest);
         this.processor = processor;
         this.processorRest = processorRest;
     }
