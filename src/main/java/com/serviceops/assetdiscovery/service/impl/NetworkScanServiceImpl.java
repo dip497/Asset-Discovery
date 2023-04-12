@@ -22,13 +22,14 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private final ComputerSystemService computerSystemService;
     private final KeyboardService keyboardService;
     private final BiosService biosService;
-    private final NetworkAdapterService networkAdapterService;
     private final RamService ramService;
     private final MonitorService monitorService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final OsService osService;
+    private final NetworkAdapterService networkAdapterService;
 
 
-    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, NetworkAdapterService networkAdapterService, RamService ramService, MonitorService monitorService) {
+    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, NetworkAdapterService networkAdapterService, RamService ramService, MonitorService monitorService, OsServiceImpl osService ) {
         this.customRepository = customRepository;
         this.assetService = assetService;
         this.motherBoardService = motherBoardService;
@@ -36,9 +37,10 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         this.computerSystemService =  computerSystemService;
         this.keyboardService = keyboardService;
         this.biosService = biosService;
-        this.networkAdapterService = networkAdapterService;
         this.ramService = ramService;
         this.monitorService=monitorService;
+        this.osService = osService;
+        this.networkAdapterService = networkAdapterService;
     }
 
     @Override
@@ -65,6 +67,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         networkAdapterService.save(assetRest.getId());
         ramService.save(assetRest.getId());
         monitorService.save(assetRest.getId());
+        osService.save(assetRest.getId());
     }
     private AssetRest  saveAsset(){
         return assetService.save();

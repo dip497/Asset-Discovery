@@ -3,12 +3,11 @@ package com.serviceops.assetdiscovery.entity;
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
-import java.sql.Date;
 @Entity
 public class Bios extends AssetBase {
     private String name;
     private String smBiosVersion;
-    private String  realeaseDate;
+    private String releaseDate;
     private String version;
     private String description;
 
@@ -28,12 +27,12 @@ public class Bios extends AssetBase {
         this.smBiosVersion = smBiosVersion;
     }
 
-    public String  getRealeaseDate() {
-        return realeaseDate;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setRealeaseDate(String realeaseDate) {
-        this.realeaseDate = realeaseDate;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public String getVersion() {
@@ -62,7 +61,7 @@ public class Bios extends AssetBase {
         if (getName() != null ? !getName().equals(bios.getName()) : bios.getName() != null) return false;
         if (getSmBiosVersion() != null ? !getSmBiosVersion().equals(bios.getSmBiosVersion()) : bios.getSmBiosVersion() != null)
             return false;
-        if (getRealeaseDate() != null ? !getRealeaseDate().equals(bios.getRealeaseDate()) : bios.getRealeaseDate() != null)
+        if (getReleaseDate() != null ? !getReleaseDate().equals(bios.getReleaseDate()) : bios.getReleaseDate() != null)
             return false;
         if (getVersion() != null ? !getVersion().equals(bios.getVersion()) : bios.getVersion() != null) return false;
         return getDescription() != null ? getDescription().equals(bios.getDescription()) : bios.getDescription() == null;
@@ -72,7 +71,7 @@ public class Bios extends AssetBase {
     public int hashCode() {
         int result = getName() != null ? getName().hashCode() : 0;
         result = 31 * result + (getSmBiosVersion() != null ? getSmBiosVersion().hashCode() : 0);
-        result = 31 * result + (getRealeaseDate() != null ? getRealeaseDate().hashCode() : 0);
+        result = 31 * result + (getReleaseDate() != null ? getReleaseDate().hashCode() : 0);
         result = 31 * result + (getVersion() != null ? getVersion().hashCode() : 0);
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return result;
@@ -83,7 +82,7 @@ public class Bios extends AssetBase {
         return "Bios{" +
                 "name='" + name + '\'' +
                 ", smBiosVersion='" + smBiosVersion + '\'' +
-                ", realeaseDate=" + realeaseDate +
+                ", releaseDate=" + releaseDate +
                 ", version='" + version + '\'' +
                 ", description='" + description + '\'' +
                 '}';
