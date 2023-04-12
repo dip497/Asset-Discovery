@@ -31,25 +31,40 @@ public class RamServiceImpl implements RamService {
         String[][] strings = parseResults();
         List<Ram> rams = customRepository.findAllByColumnName(Ram.class, "refId", id);
         if(!rams.isEmpty()) {
-            for (String[] string: strings) {
-                if (strings[0][0].equals(String.valueOf(rams.size()))) {
-                    for (Ram ram : rams) {
+            if (strings[0][0].equals(String.valueOf(rams.size()))) {
+                for (Ram ram : rams) {
+                    for (String[] string : strings) {
+
+                        ram.setRefId(id);
                         ram.setSize(string[1]);
                         ram.setWidth(string[2]);
+                        ram.setSerialNumber(string[3]);
+                        ram.setBankLocater(string[4]);
+                        ram.setClockSpeed(string[5]);
+                        ram.setManufacturer(string[6]);
+                        ram.setMemoryType(string[7]);
                         customRepository.save(ram);
-                        logger.debug("Updated ram with Asset Id -> {}" ,id);
+                        logger.debug("Updated ram with Asset Id -> {}", id);
                     }
-                } else {
-                    for (Ram ram : rams) {
-                        customRepository.deleteById(Ram.class, ram.getId(), "id");
-                        logger.debug("deleted ram with Asset Id -> {}" , id);
-                    }
+
+                }
+            } else {
+                for (Ram ram : rams) {
+                    customRepository.deleteById(Ram.class, ram.getId(), "id");
+                    logger.debug("deleted ram with Asset Id -> {}", id);
+                }
+                for (String[] string : strings) {
                     Ram ram = new Ram();
                     ram.setRefId(id);
                     ram.setSize(string[1]);
                     ram.setWidth(string[2]);
+                    ram.setSerialNumber(string[3]);
+                    ram.setBankLocater(string[4]);
+                    ram.setClockSpeed(string[5]);
+                    ram.setManufacturer(string[6]);
+                    ram.setMemoryType(string[7]);
                     customRepository.save(ram);
-                    logger.debug("saved ram with Asset Id -> {}" ,id);
+                    logger.debug("saved ram with Asset Id -> {}", id);
                 }
             }
         } else {
@@ -137,6 +152,7 @@ public class RamServiceImpl implements RamService {
                 strings[0] = element.replaceAll("\\s","");
             }
         }
+        int ramCount = Integer.parseInt(strings[0]);
         String[][] parsedResult = new String[Integer.parseInt(strings[0].trim())][commandResults.size()];
         int j=0;
         for (Map.Entry<String, String[]> commandResult : commandResults.entrySet()) {
@@ -147,7 +163,9 @@ public class RamServiceImpl implements RamService {
                 continue;
             }
             for(int i=0;i<result.length;i++){
-                parsedResult[i][j]=result[i].trim();
+                if(i<ramCount) {
+                    parsedResult[i][j] = result[i].trim();
+                }
             }
             j++;
         }
