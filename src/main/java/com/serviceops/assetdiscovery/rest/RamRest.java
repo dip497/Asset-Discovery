@@ -10,13 +10,13 @@ import java.util.Objects;
  * A Rest for the {@link Ram} entity
  */
 public class RamRest extends AssetBaseRest implements Serializable {
-    private  Long size;
+    private  String size;
     private  String memoryType;
-    private  int width;
-    private  float clockSpeed;
+    private  String width;
+    private  String clockSpeed;
     private  String bankLocater;
 
-    public Long getSize() {
+    public String getSize() {
         return size;
     }
 
@@ -24,11 +24,11 @@ public class RamRest extends AssetBaseRest implements Serializable {
         return memoryType;
     }
 
-    public int getWidth() {
+    public String getWidth() {
         return width;
     }
 
-    public float getClockSpeed() {
+    public String getClockSpeed() {
         return clockSpeed;
     }
 
@@ -36,7 +36,7 @@ public class RamRest extends AssetBaseRest implements Serializable {
         return bankLocater;
     }
 
-    public void setSize(Long size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
@@ -44,11 +44,11 @@ public class RamRest extends AssetBaseRest implements Serializable {
         this.memoryType = memoryType;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(String width) {
         this.width = width;
     }
 
-    public void setClockSpeed(float clockSpeed) {
+    public void setClockSpeed(String clockSpeed) {
         this.clockSpeed = clockSpeed;
     }
 

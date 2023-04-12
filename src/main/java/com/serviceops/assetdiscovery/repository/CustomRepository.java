@@ -62,22 +62,25 @@ public class CustomRepository {
         return em.createQuery(query).getResultList();
     }
 
-    public <T> List<T> findAllByColumnName(final Class<T> clazz, String foreignColumn, String foreignKey, String columnValue) {
+    public <F,T> List<T> findAllByColumnName(final Class<T> clazz, final String column, F value) {
         CriteriaQuery<T> query = criteriaBuilder.createQuery(clazz);
         Root<T> from = query.from(clazz);
-        query.select(from).where(criteriaBuilder.equal(from.get(foreignColumn).get(foreignKey), criteriaBuilder.parameter(String.class, foreignKey)));
-        return em.createQuery(query).setParameter(foreignKey, columnValue).getResultList();
+        query.select(from).where(criteriaBuilder.equal(from.get(column),value));
+        return em.createQuery(query).getResultList();
     }
 
     @Transactional
     public <T> void save(T t) {
-        if (!em.contains(t)) {
-            em.persist(t);
-            em.flush();
+        if (em.contains(t)) {
+            em.merge(t);  // update if already managed
+        } else {
+            em.persist(t); // insert if not managed
         }
+        em.flush();
     }
 
     @Transactional
+    @Deprecated
     public <T> void update(T t) {
         em.merge(t);
         em.flush();

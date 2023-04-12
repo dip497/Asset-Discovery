@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Bios;
+import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.AssetRest;
 import com.serviceops.assetdiscovery.rest.BiosRest;
@@ -38,7 +39,7 @@ public class BiosServiceImpl implements BiosService {
             bios.setDescription(parseResult.get(2));
             bios.setManufacturer(parseResult.get(3));
             customRepository.save(bios);
-            logger.info("Updating bios with Asset Id ->{}",assetRest.getId());
+            logger.info("Updated bios with Asset Id ->{}",assetRest.getId());
         }
         else{
             Bios bios = new Bios();
@@ -52,17 +53,40 @@ public class BiosServiceImpl implements BiosService {
             bios.setDescription(parseResult.get(2));
             bios.setManufacturer(parseResult.get(3));
             customRepository.save(bios);
-            logger.info("Saving bios with Asset Id ->{}",assetRest.getId());
+            logger.info("Saved bios with Asset Id ->{}",assetRest.getId());
         }
 
     }
 
     @Override
     public BiosRest findByRefId(Long refId) {
-        Bios bios = customRepository.findByColumn("refId",refId,Bios.class).get();
-        BiosRest biosRest = new BiosRest();
+
+        Optional<Bios> biosOptional = customRepository.findByColumn("refId",refId,Bios.class);
+
+        if(biosOptional.isPresent()){
+            BiosRest biosRest = new BiosRest();
+            BiosOps biosOps= new BiosOps(biosOptional.get(),biosRest);
+            logger.info("Bios fetched with Asset Id ->{}",refId);
+            return biosOps.entityToRest();
+        }
+        else{
+            throw new ResourceNotFoundException("BiosRest","refId",Long.toString(refId));
+        }
+
+    }
+
+    @Override
+    public void deleteByRefId(Long refId) {
+        customRepository.deleteById(Bios.class,refId,"refId");
+        logger.info("Bios deleted with Asset Id ->{}",refId);
+    }
+
+    @Override
+    public void update(BiosRest biosRest) {
+        Bios bios = new Bios();
         BiosOps biosOps= new BiosOps(bios,biosRest);
-        return biosOps.entityToRest();
+        customRepository.update(biosOps.restToEntity());
+        logger.info("Bios Updated with Asset Id ->{}",bios.getRefId());
     }
 
     private void setCommands(){
@@ -91,10 +115,10 @@ public class BiosServiceImpl implements BiosService {
         List<String> list= new ArrayList<>();
         for (Map.Entry<String ,String[]> result: stringMap.entrySet()) {
             String[] values = result.getValue();
-            for (int i=0;i<values.length;++i) {
-                if(values[i]==null)
+            for (String value : values) {
+                if (value == null)
                     continue;
-                list.add(values[i]);
+                list.add(value);
 
             }
         }
