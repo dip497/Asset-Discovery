@@ -59,7 +59,6 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
     @Override
     public void save(Long id) {
-        int coreCount = Integer.parseInt(getParseResult().get(7));
         Processor processor = new Processor();
         processor.setId(id);
         processor.setL2CacheSize(getParseResult().get(0));
@@ -69,7 +68,7 @@ public class ProcessorServiceImpl implements ProcessorService {
         processor.setFamily(getParseResult().get(4));
         processor.setWidth(getParseResult().get(5));
         processor.setCpuSpeed(getParseResult().get(6));
-        processor.setCoreCount(coreCount);
+        processor.setCoreCount(getParseResult().get(7));
 
         customRepository.save(processor);
     }

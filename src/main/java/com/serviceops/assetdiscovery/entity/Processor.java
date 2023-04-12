@@ -11,7 +11,7 @@ public class Processor extends AssetBase {
     private String description;
     private String width;
     private String cpuSpeed;
-    private int coreCount;
+    private String coreCount;
     private String externalClock;
     private String l1CacheSize;
     private String l2CacheSize;
@@ -52,11 +52,11 @@ public class Processor extends AssetBase {
         this.cpuSpeed = cpuSpeed;
     }
 
-    public int getCoreCount() {
+    public String getCoreCount() {
         return coreCount;
     }
 
-    public void setCoreCount(int coreCount) {
+    public void setCoreCount(String coreCount) {
         this.coreCount = coreCount;
     }
 
