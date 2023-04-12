@@ -28,8 +28,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, NetworkAdapterService networkAdapterService, RamService ramService) {
-    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, RamService ramService, MonitorService monitorService) {
+    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, NetworkAdapterService networkAdapterService, RamService ramService, MonitorService monitorService) {
         this.customRepository = customRepository;
         this.assetService = assetService;
         this.motherBoardService = motherBoardService;
