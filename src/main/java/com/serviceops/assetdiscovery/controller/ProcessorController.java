@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/{refId}/processor")
 public class ProcessorController {
@@ -17,9 +19,9 @@ public class ProcessorController {
     }
 
     @GetMapping
-    public void findProcessorById(@PathVariable("refId") String refId){
+    public List<ProcessorRest> findProcessorById(@PathVariable("refId") String refId){
         logger.debug("finding processor with id: -->{}", refId);
-        processorService.findByRefId(Long.parseLong(refId));
+        return processorService.findByRefId(Long.parseLong(refId));
     }
 
     @DeleteMapping
