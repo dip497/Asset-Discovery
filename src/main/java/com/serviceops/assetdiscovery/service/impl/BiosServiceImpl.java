@@ -33,6 +33,7 @@ public class BiosServiceImpl implements BiosService {
         Optional<Bios> fetchBios = customRepository.findByColumn("refId", assetRest.getId(), Bios.class);
         if(fetchBios.isPresent()){
             Bios bios = fetchBios.get();
+            bios.setSerialNumber(assetRest.getSerialNumber());
             bios.setReleaseDate(parseResult.get(0));
             bios.setVersion(parseResult.get(1));
             bios.setName(parseResult.get(2));
@@ -60,15 +61,17 @@ public class BiosServiceImpl implements BiosService {
 
     // Finding Bios by Ref ID
     @Override
-    public BiosRest findByRefId(Long refId) {
+    public List<BiosRest> findByRefId(Long refId) {
 
         Optional<Bios> biosOptional = customRepository.findByColumn("refId",refId,Bios.class);
 
         if(biosOptional.isPresent()){
             BiosRest biosRest = new BiosRest();
             BiosOps biosOps= new BiosOps(biosOptional.get(),biosRest);
+            List<BiosRest> biosRests = new ArrayList<>();
+            biosRests.add(biosOps.entityToRest());
             logger.info("Bios fetched with Asset Id ->{}",refId);
-            return biosOps.entityToRest();
+            return biosRests;
         }
         else{
             logger.error("Bios not found for Asset with ID ->{}", refId);

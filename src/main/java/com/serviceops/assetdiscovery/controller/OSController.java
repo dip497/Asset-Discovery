@@ -5,8 +5,6 @@ import com.serviceops.assetdiscovery.service.impl.OsServiceImpl;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,19 +19,16 @@ public class OSController {
     }
 
     @GetMapping()
-    public List<OSRest> getBios(@PathVariable("refId") Long refId){
-
-        List<OSRest> osRests = new ArrayList<>();
+    public List<OSRest> getOs(@PathVariable("refId") Long refId){
 
         logger.debug("Fetching OS with Asset id -> {}",refId);
 
-        osRests.add(osService.findByRefId(refId));
+        return osService.findByRefId(refId);
 
-        return osRests;
     }
 
     @DeleteMapping()
-    public void deleteBios(@PathVariable("refId") Long refId){
+    public void deleteOs(@PathVariable("refId") Long refId){
 
         logger.debug("Deleting Bios with Asset id -> {}",refId);
 
@@ -42,7 +37,7 @@ public class OSController {
     }
 
     @PutMapping()
-    public void updateBios(@PathVariable("refId") long refId,@RequestBody OSRest osRest){
+    public void updateOs(@PathVariable("refId") long refId,@RequestBody OSRest osRest){
 
         logger.debug("Updating Bios with Asset id -> {}",refId);
 

@@ -1,20 +1,16 @@
 package com.serviceops.assetdiscovery.controller;
 
 import com.serviceops.assetdiscovery.rest.AssetRest;
-
 import com.serviceops.assetdiscovery.service.impl.AssetServiceImpl;
 import com.serviceops.assetdiscovery.utils.AllAssetResponse;
 import com.serviceops.assetdiscovery.utils.AppConstants;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/asset/")
+@RequestMapping("/asset")
 public class AssetController {
 
     private final AssetServiceImpl assetService;
@@ -36,15 +32,11 @@ public class AssetController {
     }
 
     @GetMapping("{id}")
-    public List<AssetRest> getAssets(@PathVariable("id") long id){
-
-        List<AssetRest> assetRests = new ArrayList<>();
+    public AssetRest getAsset(@PathVariable("id") long id){
 
         logger.debug("Fetching Asset with id -> {}",id);
 
-        assetRests.add(assetService.findById(id));
-
-        return assetRests;
+        return assetService.findById(id);
     }
 
     @PatchMapping("{id}")

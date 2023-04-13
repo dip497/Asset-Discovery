@@ -69,7 +69,7 @@ public class KeyboardServiceImpl implements KeyboardService {
     public void update(KeyboardRest keyboardRest) {
         Keyboard keyboard = new Keyboard();
         KeyboardOps keyboardOps = new KeyboardOps(keyboard,keyboardRest);
-        customRepository.save(keyboardOps.restToEntity());
+        customRepository.update(keyboardOps.restToEntity());
         logger.info("Keyboard Updated with Asset Id ->{}",keyboard.getRefId());
     }
 
