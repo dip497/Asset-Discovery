@@ -32,4 +32,22 @@ public class ProcessorOps extends AssetBaseOps<Processor, ProcessorRest> {
 
         return processor;
     }
+
+    public ProcessorRest entityToRest() {
+        super.entityToRest(processor);
+        processorRest.setProcessorName(processor.getProcessorName());
+        processorRest.setDescription(processor.getDescription());
+        processorRest.setWidth(processor.getWidth());
+        processorRest.setCpuSpeed(processor.getCpuSpeed());
+        processorRest.setCoreCount(processor.getCoreCount());
+        processorRest.setExternalClock(processor.getExternalClock());
+        processorRest.setL1CacheSize(processor.getL1CacheSize());
+        processorRest.setL2CacheSize(processor.getL2CacheSize());
+        processorRest.setL3CacheSize(processor.getL3CacheSize());
+        processorRest.setFamily(processor.getFamily());
+        processorRest.setDeviceId(processor.getDeviceId());
+        processorRest.setSocketDesignation(processor.getSocketDesignation());
+
+        return processorRest;
+    }
 }

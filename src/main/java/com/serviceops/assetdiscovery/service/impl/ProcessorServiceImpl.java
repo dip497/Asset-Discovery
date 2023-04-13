@@ -2,6 +2,7 @@ package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.controller.ProcessorController;
 import com.serviceops.assetdiscovery.entity.Processor;
+import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.ProcessorRest;
 import com.serviceops.assetdiscovery.service.interfaces.ProcessorService;
@@ -11,10 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ProcessorServiceImpl implements ProcessorService {
@@ -89,8 +87,18 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
 
     @Override
-    public void findByRefId(Long id) {
-        logger.info("Processor found with id -->{}",id);
-        customRepository.findByColumn("id",id,Processor.class);
+    public List<ProcessorRest> findByRefId(Long id) {
+        Optional<Processor> optionalProcessor = customRepository.findByColumn("id",id,Processor.class);
+        if (optionalProcessor.isPresent()) {
+            List<ProcessorRest> processors = new ArrayList<>();
+            ProcessorRest processorRest = new ProcessorRest();
+            ProcessorOps processorOps = new ProcessorOps(optionalProcessor.get(), processorRest);
+            processors.add(processorOps.entityToRest());
+            logger.info("Processor found with id -->{}",id);
+            return processors;
+        } else {
+            logger.error("Processor not found with id -->{}",id);
+            throw new ResourceNotFoundException("Processor","refId", String.valueOf(id));
+        }
     }
 }
