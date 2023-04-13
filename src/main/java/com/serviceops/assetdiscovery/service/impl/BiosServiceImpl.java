@@ -40,6 +40,7 @@ public class BiosServiceImpl implements BiosService {
             bios.setSmBiosVersion(parseResult.get(2));
             bios.setDescription(parseResult.get(2));
             bios.setManufacturer(parseResult.get(3));
+            bios.setDeviceStatus(assetRest.getSerialNumber()!=null?"Ok":"Something Wrong");
             customRepository.save(bios);
             logger.info("Updated bios with Asset Id ->{}",assetRest.getId());
         }
@@ -53,6 +54,7 @@ public class BiosServiceImpl implements BiosService {
             bios.setSmBiosVersion(parseResult.get(2));
             bios.setDescription(parseResult.get(2));
             bios.setManufacturer(parseResult.get(3));
+            bios.setDeviceStatus(assetRest.getSerialNumber()!=null?"Ok":"Something Wrong");
             customRepository.save(bios);
             logger.info("Saved bios with Asset Id ->{}",assetRest.getId());
         }

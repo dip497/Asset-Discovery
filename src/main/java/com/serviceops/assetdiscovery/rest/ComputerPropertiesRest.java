@@ -8,7 +8,6 @@ import java.util.Objects;
 public class ComputerPropertiesRest extends AssetBaseRest implements Serializable {
     private  String osName;
     private  String osVersion;
-    private  String servicePackName;
     private  String osLicenseKey;
     private  String osManufacturer;
     private  String osArchitecture;
@@ -31,10 +30,6 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
 
     public String getOsVersion() {
         return osVersion;
-    }
-
-    public String getServicePackName() {
-        return servicePackName;
     }
 
     public String getOsLicenseKey() {
@@ -105,10 +100,6 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         this.osVersion = osVersion;
     }
 
-    public void setServicePackName(String servicePackName) {
-        this.servicePackName = servicePackName;
-    }
-
     public void setOsLicenseKey(String osLicenseKey) {
         this.osLicenseKey = osLicenseKey;
     }
@@ -176,7 +167,6 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         ComputerPropertiesRest entity = (ComputerPropertiesRest) o;
         return Objects.equals(this.osName, entity.osName) &&
                 Objects.equals(this.osVersion, entity.osVersion) &&
-                Objects.equals(this.servicePackName, entity.servicePackName) &&
                 Objects.equals(this.osLicenseKey, entity.osLicenseKey) &&
                 Objects.equals(this.osManufacturer, entity.osManufacturer) &&
                 Objects.equals(this.osArchitecture, entity.osArchitecture) &&
@@ -196,7 +186,7 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
 
     @Override
     public int hashCode() {
-        return Objects.hash(osName, osVersion, servicePackName, osLicenseKey, osManufacturer, osArchitecture, bootUpState, memorySize, diskSize, cpuSpeed, cpuCoreCount, partOfDomain, domainName, numberOfLogicalProcessors, numberOfProcessors, pcSystemType, lastLoggedInUser, activationStatus);
+        return Objects.hash(osName, osVersion, osLicenseKey, osManufacturer, osArchitecture, bootUpState, memorySize, diskSize, cpuSpeed, cpuCoreCount, partOfDomain, domainName, numberOfLogicalProcessors, numberOfProcessors, pcSystemType, lastLoggedInUser, activationStatus);
     }
 
     @Override
@@ -204,7 +194,6 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         return getClass().getSimpleName() + "(" +
                 "osName = " + osName + ", " +
                 "osVersion = " + osVersion + ", " +
-                "servicePackName = " + servicePackName + ", " +
                 "osLicenseKey = " + osLicenseKey + ", " +
                 "osManufacturer = " + osManufacturer + ", " +
                 "osArchitecture = " + osArchitecture + ", " +

@@ -6,6 +6,4 @@ public interface ComputerPropertiesService {
 
     ComputerPropertiesRest findByRefId(Long refId);
 
-    void update(Long refId,ComputerPropertiesRest computerPropertiesRest);
-
 }

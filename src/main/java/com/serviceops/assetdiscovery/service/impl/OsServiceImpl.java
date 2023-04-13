@@ -36,7 +36,9 @@ public class OsServiceImpl implements OsService {
             os.setOsName(parseResult.get(0));
             os.setOsArchitecture(parseResult.get(1));
             os.setActivationStatus("Unlicensed");
+            os.setLicenseKey("Not Required");
             os.setOsVersion(parseResult.get(0));
+            os.setInstalledDate(parseResult.get(2));
             customRepository.save(os);
             logger.info("Updated os with Asset Id ->{}",refId);
         }
@@ -44,8 +46,10 @@ public class OsServiceImpl implements OsService {
             os.setRefId(refId);
             os.setOsName(parseResult.get(0));
             os.setActivationStatus("Unlicensed");
+            os.setLicenseKey("Not Required");
             os.setOsArchitecture(parseResult.get(1));
             os.setOsVersion(parseResult.get(0));
+            os.setInstalledDate(parseResult.get(2));
             customRepository.save(os);
             logger.info("Saved bios with Asset Id ->{}",refId);
         }
@@ -99,6 +103,9 @@ public class OsServiceImpl implements OsService {
 
         // Find the OS architecture
         commands.put("uname -m",new String[]{});
+
+        // Find the installed date of OS.
+        commands.put("ls -alct / | tail -1 | awk '{print $6, $7, $8}'\n",new String[]{});
 
         LinuxCommandExecutorManager.add(OS.class,commands);
     }

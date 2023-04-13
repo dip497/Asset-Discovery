@@ -20,7 +20,9 @@ public class OsOps extends AssetBaseOps<OS, OSRest> {
         os.setOsName(osRest.getOsName());
         os.setOsVersion(osRest.getOsVersion());
         os.setOsArchitecture(osRest.getOsArchitecture());
+        os.setManufacturer(osRest.getManufacturer());
         os.setInstalledDate(osRest.getInstalledDate());
+        os.setLicenseKey(osRest.getLicenseKey());
         os.setActivationStatus(osRest.getActivationStatus());
         return os;
     }
@@ -29,6 +31,8 @@ public class OsOps extends AssetBaseOps<OS, OSRest> {
         super.entityToRest(os);
         osRest.setOsName(os.getOsName());
         osRest.setOsVersion(os.getOsVersion());
+        osRest.setLicenseKey(os.getLicenseKey());
+        osRest.setManufacturer(os.getManufacturer());
         osRest.setActivationStatus(os.getActivationStatus());
         osRest.setOsArchitecture(os.getOsArchitecture());
         osRest.setInstalledDate(os.getInstalledDate());

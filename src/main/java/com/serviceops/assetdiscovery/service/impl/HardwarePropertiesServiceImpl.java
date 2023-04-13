@@ -1,7 +1,6 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Asset;
-import com.serviceops.assetdiscovery.entity.Bios;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.HardwarePropertiesRest;
@@ -30,6 +29,7 @@ public class HardwarePropertiesServiceImpl implements HardwarePropertiesService 
             Asset asset = optionalAsset.get();
             HardwarePropertiesRest hardwarePropertiesRest = new HardwarePropertiesRest();
             hardwarePropertiesRest.setSerialNumber(asset.getSerialNumber());
+            hardwarePropertiesRest.setWarrantyExpirationDate("None");
             logger.info("Hardware Properties fetched with Asset Id ->{}",refId);
             return  hardwarePropertiesRest;
         }
@@ -40,30 +40,4 @@ public class HardwarePropertiesServiceImpl implements HardwarePropertiesService 
 
     }
 
-    @Override
-    public void update(Long refId,HardwarePropertiesRest hardwarePropertiesRest) {
-
-        Optional<Asset> optionalAsset = customRepository.findByColumn("id",refId, Asset.class);
-        Optional<Bios> optionalBios = customRepository.findByColumn("refId",refId, Bios.class);
-
-        if(optionalAsset.isPresent() && optionalBios.isPresent()){
-            Asset asset = optionalAsset.get();
-
-            Bios bios =optionalBios.get();
-
-            asset.setSerialNumber(hardwarePropertiesRest.getSerialNumber());
-            bios.setSerialNumber(hardwarePropertiesRest.getSerialNumber());
-
-            customRepository.update(asset);
-            customRepository.update(bios);
-
-            logger.info("Hardware Properties updated with Asset Id ->{}",refId);
-
-        }
-        else {
-            logger.error("No asset found with id ->{}",refId);
-            throw new ResourceNotFoundException("AssetRest","id",Long.toString(refId));
-        }
-
-    }
 }

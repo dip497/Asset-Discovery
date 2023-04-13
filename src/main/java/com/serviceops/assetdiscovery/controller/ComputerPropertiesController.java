@@ -34,14 +34,4 @@ public class ComputerPropertiesController {
 
     }
 
-    @PutMapping
-    public void updateComputerProperties(@PathVariable("refId") Long refId,@RequestBody ComputerPropertiesRest computerPropertiesRest){
-
-        logger.debug("Updating Hardware Properties with Asset Id ->{}",refId);
-
-        computerPropertiesService.update(refId,computerPropertiesRest);
-
-    }
-
-
 }

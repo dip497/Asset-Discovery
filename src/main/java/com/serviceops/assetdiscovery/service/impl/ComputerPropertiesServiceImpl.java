@@ -52,9 +52,9 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
             computerPropertiesRest.setRefId(refId);
             computerPropertiesRest.setOsName(os.getOsName());
             computerPropertiesRest.setOsVersion(os.getOsVersion());
-            computerPropertiesRest.setServicePackName(os.getLicenseKey());
             computerPropertiesRest.setActivationStatus(os.getActivationStatus());
             computerPropertiesRest.setOsManufacturer(os.getManufacturer());
+            computerPropertiesRest.setOsLicenseKey("Not Required");
             computerPropertiesRest.setOsArchitecture(os.getOsArchitecture());
 
             computerPropertiesRest.setMemorySize(Long.toString(size));
@@ -77,44 +77,4 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
 
     }
 
-    @Override
-    public void update(Long refId, ComputerPropertiesRest computerPropertiesRest) {
-
-        Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
-        Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
-        Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", refId, Processor.class);
-        List<RamRest> rams = ramService.findAllByRefId(refId);
-
-        if (optionalOS.isPresent() &&  !(rams.isEmpty()) && optionalPhysicalDisk.isPresent()) {
-
-            OS os = optionalOS.get();
-            PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
-            Processor processor = optionalProcessor.get();
-
-            os.setOsName(computerPropertiesRest.getOsName());
-            os.setOsVersion(computerPropertiesRest.getOsVersion());
-            os.setActivationStatus("Unlicensed");
-            os.setOsArchitecture(computerPropertiesRest.getOsArchitecture());
-
-            physicalDisk.setSize(computerPropertiesRest.getDiskSize());
-
-            processor.setCpuSpeed(computerPropertiesRest.getCpuSpeed());
-
-            processor.setCoreCount(computerPropertiesRest.getCpuCoreCount());
-
-            customRepository.update(os);
-            customRepository.update(physicalDisk);
-            customRepository.update(processor);
-
-            logger.info("Computer Properties Updated for Asset Id -> {}", refId);
-
-
-        } else {
-
-            logger.error("Computer Properties could not be Updated for Asset Id -> {}", refId);
-
-            throw new ResourceNotFoundException("ComputerPropertiesRest", "refId", Long.toString(refId));
-        }
-
-    }
 }

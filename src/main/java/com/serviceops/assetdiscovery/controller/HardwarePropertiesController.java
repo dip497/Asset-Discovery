@@ -32,12 +32,4 @@ public class HardwarePropertiesController {
         return hardwarePropertiesRests;
     }
 
-    @PutMapping()
-    public void updateHardwareProperties(@PathVariable("refId") Long refId,@RequestBody HardwarePropertiesRest hardwarePropertiesRest){
-
-        logger.debug("Updating Hardware Properties with Asset Id ->{}",refId);
-
-        hardwarePropertiesService.update(refId,hardwarePropertiesRest);
-    }
-
 }

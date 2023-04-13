@@ -10,19 +10,19 @@ import java.util.Objects;
  * A Rest for the entity
  */
 public class HardwarePropertiesRest extends AssetBaseRest implements Serializable {
-    private  Date warrentyExpirationDate;
+    private  String warrantyExpirationDate;
     private  Date auditDate;
 
-    public Date getWarrentyExpirationDate() {
-        return warrentyExpirationDate;
+    public String getWarrantyExpirationDate() {
+        return warrantyExpirationDate;
     }
 
     public Date getAuditDate() {
         return auditDate;
     }
 
-    public void setWarrentyExpirationDate(Date warrentyExpirationDate) {
-        this.warrentyExpirationDate = warrentyExpirationDate;
+    public void setWarrantyExpirationDate(String warrantyExpirationDate) {
+        this.warrantyExpirationDate = warrantyExpirationDate;
     }
 
     public void setAuditDate(Date auditDate) {
@@ -34,19 +34,19 @@ public class HardwarePropertiesRest extends AssetBaseRest implements Serializabl
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HardwarePropertiesRest entity = (HardwarePropertiesRest) o;
-        return Objects.equals(this.warrentyExpirationDate, entity.warrentyExpirationDate) &&
+        return Objects.equals(this.warrantyExpirationDate, entity.warrantyExpirationDate) &&
                 Objects.equals(this.auditDate, entity.auditDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(warrentyExpirationDate, auditDate);
+        return Objects.hash(warrantyExpirationDate, auditDate);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "warrentyExpirationDate = " + warrentyExpirationDate + ", " +
+                "warrentyExpirationDate = " + warrantyExpirationDate + ", " +
                 "auditDate = " + auditDate + ")";
     }
 }

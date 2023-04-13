@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
+
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -193,48 +194,63 @@ public class AssetServiceImpl implements AssetService {
         Map<String, String[]> stringMap = LinuxCommandExecutorManager.get(Asset.class);
         List<String> list = new ArrayList<>();
         for (Map.Entry<String, String[]> result : stringMap.entrySet()) {
-
+            boolean flag = false;
             String[] values = result.getValue();
 
-            if(values.length==0){
+            if (values.length == 0) {
+                flag = true;
                 list.add(null);
-            }
-
-            if (values.length == 1) {
-                list.add(values[0]);
-            }
-
-            else {
-
-                StringBuilder line = new StringBuilder();
-                for (String s : values) {
-                    line.append(s);
+            } else if (values.length < 4) {
+                for (String ans : values) {
+                    if (!ans.trim().isEmpty()) {
+                        list.add(ans);
+                        flag = true;
+                    }
                 }
+            } else {
+
 
                 String status = "state UP";
-                if (line.toString().contains(status)) {
-                    String stateUpString = line.substring(line.indexOf(status));
-
-                    String mac = stateUpString.substring(stateUpString.indexOf("ether"), stateUpString.indexOf("brd"));
-
-                    String ipPartial = stateUpString.substring(stateUpString.indexOf("inet"));
-                    String ip = ipPartial.substring(ipPartial.indexOf("inet"), ipPartial.indexOf("/"));
-
-                    list.add(ip.substring(5).trim());
-                    list.add(mac.substring(6).trim());
-
-                }
-
-                // Helps in fetching the Subnet
                 String runningState = "<UP,BROADCAST,RUNNING,MULTICAST>";
-                if (line.toString().contains(runningState)) {
-                    String partialSubnetMask = line.substring(line.indexOf(runningState));
-                    String subnetMask = partialSubnetMask.substring(partialSubnetMask.indexOf("netmask"), partialSubnetMask.indexOf("broadcast"));
 
-                    list.add(subnetMask.substring(8));
+                for (int i = 0; i < values.length; ++i) {
+
+                    // Inserting the IP and MAC Address
+                    if (values[i].contains(status)) {
+
+                        String fetchingOutput = values[i] + values[i + 1] + values[i + 2] + values[i+3] + values[i+4];
+
+                        String mac = fetchingOutput.substring(fetchingOutput.indexOf("ether"), fetchingOutput.indexOf("brd"));
+
+                        String ipPartial = fetchingOutput.substring(fetchingOutput.indexOf("inet"));
+                        String ip = ipPartial.substring(ipPartial.indexOf("inet"), ipPartial.indexOf("/"));
+
+                        list.add(ip.substring(5).trim());
+                        list.add(mac.substring(6).trim());
+                        flag = true;
+                        break;
+
+                    }
+
+                    // Inserting the Subnet Mask
+                    else if (values[i].contains(runningState)) {
+
+                        String fetchingOutput = values[i] + values[i + 1];
+
+                        String partialSubnetMask = fetchingOutput.substring(fetchingOutput.indexOf(runningState));
+                        String subnetMask = partialSubnetMask.substring(partialSubnetMask.indexOf("netmask"), partialSubnetMask.indexOf("broadcast"));
+
+                        list.add(subnetMask.substring(8));
+                        flag = true;
+                        break;
+
+                    }
 
                 }
 
+            }
+            if(!flag){
+                list.add(null);
             }
 
         }
