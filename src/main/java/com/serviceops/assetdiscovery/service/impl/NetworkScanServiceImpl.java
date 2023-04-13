@@ -30,9 +30,10 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private final OsService osService;
     private final NetworkAdapterService networkAdapterService;
     private final LogicalDiskService logicalDiskService;
+    private final ProcessorService processorService;
 
 
-    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, PointingDeviceService pointingDeviceService, NetworkAdapterService networkAdapterService, RamService ramService, MonitorService monitorService, OsServiceImpl osService,LogicalDiskService logicalDiskService) {
+    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, PointingDeviceService pointingDeviceService, NetworkAdapterService networkAdapterService, RamService ramService, MonitorService monitorService, OsServiceImpl osService, LogicalDiskService logicalDiskService, ProcessorService processorService) {
         this.customRepository = customRepository;
         this.assetService = assetService;
         this.motherBoardService = motherBoardService;
@@ -46,6 +47,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         this.osService = osService;
         this.networkAdapterService = networkAdapterService;
         this.logicalDiskService = logicalDiskService;
+        this.processorService = processorService;
     }
 
     @Override
@@ -75,6 +77,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         osService.save(assetRest.getId());
         pointingDeviceService.save(assetRest.getId());
         logicalDiskService.save(assetRest.getId());
+        processorService.save(assetRest.getId());
     }
     private AssetRest  saveAsset(){
         return assetService.save();
