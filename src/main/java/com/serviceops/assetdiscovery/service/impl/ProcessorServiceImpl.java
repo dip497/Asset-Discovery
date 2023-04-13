@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.controller.ProcessorController;
+import com.serviceops.assetdiscovery.entity.Bios;
 import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
@@ -23,7 +24,7 @@ public class ProcessorServiceImpl implements ProcessorService {
         this.customRepository = customRepository;
         setCommands();
     }
-    public static void setCommands() {
+    private void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
         // command for parsing information about the L2 cache.
         commands.put("lscpu | grep 'L2 cache' | awk '{print $NF}'", new String[]{});
@@ -46,7 +47,7 @@ public class ProcessorServiceImpl implements ProcessorService {
         LinuxCommandExecutorManager.add(Processor.class, commands);
     }
 
-    public static List<String> getParseResult() {
+    private List<String> getParseResult() {
         Map<String, String[]> stringMap = LinuxCommandExecutorManager.get(Processor.class);
         List<String> list = new ArrayList<>();
         for (Map.Entry<String, String[]> result : stringMap.entrySet()) {
@@ -59,8 +60,22 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
     @Override
     public void save(Long id) {
-        Processor processor = new Processor();
-        processor.setId(id);
+
+        List<String> parseResult = getParseResult();
+        Optional<Processor> fetchProcessor = customRepository.findByColumn("refId", id, Processor.class);
+        if (fetchProcessor.isPresent()) {
+            Processor processor = fetchProcessor.get();
+            logger.info("Processor updated with id -->{}", id);
+            setData(id, processor);
+        } else {
+            Processor processor = new Processor();
+            processor.setRefId(id);
+            logger.info("Processor saved with id: --> {}",id);
+            setData(id, processor);
+        }
+    }
+
+    private void setData(Long id, Processor processor) {
         processor.setL2CacheSize(getParseResult().get(0));
         processor.setL3CacheSize(getParseResult().get(1));
         processor.setManufacturer(getParseResult().get(3));
@@ -68,8 +83,6 @@ public class ProcessorServiceImpl implements ProcessorService {
         processor.setWidth(getParseResult().get(5));
         processor.setCpuSpeed(getParseResult().get(6));
         processor.setCoreCount(getParseResult().get(7));
-
-        logger.info("Processor saved with id -->{}",id);
         customRepository.save(processor);
     }
 
