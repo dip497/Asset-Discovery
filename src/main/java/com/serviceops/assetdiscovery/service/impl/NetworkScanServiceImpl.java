@@ -4,6 +4,7 @@ import com.jcraft.jsch.JSchException;
 import com.serviceops.assetdiscovery.entity.Credentials;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.AssetRest;
+import com.serviceops.assetdiscovery.service.interfaces.LogicalDiskService;
 import com.serviceops.assetdiscovery.service.interfaces.*;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import org.slf4j.Logger;
@@ -28,9 +29,11 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final OsService osService;
     private final NetworkAdapterService networkAdapterService;
+    private final LogicalDiskService logicalDiskService;
+    private final ProcessorService processorService;
 
 
-    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, PointingDeviceService pointingDeviceService, NetworkAdapterService networkAdapterService, RamService ramService, MonitorService monitorService, OsServiceImpl osService) {
+    public NetworkScanServiceImpl(CustomRepository customRepository, AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, PointingDeviceService pointingDeviceService, NetworkAdapterService networkAdapterService, RamService ramService, MonitorService monitorService, OsServiceImpl osService, LogicalDiskService logicalDiskService, ProcessorService processorService) {
         this.customRepository = customRepository;
         this.assetService = assetService;
         this.motherBoardService = motherBoardService;
@@ -43,6 +46,8 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         this.monitorService=monitorService;
         this.osService = osService;
         this.networkAdapterService = networkAdapterService;
+        this.logicalDiskService = logicalDiskService;
+        this.processorService = processorService;
     }
 
     @Override
@@ -66,11 +71,13 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         computerSystemService.save(assetRest.getId());
         keyboardService.save(assetRest.getId());
         biosService.save(assetRest);
-        networkAdapterService.save(assetRest.getId());
+//        networkAdapterService.save(assetRest.getId());
         ramService.save(assetRest.getId());
         monitorService.save(assetRest.getId());
         osService.save(assetRest.getId());
         pointingDeviceService.save(assetRest.getId());
+        logicalDiskService.save(assetRest.getId());
+        processorService.save(assetRest.getId());
     }
     private AssetRest  saveAsset(){
         return assetService.save();

@@ -16,7 +16,7 @@ public class PhysicalDiskController {
     }
 
     @GetMapping
-    public void save(@PathVariable("refId") Long id) {
+    public void get(@PathVariable("refId") Long id) {
         logger.info("Saving physical disk with id: " + id);
         physicalDiskService.findByRefId(id);
     }
