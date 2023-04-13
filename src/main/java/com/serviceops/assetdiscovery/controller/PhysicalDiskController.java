@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/{refId}/physicalDisk")
 public class PhysicalDiskController {
@@ -16,9 +18,9 @@ public class PhysicalDiskController {
     }
 
     @GetMapping
-    public void get(@PathVariable("refId") Long id) {
+    public List<PhysicalDiskRest> get (@PathVariable("refId") Long id) {
         logger.info("Saving physical disk with id: " + id);
-        physicalDiskService.findByRefId(id);
+        return physicalDiskService.findByRefId(id);
     }
 
     @DeleteMapping
