@@ -118,7 +118,7 @@ public class RamServiceImpl implements RamService {
     public void update(RamRest ramRest) {
         Ram ram = new Ram();
         RamOps ramOps = new RamOps(ram,ramRest);
-        customRepository.save(ramOps.restToEntity());
+        customRepository.update(ramOps.restToEntity());
         logger.info("Ram Updated with Asset Id ->{}",ram.getRefId());
     }
 

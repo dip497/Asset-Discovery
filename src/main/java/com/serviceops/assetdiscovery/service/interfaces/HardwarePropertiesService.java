@@ -6,6 +6,6 @@ public interface HardwarePropertiesService {
 
     HardwarePropertiesRest findByRefId(Long refId);
 
-    void update(HardwarePropertiesRest hardwarePropertiesRest);
+    void update(Long refId,HardwarePropertiesRest hardwarePropertiesRest);
 
 }

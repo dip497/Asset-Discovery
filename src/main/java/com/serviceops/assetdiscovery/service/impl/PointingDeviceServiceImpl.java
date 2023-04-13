@@ -159,7 +159,6 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
             pointingDevice.setNumberOfButtons(updatePointIngDevice[1]);
             pointingDevice.setPointingType(updatePointIngDevice[2]);
             pointingDevice.setDescription(updatePointIngDevice[3]);
-            System.out.println(pointingDevice);
 
             logger.info("Saved pointing device with id: --> {}",id);
             customRepository.save(pointingDevice);

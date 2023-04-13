@@ -32,7 +32,6 @@ public class MonitorServiceImpl implements MonitorService{
     public void save(Long id) {
         String[][] parsedResults = parseResults();
         List<Monitor> monitors = customRepository.findAllByColumnName(Monitor.class,"refId",id);
-        logger.info(String.valueOf(parsedResults.length));
         if(!monitors.isEmpty()){
             if(monitors.size()==parsedResults.length){
                 for(Monitor monitor: monitors){
@@ -157,36 +156,28 @@ public class MonitorServiceImpl implements MonitorService{
             }
            for(int i=0;i<numberOfMonitor;i++){
                String results = result[i];
-               switch(count) {
-                   case 1:
                        if (results.contains("description:")) {
                            parsedResult[i][j] = results.substring(results.indexOf("description:") + "description:".length());
                            break;
                        }
-                   case 2:
                        if (results.contains("vendor")) {
                            parsedResult[i][j] = results.substring(results.indexOf("vendor:") + "vendor:".length());
                            break;
                        }
-                   case 3:
                        if (results.contains("unable to open")) {
                            parsedResult[i][j] = "Not Found";
                            break;
                        } else {
                            parsedResult[i][j] = result[i];
                        }
-                   case 4:
                        if (results.contains("unable to open")) {
                            parsedResult[i][j] = "Not Found";
                            break;
                        } else {
                            parsedResult[i][j] = result[i];
                        }
-                   case 5: continue;
                }
-               count++;
                j++;
-           }
            }
             return parsedResult;
         }

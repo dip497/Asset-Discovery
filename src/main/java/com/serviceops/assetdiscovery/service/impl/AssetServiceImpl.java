@@ -70,6 +70,7 @@ public class AssetServiceImpl implements AssetService {
             logger.info("Asset found by IP ->{}", ipAddress);
             return assetOps.entityToRest();
         } else {
+            logger.error("Asset not found by IP ->{}", ipAddress);
             throw new ResourceNotFoundException("AssetRest", "ipAddress", ipAddress);
         }
 
@@ -87,6 +88,7 @@ public class AssetServiceImpl implements AssetService {
             logger.info("Asset found by id ->{}", id);
             return assetOps.entityToRest();
         } else {
+            logger.error("Asset not found by ID ->{}", id);
             throw new ResourceNotFoundException("AssetRest", "id", Long.toString(id));
         }
     }

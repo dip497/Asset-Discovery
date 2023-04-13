@@ -71,6 +71,7 @@ public class BiosServiceImpl implements BiosService {
             return biosOps.entityToRest();
         }
         else{
+            logger.error("Bios not found for Asset with ID ->{}", refId);
             throw new ResourceNotFoundException("BiosRest","refId",Long.toString(refId));
         }
 
