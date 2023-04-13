@@ -5,11 +5,13 @@ import com.serviceops.assetdiscovery.rest.MonitorRest;
 import com.serviceops.assetdiscovery.service.interfaces.MonitorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/asset/{refId}/monitor")
+@RestController
+@RequestMapping("/{refId}/monitor")
 public class MonitorServiceController {
 
     private final MonitorService monitorService;
@@ -17,22 +19,30 @@ public class MonitorServiceController {
     public MonitorServiceController(MonitorService monitorService){
         this.monitorService=monitorService;
     }
-    @GetMapping("/")
-    public List<MonitorRest> getMonitor(@PathVariable("refId") Long id){
-        logger.debug("Request hits the get api of monitor");
-        List<MonitorRest> monitors = monitorService.get(id);
+    @GetMapping()
+    public List<MonitorRest> getMonitor(@PathVariable("refId") Long refId){
+
+        logger.debug("Fetching ComputerSystem with Asset id -> {}",refId);
+
+        List<MonitorRest> monitors = monitorService.get(refId);
+
         return monitors;
+
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMonitor(@PathVariable("id") Long id){
-        logger.debug("Request hits the delete api of monitor");
-        monitorService.deleteById(id);
+    public void deleteMonitor(@PathVariable("id") Long id,@PathVariable("refId") Long refId){
+
+        logger.debug("Deleting Monitor with Asset id -> {}",refId);
+
+        monitorService.deleteById(refId);
     }
 
-    @PostMapping("/")
-    public void addMonitor(@RequestBody MonitorRest monitorRest){
-        logger.debug("Request hits the add api of monitor");
+    @PostMapping("")
+    public void addMonitor(@PathVariable("refId") Long refId, @RequestBody MonitorRest monitorRest){
+
+        logger.debug("Updating updateComputerSystem with Asset id -> {}",refId);
+
         monitorService.update(monitorRest);
     }
 
