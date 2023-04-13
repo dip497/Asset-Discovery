@@ -95,7 +95,7 @@ public class CredentialsServiceImpl implements CredentialsService {
 
         CredentialsOps credentialsOps = new CredentialsOps(new Credentials(),credentialsRest);
 
-        customRepository.save(credentialsOps.restToEntity());
+        customRepository.update(credentialsOps.restToEntity());
 
         logger.info("Updated credentials field -> {} for id {}",fields,id);
 

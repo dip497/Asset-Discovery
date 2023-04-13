@@ -72,7 +72,7 @@ public class MotherBoardServiceImpl implements MotherBoardService{
     public void update(MotherBoardRest motherBoardRest) {
         MotherBoard motherBoard = new MotherBoard();
         MotherBoardOps motherBoardOps = new MotherBoardOps(motherBoard,motherBoardRest);
-        customRepository.save(motherBoardOps.restToEntity());
+        customRepository.update(motherBoardOps.restToEntity());
         logger.info("MotherBoard Updated with Asset Id ->{}",motherBoard.getRefId());
     }
 
