@@ -21,7 +21,7 @@ public class MonitorOps extends AssetBaseOps<Monitor,MonitorRest> {
         this.monitorRest = monitorRest;
     }
 
-    public MonitorRest entityToRest(Monitor monitor){
+    public MonitorRest entityToRest(){
         super.entityToRest(monitor);
         monitorRest.setMonitorType(monitor.getMonitorType());
         monitorRest.setDescription(monitor.getDescription());
@@ -34,7 +34,7 @@ public class MonitorOps extends AssetBaseOps<Monitor,MonitorRest> {
         monitorRest.setPnpDeviceId(monitor.getPnpDeviceId());
         return monitorRest;
     }
-    public Monitor restToEntity(MonitorRest monitorRest){
+    public Monitor restToEntity(){
         super.restToEntity(monitorRest);
         monitor.setMonitorType(monitorRest.getMonitorType());
         monitor.setDescription(monitorRest.getDescription());

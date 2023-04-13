@@ -9,7 +9,7 @@ public interface MonitorService {
     void save(Long id);
     void update(MonitorRest monitorRest);
     void deleteById(Long id);
-    List<MonitorRest> get(Long id);
+    List<MonitorRest> getMonitors(Long id);
 
 
 }

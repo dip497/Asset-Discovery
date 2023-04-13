@@ -14,7 +14,7 @@ public class LogicalDiskOps extends AssetBaseOps<LogicalDisk, LogicalDiskRest> {
         this.logicalDiskRest=logicalDiskRest;
     }
 
-    public LogicalDiskRest entityToRest(LogicalDisk logicalDisk){
+    public LogicalDiskRest entityToRest(){
         super.entityToRest(logicalDisk);
         logicalDiskRest.setDescription(logicalDisk.getDescription());
         logicalDiskRest.setSize(logicalDisk.getSize());
@@ -27,7 +27,7 @@ public class LogicalDiskOps extends AssetBaseOps<LogicalDisk, LogicalDiskRest> {
         return logicalDiskRest;
     }
 
-    public LogicalDisk restToEntity(LogicalDiskRest logicalDiskRest){
+    public LogicalDisk restToEntity(){
         super.restToEntity(logicalDiskRest);
         logicalDisk.setDescription(logicalDiskRest.getDescription());
         logicalDisk.setSize(logicalDiskRest.getSize());

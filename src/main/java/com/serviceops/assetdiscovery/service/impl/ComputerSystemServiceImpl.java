@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.ComputerSystem;
+import com.serviceops.assetdiscovery.entity.OS;
 import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
@@ -29,24 +30,14 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
         List<String> parsedResults = getParseResults();
         if(savedComputerSystem.isPresent()) {
            ComputerSystem computerSystem = savedComputerSystem.get();
-           computerSystem.setUserName(parsedResults.get(0));
-           computerSystem.setModelName(parsedResults.get(1));
-           computerSystem.setSystemType(parsedResults.get(2));
-           computerSystem.setUuid(parsedResults.get(3));
-           computerSystem.setBootUpState(parsedResults.get(4));
-           computerSystem.setManufacturer(parsedResults.get(5));
+           setDetails(computerSystem,parsedResults);
             logger.info("Updated ComputerSystem with refId ->{}",id);
            customRepository.save(computerSystem);
         }else{
             ComputerSystem computerSystem = new ComputerSystem();
             computerSystem.setRefId(id);
-            computerSystem.setUserName(parsedResults.get(0));
-            computerSystem.setModelName(parsedResults.get(1));
-            computerSystem.setSystemType(parsedResults.get(2));
-            computerSystem.setUuid(parsedResults.get(3));
-            computerSystem.setBootUpState(parsedResults.get(4));
-            computerSystem.setManufacturer(parsedResults.get(5));
-            logger.info("Saved monitor with refId ->{}",id);
+            setDetails(computerSystem,parsedResults);
+            logger.info("Saved ComputerSystem with refId ->{}",id);
             customRepository.save(computerSystem);
         }
     }
@@ -63,6 +54,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
                 computerSystemRest.setNumberOfProcessors(1);
                 computerSystemRest.setNumberOfLogicalProcessor(2 * Integer.parseInt(optionalProcessor.get().getCoreCount()));
             }
+            Optional<OS> optionalOs = customRepository.findByColumn("refId",id,OS.class);
             return computerSystemRest;
             }
         else{
@@ -83,23 +75,49 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
         logger.info("Deleting Computer Sytem with refId -> {}",id);
         customRepository.deleteById(ComputerSystem.class,id,"refId");
     }
+    private void setDetails(ComputerSystem computerSystem,List<String> data){
+        //setting sata of computerSystem
+        computerSystem.setUserName(data.get(0));
+        computerSystem.setModelName(data.get(1));
+        computerSystem.setSystemType(data.get(2));
+        computerSystem.setUuid(data.get(3));
+        computerSystem.setBootUpState(data.get(4));
+        computerSystem.setManufacturer(data.get(5));
+    }
     private void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
+        //command to fetch username
         commands.put("sudo who | head -n1| cut -d' ' -f1", new String[]{});
+        //command to fetch product name
         commands.put("sudo dmidecode -s system-product-name", new String[]{});
+        //command to fetch os architecture
         commands.put("uname -m", new String[]{});
+        //command to fetch uuid
         commands.put("sudo dmidecode -s system-uuid", new String[]{});
+        //command to get bootup state
         commands.put("systemctl is-system-running", new String[]{});
+        //command to get manufcturer of computerSystem
         commands.put("sudo dmidecode -s system-manufacturer", new String[]{});
         LinuxCommandExecutorManager.add(ComputerSystem.class, commands);
     }
     private List<String> getParseResults() {
+
         Map<String, String[]> commandResults = LinuxCommandExecutorManager.get(ComputerSystem.class);
         List<String> parsedResults = new ArrayList<>();
+
         for (Map.Entry<String, String[]> commandResult : commandResults.entrySet()) {
+            boolean flag = false;
             String[] results = commandResult.getValue();
+
             for(String i:results){
-                parsedResults.add(i);
+                if(!i.trim().isEmpty()){
+                    flag = true;
+                    parsedResults.add(i);
+                }
+            }
+            if(!flag){
+                parsedResults.add(null);
+                flag=true;
             }
         }
         return parsedResults;

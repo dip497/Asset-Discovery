@@ -1,5 +1,4 @@
 package com.serviceops.assetdiscovery.service.impl;
-import com.serviceops.assetdiscovery.entity.ComputerSystem;
 import com.serviceops.assetdiscovery.entity.Monitor;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
@@ -29,47 +28,50 @@ public class MonitorServiceImpl implements MonitorService{
 
     @Override
     @Transactional
-    public void save(Long id) {
+    public void save(Long refId) {
         String[][] parsedResults = parseResults();
-        List<Monitor> monitors = customRepository.findAllByColumnName(Monitor.class,"refId",id);
-        if(!monitors.isEmpty()){
-            if(monitors.size()==parsedResults.length){
-                for(Monitor monitor: monitors){
-                  for(String[] updateMonitor : parsedResults){
-                      monitor.setDescription(updateMonitor[1]);
-                      monitor.setManufacturer(updateMonitor[2]);
-                      customRepository.save(monitor);
-                  }
+        if(parsedResults.length!=0) {
+            List<Monitor> monitors = customRepository.findAllByColumnName(Monitor.class, "refId", refId);
+            if (!monitors.isEmpty()) {
+                if (monitors.size() == parsedResults.length) {
+                    for (Monitor monitor : monitors) {
+                        for (String[] updateMonitor : parsedResults) {
+                            setMonitor(monitor, updateMonitor);
+                            logger.info("Updated Monitor with Asset Id->{}", refId);
+                            customRepository.save(monitor);
+                        }
+                    }
+                } else {
+                    for (Monitor monitor : monitors) {
+                        customRepository.deleteById(Monitor.class, monitor.getId(), "id");
+                    }
+                    for (String[] updateMonitor : parsedResults) {
+                        Monitor monitor = new Monitor();
+                        monitor.setRefId(refId);
+                        logger.info("Saved Monitor with Asset Id->{}", refId);
+                        setMonitor(monitor, updateMonitor);
+                        customRepository.save(monitor);
+                    }
                 }
-            }else{
-                for(Monitor monitor: monitors){
-                    customRepository.deleteById(Monitor.class,monitor.getId(),"id");
-                }
-                for(String[] updateMonitor : parsedResults){
+            } else {
+                for (String[] updateMonitor : parsedResults) {
                     Monitor monitor = new Monitor();
-                    monitor.setRefId(id);
-                    monitor.setDescription(updateMonitor[1]);
-                    monitor.setManufacturer(updateMonitor[2]);
+                    monitor.setRefId(refId);
+                    setMonitor(monitor, updateMonitor);
+                    logger.info("Saved Monitor with Asset Id->{}", refId);
                     customRepository.save(monitor);
                 }
             }
-        }else{
-            for(String[] updateMonitor : parsedResults){
-                Monitor monitor = new Monitor();
-                monitor.setRefId(id);
-                monitor.setDescription(updateMonitor[1]);
-                monitor.setManufacturer(updateMonitor[2]);
-                customRepository.save(monitor);
-            }
+        }else {
+            logger.debug("No Monitor exist for Assset -> {}",refId);
         }
-
         }
 
     @Override
     public void update(MonitorRest monitorRest){
         MonitorOps monitorOps = new MonitorOps(new Monitor(),monitorRest);
         logger.info("Updated added field in monitor -> {}",monitorRest.getId());
-        customRepository.save(monitorOps.restToEntity(monitorRest));
+        customRepository.save(monitorOps.restToEntity());
     }
 
     @Transactional
@@ -80,13 +82,13 @@ public class MonitorServiceImpl implements MonitorService{
     }
 
     @Override
-    public List<MonitorRest> get(Long id){
+    public List<MonitorRest> getMonitors(Long id){
         List<Monitor> monitorsList = customRepository.findAllByColumnName(Monitor.class,"refId",id);
         if(!monitorsList.isEmpty()){
             List<MonitorRest> monitorRestList = new ArrayList<>();
             for(Monitor monitor : monitorsList) {
                 MonitorOps monitorOps = new MonitorOps(monitor,new MonitorRest());
-                monitorRestList.add(monitorOps.entityToRest(monitor));
+                monitorRestList.add(monitorOps.entityToRest());
                 logger.info("Retrieving Monitor of refId -> {}",id);
             }
             return monitorRestList;
@@ -96,7 +98,13 @@ public class MonitorServiceImpl implements MonitorService{
         }
 
     }
-
+    private void setMonitor(Monitor monitor,String[] data){
+        //setting up monitors' data
+        monitor.setDescription(data[1]);
+        monitor.setManufacturer(data[2]);
+        monitor.setScreenHeight(data[3]);
+        monitor.setScreenWidth(data[4]);
+    }
     private void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
         //command for getting number of monitors by counting number of decription
@@ -149,7 +157,7 @@ public class MonitorServiceImpl implements MonitorService{
                 continue;
             }
             String[] result = commandResult.getValue();
-            if(numberOfMonitor!=result.length){
+            if(numberOfMonitor<result.length){
                 for(int i=1;i<result.length;i++){
                     result[i-1]=result[i];
                 }
@@ -165,13 +173,13 @@ public class MonitorServiceImpl implements MonitorService{
                            break;
                        }
                        if (results.contains("unable to open")) {
-                           parsedResult[i][j] = "Not Found";
+                           parsedResult[i][j] = "Unknown";
                            break;
                        } else {
                            parsedResult[i][j] = result[i];
                        }
                        if (results.contains("unable to open")) {
-                           parsedResult[i][j] = "Not Found";
+                           parsedResult[i][j] = "Unknown";
                            break;
                        } else {
                            parsedResult[i][j] = result[i];
@@ -183,57 +191,4 @@ public class MonitorServiceImpl implements MonitorService{
         }
 
     }
-//    public void saves(Long id){
-//        List<String> parse = getParseResult();
-//        for(String i:parse){
-//            System.out.println(i);
-//        }
-//        Monitor monitor = new Monitor();
-//        monitor.setRefId(id);
-//        monitor.setDescription(parse.get(0));
-//        monitor.setManufacturer(parse.get(1));
-//        customRepository.save(monitor);
-//    }
-
-    //    private List<String> getParseResult() {
-//        Map<String, String[]> commandResults = LinuxCommandExecutorManager.get(Monitor.class);
-//        List<String> parsedResults = new ArrayList<>();
-//        int count =0;
-//        for (Map.Entry<String, String[]> commandResult : commandResults.entrySet()) {
-//            String[] results = commandResult.getValue();
-//            for(String i :results) {
-//                switch (count) {
-//                    case 1:
-//                        if (i.contains("description:")) {
-//                            parsedResults.add(i.substring(i.indexOf("description:") + "description:".length()));
-//                            break;
-//                        }
-//                    case 2:
-//                        if (i.contains("vendor")) {
-//                            parsedResults.add(i.substring(i.indexOf("vendor:") + "vendor:".length()));
-//                            break;
-//                        }
-//                    case 3:
-//                        if (i.contains("unable to open")) {
-//                            parsedResults.add("Not Found");
-//                            break;
-//                        } else {
-//                            parsedResults.add(i);
-//                        }
-//                    case 4:
-//                        if (i.contains("unable to open")) {
-//                            parsedResults.add("Not Found");
-//                            break;
-//                        } else {
-//                            parsedResults.add(i);
-//                        }
-//                    case 5: continue;
-//                }
-//                count++;
-//            }
-//        }
-//        return parsedResults;
-//    }
-
-
 }
