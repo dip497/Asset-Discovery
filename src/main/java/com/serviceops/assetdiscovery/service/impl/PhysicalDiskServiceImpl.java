@@ -25,7 +25,7 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         setCommands();
     }
 
-    public static void setCommands() {
+    private void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
         // command for parsing information about the disk size.
         commands.put("df -h | awk '$NF==\"/\"{printf \"%s\\n\", $2}'\n", new String[]{});
@@ -41,7 +41,7 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         LinuxCommandExecutorManager.add(PhysicalDisk.class, commands);
     }
 
-    public static List<String> getParseResult() {
+    private static List<String> getParseResult() {
         Map<String, String[]> stringMap = LinuxCommandExecutorManager.get(PhysicalDisk.class);
         List<String> list = new ArrayList<>();
         for (Map.Entry<String, String[]> result : stringMap.entrySet()) {
@@ -54,14 +54,26 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
     @Override
     public void save(Long id) {
-        PhysicalDisk physicalDisk = new PhysicalDisk();
-        physicalDisk.setRefId(id);
+
+        Optional<PhysicalDisk> fetchPhysicalDisk = customRepository.findByColumn("refId",id, PhysicalDisk.class);
+        if (fetchPhysicalDisk.isPresent()) {
+            PhysicalDisk physicalDisk = fetchPhysicalDisk.get();
+            logger.info("Updating PhysicalDisk with Id : --> {}",physicalDisk.getId());
+            setData(physicalDisk);
+        } else {
+            PhysicalDisk physicalDisk = new PhysicalDisk();
+            physicalDisk.setRefId(id);
+            logger.info("Creating PhysicalDisk with Id : --> {}",id);
+            setData(physicalDisk);
+        }
+    }
+
+    private void setData(PhysicalDisk physicalDisk) {
         physicalDisk.setSize(getParseResult().get(0));
         physicalDisk.setName(getParseResult().get(1));
         physicalDisk.setPnpDeviceId(getParseResult().get(2));
         physicalDisk.setInterfaceType(getParseResult().get(3));
         physicalDisk.setMediaType(getParseResult().get(4));
-        logger.info("Saving PhysicalDisk with Id : --> {}",physicalDisk.getId());
         customRepository.save(physicalDisk);
     }
 
