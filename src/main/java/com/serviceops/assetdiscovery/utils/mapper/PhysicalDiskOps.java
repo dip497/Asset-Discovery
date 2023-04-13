@@ -5,11 +5,13 @@ import com.serviceops.assetdiscovery.rest.PhysicalDiskRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
 public class PhysicalDiskOps extends AssetBaseOps<PhysicalDisk, PhysicalDiskRest> {
-    private PhysicalDisk physicalDisk;
-    private PhysicalDiskRest physicalDiskRest;
+    private final PhysicalDisk physicalDisk;
+    private final PhysicalDiskRest physicalDiskRest;
 
     public PhysicalDiskOps(PhysicalDisk physicalDisk, PhysicalDiskRest physicalDiskRest) {
         super(physicalDisk, physicalDiskRest);
+        this.physicalDisk = physicalDisk;
+        this.physicalDiskRest = physicalDiskRest;
     }
 
     public PhysicalDisk restToEntity(){
@@ -28,15 +30,15 @@ public class PhysicalDiskOps extends AssetBaseOps<PhysicalDisk, PhysicalDiskRest
     }
 
     public PhysicalDiskRest entityToRest(){
-        physicalDiskRest.setPnpDeviceId(physicalDiskRest.getPnpDeviceId());
-        physicalDiskRest.setDescription(physicalDiskRest.getDescription());
-        physicalDiskRest.setName(physicalDiskRest.getName());
-        physicalDiskRest.setSize(physicalDiskRest.getSize());
-        physicalDiskRest.setInstalledDate(physicalDiskRest.getInstalledDate());
-        physicalDiskRest.setPartition(physicalDiskRest.getPartition());
-        physicalDiskRest.setMediaType(physicalDiskRest.getMediaType());
-        physicalDiskRest.setInterfaceType(physicalDiskRest.getInterfaceType());
-        physicalDiskRest.setPnpDeviceId(physicalDiskRest.getPnpDeviceId());
+        super.entityToRest(physicalDisk);
+        physicalDiskRest.setDescription(physicalDisk.getDescription());
+        physicalDiskRest.setName(physicalDisk.getName());
+        physicalDiskRest.setSize(physicalDisk.getSize());
+        physicalDiskRest.setInstalledDate(physicalDisk.getInstalledDate());
+        physicalDiskRest.setPartition(physicalDisk.getPartition());
+        physicalDiskRest.setMediaType(physicalDisk.getMediaType());
+        physicalDiskRest.setInterfaceType(physicalDisk.getInterfaceType());
+        physicalDiskRest.setPnpDeviceId(physicalDisk.getPnpDeviceId());
 
         return physicalDiskRest;
     }

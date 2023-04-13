@@ -27,11 +27,8 @@ public class ProcessorServiceImpl implements ProcessorService {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
         // command for parsing information about the L2 cache.
         commands.put("lscpu | grep 'L2 cache:' | awk '{print $(NF-1), $NF}'", new String[]{});
-//        commands.put("lscpu | grep 'L2 cache'| awk '{print $NF}'", new String[]{});
         // command for parsing information about the L3 cache.
         commands.put("lscpu | grep 'L3 cache' | awk '{print $(NF-1), $NF}'", new String[]{}); //TODO L1 cache
-        // command for parsing information about the Architecture.
-        commands.put("lscpu | grep 'Architecture:' | awk '{print $NF}'", new String[]{});
         // command for parsing information about the manufacturer.
         commands.put("lscpu | grep 'Vendor ID:' | awk '{print $NF}'", new String[]{});
         // command for parsing information about the cpu family.
@@ -44,7 +41,7 @@ public class ProcessorServiceImpl implements ProcessorService {
         // command for parsing information about the cpu core count.
         commands.put("lscpu | grep 'CPU(s):' | awk '{print $2F}'", new String[]{});
         // command for parsing information about the L1 cache.
-        commands.put("lscpu | grep 'L1d cache:' | awk '{print $(NF-1), $NF}'", new String[]{});
+        commands.put("lscpu | grep 'L1i cache:' | awk '{print $(NF-1), $NF}'", new String[]{});
 
         LinuxCommandExecutorManager.add(Processor.class, commands);
     }
@@ -77,12 +74,13 @@ public class ProcessorServiceImpl implements ProcessorService {
     private void setData(Processor processor) {
         processor.setL2CacheSize(getParseResult().get(0));
         processor.setL3CacheSize(getParseResult().get(1));
-        processor.setManufacturer(getParseResult().get(3));
-        processor.setFamily(getParseResult().get(4));
-        processor.setWidth(getParseResult().get(5));
-        processor.setCpuSpeed(getParseResult().get(6));
-        processor.setCoreCount(getParseResult().get(7));
-        processor.setL1CacheSize(getParseResult().get(8));
+        processor.setManufacturer(getParseResult().get(2));
+        processor.setFamily(getParseResult().get(3));
+        processor.setWidth(getParseResult().get(4));
+        processor.setCpuSpeed(getParseResult().get(5));
+        processor.setCoreCount(getParseResult().get(6));
+            processor.setL1CacheSize(getParseResult().get(7));
+        System.out.println(processor);
         customRepository.save(processor);
     }
 

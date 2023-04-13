@@ -87,7 +87,7 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
     public void update(Long id, PhysicalDiskRest physicalDiskRest) {
         PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps(new PhysicalDisk(),physicalDiskRest);
         logger.info("Updating PhysicalDisk with Id : --> {}",id);
-        customRepository.update(physicalDiskOps);
+        customRepository.update(physicalDiskOps.restToEntity());
     }
 
     @Override

@@ -18,21 +18,21 @@ public class PointingDeviceController {
         this.pointingDeviceService = pointingDeviceService;
     }
 
-    @GetMapping
-    public List<PointingDeviceRest> getPointingDeviceList(@PathVariable("refId") String refId){
+    @GetMapping()
+    public List<PointingDeviceRest> getPointingDeviceList(@PathVariable("refId") Long refId){
         logger.debug("getPointing DeviceList with Asset id: -->{}",refId);
-        List<PointingDeviceRest> pointingDeviceList = pointingDeviceService.getPointingDevices(Long.valueOf(refId));
+        List<PointingDeviceRest> pointingDeviceList = pointingDeviceService.getPointingDevices(refId);
 
         return pointingDeviceList;
     }
 
-    @DeleteMapping
-    public void deletePointingDevice(@PathVariable("refId") String refId){
+    @DeleteMapping()
+    public void deletePointingDevice(@PathVariable("refId") Long refId){
         logger.debug("PointingDevice deleting with id --> {}",refId);
-        pointingDeviceService.deleteById(Long.parseLong(refId));
+        pointingDeviceService.deleteById(refId);
     }
 
-    @PutMapping
+    @PutMapping()
     public void updatePointingDevice(@PathVariable("refId") String refId, @RequestBody PointingDeviceRest pointingDeviceRest){
         logger.debug("PointingDevice updating with id --> {}",refId);
         pointingDeviceService.update(Long.parseLong(refId), pointingDeviceRest);
