@@ -19,19 +19,19 @@ public class PhysicalDiskController {
 
     @GetMapping
     public List<PhysicalDiskRest> get (@PathVariable("refId") Long id) {
-        logger.info("Saving physical disk with id: " + id);
+        logger.info("Fetching physical disk with id: --> {}", id);
         return physicalDiskService.findByRefId(id);
     }
 
     @DeleteMapping
     public void delete(@PathVariable("refId") Long id) {
-        logger.info("Deleting physical disk with id: " + id);
+        logger.info("Deleting physical disk with id: --> {}", id);
         physicalDiskService.delete(id);
     }
 
     @PutMapping
     public void update(@PathVariable("refId") Long id, @RequestBody PhysicalDiskRest physicalDiskRest){
-        logger.info("Updating physical disk with id: " + id);
+        logger.info("Updating physical disk with id: --> {}", id);
         physicalDiskService.update(id,physicalDiskRest);
     }
 }

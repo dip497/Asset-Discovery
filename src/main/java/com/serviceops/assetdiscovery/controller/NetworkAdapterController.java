@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Registered
+@RestController
 @RequestMapping("/{refId}/networkAdapter")
 public class NetworkAdapterController {
     private final NetworkAdapterService networkAdapterService;
@@ -23,7 +23,7 @@ public class NetworkAdapterController {
 
     @GetMapping
     public List<NetworkAdapterRest> getNetworkAdapterList(@PathVariable("refId") long id) {
-        List<NetworkAdapterRest> networkAdapterRestList = new ArrayList<>();
+        List<NetworkAdapterRest> networkAdapterRestList = networkAdapterService.findAll(id);
         networkAdapterRestList.add(networkAdapterService.findByResId(id));
         logger.debug("Finding NetworkAdapter with id --> {}",id);
         return networkAdapterRestList;
