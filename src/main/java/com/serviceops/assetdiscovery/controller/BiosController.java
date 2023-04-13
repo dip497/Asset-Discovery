@@ -5,8 +5,6 @@ import com.serviceops.assetdiscovery.service.impl.BiosServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,13 +21,9 @@ public class BiosController {
     @GetMapping()
     public List<BiosRest> getBios(@PathVariable("refId") Long refId){
 
-        List<BiosRest> biosRests = new ArrayList<>();
-
         logger.debug("Fetching Bios with Asset id -> {}",refId);
 
-        biosRests.add(biosService.findByRefId(refId));
-
-        return biosRests;
+        return  biosService.findByRefId(refId);
     }
 
     @DeleteMapping()

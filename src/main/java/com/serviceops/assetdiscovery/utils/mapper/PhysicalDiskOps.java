@@ -8,8 +8,8 @@ public class PhysicalDiskOps extends AssetBaseOps<PhysicalDisk, PhysicalDiskRest
     private PhysicalDisk physicalDisk;
     private PhysicalDiskRest physicalDiskRest;
 
-    public PhysicalDiskOps(PhysicalDisk assetBase, PhysicalDiskRest assetBaseRest) {
-        super(assetBase, assetBaseRest);
+    public PhysicalDiskOps(PhysicalDisk physicalDisk, PhysicalDiskRest physicalDiskRest) {
+        super(physicalDisk, physicalDiskRest);
     }
 
     public PhysicalDisk restToEntity(){

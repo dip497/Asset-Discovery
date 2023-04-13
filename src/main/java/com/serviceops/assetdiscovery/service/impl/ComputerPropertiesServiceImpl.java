@@ -33,30 +33,33 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
         Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
         Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", refId, Processor.class);
-        List<RamRest> rams = ramService.findAllByRefId(refId);
+        List<RamRest> ramRests = ramService.findAllByRefId(refId);
 
-        if (optionalOS.isPresent() && optionalProcessor.isPresent() && rams.isEmpty() && optionalPhysicalDisk.isPresent()) {
+        if (optionalOS.isPresent()  && optionalPhysicalDisk.isPresent() && !(ramRests.isEmpty()) && optionalPhysicalDisk.isPresent()) {
 
             OS os = optionalOS.get();
             PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
             Processor processor = optionalProcessor.get();
 
+
             long size = 0L;
-            for (RamRest ram : rams) {
-                size = Long.parseLong(ram.getSize());
+            for (RamRest ram : ramRests) {
+                size += Long.parseLong(ram.getSize());
             }
 
             ComputerPropertiesRest computerPropertiesRest = new ComputerPropertiesRest();
 
+            computerPropertiesRest.setRefId(refId);
             computerPropertiesRest.setOsName(os.getOsName());
             computerPropertiesRest.setOsVersion(os.getOsVersion());
             computerPropertiesRest.setServicePackName(os.getLicenseKey());
+            computerPropertiesRest.setActivationStatus(os.getActivationStatus());
             computerPropertiesRest.setOsManufacturer(os.getManufacturer());
             computerPropertiesRest.setOsArchitecture(os.getOsArchitecture());
 
-            computerPropertiesRest.setMemorySize(size);
+            computerPropertiesRest.setMemorySize(Long.toString(size));
 
-            computerPropertiesRest.setDiskSize(Long.parseLong(physicalDisk.getSize()));
+            computerPropertiesRest.setDiskSize(physicalDisk.getSize());
 
             computerPropertiesRest.setCpuSpeed(processor.getCpuSpeed());
             computerPropertiesRest.setNumberOfLogicalProcessors(processor.getCoreCount());
@@ -82,7 +85,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", refId, Processor.class);
         List<RamRest> rams = ramService.findAllByRefId(refId);
 
-        if (optionalOS.isPresent() && optionalProcessor.isPresent() && rams.isEmpty() && optionalPhysicalDisk.isPresent()) {
+        if (optionalOS.isPresent() &&  !(rams.isEmpty()) && optionalPhysicalDisk.isPresent()) {
 
             OS os = optionalOS.get();
             PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
@@ -90,9 +93,10 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
 
             os.setOsName(computerPropertiesRest.getOsName());
             os.setOsVersion(computerPropertiesRest.getOsVersion());
+            os.setActivationStatus("Unlicensed");
             os.setOsArchitecture(computerPropertiesRest.getOsArchitecture());
 
-            physicalDisk.setSize(Long.toString(computerPropertiesRest.getDiskSize()));
+            physicalDisk.setSize(computerPropertiesRest.getDiskSize());
 
             processor.setCpuSpeed(computerPropertiesRest.getCpuSpeed());
 

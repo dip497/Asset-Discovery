@@ -35,6 +35,7 @@ public class OsServiceImpl implements OsService {
         if(fetchOS.isPresent()){
             os.setOsName(parseResult.get(0));
             os.setOsArchitecture(parseResult.get(1));
+            os.setActivationStatus("Unlicensed");
             os.setOsVersion(parseResult.get(0));
             customRepository.save(os);
             logger.info("Updated os with Asset Id ->{}",refId);
@@ -42,6 +43,7 @@ public class OsServiceImpl implements OsService {
         else{
             os.setRefId(refId);
             os.setOsName(parseResult.get(0));
+            os.setActivationStatus("Unlicensed");
             os.setOsArchitecture(parseResult.get(1));
             os.setOsVersion(parseResult.get(0));
             customRepository.save(os);
@@ -51,15 +53,17 @@ public class OsServiceImpl implements OsService {
 
     // Finding the OS by Ref ID
     @Override
-    public OSRest findByRefId(Long refId) {
+    public List<OSRest> findByRefId(Long refId) {
 
         Optional<OS> optionalOS = customRepository.findByColumn("refId",refId,OS.class);
 
         if(optionalOS.isPresent()){
             OSRest osRest = new OSRest();
             OsOps osOps= new OsOps(optionalOS.get(),osRest);
+            List<OSRest> osRests = new ArrayList<>();
+            osRests.add(osOps.entityToRest());
             logger.info("OS fetched with Asset Id ->{}",refId);
-            return osOps.entityToRest();
+            return osRests;
         }
         else{
             logger.error("OS not found for Asset with ID ->{}", refId);

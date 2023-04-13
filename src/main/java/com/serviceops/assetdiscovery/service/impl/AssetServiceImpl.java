@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
-
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -155,7 +154,7 @@ public class AssetServiceImpl implements AssetService {
 
         AssetOps assetOps = new AssetOps(new Asset(), assetRest);
 
-        customRepository.save(assetOps.restToEntity());
+        customRepository.update(assetOps.restToEntity());
 
         logger.info("Updated Asset field -> {} for Asset id {}", fields, id);
 
@@ -203,7 +202,9 @@ public class AssetServiceImpl implements AssetService {
 
             if (values.length == 1) {
                 list.add(values[0]);
-            } else {
+            }
+
+            else {
 
                 StringBuilder line = new StringBuilder();
                 for (String s : values) {
@@ -221,8 +222,6 @@ public class AssetServiceImpl implements AssetService {
 
                     list.add(ip.substring(5).trim());
                     list.add(mac.substring(6).trim());
-
-//                    continue;
 
                 }
 

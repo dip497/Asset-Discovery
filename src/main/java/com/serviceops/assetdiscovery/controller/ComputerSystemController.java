@@ -8,7 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/{refId}/computersystem")
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/{refId}/computerSystem")
 public class ComputerSystemController {
 
     private final ComputerSystemService computerSystemService;
@@ -19,19 +23,30 @@ public class ComputerSystemController {
     }
 
     @GetMapping()
-    public ComputerSystemRest getComputerSystem(@PathVariable("refID") Long id){
-        logger.debug("Request hits the get api of computer system");
-        ComputerSystemRest computerSystemRest = computerSystemService.get(id);
-        return computerSystemRest;
+    public List<ComputerSystemRest> getComputerSystem(@PathVariable("refId") Long refId){
+
+        List<ComputerSystemRest> computerSystemRests = new ArrayList<>();
+
+        ComputerSystemRest computerSystemRest = computerSystemService.get(refId);
+
+        computerSystemRests.add(computerSystemRest);
+
+        logger.debug("Fetching ComputerSystem with Asset id -> {}",refId);
+
+        return computerSystemRests;
     }
     @DeleteMapping()
-    public void deleteComputerSystem(@PathVariable("refId") Long id){
-        logger.debug("Request hits the delete api of computer system");
-        computerSystemService.deleteById(id);
+    public void deleteComputerSystem(@PathVariable("refId") Long refId){
+
+        logger.debug("Deleting ComputerSystem with Asset id -> {}",refId);
+
+        computerSystemService.deleteById(refId);
     }
     @PutMapping()
-    public void updateComputerSystem(@RequestBody ComputerSystemRest computerSystemRest){
-        logger.debug("Request hits the update api of computer system");
+    public void updateComputerSystem(@PathVariable("refId") Long refId,@RequestBody ComputerSystemRest computerSystemRest){
+
+        logger.debug("Updating updateComputerSystem with Asset id -> {}",refId);
+
         computerSystemService.update(computerSystemRest);
     }
 
