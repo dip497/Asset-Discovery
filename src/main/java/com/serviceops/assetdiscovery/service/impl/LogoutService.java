@@ -1,6 +1,6 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.entity.TokenType;
+import com.serviceops.assetdiscovery.entity.enums.TokenType;
 import com.serviceops.assetdiscovery.entity.Tokens;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import jakarta.servlet.http.HttpServletRequest;

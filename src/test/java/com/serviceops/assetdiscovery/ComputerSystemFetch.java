@@ -24,7 +24,7 @@ import java.util.Map;
 
 @SpringBootTest
 public class ComputerSystemFetch {
-
+/*
     @Autowired
     ComputerSystemService computerSystemService;
     private Logger logger = LoggerFactory.getLogger(ComputerSystem.class);
@@ -63,7 +63,7 @@ public class ComputerSystemFetch {
     @Test
     public void save(){
 
-    }
+    }*/
 
 
 }

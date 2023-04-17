@@ -43,7 +43,7 @@ public class RamServiceImpl implements RamService {
                         ram.setClockSpeed(string[5]);
                         ram.setManufacturer(string[6]);
                         ram.setMemoryType(string[7]);
-                        customRepository.save(ram);
+                        customRepository.update(ram);
                         logger.debug("Updated ram with Asset Id -> {}", id);
                     }
 
@@ -105,6 +105,7 @@ public class RamServiceImpl implements RamService {
         if(fetchRams.isEmpty()){
             throw new ResourceNotFoundException("RamRest","refId",Long.toString(refId));
         }
+        logger.info("fetched list of ram for refId ->{}", refId);
         return fetchRams.stream().map(e->new RamOps(e,new RamRest()).entityToRest()).toList();
     }
 

@@ -1,6 +1,6 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.entity.Role;
+import com.serviceops.assetdiscovery.entity.enums.Role;
 import com.serviceops.assetdiscovery.entity.Users;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.AuthenticationRequest;

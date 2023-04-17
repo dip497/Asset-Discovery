@@ -2,9 +2,7 @@ package com.serviceops.assetdiscovery.service.interfaces;
 
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 
-import java.net.Inet4Address;
 import java.util.List;
-import java.util.Map;
 
 public interface CredentialsService {
     CredentialsRest save(CredentialsRest credentialsRest);
@@ -14,5 +12,5 @@ public interface CredentialsService {
 
     void deleteById(Long id);
 
-    void update(CredentialsRest credentialsRest);
+    void update(Long id, CredentialsRest credentialsRest);
 }

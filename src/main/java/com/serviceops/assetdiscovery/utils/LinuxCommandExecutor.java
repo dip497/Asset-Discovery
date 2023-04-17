@@ -8,22 +8,39 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class LinuxCommandExecutor {
+public class LinuxCommandExecutor implements AutoCloseable {
     private Session session;
+    private Channel channel;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private String password;
+    private final String host;
+    private final String username;
+    private final int port;
+    private final String password;
 
-    public void connect(String host, String username, String password,int port) throws JSchException {
-        JSch jsch = new JSch();
-        session = jsch.getSession(username, host, port);
-        session.setPassword(password);
-        session.setConfig("StrictHostKeyChecking", "no");
-        session.connect();
+
+    public LinuxCommandExecutor(String host, String username, String password, int port) {
+        this.host = host;
+        this.username = username;
         this.password = password;
-        logger.info("Connected to -> {} ", host ); ;
+        this.port = port;
+    }
+
+    public boolean connect() {
+        JSch jsch = new JSch();
+        try {
+            session = jsch.getSession(username, host, port);
+            session.setPassword(password);
+            session.setConfig("StrictHostKeyChecking", "no");
+            session.connect();
+            logger.info("Connected to -> {}", host);
+            return true;
+        } catch (JSchException e) {
+            logger.error("Failed to connect to -> {}", host, e);
+            return false;
+        }
     }
     public String[] execute(String command) throws JSchException, IOException {
-        Channel channel = session.openChannel("exec");
+        channel = session.openChannel("exec");
         boolean useSudo = command.contains("sudo");
         if(useSudo){
             ((ChannelExec) channel).setCommand("sudo -S -p '' " + command);
@@ -65,13 +82,18 @@ public class LinuxCommandExecutor {
                     break;
                 }
             }
-            channel.disconnect();
             return sb.toString().split("\n");
         }
 
-
-    public void disconnect() {
-        logger.info("Disconnecting ");
-        session.disconnect();
+    @Override
+    public void close() {
+        if (channel != null) {
+            logger.info("Disconnecting for channel of -> {}",host);
+            channel.disconnect();
+        }
+        if (session != null) {
+            logger.debug("Disconnect for session of -> {}",host);
+            session.disconnect();
+        }
     }
 }

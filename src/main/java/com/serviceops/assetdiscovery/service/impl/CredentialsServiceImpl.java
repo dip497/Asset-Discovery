@@ -9,17 +9,14 @@ import com.serviceops.assetdiscovery.service.interfaces.CredentialsService;
 import com.serviceops.assetdiscovery.utils.mapper.CredentialsOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class CredentialsServiceImpl implements CredentialsService {
-    private CustomRepository customRepository;
+    private final CustomRepository customRepository;
     private CredentialsOps credentialsOps;
     private final Logger logger = LoggerFactory.getLogger(CredentialsServiceImpl.class);
 
@@ -29,8 +26,9 @@ public class CredentialsServiceImpl implements CredentialsService {
 
     @Override
     public CredentialsRest save(CredentialsRest credentialsRest) {
+        logger.info("Getting credential with Ip Address {}", credentialsRest.getIpAddress());
         if (customRepository.findByColumn("ipAddress", credentialsRest.getIpAddress(), Credentials.class).isPresent()){
-            logger.error("Credentials already exists with Ipaddress -> {} ",credentialsRest.getIpAddress());
+            logger.warn("Credentials already exists with Ipaddress -> {} ",credentialsRest.getIpAddress());
             throw new ResourceAlreadyExistsException(this.getClass().getSimpleName(),"ipaddress",credentialsRest.getIpAddress());
         }else{
             Credentials credential = new Credentials();
@@ -56,6 +54,7 @@ public class CredentialsServiceImpl implements CredentialsService {
             return new CredentialsOps(fetchCredentials.get(), new CredentialsRest()).entityToRest();
 
         }else{
+            logger.error("Credentials not found for IpAddress -> {}", inet4Address);
             throw new ResourceNotFoundException("Credentials","inet4Address",inet4Address);
 
         }
@@ -83,13 +82,18 @@ public class CredentialsServiceImpl implements CredentialsService {
     }
 
     @Override
-    public void update(CredentialsRest credentialsRest) {
+    public void update(Long id, CredentialsRest credentialsRest) {
+        Optional<Credentials> fetchCredential = customRepository.findByColumn("id", id, Credentials.class);
+        if(fetchCredential.isEmpty()){
+            throw new ResourceNotFoundException("Credentials","id",id.toString());
+        }else{
 
-        CredentialsOps credentialsOps = new CredentialsOps(new Credentials(),credentialsRest);
+            CredentialsOps credentialsOps = new CredentialsOps(fetchCredential.get(), credentialsRest);
 
-        customRepository.update(credentialsOps.restToEntity());
+            customRepository.update(credentialsOps.restToEntity());
 
-        logger.info("Updated credentials with id -> {}",credentialsRest.getId());
+            logger.info("Updated credentials with id -> {}",credentialsRest.getId());
+        }
 
     }
 

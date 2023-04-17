@@ -3,7 +3,6 @@ package com.serviceops.assetdiscovery.entity;
 import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
 
-import java.net.Inet4Address;
 @Entity
 public class Credentials extends SingleBase {
     private String username;
