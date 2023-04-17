@@ -6,11 +6,11 @@ import com.serviceops.assetdiscovery.utils.AllAssetResponse;
 import com.serviceops.assetdiscovery.utils.AppConstants;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/asset")
 public class AssetController {
 
     private final AssetServiceImpl assetService;
@@ -20,7 +20,7 @@ public class AssetController {
         this.assetService = assetService;
     }
 
-    @GetMapping()
+    @GetMapping(value = "/asset",produces = MediaType.APPLICATION_JSON_VALUE)
     public AllAssetResponse getAllAssets(     @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER,required = false) int pageNo,
                                                               @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
                                                               @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
@@ -31,7 +31,7 @@ public class AssetController {
         return assetService.findPaginatedData(pageNo,pageSize,sortBy,sortDir);
     }
 
-    @GetMapping("{id}")
+    @GetMapping(value="/asset/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetRest getAsset(@PathVariable("id") long id){
 
         logger.debug("Fetching Asset with id -> {}",id);
@@ -39,7 +39,7 @@ public class AssetController {
         return assetService.findById(id);
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping(value = "/asset/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateAssetField(@PathVariable Long id, @RequestBody Map<String, Object> fields){
 
         logger.debug("Updating Asset field -> {} for Asset id {}",fields,id);
@@ -48,7 +48,7 @@ public class AssetController {
 
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping(value = "/asset/{id}",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public void deleteAssetById(@PathVariable Long id){
 
         logger.debug("Deleting Asset with id -> {}",id);

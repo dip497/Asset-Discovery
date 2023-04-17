@@ -3,7 +3,6 @@ package com.serviceops.assetdiscovery.service.impl;
 import com.serviceops.assetdiscovery.entity.OS;
 import com.serviceops.assetdiscovery.entity.PhysicalDisk;
 import com.serviceops.assetdiscovery.entity.Processor;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.ComputerPropertiesRest;
 import com.serviceops.assetdiscovery.rest.RamRest;
@@ -34,46 +33,39 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
         Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", refId, Processor.class);
         List<RamRest> ramRests = ramService.findAllByRefId(refId);
+        ComputerPropertiesRest computerPropertiesRest = new ComputerPropertiesRest();
 
-        if (optionalOS.isPresent()  && optionalPhysicalDisk.isPresent() && !(ramRests.isEmpty()) && optionalPhysicalDisk.isPresent()) {
-
+        if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
-            PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
-            Processor processor = optionalProcessor.get();
-
-
-            long size = 0L;
-            for (RamRest ram : ramRests) {
-                size += Long.parseLong(ram.getSize());
-            }
-
-            ComputerPropertiesRest computerPropertiesRest = new ComputerPropertiesRest();
-
-            computerPropertiesRest.setRefId(refId);
             computerPropertiesRest.setOsName(os.getOsName());
             computerPropertiesRest.setOsVersion(os.getOsVersion());
             computerPropertiesRest.setActivationStatus(os.getActivationStatus());
             computerPropertiesRest.setOsManufacturer(os.getManufacturer());
-            computerPropertiesRest.setOsLicenseKey("Not Required");
             computerPropertiesRest.setOsArchitecture(os.getOsArchitecture());
+        }
 
-            computerPropertiesRest.setMemorySize(Long.toString(size));
-
+        if (optionalPhysicalDisk.isPresent()) {
+            PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
             computerPropertiesRest.setDiskSize(physicalDisk.getSize());
+        }
 
+        if (optionalProcessor.isPresent()) {
+            Processor processor = optionalProcessor.get();
             computerPropertiesRest.setCpuSpeed(processor.getCpuSpeed());
             computerPropertiesRest.setNumberOfLogicalProcessors(processor.getCoreCount());
-
-            logger.info("Computer Properties fetched for Asset Id -> {}", refId);
-
-            return computerPropertiesRest;
-
-        } else {
-
-            logger.error("Computer Properties could not be fetched for Asset Id -> {}", refId);
-
-            throw new ResourceNotFoundException("ComputerPropertiesRest", "refId", Long.toString(refId));
         }
+
+        if (!(ramRests.isEmpty())) {
+            long size = 0L;
+            for (RamRest ram : ramRests) {
+                size += Long.parseLong(ram.getSize());
+            }
+            computerPropertiesRest.setMemorySize(Long.toString(size));
+
+        }
+
+        logger.info("Computer Properties fetched for Asset Id -> {}", refId);
+        return computerPropertiesRest;
 
     }
 

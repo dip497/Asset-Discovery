@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import jakarta.validation.constraints.Pattern;
 
 import java.io.Serializable;
 import java.net.Inet4Address;
@@ -12,6 +13,8 @@ import java.util.Objects;
 public class CredentialsRest extends SingleBaseRest implements Serializable {
     private  String username;
     private  String password;
+
+    @Pattern(regexp = "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$")
     private  String ipAddress;
 
 

@@ -83,21 +83,13 @@ public class CredentialsServiceImpl implements CredentialsService {
     }
 
     @Override
-    public void update(Long id, Map<String, Object> fields) {
-
-        CredentialsRest credentialsRest = findById(id);
-
-        fields.forEach((key, value) -> {
-            Field field = ReflectionUtils.findRequiredField(CredentialsRest.class, key);
-            field.setAccessible(true);
-            ReflectionUtils.setField(field, credentialsRest, value);
-        });
+    public void update(CredentialsRest credentialsRest) {
 
         CredentialsOps credentialsOps = new CredentialsOps(new Credentials(),credentialsRest);
 
         customRepository.update(credentialsOps.restToEntity());
 
-        logger.info("Updated credentials field -> {} for id {}",fields,id);
+        logger.info("Updated credentials with id -> {}",credentialsRest.getId());
 
     }
 

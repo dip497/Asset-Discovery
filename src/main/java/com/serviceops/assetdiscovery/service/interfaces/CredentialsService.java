@@ -14,5 +14,5 @@ public interface CredentialsService {
 
     void deleteById(Long id);
 
-    void update(Long id, Map<String, Object> fields);
+    void update(CredentialsRest credentialsRest);
 }

@@ -2,6 +2,7 @@ package com.serviceops.assetdiscovery.controller;
 
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.service.interfaces.CredentialsService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class CredentialsController {
     }
 
     @PostMapping()
-    public ResponseEntity<CredentialsRest> addCredentials(@RequestBody CredentialsRest credentialsRest){
+    public ResponseEntity<CredentialsRest> addCredentials(@Valid @RequestBody CredentialsRest credentialsRest){
         logger.debug("Creating Credentials with IpAddress -> {}",credentialsRest.getIpAddress());
         return new ResponseEntity<>(credentialsService.save(credentialsRest), HttpStatus.CREATED);
     }
@@ -45,7 +46,7 @@ public class CredentialsController {
 
         logger.debug("Updating Credentials field -> {}",fields);
 
-        credentialsService.update(id,fields);
+//        credentialsService.update(id,fields);
 
     }
 
@@ -58,6 +59,13 @@ public class CredentialsController {
 
     }
 
+    @PutMapping("{id}")
+    public void updateCredential(@PathVariable("id") Long id,@RequestBody CredentialsRest credentialsRest){
 
+        logger.debug("Updating Credentials with id -> {}",id);
+
+        credentialsService.update(credentialsRest);
+
+    }
 
 }
