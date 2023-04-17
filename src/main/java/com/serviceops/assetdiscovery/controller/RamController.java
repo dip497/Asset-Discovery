@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/{refId}/ram")
 public class RamController {
     private final RamService ramService;
     private final Logger logger = LoggerFactory.getLogger(RamController.class);
@@ -21,29 +20,29 @@ public class RamController {
         this.ramService = motherBoardService;
     }
 
-    @GetMapping()
-    public List<RamRest> getRam(@PathVariable("refId") long refId){
+    @GetMapping("/{refId}/ram")
+    public List<RamRest> getRam(@PathVariable("refId") Long refId){
 
         logger.debug("Fetching Ram with Asset id -> {}",refId);
 
         return ramService.findAllByRefId(refId);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteRam(@PathVariable("id") long id){
+    @DeleteMapping("/{refId}/ram/{id}")
+    public void deleteRam(@PathVariable("refId") Long refId,@PathVariable("id") Long id){
 
         logger.debug("Deleting Ram with  id -> {}",id);
 
-        ramService.deleteById(id);
+        ramService.deleteById(refId,id);
 
     }
 
-    @PutMapping("/{id}")
-    public void updateRam(@PathVariable("id") long id,@RequestBody RamRest ramRest){
+    @PutMapping("/{refId}/ram/{id}")
+    public void updateRam(@PathVariable("refId") Long refId,@PathVariable("id") Long id,@RequestBody RamRest ramRest){
 
         logger.debug("Updating Ram with  id -> {}",id);
 
-        ramService.update(ramRest);
+        ramService.update(refId,id,ramRest);
 
     }
 }

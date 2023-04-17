@@ -34,6 +34,7 @@ public class NetworkScanController {
 
     @PutMapping("/networkScan/{id}")
     public void updateNetworkScan(@PathVariable Long id,@RequestBody NetworkScanRest networkScanRest){
+        logger.debug("updating network scan -> {}" ,networkScanRest.getId());
         networkScanService.update(id,networkScanRest);
 
     }
@@ -46,6 +47,7 @@ public class NetworkScanController {
 
     @PostMapping("/networkScan/{id}/addScheduler")
     public void addScheduler(@PathVariable Long id,@RequestBody SchedulerRest schedulerRest){
+        logger.debug("saving scheduler for networkscan with id -> {}", id);
         networkScanService.addScheduler(id,schedulerRest);
     }
 

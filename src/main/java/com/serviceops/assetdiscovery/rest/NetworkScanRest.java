@@ -18,7 +18,7 @@ public class NetworkScanRest extends SingleBaseRest {
     private Long schedulerRefId;
     @Enumerated(EnumType.STRING)
     private IpRangeType ipRangeType;
-    private List<String> refIds;
+    private List<Long> refIds;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDateTime lastScan;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
@@ -75,11 +75,11 @@ public class NetworkScanRest extends SingleBaseRest {
         this.ipRangeType = ipRangeType;
     }
 
-    public List<String> getRefIds() {
+    public List<Long> getRefIds() {
         return refIds;
     }
 
-    public void setRefIds(List<String> refIds) {
+    public void setRefIds(List<Long> refIds) {
         this.refIds = refIds;
     }
 
@@ -89,5 +89,53 @@ public class NetworkScanRest extends SingleBaseRest {
 
     public void setSchedulerRefId(Long schedulerRefId) {
         this.schedulerRefId = schedulerRefId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        NetworkScanRest that = (NetworkScanRest) o;
+
+        if (isEnabled() != that.isEnabled()) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        if (getScanType() != that.getScanType()) return false;
+        if (getSchedulerRefId() != null ? !getSchedulerRefId().equals(that.getSchedulerRefId()) : that.getSchedulerRefId() != null)
+            return false;
+        if (getIpRangeType() != that.getIpRangeType()) return false;
+        if (getRefIds() != null ? !getRefIds().equals(that.getRefIds()) : that.getRefIds() != null) return false;
+        if (getLastScan() != null ? !getLastScan().equals(that.getLastScan()) : that.getLastScan() != null)
+            return false;
+        return getNextScan() != null ? getNextScan().equals(that.getNextScan()) : that.getNextScan() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getScanType() != null ? getScanType().hashCode() : 0);
+        result = 31 * result + (getSchedulerRefId() != null ? getSchedulerRefId().hashCode() : 0);
+        result = 31 * result + (getIpRangeType() != null ? getIpRangeType().hashCode() : 0);
+        result = 31 * result + (getRefIds() != null ? getRefIds().hashCode() : 0);
+        result = 31 * result + (getLastScan() != null ? getLastScan().hashCode() : 0);
+        result = 31 * result + (getNextScan() != null ? getNextScan().hashCode() : 0);
+        result = 31 * result + (isEnabled() ? 1 : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkScanRest{" +
+                "name='" + name + '\'' +
+                ", scanType=" + scanType +
+                ", schedulerRefId=" + schedulerRefId +
+                ", ipRangeType=" + ipRangeType +
+                ", refIds=" + refIds +
+                ", lastScan=" + lastScan +
+                ", nextScan=" + nextScan +
+                ", isEnabled=" + isEnabled +
+                "} " + super.toString();
     }
 }

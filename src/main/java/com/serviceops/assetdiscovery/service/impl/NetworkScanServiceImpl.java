@@ -100,7 +100,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
         if (fetchNetworkScan.isPresent()) {
             NetworkScan networkScan = fetchNetworkScan.get();
-            if(networkScan.getSchedulerRefId() == null){
+            if(networkScan.getScanType() == ScanType.NOT_SCHEDULED){
                 NetworkScanRest networkScanRest =  new NetworkScanRest();
                 networkScanRest =new NetworkScanOps(networkScan,networkScanRest).entityToRest();
                 if(networkScan.getIpRangeType() == IpRangeType.ENTIRE_NETWORK){

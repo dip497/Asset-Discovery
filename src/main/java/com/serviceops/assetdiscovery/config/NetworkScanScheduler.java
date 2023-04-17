@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.config;
 
 import com.serviceops.assetdiscovery.entity.Scheduler;
+import com.serviceops.assetdiscovery.entity.enums.ScanType;
 import com.serviceops.assetdiscovery.rest.NetworkScanRest;
 import com.serviceops.assetdiscovery.rest.SchedulerRest;
 import com.serviceops.assetdiscovery.service.interfaces.NetworkScanService;
@@ -35,7 +36,7 @@ public class NetworkScanScheduler {
         logger.debug("Running scheduled scan ...");
         List<NetworkScanRest> networkScansRest = networkScanService.findAll();
         for (NetworkScanRest networkScanRest : networkScansRest) {
-            if (networkScanRest.isEnabled() && networkScanRest.getScanType() != null && networkScanRest.getSchedulerRefId() != null) {
+            if (networkScanRest.isEnabled() && networkScanRest.getScanType() != ScanType.NOT_SCHEDULED && networkScanRest.getSchedulerRefId() != null) {
                 switch (networkScanRest.getScanType()) {
                     case DAILY ->
                         // Scan every day

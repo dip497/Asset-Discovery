@@ -63,22 +63,24 @@ public class MotherBoardServiceImpl implements MotherBoardService{
     }
 
     @Override
+    public void update(Long refId, MotherBoardRest motherBoardRest) {
+        Optional<MotherBoard> fetchMotherboard = customRepository.findByColumn("refId", refId, MotherBoard.class);
+        if(fetchMotherboard.isEmpty()){
+            logger.error("Motherboard not found with Asset Id -> {}", refId);
+            throw new ResourceNotFoundException("MotherBoard","refId",refId.toString());
+        }else{
+
+            MotherBoard motherBoard = fetchMotherboard.get();
+            MotherBoardOps motherBoardOps = new MotherBoardOps(motherBoard,motherBoardRest);
+            customRepository.save(motherBoardOps.restToEntity());
+            logger.info("MotherBoard Updated with Asset Id ->{}",motherBoard.getRefId());
+        }
+    }
+
+    @Override
     public void deleteByRefId(Long refId) {
         customRepository.deleteById(MotherBoard.class,refId,"refId");
         logger.info("MotherBoard deleted with Asset Id ->{}",refId);
-    }
-
-    @Override
-    public void update(MotherBoardRest motherBoardRest) {
-        MotherBoard motherBoard = new MotherBoard();
-        MotherBoardOps motherBoardOps = new MotherBoardOps(motherBoard,motherBoardRest);
-        customRepository.update(motherBoardOps.restToEntity());
-        logger.info("MotherBoard Updated with Asset Id ->{}",motherBoard.getRefId());
-    }
-
-    @Override
-    public MotherBoardRest getMotherBoard(Long id) {
-        return null;
     }
 
     private void setCommands(){

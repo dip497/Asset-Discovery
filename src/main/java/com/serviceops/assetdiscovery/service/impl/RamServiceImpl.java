@@ -43,7 +43,7 @@ public class RamServiceImpl implements RamService {
                         ram.setClockSpeed(string[5]);
                         ram.setManufacturer(string[6]);
                         ram.setMemoryType(string[7]);
-                        customRepository.update(ram);
+                        customRepository.save(ram);
                         logger.debug("Updated ram with Asset Id -> {}", id);
                     }
 
@@ -95,7 +95,7 @@ public class RamServiceImpl implements RamService {
             return ramOps.entityToRest();
         }
         else{
-            throw new ResourceNotFoundException("RamRest","refId",Long.toString(refId));
+            throw new ResourceNotFoundException("Ram","refId",Long.toString(refId));
         }
 
     }
@@ -103,24 +103,47 @@ public class RamServiceImpl implements RamService {
     public List<RamRest> findAllByRefId(Long refId) {
         List<Ram> fetchRams = customRepository.findAllByColumnName(Ram.class, "refId", refId);
         if(fetchRams.isEmpty()){
-            throw new ResourceNotFoundException("RamRest","refId",Long.toString(refId));
+            throw new ResourceNotFoundException("Ram","refId",Long.toString(refId));
         }
         logger.info("fetched list of ram for refId ->{}", refId);
         return fetchRams.stream().map(e->new RamOps(e,new RamRest()).entityToRest()).toList();
     }
 
     @Override
-    public void deleteById(Long id) {
-        customRepository.deleteById(Ram.class,id,"id");
-        logger.info("Ram deleted of  Id ->{}",id);
+    public void deleteById(Long refId,Long id) {
+        List<Ram> ramList = customRepository.findAllByColumnName(Ram.class, "refId", refId);
+        if(ramList.isEmpty()){
+            throw new ResourceNotFoundException("Ram","refId",refId.toString());
+        }else{
+            Optional<Ram> fetchRam = customRepository.findByColumn("id", id, Ram.class);
+            if(fetchRam.isPresent()){
+                customRepository.deleteById(Ram.class,id,"id");
+                logger.info("Ram deleted of  Id ->{}",id);
+            }else{
+                throw new ResourceNotFoundException("Ram","Id",id.toString());
+
+            }
+        }
     }
 
     @Override
-    public void update(RamRest ramRest) {
-        Ram ram = new Ram();
-        RamOps ramOps = new RamOps(ram,ramRest);
-        customRepository.update(ramOps.restToEntity());
-        logger.info("Ram Updated with Asset Id ->{}",ram.getRefId());
+    public void update(Long refId, Long id, RamRest ramRest) {
+        List<Ram> ramList = customRepository.findAllByColumnName(Ram.class, "refId", refId);
+        if(ramList.isEmpty()){
+            logger.error("Ram not found with Asset Id -> {} ", refId);
+            throw new ResourceNotFoundException("Ram","refId",refId.toString());
+        }else {
+            Optional<Ram> fetchRam = customRepository.findByColumn("id", id, Ram.class);
+            if (fetchRam.isEmpty()) {
+                logger.error("Unable to find ram with id -> {}", id);
+                throw new ResourceNotFoundException("Ram", "id", id.toString());
+            } else {
+                Ram ram = fetchRam.get();
+                RamOps ramOps = new RamOps(ram, ramRest);
+                customRepository.save(ramOps.restToEntity());
+                logger.info("Ram Updated with Asset Id ->{}", ram.getRefId());
+            }
+        }
     }
 
     private void setCommands() {

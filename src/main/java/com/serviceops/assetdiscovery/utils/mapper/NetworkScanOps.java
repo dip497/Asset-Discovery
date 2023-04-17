@@ -5,6 +5,7 @@ import com.serviceops.assetdiscovery.rest.NetworkScanRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class NetworkScanOps extends SingleBaseOps<NetworkScan, NetworkScanRest> {
     private final NetworkScan networkScan;
@@ -22,7 +23,13 @@ public class NetworkScanOps extends SingleBaseOps<NetworkScan, NetworkScanRest> 
         networkScanRest.setNextScan(networkScan.getNextScan());
         networkScanRest.setEnabled(networkScan.isEnabled());
         networkScanRest.setIpRangeType(networkScan.getIpRangeType());
-        networkScanRest.setRefIds(List.of(networkScan.getRefIds().split(",")));
+        networkScanRest.setRefIds(Stream.of(networkScan.getRefIds().split(",")).map(e->{
+            if(e.isEmpty()){
+                return Long.valueOf(0);
+            }else{
+                return Long.valueOf(e);
+            }
+        }).toList());
         networkScanRest.setSchedulerRefId(networkScan.getSchedulerRefId());
         return networkScanRest;
     }
@@ -34,7 +41,7 @@ public class NetworkScanOps extends SingleBaseOps<NetworkScan, NetworkScanRest> 
         networkScan.setNextScan(networkScanRest.getNextScan());
         networkScan.setEnabled(networkScanRest.isEnabled());
         networkScan.setIpRangeType(networkScanRest.getIpRangeType());
-        networkScan.setRefIds(String.join(",",networkScanRest.getRefIds()));
+        networkScan.setRefIds(String.join(",",networkScanRest.getRefIds().stream().map(String::valueOf).toList()));
         networkScan.setSchedulerRefId(networkScanRest.getSchedulerRefId());
         return networkScan;
     }

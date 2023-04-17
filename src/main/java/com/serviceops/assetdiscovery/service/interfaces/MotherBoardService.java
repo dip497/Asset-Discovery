@@ -8,7 +8,6 @@ public interface MotherBoardService {
 
     void deleteByRefId(Long refId);
 
-    void update(MotherBoardRest motherBoardRest);
+    void update(Long refId, MotherBoardRest motherBoardRest);
 
-    MotherBoardRest getMotherBoard(Long id);
 }
