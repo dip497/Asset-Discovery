@@ -31,8 +31,9 @@ public class OsServiceImpl implements OsService {
 
         List<String> parseResult = getParseResult();
         Optional<OS> fetchOS = customRepository.findByColumn("refId",refId,OS.class);
-        OS os = new OS();
+
         if(fetchOS.isPresent()){
+            OS os = fetchOS.get();
             os.setOsName(parseResult.get(0));
             os.setOsArchitecture(parseResult.get(1));
             os.setActivationStatus("Unlicensed");
@@ -43,6 +44,7 @@ public class OsServiceImpl implements OsService {
             logger.info("Updated os with Asset Id ->{}",refId);
         }
         else{
+            OS os = new OS();
             os.setRefId(refId);
             os.setOsName(parseResult.get(0));
             os.setActivationStatus("Unlicensed");
