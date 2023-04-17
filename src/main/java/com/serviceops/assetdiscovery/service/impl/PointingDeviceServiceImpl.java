@@ -1,6 +1,5 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.controller.PointingDeviceController;
 import com.serviceops.assetdiscovery.entity.Monitor;
 import com.serviceops.assetdiscovery.entity.PointingDevice;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
@@ -13,16 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 public class PointingDeviceServiceImpl implements PointingDeviceService {
-    private final Logger logger = LoggerFactory.getLogger(PointingDeviceController.class);
+    private final Logger logger = LoggerFactory.getLogger(PointingDeviceServiceImpl.class);
     private final CustomRepository customRepository;
 
     public PointingDeviceServiceImpl(CustomRepository customRepository) {
@@ -138,9 +134,16 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
 
     @Override
     public void update(Long id, PointingDeviceRest pointingDeviceRest) {
-        PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(new PointingDevice(), pointingDeviceRest);
-        logger.info("Updated PointingDevice with id --> {}", pointingDeviceRest.getId());
-        customRepository.update(pointingDeviceOps.restToEntity(pointingDeviceRest));
+        Optional<PointingDevice> optionalPointingDevice = customRepository.findByColumn("refid",id,PointingDevice.class);
+        if (optionalPointingDevice.isPresent()) {
+            PointingDevice pointingDevice = optionalPointingDevice.get();
+            PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, pointingDeviceRest);
+            logger.info("Updated PointingDevice with id --> {}", pointingDeviceRest.getId());
+            customRepository.save(pointingDeviceOps.restToEntity(pointingDeviceRest));
+        } else {
+            logger.info("Could not found pointing device with id: --> {}", id);
+            throw new ResourceNotFoundException("Pointing device", "refId", String.valueOf(id));
+        }
     }
 
     @Override

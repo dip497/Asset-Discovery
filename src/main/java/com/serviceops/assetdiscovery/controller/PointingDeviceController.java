@@ -24,8 +24,7 @@ public class PointingDeviceController {
         return  pointingDeviceService.getPointingDevices(refId);
     }
 
-//    @DeleteMapping(value = "/{refId}/pointingDevices")
-    @DeleteMapping(value = "/{refId}/pointingDevices",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @DeleteMapping(value = "/{refId}/pointingDevices")
     public void deletePointingDevice(@PathVariable("refId") Long refId){
         logger.debug("PointingDevice deleting with id --> {}",refId);
         pointingDeviceService.deleteById(refId);

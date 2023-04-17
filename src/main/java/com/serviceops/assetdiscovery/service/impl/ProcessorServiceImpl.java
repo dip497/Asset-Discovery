@@ -17,7 +17,7 @@ import java.util.*;
 @Service
 public class ProcessorServiceImpl implements ProcessorService {
     private final CustomRepository customRepository;
-    private final Logger logger = LoggerFactory.getLogger(ProcessorController.class);
+    private final Logger logger = LoggerFactory.getLogger(ProcessorServiceImpl.class);
 
     public ProcessorServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -113,9 +113,7 @@ public class ProcessorServiceImpl implements ProcessorService {
 
         if (optionalProcessor.isPresent()) {
             Processor processor = optionalProcessor.get();
-            System.out.println("Upadted processor :"+processor);
             ProcessorOps processorOps = new ProcessorOps(processor, processorRest);
-            System.out.println("Upadted processorrest  :"+processorOps.restToEntity());
             customRepository.save(processorOps.restToEntity());
             logger.info("Processor updated with id -->{}", id);
         } else {

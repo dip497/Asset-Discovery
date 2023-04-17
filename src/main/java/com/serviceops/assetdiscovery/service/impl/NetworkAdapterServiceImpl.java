@@ -1,6 +1,5 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.controller.NetworkAdapterController;
 import com.serviceops.assetdiscovery.entity.NetworkAdapter;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
@@ -22,7 +21,7 @@ import java.util.regex.Pattern;
 @Service
 public class NetworkAdapterServiceImpl implements NetworkAdapterService {
     private final CustomRepository customRepository;
-    private final Logger logger = LoggerFactory.getLogger(NetworkAdapterController.class);
+    private final Logger logger = LoggerFactory.getLogger(NetworkAdapterServiceImpl.class);
 
     public NetworkAdapterServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -103,7 +102,7 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
                                 parseResult[i][j] = results;
                                 break;
                             }
-//
+
                         case 5:
                             if (results.contains("255")) {
                                 parseResult[i][j] = results;
