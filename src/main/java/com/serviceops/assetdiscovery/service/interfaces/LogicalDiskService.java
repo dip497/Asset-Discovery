@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LogicalDiskService {
     void save(Long id);
-    void deleteById(Long id);
-    void update(LogicalDiskRest logicalDiskRest);
+    void deleteById(Long id, Long aLong);
+    void update(Long refId, Long id, LogicalDiskRest logicalDiskRest);
     List<LogicalDiskRest> getAllLogicalDisks(Long refId);
 }

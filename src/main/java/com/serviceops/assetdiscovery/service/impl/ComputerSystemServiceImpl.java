@@ -31,7 +31,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
         if(savedComputerSystem.isPresent()) {
            ComputerSystem computerSystem = savedComputerSystem.get();
            setDetails(computerSystem,parsedResults);
-            logger.info("Updated ComputerSystem with refId ->{}",id);
+           logger.info("Updated ComputerSystem with refId ->{}",id);
            customRepository.save(computerSystem);
         }else{
             ComputerSystem computerSystem = new ComputerSystem();
@@ -43,37 +43,51 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     }
 
     @Override
-    public ComputerSystemRest get(Long id) {
-        Optional<ComputerSystem> optionalComputerSystem = customRepository.findByColumn("refId", id, ComputerSystem.class);
+    public ComputerSystemRest get(Long refId) {
+        Optional<ComputerSystem> optionalComputerSystem = customRepository.findByColumn("refId", refId, ComputerSystem.class);
         if (optionalComputerSystem.isPresent()) {
-            logger.info("Retrieving Computer System of refId -> {}",id);
+            logger.info("Retrieving Computer System of refId -> {}",refId);
             ComputerSystemOps computerSystemOps = new ComputerSystemOps(optionalComputerSystem.get(),new ComputerSystemRest());
             ComputerSystemRest computerSystemRest = computerSystemOps.entityToRest();
-            Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
+            Optional<Processor> optionalProcessor = customRepository.findByColumn("refId",refId, Processor.class);
             if (optionalProcessor.isPresent()) {
                 computerSystemRest.setNumberOfProcessors(1);
                 computerSystemRest.setNumberOfLogicalProcessor(2 * Integer.parseInt(optionalProcessor.get().getCoreCount()));
             }
-            Optional<OS> optionalOs = customRepository.findByColumn("refId",id,OS.class);
+            Optional<OS> optionalOs = customRepository.findByColumn("refId",refId,OS.class);
             return computerSystemRest;
             }
         else{
-            logger.info("Computer System Resource not found -> {}",id);
-            throw new ResourceNotFoundException("Computer System","refId",String.valueOf(id));
+            logger.error("Computer System with Asset -> {} not found",refId);
+            throw new ResourceNotFoundException("Computer System","refId",String.valueOf(refId));
         }
     }
 
     @Override
-    public void update(ComputerSystemRest computerSystemRest){
-        ComputerSystemOps computerSystemOps = new ComputerSystemOps(new ComputerSystem(),computerSystemRest);
-        logger.info("Updating computerSystemOps of refId -> {}",computerSystemRest.getId());
-        customRepository.update(computerSystemOps.restToEntity());
+    public void update(Long refId, ComputerSystemRest computerSystemRest){
+        Optional<ComputerSystem> optionalComputerSystem = customRepository.findByColumn("refId", refId, ComputerSystem.class);
+        if(!optionalComputerSystem.isPresent()){
+            logger.error("Computer System with Asset -> {} not found",refId);
+            throw new ResourceNotFoundException("ConputerSystem","refId",String.valueOf(refId));
+        }
+        else{
+            ComputerSystem computerSystem = optionalComputerSystem.get();
+            ComputerSystemOps computerSystemOps = new ComputerSystemOps(computerSystem, computerSystemRest);
+            logger.info("Updating computerSystemOps of AssetId -> {}",refId);
+            customRepository.save(computerSystemOps.restToEntity());
+        }
     }
 
     @Override
-    public void deleteById(Long id){
-        logger.info("Deleting Computer Sytem with refId -> {}",id);
-        customRepository.deleteById(ComputerSystem.class,id,"refId");
+    public void deleteById(Long refId){
+        if(customRepository.findByColumn("refId",refId,ComputerSystem.class).isPresent()) {
+            logger.info("Deleting Computer Sytem with refId -> {}", refId);
+            customRepository.deleteById(ComputerSystem.class, refId, "refId");
+        }else {
+            logger.error("Computer System with Asset -> {} not found",refId);
+            throw new ResourceNotFoundException("ComputerSystem","refId",String.valueOf(refId));
+        }
+
     }
     private void setDetails(ComputerSystem computerSystem,List<String> data){
         //setting sata of computerSystem

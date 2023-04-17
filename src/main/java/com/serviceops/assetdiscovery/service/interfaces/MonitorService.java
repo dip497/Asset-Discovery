@@ -7,8 +7,8 @@ import java.util.List;
 public interface MonitorService {
 
     void save(Long id);
-    void update(MonitorRest monitorRest);
-    void deleteById(Long id);
+    void update(Long refId, Long id, MonitorRest monitorRest);
+    void deleteById(Long id, Long refId);
     List<MonitorRest> getMonitors(Long id);
 
 

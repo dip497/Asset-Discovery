@@ -2,17 +2,15 @@ package com.serviceops.assetdiscovery.controller;
 
 import com.serviceops.assetdiscovery.rest.ComputerSystemRest;
 import com.serviceops.assetdiscovery.service.interfaces.ComputerSystemService;
-import com.serviceops.assetdiscovery.utils.mapper.ComputerSystemOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/{refId}/computerSystem")
 public class ComputerSystemController {
 
     private final ComputerSystemService computerSystemService;
@@ -22,7 +20,7 @@ public class ComputerSystemController {
         this.computerSystemService = computerSystemService;
     }
 
-    @GetMapping()
+    @GetMapping(value = "/{refId}/computersystem",name = "ComputerSystemDetails",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ComputerSystemRest> getComputerSystem(@PathVariable("refId") Long refId){
 
         List<ComputerSystemRest> computerSystemRests = new ArrayList<>();
@@ -31,23 +29,23 @@ public class ComputerSystemController {
 
         computerSystemRests.add(computerSystemRest);
 
-        logger.debug("Fetching ComputerSystem with Asset id -> {}",refId);
+        logger.info("Fetching ComputerSystem with Asset id -> {}",refId);
 
         return computerSystemRests;
     }
-    @DeleteMapping()
+    @DeleteMapping(value = "/{refId}/computerSystem")
     public void deleteComputerSystem(@PathVariable("refId") Long refId){
 
-        logger.debug("Deleting ComputerSystem with Asset id -> {}",refId);
+        logger.info("Deleting ComputerSystem with Asset id -> {}",refId);
 
         computerSystemService.deleteById(refId);
     }
-    @PutMapping()
+    @PutMapping(value = "/{refId}/computerSystem",consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateComputerSystem(@PathVariable("refId") Long refId,@RequestBody ComputerSystemRest computerSystemRest){
 
-        logger.debug("Updating updateComputerSystem with Asset id -> {}",refId);
+        logger.info("Updating updateComputerSystem with Asset id -> {}",refId);
 
-        computerSystemService.update(computerSystemRest);
+        computerSystemService.update(refId,computerSystemRest);
     }
 
 }

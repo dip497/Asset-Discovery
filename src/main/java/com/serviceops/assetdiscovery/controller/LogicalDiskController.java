@@ -4,12 +4,12 @@ import com.serviceops.assetdiscovery.rest.LogicalDiskRest;
 import com.serviceops.assetdiscovery.service.interfaces.LogicalDiskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/{refId}/logicalDisk")
 public class LogicalDiskController {
 
     private final LogicalDiskService logicalDiskService;
@@ -20,30 +20,30 @@ public class LogicalDiskController {
         this.logicalDiskService = logicalDiskService;
 
     }
-    @GetMapping()
+    @GetMapping(value = "/{refId}/logicalDisk",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<LogicalDiskRest> getLogicalDisks(@PathVariable("refId") Long refId){
 
-        logger.debug("Fetching LogicalDisks with Asset id -> {}",refId);
+        logger.info("Fetching LogicalDisks with Asset id -> {}",refId);
 
         List<LogicalDiskRest> logicalDiskRests = logicalDiskService.getAllLogicalDisks(refId);
 
         return logicalDiskRests;
 
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{refId}/logicalDisk/{id}")
     public void deleteById(@PathVariable("refId") Long refId,@PathVariable("id") Long id){
 
-        logger.debug("deleting LogicalDisks with Asset id -> {}",refId);
+        logger.info("deleting LogicalDisks with Asset id -> {}",refId);
 
-        logicalDiskService.deleteById(id);
+        logicalDiskService.deleteById(refId,id);
 
     }
-    @PutMapping()
-    public void updateLogicalDiskById(@PathVariable("refId") Long refId,@RequestBody LogicalDiskRest logicalDiskRest){
+    @PutMapping(value = "/{refId}/logicalDisk/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateLogicalDiskById(@PathVariable("refId") Long refId,@PathVariable("id") Long id,@RequestBody LogicalDiskRest logicalDiskRest){
 
         logger.debug("updating LogicalDisks with Asset id -> {}",refId);
 
-        logicalDiskService.update(logicalDiskRest);
+        logicalDiskService.update(refId,id,logicalDiskRest);
     }
 
 }

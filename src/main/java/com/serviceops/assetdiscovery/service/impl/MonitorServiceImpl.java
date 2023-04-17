@@ -1,10 +1,12 @@
 package com.serviceops.assetdiscovery.service.impl;
+import com.serviceops.assetdiscovery.entity.LogicalDisk;
 import com.serviceops.assetdiscovery.entity.Monitor;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.MonitorRest;
 import com.serviceops.assetdiscovery.service.interfaces.MonitorService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
+import com.serviceops.assetdiscovery.utils.mapper.LogicalDiskOps;
 import com.serviceops.assetdiscovery.utils.mapper.MonitorOps;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -48,7 +50,7 @@ public class MonitorServiceImpl implements MonitorService{
                     for (String[] updateMonitor : parsedResults) {
                         Monitor monitor = new Monitor();
                         monitor.setRefId(refId);
-                        logger.info("Saved Monitor with Asset Id->{}", refId);
+                        logger.info("Updated Monitor with Asset Id->{}", refId);
                         setMonitor(monitor, updateMonitor);
                         customRepository.save(monitor);
                     }
@@ -68,17 +70,38 @@ public class MonitorServiceImpl implements MonitorService{
         }
 
     @Override
-    public void update(MonitorRest monitorRest){
-        MonitorOps monitorOps = new MonitorOps(new Monitor(),monitorRest);
-        logger.info("Updated added field in monitor -> {}",monitorRest.getId());
-        customRepository.update(monitorOps.restToEntity());
+    public void update(Long refId, Long id, MonitorRest monitorRest){
+        if(!customRepository.findAllByColumnName(Monitor.class,"refId",refId).isEmpty()) {
+            Optional<Monitor> monitor = customRepository.findByColumn("id", id, Monitor.class);
+            if(monitor.isPresent()) {
+                MonitorOps monitorOps = new MonitorOps(monitor.get(), monitorRest);
+                customRepository.save(monitorOps.restToEntity());
+                logger.info("Monitor Updated with Asset Id ->{}",refId);
+            }else {
+                logger.error("Monitorwith Asset -> {} not found",refId);
+                throw new ResourceNotFoundException("Monitor","refID",String.valueOf(refId));
+            }
+        }else {
+            logger.error("Monitor with Asset -> {} not exist");
+            throw new ResourceNotFoundException("Monitor","refId",String.valueOf(refId));
+        }
     }
 
     @Transactional
     @Override
-    public void deleteById(Long id){
-        logger.info("Deleting Monitor with id  -> {}",id);
-        customRepository.deleteById(Monitor.class,id,"id");
+    public void deleteById(Long id, Long refId){
+        if(customRepository.findAllByColumnName(Monitor.class,"refId",refId).isEmpty()) {
+            if(customRepository.findByColumn("id",id,Monitor.class).isPresent()) {
+                logger.info("Deleting Monitor with id->{}", id);
+                customRepository.deleteById(LogicalDisk.class, id, "id");
+            }
+            else {
+                logger.error("Logical Disk with Asset ->{} not exist",refId);
+            }
+        }
+        else {
+            logger.error("Logical Disk with Asset -> {} not found",refId);
+        }
     }
 
     @Override
@@ -94,7 +117,7 @@ public class MonitorServiceImpl implements MonitorService{
             return monitorRestList;
         }else{
             logger.info("Monitor Component of refId ->{} does not exist",id);
-            throw new ResourceNotFoundException("Monitors","refId",String.valueOf(id));
+            return new ArrayList<>();
         }
 
     }
