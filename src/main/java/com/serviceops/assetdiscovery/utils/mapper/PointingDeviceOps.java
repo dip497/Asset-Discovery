@@ -1,14 +1,8 @@
 package com.serviceops.assetdiscovery.utils.mapper;
-import com.serviceops.assetdiscovery.entity.MotherBoard;
 import com.serviceops.assetdiscovery.entity.PointingDevice;
 import com.serviceops.assetdiscovery.rest.PointingDeviceRest;
-import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class PointingDeviceOps extends AssetBaseOps<PointingDevice, PointingDeviceRest> {
     private PointingDevice pointingDevice;

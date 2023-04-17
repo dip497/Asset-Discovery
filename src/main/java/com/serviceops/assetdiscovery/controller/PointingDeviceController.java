@@ -21,9 +21,7 @@ public class PointingDeviceController {
     @GetMapping()
     public List<PointingDeviceRest> getPointingDeviceList(@PathVariable("refId") Long refId){
         logger.debug("getPointing DeviceList with Asset id: -->{}",refId);
-        List<PointingDeviceRest> pointingDeviceList = pointingDeviceService.getPointingDevices(refId);
-
-        return pointingDeviceList;
+        return  pointingDeviceService.getPointingDevices(refId);
     }
 
     @DeleteMapping()
