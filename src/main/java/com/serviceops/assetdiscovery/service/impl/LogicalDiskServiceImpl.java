@@ -83,7 +83,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
 
         LogicalDiskOps logicalDiskOps = new LogicalDiskOps(logicalDisk,logicalDiskRest);
 
-        customRepository.update(logicalDiskOps.restToEntity(logicalDiskRest));
+        customRepository.update(logicalDiskOps.restToEntity());
 
         logger.info("logicalDisk Updated with Asset Id ->{}",logicalDisk.getRefId());
 

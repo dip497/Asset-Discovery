@@ -38,7 +38,7 @@ public class MonitorServiceController {
         monitorService.deleteById(refId);
     }
 
-    @PostMapping()
+    @PutMapping()
     public void addMonitor(@PathVariable("refId") Long refId, @RequestBody MonitorRest monitorRest){
 
         logger.debug("Updating updateComputerSystem with Asset id -> {}",refId);

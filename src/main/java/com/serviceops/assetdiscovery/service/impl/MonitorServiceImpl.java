@@ -71,7 +71,7 @@ public class MonitorServiceImpl implements MonitorService{
     public void update(MonitorRest monitorRest){
         MonitorOps monitorOps = new MonitorOps(new Monitor(),monitorRest);
         logger.info("Updated added field in monitor -> {}",monitorRest.getId());
-        customRepository.save(monitorOps.restToEntity());
+        customRepository.update(monitorOps.restToEntity());
     }
 
     @Transactional
