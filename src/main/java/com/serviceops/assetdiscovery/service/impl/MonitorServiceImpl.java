@@ -6,7 +6,6 @@ import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.MonitorRest;
 import com.serviceops.assetdiscovery.service.interfaces.MonitorService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
-import com.serviceops.assetdiscovery.utils.mapper.LogicalDiskOps;
 import com.serviceops.assetdiscovery.utils.mapper.MonitorOps;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;

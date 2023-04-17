@@ -20,7 +20,7 @@ public class LogicalDiskController {
         this.logicalDiskService = logicalDiskService;
 
     }
-    @GetMapping(value = "/{refId}/logicalDisk",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{refId}/logicaldisk",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<LogicalDiskRest> getLogicalDisks(@PathVariable("refId") Long refId){
 
         logger.info("Fetching LogicalDisks with Asset id -> {}",refId);
@@ -30,7 +30,7 @@ public class LogicalDiskController {
         return logicalDiskRests;
 
     }
-    @DeleteMapping("/{refId}/logicalDisk/{id}")
+    @DeleteMapping("/{refId}/logicaldisk/{id}")
     public void deleteById(@PathVariable("refId") Long refId,@PathVariable("id") Long id){
 
         logger.info("deleting LogicalDisks with Asset id -> {}",refId);
@@ -38,7 +38,7 @@ public class LogicalDiskController {
         logicalDiskService.deleteById(refId,id);
 
     }
-    @PutMapping(value = "/{refId}/logicalDisk/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{refId}/logicaldisk/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateLogicalDiskById(@PathVariable("refId") Long refId,@PathVariable("id") Long id,@RequestBody LogicalDiskRest logicalDiskRest){
 
         logger.debug("updating LogicalDisks with Asset id -> {}",refId);

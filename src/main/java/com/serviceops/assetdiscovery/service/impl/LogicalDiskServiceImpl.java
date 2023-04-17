@@ -1,15 +1,12 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.LogicalDisk;
-import com.serviceops.assetdiscovery.entity.Monitor;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.LogicalDiskRest;
-import com.serviceops.assetdiscovery.rest.MonitorRest;
 import com.serviceops.assetdiscovery.service.interfaces.LogicalDiskService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.LogicalDiskOps;
-import com.serviceops.assetdiscovery.utils.mapper.MonitorOps;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 public class LogicalDiskServiceImpl implements LogicalDiskService {
