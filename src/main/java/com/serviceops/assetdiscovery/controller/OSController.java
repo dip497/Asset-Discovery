@@ -4,11 +4,11 @@ import com.serviceops.assetdiscovery.rest.OSRest;
 import com.serviceops.assetdiscovery.service.impl.OsServiceImpl;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/{refId}/os")
 public class OSController {
 
     private final OsServiceImpl osService;
@@ -18,8 +18,8 @@ public class OSController {
         this.osService = osService;
     }
 
-    @GetMapping()
-    public List<OSRest> getOs(@PathVariable("refId") Long refId){
+    @GetMapping(value = "/{refId}/os", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<OSRest> getByRefId(@PathVariable("refId") Long refId){
 
         logger.debug("Fetching OS with Asset id -> {}",refId);
 
@@ -27,8 +27,8 @@ public class OSController {
 
     }
 
-    @DeleteMapping()
-    public void deleteOs(@PathVariable("refId") Long refId){
+    @DeleteMapping("/{refId}/os")
+    public void delete(@PathVariable("refId") Long refId){
 
         logger.debug("Deleting Bios with Asset id -> {}",refId);
 
@@ -36,12 +36,12 @@ public class OSController {
 
     }
 
-    @PutMapping()
-    public void updateOs(@PathVariable("refId") long refId,@RequestBody OSRest osRest){
+    @PutMapping(value = "/{refId}/os", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void update(@PathVariable("refId") long refId,@RequestBody OSRest osRest){
 
         logger.debug("Updating Bios with Asset id -> {}",refId);
 
-        osService.update(osRest);
+        osService.update(refId,osRest);
 
     }
 

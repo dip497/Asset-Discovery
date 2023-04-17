@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.interfaces;
 
+import com.serviceops.assetdiscovery.rest.AllAssetRest;
 import com.serviceops.assetdiscovery.rest.AssetRest;
-import com.serviceops.assetdiscovery.utils.AllAssetResponse;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ public interface AssetService {
 
     AssetRest findById(Long id);
 
-    AllAssetResponse findPaginatedData(int pageNo, int pageSize, String sortBy, String sortDir);
+    AllAssetRest findPaginatedData(int pageNo, int pageSize, String sortBy, String sortDir);
 
     int findTotalCount();
 

@@ -12,6 +12,6 @@ public interface OsService {
 
     void deleteByRefId(Long refId);
 
-    void update(OSRest osRest);
+    void update(Long refId,OSRest osRest);
 
 }

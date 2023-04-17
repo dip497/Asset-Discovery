@@ -30,28 +30,31 @@ public class OsServiceImpl implements OsService {
     public void save(Long refId) {
 
         List<String> parseResult = getParseResult();
-        Optional<OS> fetchOS = customRepository.findByColumn("refId",refId,OS.class);
+        Optional<OS> optionalOS = customRepository.findByColumn("refId",refId,OS.class);
 
-        if(fetchOS.isPresent()){
-            OS os = fetchOS.get();
+        // If optionalOs is present then do not add asset refId and update the os
+        if(optionalOS.isPresent()){
+            OS os = optionalOS.get();
             os.setOsName(parseResult.get(0));
-            os.setOsArchitecture(parseResult.get(1));
+            os.setOsArchitecture(parseResult.get(2).contains("64")?"64 BIT":"32 BIT");
             os.setActivationStatus("Unlicensed");
             os.setLicenseKey("Not Required");
-            os.setOsVersion(parseResult.get(0));
-            os.setInstalledDate(parseResult.get(2));
+            os.setOsVersion(parseResult.get(1));
+            os.setInstalledDate(parseResult.get(3));
             customRepository.save(os);
             logger.info("Updated os with Asset Id ->{}",refId);
         }
+
+        // If optionalOs is not present then set asset refId and save as new os
         else{
             OS os = new OS();
             os.setRefId(refId);
             os.setOsName(parseResult.get(0));
             os.setActivationStatus("Unlicensed");
             os.setLicenseKey("Not Required");
-            os.setOsArchitecture(parseResult.get(1));
-            os.setOsVersion(parseResult.get(0));
-            os.setInstalledDate(parseResult.get(2));
+            os.setOsArchitecture(parseResult.get(2).contains("64")?"64 BIT":"32 BIT");
+            os.setOsVersion(parseResult.get(1));
+            os.setInstalledDate(parseResult.get(3));
             customRepository.save(os);
             logger.info("Saved bios with Asset Id ->{}",refId);
         }
@@ -63,6 +66,7 @@ public class OsServiceImpl implements OsService {
 
         Optional<OS> optionalOS = customRepository.findByColumn("refId",refId,OS.class);
 
+        // If optionalOS is present then return the os Rest
         if(optionalOS.isPresent()){
             OSRest osRest = new OSRest();
             OsOps osOps= new OsOps(optionalOS.get(),osRest);
@@ -71,9 +75,10 @@ public class OsServiceImpl implements OsService {
             logger.info("OS fetched with Asset Id ->{}",refId);
             return osRests;
         }
+
+        // If optionalOS is not present then throw ResourceNotFoundException
         else{
-            logger.error("OS not found for Asset with ID ->{}", refId);
-            throw new ResourceNotFoundException("OSRest","refId",Long.toString(refId));
+           return new ArrayList<>();
         }
 
     }
@@ -81,17 +86,36 @@ public class OsServiceImpl implements OsService {
     // Deleting the OS by Ref ID
     @Override
     public void deleteByRefId(Long refId) {
+
+        // If Os is present then move further to delete the Os or else throw ResourceNotFoundException
+        findByRefId(refId);
+
+        // Deleting the Os at given refId
         customRepository.deleteById(OS.class,refId,"refId");
+
         logger.info("OS deleted with Asset Id ->{}",refId);
     }
 
     // Updating the data for OS
     @Override
-    public void update(OSRest osRest) {
-        OS os = new OS();
-        OsOps osOps = new OsOps(os,osRest);
-        customRepository.update(osOps.restToEntity());
-        logger.info("OS Updated with Asset Id ->{}",osRest.getRefId());
+    public void update(Long refId,OSRest osRest) {
+
+        Optional<OS> optionalOS = customRepository.findByColumn("refId",refId,OS.class);
+
+        // If OS is present then update data as per OsRest
+        if(optionalOS.isPresent()){
+            OS os = optionalOS.get();
+            OsOps osOps = new OsOps(os,osRest);
+            customRepository.save(osOps.restToEntity());
+            logger.info("OS Updated with Asset Id ->{}",osRest.getRefId());
+        }
+
+        // If OS is not present then throw ResourceNotFoundException
+        else {
+            logger.error("OS not found for Asset with ID ->{}", refId);
+            throw new ResourceNotFoundException("OSRest","refId",Long.toString(refId));
+        }
+
     }
 
     // Setting the Commands to fetch OS details
@@ -101,13 +125,16 @@ public class OsServiceImpl implements OsService {
         LinkedHashMap<String,String[]> commands = new LinkedHashMap<>();
 
         // Find the OS name
-        commands.put("hostnamectl | grep \"Operating System:\" | awk '{$1=$2=\"\"; print $0}'",new String[]{});
+        commands.put("grep '^NAME=' /etc/os-release | cut -d'\"' -f2",new String[]{});
+
+        // Find the OS version
+        commands.put("grep '^VERSION=' /etc/os-release | cut -d'\"' -f2",new String[]{});
 
         // Find the OS architecture
         commands.put("uname -m",new String[]{});
 
         // Find the installed date of OS.
-        commands.put("ls -alct / | tail -1 | awk '{print $6, $7, $8}'\n",new String[]{});
+        commands.put("ls -alct / | tail -1 | awk '{print $6, $7, $8}'",new String[]{});
 
         LinuxCommandExecutorManager.add(OS.class,commands);
     }
@@ -121,6 +148,10 @@ public class OsServiceImpl implements OsService {
             for (String value : values) {
                 if (value == null)
                     continue;
+
+                if(value.equals("No LSB modules are available."))
+                    continue;
+
                 list.add(value);
 
             }

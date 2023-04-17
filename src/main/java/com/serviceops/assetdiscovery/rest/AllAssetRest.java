@@ -1,10 +1,10 @@
-package com.serviceops.assetdiscovery.utils;
+package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.rest.AssetRest;
 
 import java.util.List;
 
-public class AllAssetResponse {
+public class AllAssetRest {
 
     List<AssetRest> data;
     private int pageNo;

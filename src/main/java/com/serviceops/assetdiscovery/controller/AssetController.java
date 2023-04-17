@@ -1,8 +1,8 @@
 package com.serviceops.assetdiscovery.controller;
 
+import com.serviceops.assetdiscovery.rest.AllAssetRest;
 import com.serviceops.assetdiscovery.rest.AssetRest;
 import com.serviceops.assetdiscovery.service.impl.AssetServiceImpl;
-import com.serviceops.assetdiscovery.utils.AllAssetResponse;
 import com.serviceops.assetdiscovery.utils.AppConstants;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -20,11 +20,11 @@ public class AssetController {
         this.assetService = assetService;
     }
 
-    @GetMapping(value = "/asset",produces = MediaType.APPLICATION_JSON_VALUE)
-    public AllAssetResponse getAllAssets(     @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER,required = false) int pageNo,
-                                                              @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-                                                              @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-                                                              @RequestParam(value = "sortDir", defaultValue=AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir){
+    @GetMapping(value = "/asset", produces = MediaType.APPLICATION_JSON_VALUE)
+    public AllAssetRest getAll(@RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER,required = false) int pageNo,
+                                     @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+                                     @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+                                     @RequestParam(value = "sortDir", defaultValue=AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir){
 
         logger.debug("Fetching Assets");
 
@@ -32,7 +32,7 @@ public class AssetController {
     }
 
     @GetMapping(value="/asset/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetRest getAsset(@PathVariable("id") long id){
+    public AssetRest getById(@PathVariable("id") long id){
 
         logger.debug("Fetching Asset with id -> {}",id);
 
@@ -40,7 +40,7 @@ public class AssetController {
     }
 
     @PatchMapping(value = "/asset/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateAssetField(@PathVariable Long id, @RequestBody Map<String, Object> fields){
+    public void update(@PathVariable Long id, @RequestBody Map<String, Object> fields){
 
         logger.debug("Updating Asset field -> {} for Asset id {}",fields,id);
 
@@ -48,8 +48,8 @@ public class AssetController {
 
     }
 
-    @DeleteMapping(value = "/asset/{id}",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public void deleteAssetById(@PathVariable Long id){
+    @DeleteMapping(value = "/asset/{id}")
+    public void delete(@PathVariable Long id){
 
         logger.debug("Deleting Asset with id -> {}",id);
 
