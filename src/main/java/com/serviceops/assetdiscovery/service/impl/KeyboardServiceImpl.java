@@ -50,7 +50,7 @@ public class KeyboardServiceImpl implements KeyboardService {
                     keyboard.setRefId(id);
                     keyboard.setName(string[1]);
                     customRepository.save(keyboard);
-                    logger.debug("saved keyboard with Asset Id -> {}", id);
+                    logger.debug("updated keyboard with Asset Id -> {}", id);
                 }
             }
         } else {
@@ -104,7 +104,9 @@ public class KeyboardServiceImpl implements KeyboardService {
     public List<KeyboardRest> findAllByRefId(Long refId) {
         List<Keyboard> fetchKeyboard = customRepository.findAllByColumnName(Keyboard.class, "refId", refId);
         if(fetchKeyboard.isEmpty()){
-            throw new ResourceNotFoundException("KeyboardRest","refId",Long.toString(refId));
+            logger.error("Keyboard not found with refId -> {} ",refId);
+            return List.of();
+            //throw new ResourceNotFoundException("KeyboardRest","refId",Long.toString(refId));
         }
         logger.info("fetched list of keyboard for refId ->{}", refId);
         return fetchKeyboard.stream().map(e->new KeyboardOps(e,new KeyboardRest()).entityToRest()).toList();

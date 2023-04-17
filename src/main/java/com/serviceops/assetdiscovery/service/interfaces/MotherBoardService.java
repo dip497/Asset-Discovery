@@ -1,10 +1,12 @@
 package com.serviceops.assetdiscovery.service.interfaces;
 import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 
-public interface MotherBoardService {
-    void save(Long id);
+import java.util.List;
 
-    MotherBoardRest findByRefId(Long refId);
+public interface MotherBoardService {
+    void save(Long refId);
+
+    List<MotherBoardRest> findByRefId(Long refId);
 
     void deleteByRefId(Long refId);
 

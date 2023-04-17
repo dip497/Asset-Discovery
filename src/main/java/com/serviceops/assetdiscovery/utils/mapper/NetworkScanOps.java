@@ -41,7 +41,13 @@ public class NetworkScanOps extends SingleBaseOps<NetworkScan, NetworkScanRest> 
         networkScan.setNextScan(networkScanRest.getNextScan());
         networkScan.setEnabled(networkScanRest.isEnabled());
         networkScan.setIpRangeType(networkScanRest.getIpRangeType());
-        networkScan.setRefIds(String.join(",",networkScanRest.getRefIds().stream().map(String::valueOf).toList()));
+        networkScan.setRefIds(String.join(",",networkScanRest.getRefIds().stream().map(e->{
+            if(e.equals(0L)){
+                return "";
+            }else{
+                return String.valueOf(e);
+            }
+        }).toList()));
         networkScan.setSchedulerRefId(networkScanRest.getSchedulerRefId());
         return networkScan;
     }

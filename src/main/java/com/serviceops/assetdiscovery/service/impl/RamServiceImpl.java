@@ -103,7 +103,8 @@ public class RamServiceImpl implements RamService {
     public List<RamRest> findAllByRefId(Long refId) {
         List<Ram> fetchRams = customRepository.findAllByColumnName(Ram.class, "refId", refId);
         if(fetchRams.isEmpty()){
-            throw new ResourceNotFoundException("Ram","refId",Long.toString(refId));
+            logger.error("Ram not found with refId -> {} ",refId);
+            return List.of();
         }
         logger.info("fetched list of ram for refId ->{}", refId);
         return fetchRams.stream().map(e->new RamOps(e,new RamRest()).entityToRest()).toList();

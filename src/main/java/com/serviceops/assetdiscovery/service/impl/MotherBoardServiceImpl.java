@@ -23,8 +23,8 @@ public class MotherBoardServiceImpl implements MotherBoardService{
         setCommands();
     }
     @Override
-    public void  save(Long id ) {
-        Optional<MotherBoard> fetchMotherBoard = customRepository.findByColumn("id", id, MotherBoard.class);
+    public void  save(Long refId ) {
+        Optional<MotherBoard> fetchMotherBoard = customRepository.findByColumn("refId", refId, MotherBoard.class);
         if(fetchMotherBoard.isPresent()){
             List<String> parseResult = getParseResult();
             MotherBoard motherBoard = fetchMotherBoard.get();
@@ -36,7 +36,7 @@ public class MotherBoardServiceImpl implements MotherBoardService{
 
         }else{
             MotherBoard motherBoard = new MotherBoard();
-            motherBoard.setRefId(id);
+            motherBoard.setRefId(refId);
             List<String> parseResult = getParseResult();
             motherBoard.setManufacturer(parseResult.get(0));
             motherBoard.setSerialNumber(parseResult.get(1));
@@ -46,18 +46,22 @@ public class MotherBoardServiceImpl implements MotherBoardService{
         }
     }
     @Override
-    public MotherBoardRest findByRefId(Long refId) {
+    public List<MotherBoardRest> findByRefId(Long refId) {
 
         Optional<MotherBoard> motherBoardOptional = customRepository.findByColumn("refId",refId,MotherBoard.class);
 
         if(motherBoardOptional.isPresent()){
             MotherBoardRest motherBoardRest = new MotherBoardRest();
             MotherBoardOps motherBoardOps= new MotherBoardOps(motherBoardOptional.get(),motherBoardRest);
-            logger.info("MotherBoard fetched with Asset Id ->{}",refId);
-            return motherBoardOps.entityToRest();
+            logger.info("MotherBoard fetched with Asset Id -> {}",refId);
+            List<MotherBoardRest> motherBoardRestList = new ArrayList<>();
+            motherBoardRestList.add(motherBoardOps.entityToRest());
+
+            return motherBoardRestList;
         }
         else{
-            throw new ResourceNotFoundException("MotherBoard","refId",Long.toString(refId));
+            logger.error("Motherboard not found with Asset Id -> {}", refId);
+            return List.of();
         }
 
     }

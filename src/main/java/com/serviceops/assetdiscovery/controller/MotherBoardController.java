@@ -20,13 +20,9 @@ public class MotherBoardController {
     @GetMapping("/{refId}/motherBoard")
     public List<MotherBoardRest> getMotherBoard(@PathVariable("refId") Long refId){
 
-        List<MotherBoardRest> motherBoardRests = new ArrayList<>();
-
-        motherBoardRests.add(motherBoardService.findByRefId(refId));
-
         logger.debug("Fetching MotherBoard with Asset id -> {}",refId);
 
-        return motherBoardRests;
+        return  motherBoardService.findByRefId(refId);
     }
 
     @DeleteMapping("/{refId}/motherBoard")
