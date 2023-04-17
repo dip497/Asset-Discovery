@@ -1,6 +1,5 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.controller.PhysicalDiskController;
 import com.serviceops.assetdiscovery.entity.PhysicalDisk;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
@@ -18,7 +17,7 @@ import java.util.*;
 public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
     private final CustomRepository customRepository;
-    private final Logger logger = LoggerFactory.getLogger(PhysicalDiskController.class);
+    private final Logger logger = LoggerFactory.getLogger(PhysicalDiskServiceImpl.class);
 
     public PhysicalDiskServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -36,7 +35,13 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         // command for parsing information about the interface.
         commands.put("udevadm info --query=property --name=/dev/sda | grep ID_BUS\n",new String[]{});
         // command for parsing information about the media type.
-        commands.put("udevadm info --query=property --name=/dev/sda | grep DEVTYPE\n",new String[]{});
+        commands.put("udevadm info --query=property --name=/dev/sda | grep DEVTYPE= ",new String[]{});
+        // command for parsing information of disk manufacturer.
+        commands.put("sudo lshw -c disk | grep vendor: | head -n 1",new String[]{});
+        // command for parsing information of disk description.
+        commands.put("sudo lshw -c disk | grep description: | head -n 1",new String[]{});
+        // command for parsing information of disk model.
+        commands.put("sudo lshw -c disk | grep version: | head -n 1",new String[]{});
 
         LinuxCommandExecutorManager.add(PhysicalDisk.class, commands);
     }
@@ -73,8 +78,20 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         physicalDisk.setName(getParseResult().get(1));
         physicalDisk.setPnpDeviceId(getParseResult().get(2));
         physicalDisk.setInterfaceType(getParseResult().get(3));
-        physicalDisk.setMediaType(getParseResult().get(4));
+        physicalDisk.setMediaType(formatData(getParseResult().get(4),"DEVTYPE="));
+        physicalDisk.setManufacturer(formatData(getParseResult().get(5),"vendor:"));
+        physicalDisk.setDescription(formatData(getParseResult().get(6),"description:"));
+        physicalDisk.setModel(formatData(getParseResult().get(7),"version:"));
         customRepository.save(physicalDisk);
+    }
+
+    private String formatData(String data,String keyword) {
+
+        if (data.contains(keyword)){
+            return (data.substring(data.indexOf(keyword) + keyword.length())).trim();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -85,9 +102,17 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
     @Override
     public void update(Long id, PhysicalDiskRest physicalDiskRest) {
-        PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps(new PhysicalDisk(),physicalDiskRest);
-        logger.info("Updating PhysicalDisk with Id : --> {}",id);
-        customRepository.update(physicalDiskOps.restToEntity());
+        Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId",id,PhysicalDisk.class);
+        if (optionalPhysicalDisk.isPresent()) {
+            PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
+            PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps(physicalDisk,physicalDiskRest);
+            customRepository.save(physicalDiskOps.restToEntity());
+            logger.info("Updating PhysicalDisk with Id : --> {}",id);
+
+        } else {
+            logger.error("Physical disk not found with id; --> {}",id);
+            throw new ResourceNotFoundException("No PhysicalDisk","refId",String.valueOf(id));
+        }
     }
 
     @Override
