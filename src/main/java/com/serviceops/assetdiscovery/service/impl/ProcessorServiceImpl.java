@@ -131,7 +131,7 @@ public class ProcessorServiceImpl implements ProcessorService {
 
     @Override
     public List<ProcessorRest> findByRefId(Long id) {
-        Optional<Processor> optionalProcessor = customRepository.findByColumn("id", id, Processor.class);
+        Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
         if (optionalProcessor.isPresent()) {
             List<ProcessorRest> processors = new ArrayList<>();
             ProcessorRest processorRest = new ProcessorRest();
