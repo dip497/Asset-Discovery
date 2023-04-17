@@ -142,7 +142,7 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
             List<PointingDeviceRest> pointingDeviceRestList = new ArrayList<>();
             for(PointingDevice pointingDevice: pointingDevices){
                 PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, new PointingDeviceRest());
-                pointingDeviceRestList.add(pointingDeviceOps.entityToRest(pointingDevice));
+                pointingDeviceRestList.add(pointingDeviceOps.entityToRest());
                 logger.info("Fetched pointing device with id: --> {}" ,id);
             }
             return pointingDeviceRestList;

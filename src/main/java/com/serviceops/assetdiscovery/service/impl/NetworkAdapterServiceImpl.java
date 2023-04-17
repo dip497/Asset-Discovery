@@ -29,17 +29,21 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
     public static void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
 
+        // command for parsing number of network adapter.
         commands.put("sudo lshw -C network | grep description | wc -l", new String[]{});
+
         // command for parsing information about description of the network card.
         commands.put("sudo lshw -C network | grep description", new String[]{});
 
         // command for parsing information about vendor of the network card.
         commands.put("sudo lshw -C network | grep vendor", new String[]{});
+
         // command for parsing information about MAC address of the network card.
         commands.put("sudo lshw -C network | grep serial", new String[]{});
+
         // command for parsing information about IP address of the network card.
         commands.put("sudo ip address show | awk '/inet / {print $2}'", new String[]{});
-//        commands.put("sudo lshw -C network | grep ip", new String[]{});
+
         // command for parsing information about IP subnet mask of the network card.
         commands.put("sudo ifconfig | grep netmask  | awk '{print $4}' | cut -f1 -d'/'", new String[]{});
 
@@ -75,7 +79,7 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
                         result[i-1]=result[i];
                     }
                 }
-                for (int i = 0; i < numberOfNetworkAdapters; i++) {
+                for (int i = 0; i < numberOfNetworkAdapters  && i < result.length; i++) {
                     String results = result[i];
                     switch (count) {
                         case 1:
@@ -100,7 +104,7 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
                                 parseResult[i][j] = results;
                                 break;
                             }
-//
+
                         case 5:
                             if (results.contains("255")) {
                                 parseResult[i][j] = results;
