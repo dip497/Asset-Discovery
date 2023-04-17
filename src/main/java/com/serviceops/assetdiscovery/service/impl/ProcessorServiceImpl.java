@@ -23,10 +23,12 @@ public class ProcessorServiceImpl implements ProcessorService {
         this.customRepository = customRepository;
         setCommands();
     }
+
     private void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
         // command for parsing information about the L2 cache.
         commands.put("lscpu | grep 'L2 cache:' | awk '{print $(NF-1), $NF}'", new String[]{});
+//        commands.put("lscpu | grep 'L2 cache:' | awk '{print $(NF-1), $NF}'", new String[]{});
         // command for parsing information about the L3 cache.
         commands.put("lscpu | grep 'L3 cache' | awk '{print $(NF-1), $NF}'", new String[]{}); //TODO L1 cache
         // command for parsing information about the manufacturer.
@@ -42,6 +44,8 @@ public class ProcessorServiceImpl implements ProcessorService {
         commands.put("lscpu | grep 'CPU(s):' | awk '{print $2F}'", new String[]{});
         // command for parsing information about the L1 cache.
         commands.put("lscpu | grep 'L1i cache:' | awk '{print $(NF-1), $NF}'", new String[]{});
+        //command for parsing cpu name.
+        commands.put(" lscpu | grep 'Model name:'", new String[]{});
 
         LinuxCommandExecutorManager.add(Processor.class, commands);
     }
@@ -55,6 +59,7 @@ public class ProcessorServiceImpl implements ProcessorService {
         }
         return list;
     }
+
     @Override
     public void save(Long id) {
 
@@ -66,50 +71,79 @@ public class ProcessorServiceImpl implements ProcessorService {
         } else {
             Processor processor = new Processor();
             processor.setRefId(id);
-            logger.info("Processor saved with id: --> {}",id);
+            logger.info("Processor saved with id: --> {}", id);
             setData(processor);
         }
     }
 
     private void setData(Processor processor) {
-        processor.setL2CacheSize(getParseResult().get(0));
-        processor.setL3CacheSize(getParseResult().get(1));
+        processor.setL2CacheSize(formatData(getParseResult().get(0)));
+        processor.setL3CacheSize(formatData(getParseResult().get(1)));
         processor.setManufacturer(getParseResult().get(2));
         processor.setFamily(getParseResult().get(3));
         processor.setWidth(getParseResult().get(4));
-        processor.setCpuSpeed(getParseResult().get(5));
+        processor.setCpuSpeed(formatData(getParseResult().get(5)) + " MHz");
         processor.setCoreCount(getParseResult().get(6));
-            processor.setL1CacheSize(getParseResult().get(7));
-        System.out.println(processor);
+        processor.setL1CacheSize(getParseResult().get(7));
+        processor.setProcessorName(formatData(getParseResult().get(9)));
         customRepository.save(processor);
+    }
+/*
+    private String convertToMB(String Data){ //TODO convert to MB.
+        String dataInMb = "";
+        String newData = Data.substring(Data.indexOf(":"),Data.indexOf(" ")).trim();
+        if (Data.contains("MiB") || Data.contains("MB")) {
+            dataInMb =newData + "MB";
+        }
+        else if (Data.contains("K") || Data.contains("Kib")){
+            dataInMb = newData + "KB";
+        }
+
+        return dataInMb;
+    }*/
+
+    private String formatData(String data) {
+        return data.substring(data.indexOf(":") + 1).trim();
     }
 
     @Override
     public void update(Long id, ProcessorRest processorRest) {
-        ProcessorOps processorOps = new ProcessorOps(new Processor(),processorRest);
-        logger.info("Processor updated with id -->{}",id);
-        customRepository.save(processorOps.restToEntity(processorRest));
+
+        Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
+
+        if (optionalProcessor.isPresent()) {
+            Processor processor = optionalProcessor.get();
+            System.out.println("Upadted processor :"+processor);
+            ProcessorOps processorOps = new ProcessorOps(processor, processorRest);
+            System.out.println("Upadted processorrest  :"+processorOps.restToEntity());
+            customRepository.save(processorOps.restToEntity());
+            logger.info("Processor updated with id -->{}", id);
+        } else {
+            logger.error("Processor not found with id -->{}", id);
+            throw new ResourceNotFoundException("Processor", "refId", String.valueOf(id));
+        }
+
     }
 
     @Override
     public void deleteById(Long id) {
-        logger.info("Processor deleted with id -->{}",id);
-        customRepository.deleteById(Processor.class,id,"id");
+        logger.info("Processor deleted with id -->{}", id);
+        customRepository.deleteById(Processor.class, id, "id");
     }
 
     @Override
     public List<ProcessorRest> findByRefId(Long id) {
-        Optional<Processor> optionalProcessor = customRepository.findByColumn("id",id,Processor.class);
+        Optional<Processor> optionalProcessor = customRepository.findByColumn("id", id, Processor.class);
         if (optionalProcessor.isPresent()) {
             List<ProcessorRest> processors = new ArrayList<>();
             ProcessorRest processorRest = new ProcessorRest();
             ProcessorOps processorOps = new ProcessorOps(optionalProcessor.get(), processorRest);
             processors.add(processorOps.entityToRest());
-            logger.info("Processor found with id -->{}",id);
+            logger.info("Processor found with id -->{}", id);
             return processors;
         } else {
-            logger.error("Processor not found with id -->{}",id);
-            throw new ResourceNotFoundException("Processor","refId", String.valueOf(id));
+            logger.error("Processor not found with id -->{}", id);
+            throw new ResourceNotFoundException("Processor", "refId", String.valueOf(id));
         }
     }
 }
