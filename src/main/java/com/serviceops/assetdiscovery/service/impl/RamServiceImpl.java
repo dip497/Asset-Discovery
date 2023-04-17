@@ -64,7 +64,7 @@ public class RamServiceImpl implements RamService {
                     ram.setManufacturer(string[6]);
                     ram.setMemoryType(string[7]);
                     customRepository.save(ram);
-                    logger.debug("saved ram with Asset Id -> {}", id);
+                    logger.debug("updating ram with Asset Id -> {}", id);
                 }
             }
         } else {
