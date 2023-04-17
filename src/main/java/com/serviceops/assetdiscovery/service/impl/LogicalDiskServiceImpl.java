@@ -185,13 +185,20 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
                     }
                     if(results.contains("filesystem")){
                         String sub = results.substring(results.indexOf("filesystem"),results.length());
-                        String ans = sub.substring("filesystem=".length(),sub.indexOf(" "));
-                        parsedResult[i][j]=ans;
+                        if(sub.split(" ").length==1) {
+                            parsedResult[i][j] = sub.substring("filesystem=".length(),sub.length());
+                        }else{
+                            parsedResult[i][j] = sub.substring("filesystem=".length(),sub.indexOf(" "));
+                        }
                         continue;
                     }else if(results.contains("mount.fstype")){
                         String sub = results.substring(results.indexOf("mount.fstype"),results.length());
-                        String ans = sub.substring("mount.fstype=".length(),sub.indexOf(" "));
-                        parsedResult[i][j]=ans;
+                        if(sub.split("").length==1) {
+                            parsedResult[i][j] = sub.substring("mount.fstype=".length(), sub.length());
+                        }else{
+                            parsedResult[i][j] = sub.substring("mount.fstype=".length(),sub.indexOf(" "));
+                        }
+
                         continue;
                     }
                     if(results.contains("size")){
