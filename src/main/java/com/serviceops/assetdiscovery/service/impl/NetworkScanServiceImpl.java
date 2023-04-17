@@ -71,7 +71,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         computerSystemService.save(assetRest.getId());
         keyboardService.save(assetRest.getId());
         biosService.save(assetRest);
-//        networkAdapterService.save(assetRest.getId());
+        networkAdapterService.save(assetRest.getId());
         ramService.save(assetRest.getId());
         monitorService.save(assetRest.getId());
         osService.save(assetRest.getId());

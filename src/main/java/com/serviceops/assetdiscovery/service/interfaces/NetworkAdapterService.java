@@ -8,6 +8,5 @@ public interface NetworkAdapterService {
     public void save(Long id);
     public void delete(Long id);
     public void update(NetworkAdapterRest networkAdapterRest);
-    public NetworkAdapterRest findByResId(Long id);
-    public List<NetworkAdapterRest> findAll(Long refId);
+    public List<NetworkAdapterRest> findByRefId(Long id);
 }

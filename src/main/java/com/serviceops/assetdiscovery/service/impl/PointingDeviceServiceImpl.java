@@ -40,6 +40,8 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
         commands.put("sudo dmidecode -t 21 | grep -i Type: ", new String[]{});
         // Command for getting information about pointing device interface.
         commands.put("sudo dmidecode -t 21 | grep -i Interface: ", new String[]{});
+        // Command for vendor information.
+//        commands.put("sudo lshw -C input | grep vendor:",new String[]{});
         LinuxCommandExecutorManager.add(PointingDevice.class, commands);
     }
 
@@ -73,7 +75,7 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
                     switch (count) {
                         case 1:
                             if (results.contains("Buttons:")) {
-                                parsedResult[i][j] = results.substring(results.indexOf("Buttons:\t") + "Buttons:\t".length()+1);
+                                parsedResult[i][j] = results.substring(results.indexOf("Buttons:\t") + "Buttons:\t".length() + 1);
                                 break;
                             }
                         case 2:
@@ -98,25 +100,26 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
     @Override
     public void save(Long id) {
         String[][] parsedResult = getParsedResults();
-        List<PointingDevice> pointingDevices = customRepository.findAllByColumnName(PointingDevice.class,"refId",id);
+        List<PointingDevice> pointingDevices = customRepository.findAllByColumnName(PointingDevice.class, "refId", id);
 
-        if(!pointingDevices.isEmpty()){
-            if(pointingDevices.size()==parsedResult.length){
-                for(PointingDevice pointingDevice: pointingDevices){
-                    for(String[] updatePointIngDevice : parsedResult){
+        if (!pointingDevices.isEmpty()) {
+            if (pointingDevices.size() == parsedResult.length) {
+                for (PointingDevice pointingDevice : pointingDevices) {
+                    for (String[] updatePointIngDevice : parsedResult) {
                         pointingDevice.setNumberOfButtons(updatePointIngDevice[1]);
                         pointingDevice.setPointingType(updatePointIngDevice[2]);
                         pointingDevice.setDescription(updatePointIngDevice[3]);
                         customRepository.save(pointingDevice);
+                        logger.info("Updated pointing device with id: --> {}",pointingDevice.getId());
                     }
                 }
-            }else{
-                for(PointingDevice pointingDevice: pointingDevices){
-                    customRepository.deleteById(Monitor.class,pointingDevice.getId(),"id");
+            } else {
+                for (PointingDevice pointingDevice : pointingDevices) {
+                    customRepository.deleteById(Monitor.class, pointingDevice.getId(), "id");
                 }
                 savePointingDevice(id);
             }
-        }else{
+        } else {
             savePointingDevice(id);
         }
 
@@ -124,43 +127,43 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
 
     @Override
     public void update(Long id, PointingDeviceRest pointingDeviceRest) {
-        PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(new PointingDevice(),pointingDeviceRest);
-        logger.info("Updated PointingDevice with id --> {}",pointingDeviceRest.getId());
+        PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(new PointingDevice(), pointingDeviceRest);
+        logger.info("Updated PointingDevice with id --> {}", pointingDeviceRest.getId());
         customRepository.update(pointingDeviceOps.restToEntity(pointingDeviceRest));
     }
 
     @Override
     public void deleteById(Long id) {
         logger.info("Deleted pointing device with id --> {}", id);
-        customRepository.deleteById(PointingDevice.class,id,"id");
+        customRepository.deleteById(PointingDevice.class, id, "id");
     }
 
     @Override
     public List<PointingDeviceRest> getPointingDevices(Long id) {
-        List<PointingDevice> pointingDevices = customRepository.findAllByColumnName(PointingDevice.class,"refId",id);
-        if (!pointingDevices.isEmpty()){
+        List<PointingDevice> pointingDevices = customRepository.findAllByColumnName(PointingDevice.class, "refId", id);
+        if (!pointingDevices.isEmpty()) {
             List<PointingDeviceRest> pointingDeviceRestList = new ArrayList<>();
-            for(PointingDevice pointingDevice: pointingDevices){
+            for (PointingDevice pointingDevice : pointingDevices) {
                 PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, new PointingDeviceRest());
                 pointingDeviceRestList.add(pointingDeviceOps.entityToRest());
-                logger.info("Fetched pointing device with id: --> {}" ,id);
+                logger.info("Fetched pointing device with id: --> {}", id);
             }
             return pointingDeviceRestList;
-        }else{
-            logger.info("Could not found pointing device with id: --> {}",id);
-            throw new ResourceNotFoundException("Pointing device","refId",String.valueOf(id));
+        } else {
+            logger.info("Could not found pointing device with id: --> {}", id);
+            throw new ResourceNotFoundException("Pointing device", "refId", String.valueOf(id));
         }
     }
 
     private void savePointingDevice(Long id) {
-        for(String[] updatePointIngDevice : getParsedResults()){
+        for (String[] updatePointIngDevice : getParsedResults()) {
             PointingDevice pointingDevice = new PointingDevice();
             pointingDevice.setRefId(id);
             pointingDevice.setNumberOfButtons(updatePointIngDevice[1]);
             pointingDevice.setPointingType(updatePointIngDevice[2]);
             pointingDevice.setDescription(updatePointIngDevice[3]);
 
-            logger.info("Saved pointing device with id: --> {}",id);
+            logger.info("Saved pointing device with id: --> {}", id);
             customRepository.save(pointingDevice);
         }
     }
