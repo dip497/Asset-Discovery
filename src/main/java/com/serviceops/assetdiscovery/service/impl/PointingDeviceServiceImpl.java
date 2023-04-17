@@ -41,7 +41,7 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
         // Command for getting information about pointing device interface.
         commands.put("sudo dmidecode -t 21 | grep -i Interface: ", new String[]{});
         // Command for vendor information.
-//        commands.put("sudo lshw -C input | grep vendor:",new String[]{});
+        commands.put("sudo lshw -C input | grep vendor:",new String[]{});
         LinuxCommandExecutorManager.add(PointingDevice.class, commands);
     }
 
@@ -70,7 +70,12 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
                     continue;
                 }
                 String[] result = commandResult.getValue();
-                for (int i = 0; i < result.length; i++) {
+                if (numberOfPointingDevice != result.length) {
+                    for (int i = 1; i < result.length; i++) {
+                        result[i - 1] = result[i];
+                    }
+                }
+                for (int i = 0;i < numberOfPointingDevice && i < result.length; i++) {
                     String results = result[i];
                     switch (count) {
                         case 1:
@@ -86,6 +91,11 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
                         case 3:
                             if (results.contains("Interface")) {
                                 parsedResult[i][j] = results.substring(results.indexOf("Interface:") + "Interface:".length());
+                                break;
+                            }
+                        case 4:
+                            if (results.contains("vendor")) {
+                                parsedResult[i][j] = results.substring(results.indexOf("vendor:") + "vendor:".length());
                                 break;
                             }
                     }
@@ -109,6 +119,7 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
                         pointingDevice.setNumberOfButtons(updatePointIngDevice[1]);
                         pointingDevice.setPointingType(updatePointIngDevice[2]);
                         pointingDevice.setDescription(updatePointIngDevice[3]);
+                        pointingDevice.setManufacturer(updatePointIngDevice[4]);
                         customRepository.save(pointingDevice);
                         logger.info("Updated pointing device with id: --> {}",pointingDevice.getId());
                     }
@@ -162,6 +173,7 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
             pointingDevice.setNumberOfButtons(updatePointIngDevice[1]);
             pointingDevice.setPointingType(updatePointIngDevice[2]);
             pointingDevice.setDescription(updatePointIngDevice[3]);
+            pointingDevice.setManufacturer(updatePointIngDevice[4]);
 
             logger.info("Saved pointing device with id: --> {}", id);
             customRepository.save(pointingDevice);
