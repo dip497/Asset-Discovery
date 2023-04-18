@@ -34,6 +34,7 @@ public class RamServiceImpl implements RamService {
             if (strings[0][0].equals(String.valueOf(rams.size()))) {
                 for(int i=0;i<rams.size();i++){
                         rams.get(i).setRefId(id);
+                        setRam(rams.get(i),strings[i]);
                         customRepository.save(rams.get(i));
                         logger.debug("Updated ram with Asset Id -> {}", id);
                     }

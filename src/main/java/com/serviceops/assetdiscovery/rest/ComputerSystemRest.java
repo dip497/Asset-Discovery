@@ -17,8 +17,8 @@ public class ComputerSystemRest extends AssetBaseRest implements Serializable {
     private  String pcSystemType;
     private  String uuid;
     private  String bootUpState;
-    private  int numberOfLogicalProcessor;
-    private  int numberOfProcessors;
+    private  Long numberOfLogicalProcessor;
+    private  Long numberOfProcessors;
     private  String partOfDomian;
     private  String userName;
 
@@ -55,11 +55,11 @@ public class ComputerSystemRest extends AssetBaseRest implements Serializable {
         return bootUpState;
     }
 
-    public int getNumberOfLogicalProcessor() {
+    public Long getNumberOfLogicalProcessor() {
         return numberOfLogicalProcessor;
     }
 
-    public int getNumberOfProcessors() {
+    public Long getNumberOfProcessors() {
         return numberOfProcessors;
     }
 
@@ -103,11 +103,11 @@ public class ComputerSystemRest extends AssetBaseRest implements Serializable {
         this.bootUpState = bootUpState;
     }
 
-    public void setNumberOfLogicalProcessor(int numberOfLogicalProcessor) {
+    public void setNumberOfLogicalProcessor(Long numberOfLogicalProcessor) {
         this.numberOfLogicalProcessor = numberOfLogicalProcessor;
     }
 
-    public void setNumberOfProcessors(int numberOfProcessors) {
+    public void setNumberOfProcessors(Long numberOfProcessors) {
         this.numberOfProcessors = numberOfProcessors;
     }
 
