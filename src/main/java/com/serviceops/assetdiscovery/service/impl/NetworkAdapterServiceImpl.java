@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.NetworkAdapter;
+import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.NetworkAdapterRest;
 import com.serviceops.assetdiscovery.service.interfaces.NetworkAdapterService;
@@ -10,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -170,10 +168,16 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
 
     @Override
     public void update(NetworkAdapterRest networkAdapterRest) {
-        NetworkAdapter networkAdapter = new NetworkAdapter();
-        NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps(networkAdapter, networkAdapterRest);
-        customRepository.update(networkAdapterOps.restToEntity());
-        logger.info("NetworkAdapter Updated with Asset Id ->{}", networkAdapter.getRefId());
+        Optional<NetworkAdapter> optionalNetworkAdapter = customRepository.findByColumn("refId",networkAdapterRest.getRefId(),NetworkAdapter.class);
+        if (optionalNetworkAdapter.isPresent()) {
+            NetworkAdapter networkAdapter = optionalNetworkAdapter.get();
+            NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps(networkAdapter, networkAdapterRest);
+            customRepository.save(networkAdapterOps.restToEntity());
+            logger.info("NetworkAdapter Updated with Asset Id ->{}", networkAdapter.getRefId());
+        } else {
+            logger.info("Could not found NetworkAdapter with id : --> {}", networkAdapterRest.getRefId());
+            throw new ResourceNotFoundException("No Network adapter found with id --> {}","refId",String.valueOf(networkAdapterRest.getRefId()));
+        }
     }
 
     @Override
