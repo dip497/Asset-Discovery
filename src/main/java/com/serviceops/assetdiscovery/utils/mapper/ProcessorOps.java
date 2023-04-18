@@ -22,13 +22,10 @@ public class ProcessorOps extends AssetBaseOps<Processor, ProcessorRest> {
         processor.setWidth(processorRest.getWidth());
         processor.setCpuSpeed(processorRest.getCpuSpeed());
         processor.setCoreCount(processorRest.getCoreCount());
-        processor.setExternalClock(processorRest.getExternalClock());
         processor.setL1CacheSize(processorRest.getL1CacheSize());
         processor.setL2CacheSize(processorRest.getL2CacheSize());
         processor.setL3CacheSize(processorRest.getL3CacheSize());
         processor.setFamily(processorRest.getFamily());
-        processor.setDeviceId(processorRest.getDeviceId());
-        processor.setSocketDesignation(processorRest.getSocketDesignation());
 
         return processor;
     }
@@ -40,13 +37,10 @@ public class ProcessorOps extends AssetBaseOps<Processor, ProcessorRest> {
         processorRest.setWidth(processor.getWidth());
         processorRest.setCpuSpeed(processor.getCpuSpeed());
         processorRest.setCoreCount(processor.getCoreCount());
-        processorRest.setExternalClock(processor.getExternalClock());
         processorRest.setL1CacheSize(processor.getL1CacheSize());
         processorRest.setL2CacheSize(processor.getL2CacheSize());
         processorRest.setL3CacheSize(processor.getL3CacheSize());
         processorRest.setFamily(processor.getFamily());
-        processorRest.setDeviceId(processor.getDeviceId());
-        processorRest.setSocketDesignation(processor.getSocketDesignation());
 
         return processorRest;
     }

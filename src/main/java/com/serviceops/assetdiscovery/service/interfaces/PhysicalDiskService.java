@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface PhysicalDiskService {
 
-    public void save(Long id);
-    public void delete(Long id);
-    public void update(Long id,PhysicalDiskRest physicalDiskRest);
-    public List<PhysicalDiskRest> findByRefId(Long id);
+    public void save(Long refId);
+    public void delete(Long refId);
+    public void update(Long refId,PhysicalDiskRest physicalDiskRest);
+    public List<PhysicalDiskRest> findByRefId(Long refId);
 }

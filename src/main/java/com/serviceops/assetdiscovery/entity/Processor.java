@@ -10,15 +10,41 @@ public class Processor extends AssetBase {
     private String processorName;
     private String description;
     private String width;
-    private String cpuSpeed;
-    private String coreCount;
-    private String externalClock;
-    private String l1CacheSize;
-    private String l2CacheSize;
-    private String l3CacheSize;
-    private String family;
-    private String deviceId;
-    private String socketDesignation;
+    private long cpuSpeed;
+    private long coreCount;
+    private long l1CacheSize;
+    private long l2CacheSize;
+    private long l3CacheSize;
+    private long family;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Processor processor = (Processor) o;
+        return cpuSpeed == processor.cpuSpeed && coreCount == processor.coreCount && l1CacheSize == processor.l1CacheSize && l2CacheSize == processor.l2CacheSize && l3CacheSize == processor.l3CacheSize && Objects.equals(processorName, processor.processorName) && Objects.equals(description, processor.description) && Objects.equals(width, processor.width) && Objects.equals(family, processor.family);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), processorName, description, width, cpuSpeed, coreCount, l1CacheSize, l2CacheSize, l3CacheSize, family);
+    }
+
+    @Override
+    public String toString() {
+        return "Processor{" +
+                "processorName='" + processorName + '\'' +
+                ", description='" + description + '\'' +
+                ", width='" + width + '\'' +
+                ", cpuSpeed=" + cpuSpeed +
+                ", coreCount=" + coreCount +
+                ", l1CacheSize=" + l1CacheSize +
+                ", l2CacheSize=" + l2CacheSize +
+                ", l3CacheSize=" + l3CacheSize +
+                ", family='" + family + '\'' +
+                '}';
+    }
 
     public String getProcessorName() {
         return processorName;
@@ -44,107 +70,51 @@ public class Processor extends AssetBase {
         this.width = width;
     }
 
-    public String getCpuSpeed() {
+    public long getCpuSpeed() {
         return cpuSpeed;
     }
 
-    public void setCpuSpeed(String cpuSpeed) {
+    public void setCpuSpeed(long cpuSpeed) {
         this.cpuSpeed = cpuSpeed;
     }
 
-    public String getCoreCount() {
+    public long getCoreCount() {
         return coreCount;
     }
 
-    public void setCoreCount(String coreCount) {
+    public void setCoreCount(long coreCount) {
         this.coreCount = coreCount;
     }
 
-    public String getExternalClock() {
-        return externalClock;
-    }
-
-    public void setExternalClock(String externalClock) {
-        this.externalClock = externalClock;
-    }
-
-    public String getL1CacheSize() {
+    public long getL1CacheSize() {
         return l1CacheSize;
     }
 
-    public void setL1CacheSize(String l1CacheSize) {
+    public void setL1CacheSize(long l1CacheSize) {
         this.l1CacheSize = l1CacheSize;
     }
 
-    public String getL2CacheSize() {
+    public long getL2CacheSize() {
         return l2CacheSize;
     }
 
-    public void setL2CacheSize(String l2CacheSize) {
+    public void setL2CacheSize(long l2CacheSize) {
         this.l2CacheSize = l2CacheSize;
     }
 
-    public String getL3CacheSize() {
+    public long getL3CacheSize() {
         return l3CacheSize;
     }
 
-    public void setL3CacheSize(String l3CacheSize) {
+    public void setL3CacheSize(long l3CacheSize) {
         this.l3CacheSize = l3CacheSize;
     }
 
-    public String getFamily() {
+    public long getFamily() {
         return family;
     }
 
-    public void setFamily(String family) {
+    public void setFamily(long family) {
         this.family = family;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public String getSocketDesignation() {
-        return socketDesignation;
-    }
-
-    public void setSocketDesignation(String socketDesignation) {
-        this.socketDesignation = socketDesignation;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Processor processor = (Processor) o;
-        return coreCount == processor.coreCount && Objects.equals(processorName, processor.processorName) && Objects.equals(description, processor.description) && Objects.equals(width, processor.width) && Objects.equals(cpuSpeed, processor.cpuSpeed) && Objects.equals(externalClock, processor.externalClock) && Objects.equals(l1CacheSize, processor.l1CacheSize) && Objects.equals(l2CacheSize, processor.l2CacheSize) && Objects.equals(l3CacheSize, processor.l3CacheSize) && Objects.equals(family, processor.family) && Objects.equals(deviceId, processor.deviceId) && Objects.equals(socketDesignation, processor.socketDesignation);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), processorName, description, width, cpuSpeed, coreCount, externalClock, l1CacheSize, l2CacheSize, l3CacheSize, family, deviceId, socketDesignation);
-    }
-
-    @Override
-    public String toString() {
-        return "Processor{" +
-                "processorName='" + processorName + '\'' +
-                ", description='" + description + '\'' +
-                ", width=" + width +
-                ", cpuSpeed=" + cpuSpeed +
-                ", coreCount=" + coreCount +
-                ", externalClock=" + externalClock +
-                ", l1CacheSize=" + l1CacheSize +
-                ", l2CacheSize=" + l2CacheSize +
-                ", l3CacheSize=" + l3CacheSize +
-                ", family='" + family + '\'' +
-                ", deviceId='" + deviceId + '\'' +
-                ", socketDesignatio='" + socketDesignation + '\'' +
-                '}';
     }
 }
