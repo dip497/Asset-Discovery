@@ -12,14 +12,19 @@ import java.util.Objects;
 public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
     private   String name;
     private   String description;
-    private   String size;
-    private   Date installedDate;
+    private   long size;
     private   int partition;
     private   String mediaType;
     private   String model;
     private   String interfaceType;
-    private   String pnpDeviceId;
 
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
 
     public String getName() {
         return name;
@@ -27,14 +32,6 @@ public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
 
     public String getDescription() {
         return description;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public Date getInstalledDate() {
-        return installedDate;
     }
 
     public int getPartition() {
@@ -53,9 +50,6 @@ public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
         return interfaceType;
     }
 
-    public String getPnpDeviceId() {
-        return pnpDeviceId;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -63,14 +57,6 @@ public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public void setInstalledDate(Date installedDate) {
-        this.installedDate = installedDate;
     }
 
     public void setPartition(int partition) {
@@ -89,42 +75,31 @@ public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
         this.interfaceType = interfaceType;
     }
 
-    public void setPnpDeviceId(String pnpDeviceId) {
-        this.pnpDeviceId = pnpDeviceId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PhysicalDiskRest entity = (PhysicalDiskRest) o;
-        return Objects.equals(this.name, entity.name) &&
-                Objects.equals(this.description, entity.description) &&
-                Objects.equals(this.size, entity.size) &&
-                Objects.equals(this.installedDate, entity.installedDate) &&
-                Objects.equals(this.partition, entity.partition) &&
-                Objects.equals(this.mediaType, entity.mediaType) &&
-                Objects.equals(this.model, entity.model) &&
-                Objects.equals(this.interfaceType, entity.interfaceType) &&
-                Objects.equals(this.pnpDeviceId, entity.pnpDeviceId);
+        if (!super.equals(o)) return false;
+        PhysicalDiskRest that = (PhysicalDiskRest) o;
+        return size == that.size && partition == that.partition && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(mediaType, that.mediaType) && Objects.equals(model, that.model) && Objects.equals(interfaceType, that.interfaceType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, size, installedDate, partition, mediaType, model, interfaceType, pnpDeviceId);
+        return Objects.hash(super.hashCode(), name, description, size, partition, mediaType, model, interfaceType);
     }
 
     @Override
-    public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "name = " + name + ", " +
-                "description = " + description + ", " +
-                "size = " + size + ", " +
-                "installedDate = " + installedDate + ", " +
-                "partition = " + partition + ", " +
-                "mediaType = " + mediaType + ", " +
-                "model = " + model + ", " +
-                "interfaceType = " + interfaceType + ", " +
-                "pnpDeviceId = " + pnpDeviceId + ")";
+    public String
+    toString() {
+        return "PhysicalDiskRest{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", size=" + size +
+                ", partition=" + partition +
+                ", mediaType='" + mediaType + '\'' +
+                ", model='" + model + '\'' +
+                ", interfaceType='" + interfaceType + '\'' +
+                '}';
     }
 }

@@ -20,10 +20,8 @@ public class PhysicalDiskOps extends AssetBaseOps<PhysicalDisk, PhysicalDiskRest
         physicalDisk.setDescription(physicalDiskRest.getDescription());
         physicalDisk.setName(physicalDiskRest.getName());
         physicalDisk.setSize(physicalDiskRest.getSize());
-        physicalDisk.setInstalledDate(physicalDiskRest.getInstalledDate());
         physicalDisk.setPartition(physicalDiskRest.getPartition());
         physicalDisk.setMediaType(physicalDiskRest.getMediaType());
-        physicalDisk.setPnpDeviceId(physicalDiskRest.getPnpDeviceId());
         physicalDisk.setInterfaceType(physicalDiskRest.getInterfaceType());
 
         return physicalDisk;
@@ -34,11 +32,9 @@ public class PhysicalDiskOps extends AssetBaseOps<PhysicalDisk, PhysicalDiskRest
         physicalDiskRest.setDescription(physicalDisk.getDescription());
         physicalDiskRest.setName(physicalDisk.getName());
         physicalDiskRest.setSize(physicalDisk.getSize());
-        physicalDiskRest.setInstalledDate(physicalDisk.getInstalledDate());
         physicalDiskRest.setPartition(physicalDisk.getPartition());
         physicalDiskRest.setMediaType(physicalDisk.getMediaType());
         physicalDiskRest.setInterfaceType(physicalDisk.getInterfaceType());
-        physicalDiskRest.setPnpDeviceId(physicalDisk.getPnpDeviceId());
 
         return physicalDiskRest;
     }

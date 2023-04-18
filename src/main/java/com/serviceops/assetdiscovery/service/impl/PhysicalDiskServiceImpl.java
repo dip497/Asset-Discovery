@@ -1,5 +1,6 @@
 package com.serviceops.assetdiscovery.service.impl;
 
+import com.serviceops.assetdiscovery.entity.LogicalDisk;
 import com.serviceops.assetdiscovery.entity.PhysicalDisk;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
@@ -29,9 +30,9 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         // command for parsing information about the disk size.
         commands.put("df -h | awk '$NF==\"/\"{printf \"%s\\n\", $2}'\n", new String[]{});
         // command for parsing information about the disk name.
-        commands.put("blkid | awk -F: '{print $1}' | awk -F/ '{print $NF}'\n", new String[]{});
-        // command for parsing information about the pnp device id.
-        commands.put("udevadm info --query=property --name=/dev/sda | grep ID_SERIAL\n",new String[]{});
+        commands.put("blkid | awk -F: '{print $1}' | awk -F/ '{print $NF}'", new String[]{});
+        // command for parsing information about the serial number.
+        commands.put("sudo lshw -c disk | grep serial: ",new String[]{});
         // command for parsing information about the interface.
         commands.put("udevadm info --query=property --name=/dev/sda | grep ID_BUS\n",new String[]{});
         // command for parsing information about the media type.
@@ -46,6 +47,25 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         LinuxCommandExecutorManager.add(PhysicalDisk.class, commands);
     }
 
+    private long convertToBaseUnit(String Data) {
+        long data;
+        Data = Data.toLowerCase();
+        if (Data.contains("mib") || Data.contains("mb")) {
+            Data = Data.replaceAll("[^0-9]", "").trim();
+            Data = Data.replaceAll(" + ", "");
+            data = Long.parseLong(Data) * 1024 * 1024;
+
+        } else if (Data.contains("g") || Data.contains("gb")) {
+            Data = Data.replaceAll("[^0-9]", "").trim();
+            Data = Data.replaceAll(" + ", "");
+            data = Long.parseLong(Data) * 1024 * 1024* 1024;
+        } else {
+            return Long.parseLong(Data);
+        }
+
+        return data;
+    }
+
     private static List<String> getParseResult() {
         Map<String, String[]> stringMap = LinuxCommandExecutorManager.get(PhysicalDisk.class);
         List<String> list = new ArrayList<>();
@@ -58,25 +78,26 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
     }
 
     @Override
-    public void save(Long id) {
+    public void save(Long refId) {
 
-        Optional<PhysicalDisk> fetchPhysicalDisk = customRepository.findByColumn("refId",id, PhysicalDisk.class);
+        Optional<PhysicalDisk> fetchPhysicalDisk = customRepository.findByColumn("refId",refId, PhysicalDisk.class);
         if (fetchPhysicalDisk.isPresent()) {
             PhysicalDisk physicalDisk = fetchPhysicalDisk.get();
             logger.info("Updating PhysicalDisk with Id : --> {}",physicalDisk.getId());
-            setData(physicalDisk);
+            setData(physicalDisk,refId);
         } else {
             PhysicalDisk physicalDisk = new PhysicalDisk();
-            physicalDisk.setRefId(id);
-            logger.info("Creating PhysicalDisk with Id : --> {}",id);
-            setData(physicalDisk);
+            physicalDisk.setRefId(refId);
+            logger.info("Creating PhysicalDisk with Id : --> {}",refId);
+            setData(physicalDisk,refId);
         }
     }
 
-    private void setData(PhysicalDisk physicalDisk) {
-        physicalDisk.setSize(getParseResult().get(0));
+    private void setData(PhysicalDisk physicalDisk,long refId) {
+        physicalDisk.setPartition(customRepository.findAllByColumnName(LogicalDisk.class,"refId",refId).size());
+        physicalDisk.setSize(convertToBaseUnit(getParseResult().get(0)));
         physicalDisk.setName(getParseResult().get(1));
-        physicalDisk.setPnpDeviceId(getParseResult().get(2));
+        physicalDisk.setSerialNumber(formatData(getParseResult().get(2),"serial: "));
         physicalDisk.setInterfaceType(getParseResult().get(3));
         physicalDisk.setMediaType(formatData(getParseResult().get(4),"DEVTYPE="));
         physicalDisk.setManufacturer(formatData(getParseResult().get(5),"vendor:"));
@@ -95,41 +116,41 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
     }
 
     @Override
-    public void delete(Long id) {
-        logger.info("Deleted PhysicalDisk with Id : --> {}",id);
-        customRepository.deleteById(PhysicalDisk.class,id,"refId");
+    public void delete(Long refId) {
+        logger.info("Deleted PhysicalDisk with Id : --> {}",refId);
+        customRepository.deleteById(PhysicalDisk.class,refId,"refId");
     }
 
     @Override
-    public void update(Long id, PhysicalDiskRest physicalDiskRest) {
-        Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId",id,PhysicalDisk.class);
+    public void update(Long refId, PhysicalDiskRest physicalDiskRest) {
+        Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId",refId,PhysicalDisk.class);
         if (optionalPhysicalDisk.isPresent()) {
             PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
             PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps(physicalDisk,physicalDiskRest);
             customRepository.save(physicalDiskOps.restToEntity());
-            logger.info("Updating PhysicalDisk with Id : --> {}",id);
+            logger.info("Updating PhysicalDisk with Id : --> {}",refId);
 
         } else {
-            logger.error("Physical disk not found with id; --> {}",id);
-            throw new ResourceNotFoundException("No PhysicalDisk","refId",String.valueOf(id));
+            logger.error("Physical disk not found with id; --> {}",refId);
+            throw new ResourceNotFoundException("No PhysicalDisk","refId",String.valueOf(refId));
         }
     }
 
     @Override
-    public List<PhysicalDiskRest> findByRefId(Long id) {
-        Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId",id,PhysicalDisk.class);
+    public List<PhysicalDiskRest> findByRefId(Long refId) {
+        Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId",refId,PhysicalDisk.class);
+        List<PhysicalDiskRest> physicalDiskRests = new ArrayList<>();
         if (optionalPhysicalDisk.isPresent()) {
-            List<PhysicalDiskRest> physicalDiskRests = new ArrayList<>();
             PhysicalDiskRest physicalDiskRest = new PhysicalDiskRest();
             PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps(optionalPhysicalDisk.get(),physicalDiskRest);
             physicalDiskRests.add(physicalDiskOps.entityToRest());
+            logger.info("Fetched PhysicalDisk with Id : --> {}",refId);
 
-            logger.info("Fetched PhysicalDisk with Id : --> {}",id);
-            return physicalDiskRests;
         } else {
-            logger.error("Physical disk not found with id; --> {}",id);
-            throw new ResourceNotFoundException("No PhysicalDisk","refId",String.valueOf(id));
+            logger.error("Physical disk not found with id; --> {}",refId);
+            physicalDiskRests.add(new PhysicalDiskRest());
         }
+        return physicalDiskRests;
 
     }
 }

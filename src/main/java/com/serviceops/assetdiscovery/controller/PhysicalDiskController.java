@@ -18,20 +18,20 @@ public class PhysicalDiskController {
     }
 
     @GetMapping(value = "/{refId}/physicalDisk",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<PhysicalDiskRest> get (@PathVariable("refId") Long id) {
-        logger.debug("Fetching physical disk with id: --> {}", id);
-        return physicalDiskService.findByRefId(id);
+    public List<PhysicalDiskRest> get (@PathVariable("refId") Long refId) {
+        logger.debug("Fetching physical disk with id: --> {}", refId);
+        return physicalDiskService.findByRefId(refId);
     }
 
     @DeleteMapping("/{refId}/physicalDisk")
-    public void delete(@PathVariable("refId") Long id) {
-        logger.debug("Deleting physical disk with id: --> {}", id);
-        physicalDiskService.delete(id);
+    public void delete(@PathVariable("refId") Long refId) {
+        logger.debug("Deleting physical disk with id: --> {}", refId);
+        physicalDiskService.delete(refId);
     }
 
     @PutMapping(value = "/{refId}/physicalDisk",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@PathVariable("refId") Long id, @RequestBody PhysicalDiskRest physicalDiskRest){
-        logger.debug("Updating physical disk with id: --> {}", id);
-        physicalDiskService.update(id,physicalDiskRest);
+    public void update(@PathVariable("refId") Long refId, @RequestBody PhysicalDiskRest physicalDiskRest){
+        logger.debug("Updating physical disk with id: --> {}", refId);
+        physicalDiskService.update(refId,physicalDiskRest);
     }
 }

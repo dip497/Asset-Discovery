@@ -2,28 +2,20 @@ package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
-import java.sql.Date;
 import java.util.Objects;
 
 @Entity
 public class PhysicalDisk extends AssetBase {
 
-    //   lshw -class disk
-    @Column(length = 2048)
-    private String name;  // product name
-    @Column(length = 2048)
-    private String description;  // description
-    @Column(length = 2048)
-    private String size;       // size
-    private Date installedDate;
+    private String name;
+    private String description;
+    private long size;
     private int partition;
     private String mediaType;
     private String model;
     private String interfaceType;
-    private String pnpDeviceId;  // serial number
 
     public String getName() {
         return name;
@@ -41,20 +33,12 @@ public class PhysicalDisk extends AssetBase {
         this.description = description;
     }
 
-    public String getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(long size) {
         this.size = size;
-    }
-
-    public Date getInstalledDate() {
-        return installedDate;
-    }
-
-    public void setInstalledDate(Date installedDate) {
-        this.installedDate = installedDate;
     }
 
     public int getPartition() {
@@ -89,40 +73,18 @@ public class PhysicalDisk extends AssetBase {
         this.interfaceType = interfaceType;
     }
 
-    public String getPnpDeviceId() {
-        return pnpDeviceId;
-    }
-
-    public void setPnpDeviceId(String pnpDeviceId) {
-        this.pnpDeviceId = pnpDeviceId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
+        if (!super.equals(o)) return false;
         PhysicalDisk that = (PhysicalDisk) o;
-
-        if (getSize() != that.getSize()) return false;
-        if (getPartition() != that.getPartition()) return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
-            return false;
-        if (getInstalledDate() != null ? !getInstalledDate().equals(that.getInstalledDate()) : that.getInstalledDate() != null)
-            return false;
-        if (getMediaType() != null ? !getMediaType().equals(that.getMediaType()) : that.getMediaType() != null)
-            return false;
-        if (getModel() != null ? !getModel().equals(that.getModel()) : that.getModel() != null) return false;
-        if (getInterfaceType() != null ? !getInterfaceType().equals(that.getInterfaceType()) : that.getInterfaceType() != null)
-            return false;
-        return getPnpDeviceId() != null ? getPnpDeviceId().equals(that.getPnpDeviceId()) : that.getPnpDeviceId() == null;
+        return partition == that.partition && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(size, that.size) && Objects.equals(mediaType, that.mediaType) && Objects.equals(model, that.model) && Objects.equals(interfaceType, that.interfaceType);
     }
-
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, size, installedDate, partition, mediaType, model, interfaceType, pnpDeviceId);
+        return Objects.hash(super.hashCode(), name, description, size, partition, mediaType, model, interfaceType);
     }
 
     @Override
@@ -130,13 +92,11 @@ public class PhysicalDisk extends AssetBase {
         return "PhysicalDisk{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", size=" + size +
-                ", installedDate=" + installedDate +
+                ", size='" + size + '\'' +
                 ", partition=" + partition +
                 ", mediaType='" + mediaType + '\'' +
                 ", model='" + model + '\'' +
                 ", interfaceType='" + interfaceType + '\'' +
-                ", pnpDeviceId='" + pnpDeviceId + '\'' +
                 '}';
     }
 }
