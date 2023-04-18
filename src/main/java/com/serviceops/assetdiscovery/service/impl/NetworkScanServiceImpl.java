@@ -137,20 +137,22 @@ public class NetworkScanServiceImpl implements NetworkScanService {
 
     private void performScanOnCredentialEntireNetwork(NetworkScanRest networkScanRest){
         String NETWORK_ADDRESS = getNetworkAddress(networkScanRest.getIpRangeStart());
-        CredentialsRest credential = credentialsService.findById(networkScanRest.getRefIds().get(0));
-        int thirdstart = Integer.parseInt(networkScanRest.getIpRangeStart().split("\\.")[2]);
-        int  fourthstart = Integer.parseInt(networkScanRest.getIpRangeStart().split("\\.")[3]);
-        for (int i = thirdstart; i <= 255; i++) {
-            for (int j = fourthstart; j <= 255; j++) {
+        List<Long> credentialsIds = networkScanRest.getRefIds();
+        List<CredentialsRest> credentialsList = credentialsIds.stream().map(credentialsService::findById).toList();
+        int thirdOctet = Integer.parseInt(networkScanRest.getIpRangeStart().split("\\.")[2]);
+        int  fourthOctet = Integer.parseInt(networkScanRest.getIpRangeStart().split("\\.")[3]);
+        for (int i = thirdOctet; i <= 255; i++) {
+            for (int j = fourthOctet; j <= 255; j++) {
                 String ipAddress = NETWORK_ADDRESS + i+"." + j;
-                try {
-                    Socket socket = new Socket();
+                try(Socket socket = new Socket()) {
                     socket.connect(new InetSocketAddress(ipAddress, 22), 100);
-                    boolean isAuthenticated = LinuxCommandExecutorManager.testConnection(ipAddress, credential.getUsername(), credential.getPassword(), 22);
-                    if (isAuthenticated) {
-                        fetch(ipAddress, credential.getUsername(), credential.getPassword());
+                    for (CredentialsRest credential : credentialsList) {
+                        logger.debug("trying to connect using ->{}",credential.getUsername());
+                        if(fetch(ipAddress,credential.getUsername(), credential.getPassword())){
+                            logger.debug("fetch completed using ->{}",credential.getUsername());
+                            break;
+                        }
                     }
-                    socket.close();
                 } catch (Exception e) {
                     // Ignore exceptions, as we only care about successful connections
                 }
@@ -161,7 +163,6 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         List<String> IP_ADDRESS_LIST = networkScanRest.getIpList();
         List<Long> credentialsIds = networkScanRest.getRefIds();
         List<CredentialsRest> credentialsList = credentialsIds.stream().map(credentialsService::findById).toList();
-        //CredentialsRest credential = credentialsService.findById(networkScanRest.getRefIds().get(0));
         for(String ip: IP_ADDRESS_LIST) {
             for (CredentialsRest credential : credentialsList) {
                 logger.debug("trying to connect using ->{}",credential.getUsername());
