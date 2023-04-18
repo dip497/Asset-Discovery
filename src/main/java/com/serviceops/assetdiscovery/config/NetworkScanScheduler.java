@@ -32,7 +32,7 @@ public class NetworkScanScheduler {
 
   // @Scheduled(cron = "0 0 0 * * *")
     @Scheduled(fixedDelayString ="PT2M")// Run daily at midnight
-    public void scanNetworkRanges() throws InterruptedException {
+    public void scanNetworkRanges() {
         logger.debug("Running scheduled scan ...");
         List<NetworkScanRest> networkScansRest = networkScanService.findAll();
         for (NetworkScanRest networkScanRest : networkScansRest) {

@@ -81,7 +81,6 @@ public class NetworkScanner {
         List<String> IP_ADDRESS_LIST = networkScanRest.getIpList();
         List<Long> credentialsIds = networkScanRest.getRefIds();
         List<CredentialsRest> credentialsList = credentialsIds.stream().map(credentialsService::findById).toList();
-        //CredentialsRest credential = credentialsService.findById(networkScanRest.getRefIds().get(0));
         for(String ip: IP_ADDRESS_LIST) {
             for (CredentialsRest credential : credentialsList) {
                 logger.debug("trying to connect using ->{}",credential.getUsername());

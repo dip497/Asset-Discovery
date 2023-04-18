@@ -4,6 +4,7 @@ import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 import com.serviceops.assetdiscovery.service.interfaces.MotherBoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,28 +18,22 @@ public class MotherBoardController {
         this.motherBoardService = motherBoardService;
     }
 
-    @GetMapping("/{refId}/motherBoard")
+    @GetMapping(value = "/{refId}/motherBoard",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MotherBoardRest> getMotherBoard(@PathVariable("refId") Long refId){
-
         logger.debug("Fetching MotherBoard with Asset id -> {}",refId);
-
         return  motherBoardService.findByRefId(refId);
     }
 
     @DeleteMapping("/{refId}/motherBoard")
     public void deleteMotherBoard(@PathVariable("refId") Long refId){
-
         logger.debug("Deleting MotherBoard with Asset id -> {}",refId);
-
         motherBoardService.deleteByRefId(refId);
 
     }
 
-    @PutMapping("/{refId}/motherBoard")
+    @PutMapping(value = "/{refId}/motherBoard",consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateMotherBoard(@PathVariable("refId") Long refId,@RequestBody MotherBoardRest motherBoardRest){
-
         logger.debug("Updating MotherBoard with Asset id -> {}",refId);
-
         motherBoardService.update(refId,motherBoardRest);
 
     }

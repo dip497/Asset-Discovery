@@ -5,14 +5,13 @@ import com.serviceops.assetdiscovery.service.interfaces.CredentialsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
-@RestController()
-@RequestMapping("/credentials")
+@RestController
 public class CredentialsController {
     private final CredentialsService credentialsService;
     private final Logger logger = LoggerFactory.getLogger(CredentialsController.class);
@@ -21,40 +20,34 @@ public class CredentialsController {
         this.credentialsService = credentialsService;
     }
 
-    @PostMapping()
+    @PostMapping(value = "/credentials",consumes = MediaType.APPLICATION_JSON_VALUE ,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CredentialsRest> addCredentials(@RequestBody CredentialsRest credentialsRest){
         logger.debug("Creating Credentials with username -> {}",credentialsRest.getUsername());
         return new ResponseEntity<>(credentialsService.save(credentialsRest), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/credentials/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CredentialsRest getCredential(@PathVariable Long id){
         logger.debug("Finding credentials with id ->{}", id);
         return credentialsService.findById(id);
     }
 
-    @GetMapping()
+    @GetMapping(value = "/credentials",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CredentialsRest> getAllCredentials(){
         logger.debug("Finding all credentials");
         return credentialsService.findAll();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/credentials/{id}")
     public void deleteCredentialsById(@PathVariable Long id){
-
         logger.debug("Deleting Credentials with id -> {}",id);
-
         credentialsService.deleteById(id);
-
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/credentials/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateCredential(@PathVariable("id") Long id,@RequestBody CredentialsRest credentialsRest){
-
         logger.debug("Updating Credentials with id -> {}",id);
-
         credentialsService.update(id,credentialsRest);
-
     }
 
 }

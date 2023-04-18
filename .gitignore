@@ -35,3 +35,8 @@ build/
 ### Asset discovery ###
 !/src/main/resources/application.yaml
 !/src/test/java/com/serviceops/assetdiscovery/
+!/src/test/
+
+### Asset discovery ###
+!/src/main/resources/application.yaml
+!/src/test/java/com/serviceops/assetdiscovery/
