@@ -24,6 +24,7 @@ public class AssetOps extends SingleBaseOps<Asset, AssetRest> {
         asset.setSerialNumber(assetRest.getSerialNumber());
         asset.setMacAddress(assetRest.getMacAddress());
         asset.setSubNetMask(assetRest.getSubNetMask());
+        asset.setLastLoggedUser(assetRest.getLastLoggedUser());
         return asset;
     }
 
@@ -36,6 +37,7 @@ public class AssetOps extends SingleBaseOps<Asset, AssetRest> {
         assetRest.setSerialNumber(asset.getSerialNumber());
         assetRest.setMacAddress(asset.getMacAddress());
         assetRest.setSubNetMask(asset.getSubNetMask());
+        assetRest.setLastLoggedUser(asset.getLastLoggedUser());
         return assetRest;
     }
 

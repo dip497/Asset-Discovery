@@ -14,6 +14,15 @@ public class Asset extends SingleBase {
     private String serialNumber;
     private String macAddress;
     private String subNetMask;
+    private String lastLoggedUser;
+
+    public String getLastLoggedUser() {
+        return lastLoggedUser;
+    }
+
+    public void setLastLoggedUser(String lastLoggedUser) {
+        this.lastLoggedUser = lastLoggedUser;
+    }
 
     public String getHostName() {
         return hostName;

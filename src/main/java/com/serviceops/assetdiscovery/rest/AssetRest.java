@@ -17,6 +17,15 @@ public class AssetRest extends SingleBaseRest implements Serializable {
     private String serialNumber;
     private String macAddress;
     private String subNetMask;
+    private String lastLoggedUser;
+
+    public String getLastLoggedUser() {
+        return lastLoggedUser;
+    }
+
+    public void setLastLoggedUser(String lastLoggedUser) {
+        this.lastLoggedUser = lastLoggedUser;
+    }
 
     public String getHostName() {
         return hostName;

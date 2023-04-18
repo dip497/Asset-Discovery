@@ -43,6 +43,7 @@ public class AssetServiceImpl implements AssetService {
             updatedAsset.setDomainName(parseResult.get(1));
             updatedAsset.setMacAddress(parseResult.get(3));
             updatedAsset.setSubNetMask(parseResult.get(6));
+            updatedAsset.setLastLoggedUser(parseResult.get(7));
             customRepository.save(updatedAsset);
             logger.info("Updated asset with IP ->{}", parseResult.get(2));
             return findByIpAddress(updatedAsset.getIpAddress());
@@ -58,6 +59,7 @@ public class AssetServiceImpl implements AssetService {
             asset.setAssetType("LINUX "+parseResult.get(4).toUpperCase());
             asset.setSerialNumber(parseResult.get(5));
             asset.setSubNetMask(parseResult.get(6));
+            asset.setLastLoggedUser(parseResult.get(7));
             customRepository.save(asset);
             logger.info("Saved asset with IP ->{}", parseResult.get(2));
             return findByIpAddress(asset.getIpAddress());
@@ -223,6 +225,9 @@ public class AssetServiceImpl implements AssetService {
 
         // Command for getting the subnet mask.
         commands.put("sudo ifconfig", new String[]{});
+
+        // Command for getting the last logged-in user
+        commands.put("w | tail -1 | awk '{print $1}'\n", new String[]{});
 
         // Adding all the commands to the Main HasMap where the class Asset is the key for all the commands
         LinuxCommandExecutorManager.add(Asset.class, commands);
