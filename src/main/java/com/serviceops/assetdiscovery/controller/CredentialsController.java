@@ -23,7 +23,7 @@ public class CredentialsController {
 
     @PostMapping()
     public ResponseEntity<CredentialsRest> addCredentials(@RequestBody CredentialsRest credentialsRest){
-        logger.debug("Creating Credentials with IpAddress -> {}",credentialsRest.getIpAddress());
+        logger.debug("Creating Credentials with username -> {}",credentialsRest.getUsername());
         return new ResponseEntity<>(credentialsService.save(credentialsRest), HttpStatus.CREATED);
     }
 

@@ -18,6 +18,8 @@ public class NetworkScanRest extends SingleBaseRest {
     private Long schedulerRefId;
     @Enumerated(EnumType.STRING)
     private IpRangeType ipRangeType;
+    private String ipRangeStart;
+    private List<String> ipList;
     private List<Long> refIds;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDateTime lastScan;
@@ -89,6 +91,22 @@ public class NetworkScanRest extends SingleBaseRest {
 
     public void setSchedulerRefId(Long schedulerRefId) {
         this.schedulerRefId = schedulerRefId;
+    }
+
+    public String getIpRangeStart() {
+        return ipRangeStart;
+    }
+
+    public void setIpRangeStart(String ipRangeStart) {
+        this.ipRangeStart = ipRangeStart;
+    }
+
+    public List<String> getIpList() {
+        return ipList;
+    }
+
+    public void setIpList(List<String> ipList) {
+        this.ipList = ipList;
     }
 
     @Override

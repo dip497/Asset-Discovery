@@ -6,17 +6,17 @@ import jakarta.persistence.Entity;
 @Entity
 public class Ram extends AssetBase {
 
-    private String size;
+    private Long size;
     private String memoryType;
-    private String width;
-    private String clockSpeed;
+    private Long width;
+    private Long clockSpeed;
     private String bankLocater;
 
-    public String getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
@@ -28,19 +28,19 @@ public class Ram extends AssetBase {
         this.memoryType = memoryType;
     }
 
-    public String getWidth() {
+    public Long getWidth() {
         return width;
     }
 
-    public void setWidth(String width) {
+    public void setWidth(Long width) {
         this.width = width;
     }
 
-    public String getClockSpeed() {
+    public Long getClockSpeed() {
         return clockSpeed;
     }
 
-    public void setClockSpeed(String clockSpeed) {
+    public void setClockSpeed(Long clockSpeed) {
         this.clockSpeed = clockSpeed;
     }
 
@@ -88,6 +88,6 @@ public class Ram extends AssetBase {
                 ", width=" + width +
                 ", clockSpeed=" + clockSpeed +
                 ", bankLocater='" + bankLocater + '\'' +
-                '}';
+                "} " + super.toString();
     }
 }

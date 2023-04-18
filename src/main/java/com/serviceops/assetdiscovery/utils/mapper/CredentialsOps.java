@@ -3,10 +3,13 @@ package com.serviceops.assetdiscovery.utils.mapper;
 import com.serviceops.assetdiscovery.entity.Credentials;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class CredentialsOps extends SingleBaseOps<Credentials, CredentialsRest> {
     private Credentials credentials;
     private CredentialsRest credentialsRest;
+    private PasswordEncoder passwordEncoder;
     public CredentialsOps(Credentials credentials, CredentialsRest credentialsRest) {
         super(credentials, credentialsRest);
         this.credentials = credentials;
@@ -14,18 +17,20 @@ public class CredentialsOps extends SingleBaseOps<Credentials, CredentialsRest> 
     }
 
     public  CredentialsRest entityToRest() {
-        super.entityToRest(this.credentials);
-        credentialsRest.setUsername(this.credentials.getUsername());
-        credentialsRest.setPassword(this.credentials.getPassword());
-        credentialsRest.setIpAddress(this.credentials.getIpAddress());
+        super.entityToRest(credentials);
+        credentialsRest.setUsername(credentials.getUsername());
+        credentialsRest.setPassword(credentials.getPassword());
+        credentialsRest.setDescription(credentials.getDescription());
+        credentialsRest.setCredentialType(credentials.getCredentialType());
         return credentialsRest;
     }
 
     public Credentials restToEntity() {
-        super.restToEntity(this.credentialsRest);
-        credentials.setUsername(this.credentialsRest.getUsername());
-        credentials.setPassword(this.credentialsRest.getPassword());
-        credentials.setIpAddress(this.credentialsRest.getIpAddress());
+        super.restToEntity(credentialsRest);
+        credentials.setUsername(credentialsRest.getUsername());
+        credentials.setPassword(credentialsRest.getPassword());
+        credentials.setDescription(credentialsRest.getDescription());
+        credentials.setCredentialType(credentialsRest.getCredentialType());
         return credentials;
     }
 }

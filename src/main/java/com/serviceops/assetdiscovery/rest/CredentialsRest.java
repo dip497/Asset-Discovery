@@ -1,10 +1,11 @@
 package com.serviceops.assetdiscovery.rest;
 
+import com.serviceops.assetdiscovery.entity.enums.CredentialType;
 import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
-import jakarta.validation.constraints.Pattern;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.io.Serializable;
-import java.net.Inet4Address;
 import java.util.Objects;
 
 /**
@@ -13,9 +14,9 @@ import java.util.Objects;
 public class CredentialsRest extends SingleBaseRest implements Serializable {
     private  String username;
     private  String password;
-
-    @Pattern(regexp = "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$")
-    private  String ipAddress;
+    private String description;
+    @Enumerated(value = EnumType.STRING)
+    private CredentialType credentialType;
 
 
     public String getUsername() {
@@ -26,10 +27,6 @@ public class CredentialsRest extends SingleBaseRest implements Serializable {
         return password;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -38,30 +35,56 @@ public class CredentialsRest extends SingleBaseRest implements Serializable {
         this.password = password;
     }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public CredentialType getCredentialType() {
+        return credentialType;
+    }
+
+    public void setCredentialType(CredentialType credentialType) {
+        this.credentialType = credentialType;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CredentialsRest entity = (CredentialsRest) o;
-        return Objects.equals(this.username, entity.username) &&
-                Objects.equals(this.password, entity.password) &&
-                Objects.equals(this.ipAddress, entity.ipAddress);
+        if (!super.equals(o)) return false;
+
+        CredentialsRest that = (CredentialsRest) o;
+
+        if (getUsername() != null ? !getUsername().equals(that.getUsername()) : that.getUsername() != null)
+            return false;
+        if (getPassword() != null ? !getPassword().equals(that.getPassword()) : that.getPassword() != null)
+            return false;
+        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
+            return false;
+        return getCredentialType() == that.getCredentialType();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, ipAddress);
+        int result = super.hashCode();
+        result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getCredentialType() != null ? getCredentialType().hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "username = " + username + ", " +
-                "password = " + password + ", " +
-                "ipAddress = " + ipAddress + ")";
+        return "CredentialsRest{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", description='" + description + '\'' +
+                ", credentialType=" + credentialType +
+                "} " + super.toString();
     }
 }

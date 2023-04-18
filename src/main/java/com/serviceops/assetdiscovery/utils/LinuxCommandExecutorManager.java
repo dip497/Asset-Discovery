@@ -20,7 +20,7 @@ public class LinuxCommandExecutorManager {
     private final String password;
     private final String username;
     private final int port;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(LinuxCommandExecutorManager.class);
 
     public LinuxCommandExecutorManager(String hostname, String username, String password, int port) {
         this.hostname = hostname;
@@ -45,13 +45,14 @@ public class LinuxCommandExecutorManager {
         }
     }
 
-    public boolean testConnection() throws AssetDiscoveryApiException {
+    public static boolean testConnection(String hostname,String username, String password,int port)   {
         try(LinuxCommandExecutor linuxCommandExecutor = new LinuxCommandExecutor(hostname,username,password,port)){
             return linuxCommandExecutor.connect();
         }catch (Exception e) {
-            logger.error("AssetDiscoveryApiException -> {}", e.getMessage());
-            throw new AssetDiscoveryApiException(e.getMessage());
+            logger.error("Auth fail -> {}", e.getMessage());
+          //  throw new AssetDiscoveryApiException(e.getMessage());
         }
+        return false;
     }
 
     public static <T extends SingleBase> void add(Class<T> key,LinkedHashMap<String,String[]> hashMap){

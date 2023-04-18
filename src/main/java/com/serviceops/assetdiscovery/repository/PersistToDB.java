@@ -42,6 +42,7 @@ public class PersistToDB {
     @Transactional
     public void saveToDB(){
         AssetRest assetRest = assetService.save();;
+        logicalDiskService.save(assetRest.getId());
         motherBoardService.save(assetRest.getId());
         physicalDiskService.save(assetRest.getId());
         computerSystemService.save(assetRest.getId());
@@ -51,7 +52,6 @@ public class PersistToDB {
         ramService.save(assetRest.getId());
         monitorService.save(assetRest.getId());
         osService.save(assetRest.getId());
-        logicalDiskService.save(assetRest.getId());
         pointingDeviceService.save(assetRest.getId());
         processorService.save(assetRest.getId());
     }

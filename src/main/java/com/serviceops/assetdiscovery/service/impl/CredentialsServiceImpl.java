@@ -26,15 +26,15 @@ public class CredentialsServiceImpl implements CredentialsService {
 
     @Override
     public CredentialsRest save(CredentialsRest credentialsRest) {
-        logger.info("Getting credential with Ip Address {}", credentialsRest.getIpAddress());
-        if (customRepository.findByColumn("ipAddress", credentialsRest.getIpAddress(), Credentials.class).isPresent()){
-            logger.warn("Credentials already exists with Ipaddress -> {} ",credentialsRest.getIpAddress());
-            throw new ResourceAlreadyExistsException(this.getClass().getSimpleName(),"ipaddress",credentialsRest.getIpAddress());
+        logger.info("Getting credential with id {}", credentialsRest.getId());
+        if (customRepository.findByColumn("id", credentialsRest.getId(), Credentials.class).isPresent()){
+            logger.error("Credentials already exists with id -> {} ",credentialsRest.getId());
+            throw new ResourceAlreadyExistsException(this.getClass().getSimpleName(),"id",credentialsRest.getId().toString());
         }else{
             Credentials credential = new Credentials();
             credentialsOps = new CredentialsOps(credential, credentialsRest);
             customRepository.save(credentialsOps.restToEntity());
-            logger.debug("saved credentials of IpAddress -> {} ",credentialsRest.getIpAddress());
+            logger.debug("saved credentials of ip -> {} ",credentialsRest.getId());
             return new CredentialsOps(credential,credentialsRest).entityToRest();
         }
     }
@@ -46,19 +46,6 @@ public class CredentialsServiceImpl implements CredentialsService {
         return credential.stream().map(c -> new CredentialsOps(c ,new CredentialsRest()).entityToRest()).toList();
     }
 
-    @Override
-    public CredentialsRest findByIpAddress(String inet4Address) {
-        Optional<Credentials> fetchCredentials = customRepository.findByColumn("ipAddress", inet4Address, Credentials.class);
-        if(fetchCredentials.isPresent()){
-            logger.info("Credential found for IpAddress -> {}", inet4Address);
-            return new CredentialsOps(fetchCredentials.get(), new CredentialsRest()).entityToRest();
-
-        }else{
-            logger.error("Credentials not found for IpAddress -> {}", inet4Address);
-            throw new ResourceNotFoundException("Credentials","inet4Address",inet4Address);
-
-        }
-    }
 
     @Override
     public CredentialsRest findById(Long id) {

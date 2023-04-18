@@ -125,14 +125,17 @@ public class RamServiceImpl implements RamService {
         }
     }
     private void setRam(Ram ram,String[] data) {
-        ram.setSize(data[1]);
-        ram.setWidth(data[2]);
+    //    ram.setSize(data[1]);
+     //   ram.setWidth(data[2]);
         ram.setSerialNumber(data[3]);
         ram.setBankLocater(data[4]);
-        ram.setClockSpeed(data[5]);
+     //   ram.setClockSpeed(data[5]);
         ram.setManufacturer(data[6]);
         ram.setMemoryType(data[7]);
     }
+   // private Long convertGbtoByte(String data){
+    //    return Long.valueOf(data)*
+   // }
 
     private void setCommands() {
         String RAM_COUNT = "head -n $(sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Size: [1-9]/ {count++} END{print count}') | head -n $(sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Size: [1-9]/ {count++} END{print count}')";

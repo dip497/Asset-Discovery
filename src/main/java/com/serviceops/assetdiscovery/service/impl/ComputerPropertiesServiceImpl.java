@@ -58,7 +58,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         if (!(ramRests.isEmpty())) {
             long size = 0L;
             for (RamRest ram : ramRests) {
-                size += Long.parseLong(ram.getSize());
+              //  size += Long.parseLong(ram.getSize());
             }
             computerPropertiesRest.setMemorySize(Long.toString(size));
 

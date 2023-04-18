@@ -13,12 +13,15 @@ import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.rest.NetworkScanRest;
 import com.serviceops.assetdiscovery.rest.SchedulerRest;
 import com.serviceops.assetdiscovery.service.interfaces.*;
+import com.serviceops.assetdiscovery.utils.LinuxCommandExecutor;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.NetworkScanOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,19 +60,13 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     public void save(NetworkScanRest networkScanRest) {
         Optional<NetworkScan> networkScan = customRepository.findByColumn("id", networkScanRest.getId(), NetworkScan.class);
         if(networkScan.isPresent()){
-            customRepository.update(new NetworkScanOps(new NetworkScan(),networkScanRest).restToEntity());
+            customRepository.save(new NetworkScanOps(networkScan.get(),networkScanRest).restToEntity());
         }else{
             networkScanRest.setEnabled(true);
             customRepository.save(new NetworkScanOps(new NetworkScan(),networkScanRest).restToEntity());
 
         }
 
-    }
-    @Override
-    public void saveOfSetOfIp(NetworkScanRest networkScanRest, List<String> ipAddress){
-        /*StringBuilder stringBuilder = new StringBuilder();
-        ipAddress.forEach(e -> stringBuilder.append(e).append(","));
-        networkScanRest.setRefIds(stringBuilder.toString());*/
     }
 
     @Override
@@ -90,7 +87,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         if(networkScan.isEmpty()){
             throw  new ResourceNotFoundException("NetworkScan","id",id.toString());
         }else{
-            customRepository.save(new NetworkScanOps(networkScan.get(),networkScanRest).restToEntity());
+            customRepository.update(new NetworkScanOps(networkScan.get(),networkScanRest).restToEntity());
             logger.info("network scan updated -> {}", networkScan.get());
         }
     }
@@ -104,9 +101,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
                 NetworkScanRest networkScanRest =  new NetworkScanRest();
                 networkScanRest =new NetworkScanOps(networkScan,networkScanRest).entityToRest();
                 if(networkScan.getIpRangeType() == IpRangeType.ENTIRE_NETWORK){
-                    performScanOnCredentialEntireNetwork();
-
-
+                    performScanOnCredentialEntireNetwork(networkScanRest);
                 }else{
                     performScanOnCredentialSpecificSetOfIp(networkScanRest);
 
@@ -131,38 +126,63 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         networkScan.setSchedulerRefId(scheduler.getId());
         customRepository.update(networkScan);
     }
-
-    @Override
-    public Scheduler getSchedulerById(Long schedulerRefId) {
-        return schedulerService.findById(schedulerRefId);
+    private static String getNetworkAddress(String ipAddress) {
+        String[] octets = ipAddress.split("\\.");
+        if (octets.length != 4) {
+            return null;
+        }
+        return octets[0] + "." + octets[1] + ".";
     }
 
-/*    public Scheduler findSchedulerByRefId(Long id){
-        Optional<NetworkScan> networkScan = customRepository.findByColumn("schedulerRefId", id, NetworkScan.class);
-        return networkScan.get();
-    }*/
 
-    private void performScanOnCredentialEntireNetwork(){
-        List<Credentials> credentials = customRepository.findAll(Credentials.class);
-        credentials.forEach(c -> fetch(c.getIpAddress(), c.getUsername(), c.getPassword()));
+    private void performScanOnCredentialEntireNetwork(NetworkScanRest networkScanRest){
+        String NETWORK_ADDRESS = getNetworkAddress(networkScanRest.getIpRangeStart());
+        CredentialsRest credential = credentialsService.findById(networkScanRest.getRefIds().get(0));
+        int thirdstart = Integer.parseInt(networkScanRest.getIpRangeStart().split("\\.")[2]);
+        int  fourthstart = Integer.parseInt(networkScanRest.getIpRangeStart().split("\\.")[3]);
+        for (int i = thirdstart; i <= 255; i++) {
+            for (int j = fourthstart; j <= 255; j++) {
+                String ipAddress = NETWORK_ADDRESS + i+"." + j;
+                try {
+                    Socket socket = new Socket();
+                    socket.connect(new InetSocketAddress(ipAddress, 22), 100);
+                    boolean isAuthenticated = LinuxCommandExecutorManager.testConnection(ipAddress, credential.getUsername(), credential.getPassword(), 22);
+                    if (isAuthenticated) {
+                        fetch(ipAddress, credential.getUsername(), credential.getPassword());
+                    }
+                    socket.close();
+                } catch (Exception e) {
+                    // Ignore exceptions, as we only care about successful connections
+                }
+            }
+        }
     }
     private void performScanOnCredentialSpecificSetOfIp(NetworkScanRest networkScanRest){
-        List<CredentialsRest> list = networkScanRest.getRefIds().stream().map(c -> credentialsService.findById(Long.valueOf(c))).toList();
+        List<String> IP_ADDRESS_LIST = networkScanRest.getIpList();
+        List<Long> credentialsIds = networkScanRest.getRefIds();
+        List<CredentialsRest> credentialsList = credentialsIds.stream().map(credentialsService::findById).toList();
+        //CredentialsRest credential = credentialsService.findById(networkScanRest.getRefIds().get(0));
+        for(String ip: IP_ADDRESS_LIST) {
+            for (CredentialsRest credential : credentialsList) {
+                logger.debug("trying to connect using ->{}",credential.getUsername());
+                if(fetch(ip,credential.getUsername(), credential.getPassword())){
+                    logger.debug("fetch completed using ->{}",credential.getUsername());
+                    break;
+                }
+            }
+        }
 
-        list.forEach(
-                credentialsRest ->
-                        fetch(credentialsRest.getIpAddress(),
-                                credentialsRest.getUsername(),
-                                credentialsRest.getPassword()));
     }
-    private void fetch(String ipAddress, String username, String password )  {
+    private boolean fetch(String ipAddress, String username, String password )  {
         try{
 
             logger.debug("Scanning -> {} " , ipAddress);
             new LinuxCommandExecutorManager(ipAddress, username, password,22).fetch();
             persistToDB.saveToDB();
+            return true;
         }catch (AssetDiscoveryApiException e){
             logger.error("Network Scanner Error for host-> {}" ,ipAddress );
+            return false;
         }
 
     }

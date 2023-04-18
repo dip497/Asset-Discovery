@@ -35,7 +35,7 @@ public class LinuxCommandExecutor implements AutoCloseable {
             logger.info("Connected to -> {}", host);
             return true;
         } catch (JSchException e) {
-            logger.error("Failed to connect to -> {}", host, e);
+            logger.error("Failed to connect to -> {}", host);
             return false;
         }
     }
