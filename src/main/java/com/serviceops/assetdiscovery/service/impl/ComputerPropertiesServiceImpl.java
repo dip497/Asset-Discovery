@@ -1,5 +1,6 @@
 package com.serviceops.assetdiscovery.service.impl;
 
+import com.serviceops.assetdiscovery.entity.Asset;
 import com.serviceops.assetdiscovery.entity.OS;
 import com.serviceops.assetdiscovery.entity.PhysicalDisk;
 import com.serviceops.assetdiscovery.entity.Processor;
@@ -32,8 +33,14 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
         Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
         Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", refId, Processor.class);
+        Optional<Asset> optionalAsset = customRepository.findByColumn("id",refId, Asset.class);
         List<RamRest> ramRests = ramService.findAllByRefId(refId);
         ComputerPropertiesRest computerPropertiesRest = new ComputerPropertiesRest();
+
+        if (optionalAsset.isPresent()){
+            Asset asset = optionalAsset.get();
+            computerPropertiesRest.setLastLoggedInUser(asset.getLastLoggedUser());
+        }
 
         if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
