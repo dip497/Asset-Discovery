@@ -89,7 +89,7 @@ public class ProcessorServiceImpl implements ProcessorService {
         customRepository.save(processor);
     }
 
-    private long convertToBaseUnit(String Data) { //TODO convert to MB.
+    private long convertToBaseUnit(String Data) {
         long data;
         Data = Data.toLowerCase();
         if (Data.contains("mib") || Data.contains("mb")) {
