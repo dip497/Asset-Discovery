@@ -10,46 +10,46 @@ import java.util.Objects;
  * A Rest for the {@link Ram} entity
  */
 public class RamRest extends AssetBaseRest implements Serializable {
-    private  String size;
+    private  Long size;
     private  String memoryType;
-    private  String width;
-    private  String clockSpeed;
+    private  Long width;
+    private  Long clockSpeed;
     private  String bankLocater;
 
-    public String getSize() {
+    public Long getSize() {
         return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 
     public String getMemoryType() {
         return memoryType;
     }
 
-    public String getWidth() {
-        return width;
-    }
-
-    public String getClockSpeed() {
-        return clockSpeed;
-    }
-
-    public String getBankLocater() {
-        return bankLocater;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
     public void setMemoryType(String memoryType) {
         this.memoryType = memoryType;
     }
 
-    public void setWidth(String width) {
+    public Long getWidth() {
+        return width;
+    }
+
+    public void setWidth(Long width) {
         this.width = width;
     }
 
-    public void setClockSpeed(String clockSpeed) {
+    public Long getClockSpeed() {
+        return clockSpeed;
+    }
+
+    public void setClockSpeed(Long clockSpeed) {
         this.clockSpeed = clockSpeed;
+    }
+
+    public String getBankLocater() {
+        return bankLocater;
     }
 
     public void setBankLocater(String bankLocater) {
@@ -57,29 +57,13 @@ public class RamRest extends AssetBaseRest implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RamRest entity = (RamRest) o;
-        return Objects.equals(this.size, entity.size) &&
-                Objects.equals(this.memoryType, entity.memoryType) &&
-                Objects.equals(this.width, entity.width) &&
-                Objects.equals(this.clockSpeed, entity.clockSpeed) &&
-                Objects.equals(this.bankLocater, entity.bankLocater);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(size, memoryType, width, clockSpeed, bankLocater);
-    }
-
-    @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "size = " + size + ", " +
-                "memoryType = " + memoryType + ", " +
-                "width = " + width + ", " +
-                "clockSpeed = " + clockSpeed + ", " +
-                "bankLocater = " + bankLocater + ")";
+        return "RamRest{" +
+                "size=" + size +
+                ", memoryType='" + memoryType + '\'' +
+                ", width=" + width +
+                ", clockSpeed=" + clockSpeed +
+                ", bankLocater='" + bankLocater + '\'' +
+                "} " + super.toString();
     }
 }
