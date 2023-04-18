@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.OS;
+import com.serviceops.assetdiscovery.entity.enums.OsArchitecture;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.OSRest;
@@ -10,15 +11,9 @@ import com.serviceops.assetdiscovery.utils.mapper.OsOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class OsServiceImpl implements OsService {
@@ -43,7 +38,7 @@ public class OsServiceImpl implements OsService {
         if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
             os.setOsName(parseResult.get(0));
-            os.setOsArchitecture(parseResult.get(2).contains("64") ? "64 BIT" : "32 BIT");
+            os.setOsArchitecture(parseResult.get(2).contains("64") ? OsArchitecture.SIXTY_FOUR : OsArchitecture.THIRTY_TWO);
             os.setActivationStatus("Unlicensed");
             os.setLicenseKey("Not Required");
             os.setOsVersion(parseResult.get(1));
@@ -59,7 +54,7 @@ public class OsServiceImpl implements OsService {
             os.setOsName(parseResult.get(0));
             os.setActivationStatus("Unlicensed");
             os.setLicenseKey("Not Required");
-            os.setOsArchitecture(parseResult.get(2).contains("64") ? "64 BIT" : "32 BIT");
+            os.setOsArchitecture(parseResult.get(2).contains("64") ? OsArchitecture.SIXTY_FOUR : OsArchitecture.THIRTY_TWO);
             os.setOsVersion(parseResult.get(1));
             os.setInstalledDate(parseDate(parseResult.get(3)));
             customRepository.save(os);

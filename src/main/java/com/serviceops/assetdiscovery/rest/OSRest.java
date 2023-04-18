@@ -1,9 +1,8 @@
 package com.serviceops.assetdiscovery.rest;
 
+import com.serviceops.assetdiscovery.entity.enums.OsArchitecture;
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
-
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -12,7 +11,7 @@ import java.util.Objects;
 public class OSRest extends AssetBaseRest implements Serializable {
     private String osName;
     private String osVersion;
-    private String osArchitecture;
+    private OsArchitecture osArchitecture;
     private String licenseKey;
     private String activationStatus;
     private Long installedDate;
@@ -35,11 +34,11 @@ public class OSRest extends AssetBaseRest implements Serializable {
         this.osVersion = osVersion;
     }
 
-    public String getOsArchitecture() {
+    public OsArchitecture getOsArchitecture() {
         return osArchitecture;
     }
 
-    public void setOsArchitecture(String osArchitecture) {
+    public void setOsArchitecture(OsArchitecture osArchitecture) {
         this.osArchitecture = osArchitecture;
     }
 

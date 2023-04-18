@@ -236,6 +236,8 @@ public class AssetServiceImpl implements AssetService {
             boolean flag = false;
             String[] values = result.getValue();
 
+            System.out.println("Values is :"+values);
+
             // If the values array is empty then add null
             if (values.length == 0) {
                 flag = true;

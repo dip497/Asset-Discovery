@@ -1,5 +1,6 @@
 package com.serviceops.assetdiscovery.rest;
 
+import com.serviceops.assetdiscovery.entity.enums.OsArchitecture;
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 
 import java.io.Serializable;
@@ -10,15 +11,15 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
     private  String osVersion;
     private  String osLicenseKey;
     private  String osManufacturer;
-    private  String osArchitecture;
+    private OsArchitecture osArchitecture;
     private  String bootUpState;
     private  String memorySize;
-    private  String diskSize;
-    private  String cpuSpeed;
-    private  String cpuCoreCount;
+    private  long diskSize;
+    private  long cpuSpeed;
+    private  long cpuCoreCount;
     private  String partOfDomain;
     private  String domainName;
-    private  String numberOfLogicalProcessors;
+    private  long numberOfLogicalProcessors;
     private  String numberOfProcessors;
     private  String pcSystemType;
     private  String lastLoggedInUser;
@@ -40,7 +41,7 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         return osManufacturer;
     }
 
-    public String getOsArchitecture() {
+    public OsArchitecture getOsArchitecture() {
         return osArchitecture;
     }
 
@@ -52,15 +53,15 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         return memorySize;
     }
 
-    public String getDiskSize() {
+    public long getDiskSize() {
         return diskSize;
     }
 
-    public String getCpuSpeed() {
+    public long getCpuSpeed() {
         return cpuSpeed;
     }
 
-    public String getCpuCoreCount() {
+    public long getCpuCoreCount() {
         return cpuCoreCount;
     }
 
@@ -72,7 +73,7 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         return domainName;
     }
 
-    public String getNumberOfLogicalProcessors() {
+    public long getNumberOfLogicalProcessors() {
         return numberOfLogicalProcessors;
     }
 
@@ -108,7 +109,7 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         this.osManufacturer = osManufacturer;
     }
 
-    public void setOsArchitecture(String osArchitecture) {
+    public void setOsArchitecture(OsArchitecture osArchitecture) {
         this.osArchitecture = osArchitecture;
     }
 
@@ -120,15 +121,15 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         this.memorySize = memorySize;
     }
 
-    public void setDiskSize(String diskSize) {
+    public void setDiskSize(long diskSize) {
         this.diskSize = diskSize;
     }
 
-    public void setCpuSpeed(String cpuSpeed) {
+    public void setCpuSpeed(long cpuSpeed) {
         this.cpuSpeed = cpuSpeed;
     }
 
-    public void setCpuCoreCount(String cpuCoreCount) {
+    public void setCpuCoreCount(long cpuCoreCount) {
         this.cpuCoreCount = cpuCoreCount;
     }
 
@@ -140,7 +141,7 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         this.domainName = domainName;
     }
 
-    public void setNumberOfLogicalProcessors(String numberOfLogicalProcessors) {
+    public void setNumberOfLogicalProcessors(long numberOfLogicalProcessors) {
         this.numberOfLogicalProcessors = numberOfLogicalProcessors;
     }
 

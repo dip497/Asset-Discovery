@@ -51,7 +51,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
             ComputerSystemRest computerSystemRest = computerSystemOps.entityToRest();
             Optional<Processor> optionalProcessor = customRepository.findByColumn("refId",refId, Processor.class);
             if (optionalProcessor.isPresent()) {
-                computerSystemRest.setNumberOfProcessors(Integer.parseInt(optionalProcessor.get().getCoreCount()));
+                computerSystemRest.setNumberOfProcessors(optionalProcessor.get().getCoreCount());
                 computerSystemRest.setNumberOfLogicalProcessor(2 * Integer.parseInt(optionalProcessor.get().getCoreCount()));
             }
             Optional<OS> optionalOs = customRepository.findByColumn("refId",refId,OS.class);

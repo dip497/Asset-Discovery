@@ -1,13 +1,14 @@
 package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.entity.enums.OsArchitecture;
 import jakarta.persistence.Entity;
 
 @Entity
 public class OS extends AssetBase {
     private String osName;
     private String osVersion;
-    private String osArchitecture;
+    private OsArchitecture osArchitecture;
     private String licenseKey;
     private String activationStatus;
     private Long installedDate;
@@ -29,11 +30,11 @@ public class OS extends AssetBase {
         this.osVersion = osVersion;
     }
 
-    public String getOsArchitecture() {
+    public OsArchitecture getOsArchitecture() {
         return osArchitecture;
     }
 
-    public void setOsArchitecture(String osArchitecture) {
+    public void setOsArchitecture(OsArchitecture osArchitecture) {
         this.osArchitecture = osArchitecture;
     }
 
