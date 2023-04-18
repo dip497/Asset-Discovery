@@ -3,7 +3,6 @@ package com.serviceops.assetdiscovery.entity;
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
-import java.util.Date;
 @Entity
 public class OS extends AssetBase {
     private String osName;
@@ -11,7 +10,7 @@ public class OS extends AssetBase {
     private String osArchitecture;
     private String licenseKey;
     private String activationStatus;
-    private String installedDate;
+    private Long installedDate;
 
 
     public String getOsName() {
@@ -54,11 +53,11 @@ public class OS extends AssetBase {
         this.activationStatus = activationStatus;
     }
 
-    public String getInstalledDate() {
+    public Long getInstalledDate() {
         return installedDate;
     }
 
-    public void setInstalledDate(String installedDate) {
+    public void setInstalledDate(Long installedDate) {
         this.installedDate = installedDate;
     }
 
