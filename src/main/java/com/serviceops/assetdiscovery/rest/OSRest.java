@@ -15,7 +15,7 @@ public class OSRest extends AssetBaseRest implements Serializable {
     private String osArchitecture;
     private String licenseKey;
     private String activationStatus;
-    private String installedDate;
+    private Long installedDate;
 
 
 
@@ -59,11 +59,11 @@ public class OSRest extends AssetBaseRest implements Serializable {
         this.activationStatus = activationStatus;
     }
 
-    public String getInstalledDate() {
+    public Long getInstalledDate() {
         return installedDate;
     }
 
-    public void setInstalledDate(String installedDate) {
+    public void setInstalledDate(Long installedDate) {
         this.installedDate = installedDate;
     }
 

@@ -2,6 +2,7 @@ package com.serviceops.assetdiscovery.service.interfaces;
 
 import com.serviceops.assetdiscovery.rest.OSRest;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface OsService {

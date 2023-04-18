@@ -7,7 +7,7 @@ import jakarta.persistence.Entity;
 public class Bios extends AssetBase {
     private String name;
     private String smBiosVersion;
-    private String releaseDate;
+    private Long releaseDate;
     private String version;
     private String description;
 
@@ -27,11 +27,11 @@ public class Bios extends AssetBase {
         this.smBiosVersion = smBiosVersion;
     }
 
-    public String getReleaseDate() {
+    public Long getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(Long releaseDate) {
         this.releaseDate = releaseDate;
     }
 

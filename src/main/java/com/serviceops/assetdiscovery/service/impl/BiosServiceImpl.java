@@ -11,6 +11,11 @@ import com.serviceops.assetdiscovery.utils.mapper.BiosOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,7 +59,7 @@ public class BiosServiceImpl implements BiosService {
     // Setting the Bios Content for save method
     private void setContent(AssetRest assetRest, List<String> parseResult, Bios bios) {
         bios.setSerialNumber(assetRest.getSerialNumber());
-        bios.setReleaseDate(parseResult.get(0));
+        bios.setReleaseDate(Long.parseLong(parseResult.get(0)));
         bios.setVersion(parseResult.get(1));
         bios.setName(parseResult.get(2));
         bios.setSmBiosVersion(extractSMVersion(parseResult.get(2)));
@@ -127,7 +132,7 @@ public class BiosServiceImpl implements BiosService {
         LinkedHashMap<String,String[]> commands = new LinkedHashMap<>();
 
         // Command for getting the bios release date.
-        commands.put("sudo dmidecode -s bios-release-date",new String[]{});
+        commands.put("date -d \"$(sudo dmidecode -s bios-release-date)\" +\"%s%3N\"",new String[]{});
 
         // Command for getting the bios version.
         commands.put("sudo dmidecode -s bios-version",new String[]{});
@@ -148,16 +153,16 @@ public class BiosServiceImpl implements BiosService {
         List<String> list= new ArrayList<>();
         for (Map.Entry<String ,String[]> result: stringMap.entrySet()) {
             String[] values = result.getValue();
-            for (String value : values) {
-                if (value.trim().isEmpty())
-                    continue;
 
-
-                System.out.println(value);
-
-                list.add(value);
-
+            if (values.length < 4) {
+                for (String ans : values) {
+                    if (!ans.trim().isEmpty()) {
+                        list.add(ans);
+                    }
+                }
             }
+
+
         }
         return list;
     }
@@ -171,5 +176,7 @@ public class BiosServiceImpl implements BiosService {
         }
         return versionNumber;
     }
+
+
 
 }
