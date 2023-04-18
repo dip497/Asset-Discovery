@@ -1,6 +1,5 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.controller.ProcessorController;
 import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
@@ -44,8 +43,9 @@ public class ProcessorServiceImpl implements ProcessorService {
         commands.put("lscpu | grep 'CPU(s):' | awk '{print $2F}'", new String[]{});
         // command for parsing information about the L1 cache.
         commands.put("lscpu | grep 'L1i cache:' | awk '{print $(NF-1), $NF}'", new String[]{});
+        commands.put("lscpu | grep 'L1d cache:' | awk '{print $(NF-1), $NF}'", new String[]{});
         //command for parsing cpu name.
-        commands.put(" lscpu | grep 'Model name:'", new String[]{});
+        commands.put("lscpu | grep 'Model name: '", new String[]{});
 
         LinuxCommandExecutorManager.add(Processor.class, commands);
     }
@@ -77,33 +77,39 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
 
     private void setData(Processor processor) {
-        processor.setL2CacheSize(formatData(getParseResult().get(0)));
-        processor.setL3CacheSize(formatData(getParseResult().get(1)));
+        processor.setL2CacheSize(convertToBaseUnit(getParseResult().get(0)));
+        processor.setL3CacheSize(convertToBaseUnit(getParseResult().get(1)));
         processor.setManufacturer(getParseResult().get(2));
-        processor.setFamily(getParseResult().get(3));
+        processor.setFamily(convertToBaseUnit(getParseResult().get(3)));
         processor.setWidth(getParseResult().get(4));
-        processor.setCpuSpeed(formatData(getParseResult().get(5)) + " MHz");
-        processor.setCoreCount(getParseResult().get(6));
-        processor.setL1CacheSize(getParseResult().get(7));
-        processor.setProcessorName(formatData(getParseResult().get(9)));
+        processor.setCpuSpeed(convertToBaseUnit(getParseResult().get(5)));
+        processor.setCoreCount(convertToBaseUnit(getParseResult().get(6)));
+        processor.setL1CacheSize(!getParseResult().get(8).isEmpty() ? convertToBaseUnit(getParseResult().get(8)) : convertToBaseUnit(getParseResult().get(9)));
+        processor.setProcessorName(getParseResult().get(10).substring(getParseResult().get(10).indexOf(": ") + 2).trim());
         customRepository.save(processor);
     }
-/*
-    private String convertToMB(String Data){ //TODO convert to MB.
-        String dataInMb = "";
-        String newData = Data.substring(Data.indexOf(":"),Data.indexOf(" ")).trim();
-        if (Data.contains("MiB") || Data.contains("MB")) {
-            dataInMb =newData + "MB";
-        }
-        else if (Data.contains("K") || Data.contains("Kib")){
-            dataInMb = newData + "KB";
+
+    private long convertToBaseUnit(String Data) { //TODO convert to MB.
+        long data;
+        Data = Data.toLowerCase();
+        if (Data.contains("mib") || Data.contains("mb")) {
+            Data = Data.replaceAll("[^0-9]", "").trim();
+            Data = Data.replaceAll(" + ", "");
+            data = Long.parseLong(Data) * 1024 * 1024;
+
+        } else if (Data.contains("k") || Data.contains("kib")) {
+            Data = Data.replaceAll("[^0-9]", "").trim();
+            Data = Data.replaceAll(" + ", "");
+            data = Long.parseLong(Data) * 1024;
+        } else if (Data.contains("mhz")) {
+            Data = Data.replaceAll("[^0-9]", "").trim();
+            Data = Data.replaceAll(" + ", "");
+            data = Long.parseLong(Data) * 1000 * 1000;
+        } else {
+            return Long.parseLong(Data);
         }
 
-        return dataInMb;
-    }*/
-
-    private String formatData(String data) {
-        return data.substring(data.indexOf(":") + 1).trim();
+        return data;
     }
 
     @Override
@@ -132,16 +138,17 @@ public class ProcessorServiceImpl implements ProcessorService {
     @Override
     public List<ProcessorRest> findByRefId(Long id) {
         Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
+        List<ProcessorRest> processors = new ArrayList<>();
         if (optionalProcessor.isPresent()) {
-            List<ProcessorRest> processors = new ArrayList<>();
             ProcessorRest processorRest = new ProcessorRest();
             ProcessorOps processorOps = new ProcessorOps(optionalProcessor.get(), processorRest);
             processors.add(processorOps.entityToRest());
             logger.info("Processor found with id -->{}", id);
-            return processors;
+
         } else {
             logger.error("Processor not found with id -->{}", id);
-            throw new ResourceNotFoundException("Processor", "refId", String.valueOf(id));
+            processors.add(new ProcessorRest());
         }
+        return processors;
     }
 }
