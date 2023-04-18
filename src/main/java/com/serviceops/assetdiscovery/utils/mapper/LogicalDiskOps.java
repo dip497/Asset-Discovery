@@ -31,7 +31,7 @@ public class LogicalDiskOps extends AssetBaseOps<LogicalDisk, LogicalDiskRest> {
     public LogicalDisk restToEntity(){
         super.restToEntity(logicalDiskRest);
         logicalDisk.setDescription(logicalDiskRest.getDescription());
-        logicalDisk.setSize(logicalDiskRest.getSize()*1073741824);
+        logicalDisk.setSize(logicalDiskRest.getSize());
         logicalDisk.setDriveType(logicalDiskRest.getDriveType());
         logicalDisk.setSerialNumber(logicalDiskRest.getSerialNumber());
         logicalDisk.setName(logicalDiskRest.getName());

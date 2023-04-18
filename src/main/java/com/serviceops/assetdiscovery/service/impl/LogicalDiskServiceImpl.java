@@ -6,6 +6,7 @@ import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.LogicalDiskRest;
 import com.serviceops.assetdiscovery.service.interfaces.LogicalDiskService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
+import com.serviceops.assetdiscovery.utils.UnitConverter;
 import com.serviceops.assetdiscovery.utils.mapper.LogicalDiskOps;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -121,17 +122,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
         logicalDisk.setDescription(data[0]);
         logicalDisk.setName(data[1]);
         logicalDisk.setSerialNumber(data[2]);
-        String space = data[3];
-        if(space!=null && !space.trim().isEmpty()) {
-            String digits = space.replaceAll("[^0-9]", "");
-            Long sizes =0l;
-            if(space.contains("Mi")) {
-                sizes = Long.parseLong(digits)*1048576;
-            }else {
-                sizes = Long.parseLong(digits)*1073741824;
-            }
-            logicalDisk.setSize(sizes);
-            }
+        logicalDisk.setSize(UnitConverter.convertToBytes(data[3]));
         logicalDisk.setFileSystemType(data[4]);
     }
     private void setcommands() {

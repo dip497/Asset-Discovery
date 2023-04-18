@@ -90,7 +90,7 @@ public class MonitorServiceImpl implements MonitorService{
         if(!customRepository.findAllByColumnName(Monitor.class,"refId",refId).isEmpty()) {
             if(customRepository.findByColumn("id",id,Monitor.class).isPresent()) {
                 logger.info("Deleting Monitor with id->{}", id);
-                customRepository.deleteById(LogicalDisk.class, id, "id");
+                customRepository.deleteById(Monitor.class, id, "id");
             }
             else {
                 logger.error("Deleting Monitor with Asset ->{} not exist",refId);
