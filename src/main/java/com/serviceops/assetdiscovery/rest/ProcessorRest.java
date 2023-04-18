@@ -12,15 +12,12 @@ public class ProcessorRest extends AssetBaseRest implements Serializable {
     private   String processorName;
     private   String description;
     private   String width;
-    private   String cpuSpeed;
-    private   String coreCount;
-    private   String externalClock;
-    private   String l1CacheSize;
-    private   String l2CacheSize;
-    private   String l3CacheSize;
-    private   String family;
-    private   String deviceId;
-    private   String socketDesignation;
+    private long cpuSpeed;
+    private long coreCount;
+    private long l1CacheSize;
+    private long l2CacheSize;
+    private long l3CacheSize;
+    private   long family;
 
     public String getProcessorName() {
         return processorName;
@@ -46,76 +43,52 @@ public class ProcessorRest extends AssetBaseRest implements Serializable {
         this.width = width;
     }
 
-    public String getCpuSpeed() {
+    public long getCpuSpeed() {
         return cpuSpeed;
     }
 
-    public void setCpuSpeed(String cpuSpeed) {
+    public void setCpuSpeed(long cpuSpeed) {
         this.cpuSpeed = cpuSpeed;
     }
 
-    public String getCoreCount() {
+    public long getCoreCount() {
         return coreCount;
     }
 
-    public void setCoreCount(String coreCount) {
+    public void setCoreCount(long coreCount) {
         this.coreCount = coreCount;
     }
 
-    public String getExternalClock() {
-        return externalClock;
-    }
-
-    public void setExternalClock(String externalClock) {
-        this.externalClock = externalClock;
-    }
-
-    public String getL1CacheSize() {
+    public long getL1CacheSize() {
         return l1CacheSize;
     }
 
-    public void setL1CacheSize(String l1CacheSize) {
+    public void setL1CacheSize(long l1CacheSize) {
         this.l1CacheSize = l1CacheSize;
     }
 
-    public String getL2CacheSize() {
+    public long getL2CacheSize() {
         return l2CacheSize;
     }
 
-    public void setL2CacheSize(String l2CacheSize) {
+    public void setL2CacheSize(long l2CacheSize) {
         this.l2CacheSize = l2CacheSize;
     }
 
-    public String getL3CacheSize() {
+    public long getL3CacheSize() {
         return l3CacheSize;
     }
 
-    public void setL3CacheSize(String l3CacheSize) {
+    public void setL3CacheSize(long l3CacheSize) {
         this.l3CacheSize = l3CacheSize;
     }
 
-    public String getFamily() {
+    public long getFamily() {
         return family;
     }
 
-    public void setFamily(String family) {
+    public void setFamily(long family) {
         this.family = family;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public String getSocketDesignation() {
-        return socketDesignation;
-    }
-
-    public void setSocketDesignation(String socketDesignation) {
-        this.socketDesignation = socketDesignation;
     }
 
     @Override
@@ -124,28 +97,26 @@ public class ProcessorRest extends AssetBaseRest implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ProcessorRest that = (ProcessorRest) o;
-        return coreCount == that.coreCount && Objects.equals(processorName, that.processorName) && Objects.equals(description, that.description) && Objects.equals(width, that.width) && Objects.equals(cpuSpeed, that.cpuSpeed) && Objects.equals(externalClock, that.externalClock) && Objects.equals(l1CacheSize, that.l1CacheSize) && Objects.equals(l2CacheSize, that.l2CacheSize) && Objects.equals(l3CacheSize, that.l3CacheSize) && Objects.equals(family, that.family) && Objects.equals(deviceId, that.deviceId) && Objects.equals(socketDesignation, that.socketDesignation);
+        return cpuSpeed == that.cpuSpeed && coreCount == that.coreCount && l1CacheSize == that.l1CacheSize && l2CacheSize == that.l2CacheSize && l3CacheSize == that.l3CacheSize && family == that.family && Objects.equals(processorName, that.processorName) && Objects.equals(description, that.description) && Objects.equals(width, that.width);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), processorName, description, width, cpuSpeed, coreCount, externalClock, l1CacheSize, l2CacheSize, l3CacheSize, family, deviceId, socketDesignation);
+        return Objects.hash(super.hashCode(), processorName, description, width, cpuSpeed, coreCount, l1CacheSize, l2CacheSize, l3CacheSize, family);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "processorName = " + processorName + ", " +
-                "description = " + description + ", " +
-                "width = " + width + ", " +
-                "cpuSpeed = " + cpuSpeed + ", " +
-                "coreCount = " + coreCount + ", " +
-                "externalClock = " + externalClock + ", " +
-                "l1CacheSize = " + l1CacheSize + ", " +
-                "l2CacheSize = " + l2CacheSize + ", " +
-                "l3CacheSize = " + l3CacheSize + ", " +
-                "family = " + family + ", " +
-                "deviceId = " + deviceId + ", " +
-                "socketDesignatio = " + socketDesignation + ")";
+        return "ProcessorRest{" +
+                "processorName='" + processorName + '\'' +
+                ", description='" + description + '\'' +
+                ", width='" + width + '\'' +
+                ", cpuSpeed=" + cpuSpeed +
+                ", coreCount=" + coreCount +
+                ", l1CacheSize=" + l1CacheSize +
+                ", l2CacheSize=" + l2CacheSize +
+                ", l3CacheSize=" + l3CacheSize +
+                ", family=" + family +
+                '}';
     }
 }
