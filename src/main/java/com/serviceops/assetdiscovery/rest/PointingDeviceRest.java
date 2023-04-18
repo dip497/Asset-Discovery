@@ -9,10 +9,9 @@ import java.util.Objects;
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.PointingDevice} entity
  */
 public class PointingDeviceRest extends AssetBaseRest implements Serializable {
-    private   String numberOfButtons; // TODO make it long or int if possible
+    private   int numberOfButtons; // TODO make it long or int if possible
     private   String description;
     private   String pointingType;
-    private   String pnpDeviceId;
 
     public String getDescription() {
         return description;
@@ -20,18 +19,6 @@ public class PointingDeviceRest extends AssetBaseRest implements Serializable {
 
     public String getPointingType() {
         return pointingType;
-    }
-
-    public String getPnpDeviceId() {
-        return pnpDeviceId;
-    }
-
-    public String getNumberOfButtons() {
-        return numberOfButtons;
-    }
-
-    public void setNumberOfButtons(String numberOfButtons) {
-        this.numberOfButtons = numberOfButtons;
     }
 
     public void setDescription(String description) {
@@ -42,8 +29,13 @@ public class PointingDeviceRest extends AssetBaseRest implements Serializable {
         this.pointingType = pointingType;
     }
 
-    public void setPnpDeviceId(String pnpDeviceId) {
-        this.pnpDeviceId = pnpDeviceId;
+
+    public int getNumberOfButtons() {
+        return numberOfButtons;
+    }
+
+    public void setNumberOfButtons(int numberOfButtons) {
+        this.numberOfButtons = numberOfButtons;
     }
 
     @Override
@@ -52,12 +44,12 @@ public class PointingDeviceRest extends AssetBaseRest implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         PointingDeviceRest that = (PointingDeviceRest) o;
-        return Objects.equals(numberOfButtons, that.numberOfButtons) && Objects.equals(description, that.description) && Objects.equals(pointingType, that.pointingType) && Objects.equals(pnpDeviceId, that.pnpDeviceId);
+        return numberOfButtons == that.numberOfButtons && Objects.equals(description, that.description) && Objects.equals(pointingType, that.pointingType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), numberOfButtons, description, pointingType, pnpDeviceId);
+        return Objects.hash(super.hashCode(), numberOfButtons, description, pointingType);
     }
 
     @Override
@@ -66,7 +58,6 @@ public class PointingDeviceRest extends AssetBaseRest implements Serializable {
                 "numberOfButtons=" + numberOfButtons +
                 ", description='" + description + '\'' +
                 ", pointingType='" + pointingType + '\'' +
-                ", pnpDeviceId='" + pnpDeviceId + '\'' +
-                "} " + super.toString();
+                '}';
     }
 }

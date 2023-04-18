@@ -19,7 +19,6 @@ public class PointingDeviceOps extends AssetBaseOps<PointingDevice, PointingDevi
         pointingDevice.setNumberOfButtons(pointingDeviceRest.getNumberOfButtons());
         pointingDevice.setDescription(pointingDeviceRest.getDescription());
         pointingDevice.setPointingType(pointingDeviceRest.getPointingType());
-        pointingDevice.setPnpDeviceId(pointingDeviceRest.getPnpDeviceId());
         return pointingDevice;
     }
 
@@ -28,7 +27,6 @@ public class PointingDeviceOps extends AssetBaseOps<PointingDevice, PointingDevi
         pointingDeviceRest.setNumberOfButtons(pointingDevice.getNumberOfButtons());
         pointingDeviceRest.setDescription(pointingDevice.getDescription());
         pointingDeviceRest.setPointingType(pointingDevice.getPointingType());
-        pointingDeviceRest.setPnpDeviceId(pointingDevice.getPnpDeviceId());
         return  pointingDeviceRest;
     }
 

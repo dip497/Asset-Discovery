@@ -7,18 +7,9 @@ import java.util.Objects;
 
 @Entity
 public class PointingDevice extends AssetBase {
-    private String numberOfButtons;
+    private int numberOfButtons;
     private String description;
     private String pointingType;
-    private String pnpDeviceId;
-
-    public String getNumberOfButtons() {
-        return numberOfButtons;
-    }
-
-    public void setNumberOfButtons(String numberOfButtons) {
-        this.numberOfButtons = numberOfButtons;
-    }
 
     public String getDescription() {
         return description;
@@ -35,13 +26,11 @@ public class PointingDevice extends AssetBase {
     public void setPointingType(String pointingType) {
         this.pointingType = pointingType;
     }
-
-    public String getPnpDeviceId() {
-        return pnpDeviceId;
+ public int getNumberOfButtons() {
+        return numberOfButtons;
     }
-
-    public void setPnpDeviceId(String pnpDeviceId) {
-        this.pnpDeviceId = pnpDeviceId;
+    public void setNumberOfButtons(int numberOfButtons) {
+        this.numberOfButtons = numberOfButtons;
     }
 
     @Override
@@ -50,21 +39,21 @@ public class PointingDevice extends AssetBase {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         PointingDevice that = (PointingDevice) o;
-        return Objects.equals(numberOfButtons, that.numberOfButtons) && Objects.equals(description, that.description) && Objects.equals(pointingType, that.pointingType) && Objects.equals(pnpDeviceId, that.pnpDeviceId);
+        return numberOfButtons == that.numberOfButtons && Objects.equals(description, that.description) && Objects.equals(pointingType, that.pointingType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), numberOfButtons, description, pointingType, pnpDeviceId);
+        return Objects.hash(super.hashCode(), numberOfButtons, description, pointingType);
     }
 
     @Override
-    public String toString() {
+    public String
+    toString() {
         return "PointingDevice{" +
                 "numberOfButtons=" + numberOfButtons +
                 ", description='" + description + '\'' +
                 ", pointingType='" + pointingType + '\'' +
-                ", pnpDeviceId='" + pnpDeviceId + '\'' +
-                '}' + super.toString();
+                '}';
     }
 }
