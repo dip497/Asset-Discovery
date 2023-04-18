@@ -155,18 +155,18 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
     @Override
     public List<PointingDeviceRest> getPointingDevices(Long refId) {
         List<PointingDevice> pointingDevices = customRepository.findAllByColumnName(PointingDevice.class, "refId", refId);
+        List<PointingDeviceRest> pointingDeviceRestList = new ArrayList<>();
         if (!pointingDevices.isEmpty()) {
-            List<PointingDeviceRest> pointingDeviceRestList = new ArrayList<>();
             for (PointingDevice pointingDevice : pointingDevices) {
                 PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, new PointingDeviceRest());
                 pointingDeviceRestList.add(pointingDeviceOps.entityToRest());
                 logger.info("Fetched pointing device with id: --> {}", refId);
             }
-            return pointingDeviceRestList;
         } else {
             logger.info("Could not found pointing device with id: --> {}", refId);
-            throw new ResourceNotFoundException("Pointing device", "refId", String.valueOf(refId));
+            pointingDeviceRestList.add(new PointingDeviceRest());
         }
+        return pointingDeviceRestList;
     }
 
     private void savePointingDevice(Long refId) {
