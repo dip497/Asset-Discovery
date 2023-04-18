@@ -35,12 +35,10 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
         List<LogicalDisk> logicalDisks = customRepository.findAllByColumnName(LogicalDisk.class,"refId",id);
         if(!logicalDisks.isEmpty()){
             if(logicalDisks.size()==parseResults.length){
-                for(LogicalDisk logicalDisk : logicalDisks){
-                    for(String[] updatedLogicalDisk : parseResults){
-                        setLogicalDisk(logicalDisk,updatedLogicalDisk);
-                        logger.info("Updated LogicalDisk with Asset Id->{}",id);
-                        customRepository.update(logicalDisk);
-                    }
+                for(int i=0;i<logicalDisks.size();i++){
+                        setLogicalDisk(logicalDisks.get(i), parseResults[i]);
+                        logger.info("Updated LogicalDisk with Asset Id->{}", id);
+                        customRepository.save(logicalDisks.get(i));
                 }
             }else{
                 for(LogicalDisk logicalDisk: logicalDisks){
@@ -120,11 +118,20 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
 
     }
     private void setLogicalDisk(LogicalDisk logicalDisk,String[] data){
-
         logicalDisk.setDescription(data[0]);
         logicalDisk.setName(data[1]);
         logicalDisk.setSerialNumber(data[2]);
-        logicalDisk.setSize(data[3]);
+        String space = data[3];
+        if(space!=null && !space.trim().isEmpty()) {
+            String digits = space.replaceAll("[^0-9]", "");
+            Long sizes =0l;
+            if(space.contains("Mi")) {
+                sizes = Long.parseLong(digits)*1048576;
+            }else {
+                sizes = Long.parseLong(digits)*1073741824;
+            }
+            logicalDisk.setSize(sizes);
+            }
         logicalDisk.setFileSystemType(data[4]);
     }
     private void setcommands() {
@@ -173,41 +180,46 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
                 else {
                     String[] ans = commandResult.getValue();
                     int values =0;
-                    boolean name_fetched =false;
-                    boolean size_capa =false;
-                    boolean serial_fetched = false;
-                    int i=1;
-                    if(ans[0].isEmpty())i=2;
-                    for (; i < ans.length; i++) {
+                    boolean nameFetched =false;
+                    boolean sizeCapa =false;
+                    boolean serialFetched = false;
+                    int removeEmptyString =0;
+                    for(;removeEmptyString<ans.length;removeEmptyString++){
+                        if(ans[removeEmptyString].contains("USB")){
+                            removeEmptyString++;
+                            break;
+                        }
+                    }
+                    for (int i = removeEmptyString; i < ans.length; i++) {
                             if(ans[i].contains("-volume")){
                                 values++;
-                                name_fetched=false;
-                                size_capa = false;
-                                serial_fetched=false;
+                                nameFetched=false;
+                                sizeCapa = false;
+                                serialFetched = false;
                                 continue;
                             }
                             if(ans[i].contains("description")) {
                                 parsedResult[values][0] =ans[i].substring(ans[i].indexOf("description:") + "descripiton:".length());
                                 continue;
                             }
-                            if(ans[i].contains("name") && !name_fetched){
+                            if(ans[i].contains("name") && !nameFetched){
                                 parsedResult[values][1]=ans[i].substring(ans[i].indexOf("name:") + "name:".length());
-                                name_fetched = true;
+                                nameFetched = true;
                                 continue;
                             }
                             if (ans[i].contains("serial")){
                                 parsedResult[values][2]=ans[i].substring(ans[i].indexOf("serial:") + "serial:".length());
-                                serial_fetched=true;
+                                serialFetched=true;
                                 continue;
                             }
-                            if(ans[i].contains("size") && !size_capa){
+                            if(ans[i].contains("size") && !sizeCapa){
                                 parsedResult[values][3]=ans[i].substring(ans[i].indexOf("size:") + "size:".length());
-                                size_capa = true;
+                                sizeCapa = true;
                                 continue;
                             }
-                            if(ans[i].contains("capacity") && !size_capa){
+                            if(ans[i].contains("capacity") && !sizeCapa){
                                 parsedResult[values][3] = ans[i].substring(ans[i].indexOf("capacity:") + "capacity:".length());
-                                size_capa = true;
+                                sizeCapa= true;
                                 continue;
                             }
                             if(ans[i].contains("filesystem")){

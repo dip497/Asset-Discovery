@@ -10,8 +10,8 @@ public class LogicalDisk extends AssetBase {
     private String fileSystemType;
     private String driveType;
 
-    private String size;
-    private String freeSpace;
+    private Long size;
+    private Long freeSpace;
 
     public String getName() {
         return name;
@@ -45,19 +45,19 @@ public class LogicalDisk extends AssetBase {
         this.driveType = driveType;
     }
 
-    public String getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
-    public String getFreeSpace() {
+    public Long getFreeSpace() {
         return freeSpace;
     }
 
-    public void setFreeSpace(String freeSpace) {
+    public void setFreeSpace(Long freeSpace) {
         this.freeSpace = freeSpace;
     }
 

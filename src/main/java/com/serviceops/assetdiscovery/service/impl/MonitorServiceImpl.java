@@ -35,12 +35,10 @@ public class MonitorServiceImpl implements MonitorService{
             List<Monitor> monitors = customRepository.findAllByColumnName(Monitor.class, "refId", refId);
             if (!monitors.isEmpty()) {
                 if (monitors.size() == parsedResults.length) {
-                    for (Monitor monitor : monitors) {
-                        for (String[] updateMonitor : parsedResults) {
-                            setMonitor(monitor, updateMonitor);
-                            logger.info("Updated Monitor with Asset Id->{}", refId);
-                            customRepository.save(monitor);
-                        }
+                    for(int i=0;i<monitors.size();i++){
+                        setMonitor(monitors.get(i),parsedResults[i]);
+                        logger.info("Updated LogicalDisk with Asset Id->{}",refId);
+                        customRepository.save(monitors.get(i));
                     }
                 } else {
                     for (Monitor monitor : monitors) {
