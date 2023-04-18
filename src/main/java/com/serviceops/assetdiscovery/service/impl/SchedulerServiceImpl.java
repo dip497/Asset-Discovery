@@ -23,7 +23,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         if(fetchScheduler.isPresent()){
             Scheduler scheduler = fetchScheduler.get();
             scheduler = new SchedulerOps(scheduler, schedulerRest).restToEntity();
-            customRepository.update(scheduler);
+            customRepository.save(scheduler);
             return scheduler;
         }else{
             Scheduler scheduler = new Scheduler();

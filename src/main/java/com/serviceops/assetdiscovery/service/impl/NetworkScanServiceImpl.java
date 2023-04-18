@@ -83,12 +83,14 @@ public class NetworkScanServiceImpl implements NetworkScanService {
 
     @Override
     public void update(Long id, NetworkScanRest networkScanRest) {
-        Optional<NetworkScan> networkScan = customRepository.findByColumn("id", id, NetworkScan.class);
-        if(networkScan.isEmpty()){
+        Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
+        if(fetchNetworkScan.isEmpty()){
             throw  new ResourceNotFoundException("NetworkScan","id",id.toString());
         }else{
-            customRepository.update(new NetworkScanOps(networkScan.get(),networkScanRest).restToEntity());
-            logger.info("network scan updated -> {}", networkScan.get());
+            NetworkScan networkScan = fetchNetworkScan.get();
+            networkScan = new NetworkScanOps(networkScan,networkScanRest).restToEntity();
+            customRepository.save(networkScan);
+            logger.info("network scan updated -> {}", networkScan.getId());
         }
     }
 

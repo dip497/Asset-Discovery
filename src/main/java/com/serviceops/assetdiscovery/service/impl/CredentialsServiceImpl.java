@@ -74,10 +74,10 @@ public class CredentialsServiceImpl implements CredentialsService {
         if(fetchCredential.isEmpty()){
             throw new ResourceNotFoundException("Credentials","id",id.toString());
         }else{
+            Credentials credential = fetchCredential.get();
+            credential = new CredentialsOps(credential, credentialsRest).restToEntity();
 
-            CredentialsOps credentialsOps = new CredentialsOps(fetchCredential.get(), credentialsRest);
-
-            customRepository.update(credentialsOps.restToEntity());
+            customRepository.save(credential);
 
             logger.info("Updated credentials with id -> {}",credentialsRest.getId());
         }
