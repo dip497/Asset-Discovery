@@ -29,16 +29,16 @@ public class MonitorServiceController {
     }
 
     @DeleteMapping("/{refId}/monitor/{id}")
-    public void deleteMonitor(@PathVariable("id") Long id,@PathVariable("refId") Long refId){
+    public void deleteMonitor(@PathVariable("refId") Long refId,@PathVariable("id") Long id){
 
         logger.info("Deleting Monitor with Asset id -> {}",refId);
-        monitorService.deleteById(id,refId);
+        monitorService.deleteById(refId,id);
     }
 
     @PutMapping(value = "/{refId}/monitor/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateMonitor(@PathVariable("refId") Long refId,@PathVariable("id") Long id, @RequestBody MonitorRest monitorRest){
 
-        logger.debug("Updating updateComputerSystem with Asset id -> {}",refId);
+        logger.debug("Updating monitor with Asset id -> {}",refId);
 
         monitorService.update(refId, id, monitorRest);
     }

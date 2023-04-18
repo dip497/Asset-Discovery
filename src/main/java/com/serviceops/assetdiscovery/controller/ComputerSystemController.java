@@ -23,11 +23,8 @@ public class ComputerSystemController {
     @GetMapping(value = "/{refId}/computersystem",name = "ComputerSystemDetails",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ComputerSystemRest> getComputerSystem(@PathVariable("refId") Long refId){
 
-        List<ComputerSystemRest> computerSystemRests = new ArrayList<>();
 
-        ComputerSystemRest computerSystemRest = computerSystemService.get(refId);
-
-        computerSystemRests.add(computerSystemRest);
+        List<ComputerSystemRest> computerSystemRests = computerSystemService.get(refId);
 
         logger.info("Fetching ComputerSystem with Asset id -> {}",refId);
 

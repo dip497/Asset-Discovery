@@ -88,18 +88,18 @@ public class MonitorServiceImpl implements MonitorService{
 
     @Transactional
     @Override
-    public void deleteById(Long id, Long refId){
-        if(customRepository.findAllByColumnName(Monitor.class,"refId",refId).isEmpty()) {
+    public void deleteById(Long refId, Long id){
+        if(!customRepository.findAllByColumnName(Monitor.class,"refId",refId).isEmpty()) {
             if(customRepository.findByColumn("id",id,Monitor.class).isPresent()) {
                 logger.info("Deleting Monitor with id->{}", id);
                 customRepository.deleteById(LogicalDisk.class, id, "id");
             }
             else {
-                logger.error("Logical Disk with Asset ->{} not exist",refId);
+                logger.error("Deleting Monitor with Asset ->{} not exist",refId);
             }
         }
         else {
-            logger.error("Logical Disk with Asset -> {} not found",refId);
+            logger.error("Monitor with Asset -> {} not found",refId);
         }
     }
 
@@ -116,7 +116,7 @@ public class MonitorServiceImpl implements MonitorService{
             return monitorRestList;
         }else{
             logger.info("Monitor Component of refId ->{} does not exist",id);
-            return new ArrayList<>();
+            return List.of();
         }
 
     }

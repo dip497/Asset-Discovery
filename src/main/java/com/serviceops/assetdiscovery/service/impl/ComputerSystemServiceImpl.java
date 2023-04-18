@@ -43,7 +43,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     }
 
     @Override
-    public ComputerSystemRest get(Long refId) {
+    public List<ComputerSystemRest> get(Long refId) {
         Optional<ComputerSystem> optionalComputerSystem = customRepository.findByColumn("refId", refId, ComputerSystem.class);
         if (optionalComputerSystem.isPresent()) {
             logger.info("Retrieving Computer System of refId -> {}",refId);
@@ -55,11 +55,13 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
                 computerSystemRest.setNumberOfLogicalProcessor(2 * Integer.parseInt(optionalProcessor.get().getCoreCount()));
             }
             Optional<OS> optionalOs = customRepository.findByColumn("refId",refId,OS.class);
-            return computerSystemRest;
+            List<ComputerSystemRest> computerSystemRests = new ArrayList<>();
+            computerSystemRests.add(computerSystemRest);
+            return computerSystemRests;
             }
         else{
             logger.error("Computer System with Asset -> {} not found",refId);
-            throw new ResourceNotFoundException("Computer System","refId",String.valueOf(refId));
+            return List.of();
         }
     }
 

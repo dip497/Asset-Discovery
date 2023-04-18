@@ -71,8 +71,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
     }
     @Override
     public void deleteById(Long refId, Long id){
-        if(customRepository.findByColumn("refId",refId,LogicalDisk.class).isPresent()) {
-
+        if(!customRepository.findAllByColumnName(LogicalDisk.class,"refId",refId).isEmpty()) {
             if(customRepository.findByColumn("id",id,LogicalDisk.class).isPresent()) {
                 customRepository.deleteById(LogicalDisk.class, id, "id");
                 logger.info("Deleting LogicalDisk with id->{}", id);
@@ -116,7 +115,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
             return logicalDiskRests;
         }else{
             logger.info("LogicalDisk Component of refId ->{} does not exist",refId);
-            return new ArrayList<>();
+            return List.of();
         }
 
     }
