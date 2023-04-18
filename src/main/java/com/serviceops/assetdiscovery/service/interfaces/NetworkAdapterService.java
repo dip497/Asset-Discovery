@@ -5,8 +5,8 @@ import com.serviceops.assetdiscovery.rest.NetworkAdapterRest;
 import java.util.List;
 
 public interface NetworkAdapterService {
-    public void save(Long id);
-    public void delete(Long id);
+    public void save(Long refId);
+    public void delete(Long refId);
     public void update(NetworkAdapterRest networkAdapterRest);
-    public List<NetworkAdapterRest> findByRefId(Long id);
+    public List<NetworkAdapterRest> findByRefId(Long refId);
 }
