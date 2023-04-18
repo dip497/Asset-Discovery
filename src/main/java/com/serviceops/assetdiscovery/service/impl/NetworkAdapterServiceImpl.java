@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,17 +79,17 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
                     switch (count) {
                         case 1:
                             if (results.contains("description:")) {
-                                parseResult[i][j] = results.substring(results.indexOf("description:") + "description:".length());
+                                parseResult[i][j] = parseData(results,"description:");
                                 break;
                             }
                         case 2:
                             if (results.contains("vendor:")) {
-                                parseResult[i][j] = results.substring(results.indexOf("vendor:") + "vendor:".length());
+                                parseResult[i][j] = parseData(results,"vendor:");
                                 break;
                             }
                         case 3:
                             if (results.contains("serial:")) {
-                                parseResult[i][j] = results.substring(results.indexOf("serial:") + "serial:".length());
+                                parseResult[i][j] = parseData(results,"serial:");
                                 break;
                             } else {
                                 parseResult[i][j] = result[i];
@@ -117,10 +114,14 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
         }
     }
 
+    private String parseData(String output, String keyWord){
+        return output.substring(output.indexOf(keyWord) + keyWord.length()).trim();
+    }
+
     @Override
-    public void save(Long id) {
+    public void save(Long refId) {
         String[][] parseResult = getParseResult();
-        List<NetworkAdapter> networkAdapters = customRepository.findAllByColumnName(NetworkAdapter.class, "refId", id);
+        List<NetworkAdapter> networkAdapters = customRepository.findAllByColumnName(NetworkAdapter.class, "refId", refId);
         if (!networkAdapters.isEmpty()) {
             if (networkAdapters.size() == parseResult.length) {
                 for (NetworkAdapter networkAdapter : networkAdapters) {
@@ -135,21 +136,21 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
                 for (NetworkAdapter networkAdapter : networkAdapters) {
                     customRepository.deleteById(NetworkAdapter.class, networkAdapter.getId(), "id");
                 }
-                logger.info("NetworkAdapter with id : --> {}", id);
-                saveNetworkAdapter(id, parseResult);
+                logger.info("NetworkAdapter with id : --> {}", refId);
+                saveNetworkAdapter(refId, parseResult);
             }
         } else {
 
-            saveNetworkAdapter(id, parseResult);
+            saveNetworkAdapter(refId, parseResult);
         }
 
-        logger.info("Saving Network adapter with id: ==> {}", id);
+        logger.info("Saving Network adapter with id: ==> {}", refId);
     }
 
-    private void saveNetworkAdapter(Long id, String[][] parseResult) {
+    private void saveNetworkAdapter(Long refId, String[][] parseResult) {
         for (String[] updateNetworkAdapter : parseResult) {
             NetworkAdapter networkAdapter = new NetworkAdapter();
-            networkAdapter.setRefId(id);
+            networkAdapter.setRefId(refId);
             networkAdapter.setDescription(updateNetworkAdapter[1]);
             networkAdapter.setManufacturer(updateNetworkAdapter[2]);
             networkAdapter.setMacAddress(updateNetworkAdapter[3]);
@@ -160,32 +161,39 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
     }
 
     @Override
-    public void delete(Long id) {
-        customRepository.deleteById(NetworkAdapter.class, id, "refId");
-        logger.info("Deleted Network adapter with id: ==> {}", id);
+    public void delete(Long refId) {
+        customRepository.deleteById(NetworkAdapter.class, refId, "refId");
+        logger.info("Deleted Network adapter with id: ==> {}", refId);
     }
 
     @Override
     public void update(NetworkAdapterRest networkAdapterRest) {
-        NetworkAdapter networkAdapter = new NetworkAdapter();
-        NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps(networkAdapter, networkAdapterRest);
-        customRepository.update(networkAdapterOps.restToEntity());
-        logger.info("NetworkAdapter Updated with Asset Id ->{}", networkAdapter.getRefId());
+        Optional<NetworkAdapter> optionalNetworkAdapter = customRepository.findByColumn("refId",networkAdapterRest.getRefId(),NetworkAdapter.class);
+        if (optionalNetworkAdapter.isPresent()) {
+            NetworkAdapter networkAdapter = optionalNetworkAdapter.get();
+            NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps(networkAdapter, networkAdapterRest);
+            customRepository.save(networkAdapterOps.restToEntity());
+            logger.info("NetworkAdapter Updated with Asset Id ->{}", networkAdapter.getRefId());
+        } else {
+            logger.info("Could not found NetworkAdapter with id : --> {}", networkAdapterRest.getRefId());
+            throw new ResourceNotFoundException("No Network adapter found with id --> {}","refId",String.valueOf(networkAdapterRest.getRefId()));
+        }
     }
 
     @Override
-    public List<NetworkAdapterRest> findByRefId(Long id) {
-        List<NetworkAdapter> networkAdapterList = customRepository.findAllByColumnName(NetworkAdapter.class, "refId", id);
+    public List<NetworkAdapterRest> findByRefId(Long refId) {
+        List<NetworkAdapter> networkAdapterList = customRepository.findAllByColumnName(NetworkAdapter.class, "refId", refId);
         List<NetworkAdapterRest> networkAdapterRestList = new ArrayList<>();
         if (!networkAdapterList.isEmpty()) {
             for (NetworkAdapter networkAdapter : networkAdapterList) {
                 NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps(networkAdapter, new NetworkAdapterRest());
                 networkAdapterRestList.add(networkAdapterOps.entityToRest());
-                logger.info("Finding Network adapter with id: ==> {}", id);
+                logger.info("Finding Network adapter with id: ==> {}", refId);
             }
 
         } else {
-            throw new ResourceNotFoundException("NetworkAdapterRest", "id", Long.toString(id));
+            logger.info("Could not found NetworkAdapter with id : --> {}", refId);
+            networkAdapterRestList.add(new NetworkAdapterRest());
         }
         return networkAdapterRestList;
     }
