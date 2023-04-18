@@ -1,12 +1,15 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Keyboard;
+import com.serviceops.assetdiscovery.entity.Ram;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.KeyboardRest;
+import com.serviceops.assetdiscovery.rest.RamRest;
 import com.serviceops.assetdiscovery.service.interfaces.KeyboardService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.KeyboardOps;
+import com.serviceops.assetdiscovery.utils.mapper.RamOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,15 +33,11 @@ public class KeyboardServiceImpl implements KeyboardService {
         List<Keyboard> keyboards = customRepository.findAllByColumnName(Keyboard.class, "refId", id);
         if(!keyboards.isEmpty()) {
             if (strings[0][0].equals(String.valueOf(keyboards.size()))) {
-                for (Keyboard keyboard : keyboards) {
-                    for (String[] string : strings) {
-
-                        keyboard.setRefId(id);
-                        keyboard.setName(string[1]);
-                        customRepository.save(keyboard);
-                        logger.debug("Updated keyboard with Asset Id -> {}", id);
-                    }
-
+                for(int i=0;i<keyboards.size();i++){
+                    keyboards.get(i).setRefId(id);
+                    setKeyboard(keyboards.get(i),strings[i]);
+                    customRepository.save(keyboards.get(i));
+                    logger.debug("Updated keyboard with Asset Id -> {}", id);
                 }
             } else {
                 for (Keyboard keyboard : keyboards) {
@@ -46,22 +45,25 @@ public class KeyboardServiceImpl implements KeyboardService {
                     logger.debug("deleted keyboard with Asset Id -> {}", id);
                 }
                 for (String[] string : strings) {
-                    Keyboard keyboard = new Keyboard();
-                    keyboard.setRefId(id);
-                    keyboard.setName(string[1]);
-                    customRepository.save(keyboard);
-                    logger.debug("updated keyboard with Asset Id -> {}", id);
+                    Keyboard ram = new Keyboard();
+                    ram.setRefId(id);
+                    setKeyboard(ram,string);
+                    customRepository.save(ram);
+                    logger.debug("updating keyboard with Asset Id -> {}", id);
                 }
             }
         } else {
             for (String[] string : strings) {
-                Keyboard keyboard = new Keyboard();
-                keyboard.setRefId(id);
-                keyboard.setName(string[1]);
-                customRepository.save(keyboard);
+                Keyboard ram = new Keyboard();
+                ram.setRefId(id);
+                setKeyboard(ram,string);
+                customRepository.save(ram);
                 logger.debug("saved keyboard with Asset Id-> {}" ,id);
             }
         }
+    }
+    private void setKeyboard(Keyboard keyboard,String[] data) {
+        keyboard.setName(data[1]);
     }
 
    /* @Override
@@ -130,16 +132,22 @@ public class KeyboardServiceImpl implements KeyboardService {
     }
 
     @Override
-    public void update(Long id,KeyboardRest keyboardRest) {
-        Optional<Keyboard> fetchKeyboard = customRepository.findByColumn("id", id, Keyboard.class);
-        if(fetchKeyboard.isEmpty()){
-            logger.error("Keyboard not found with Id -> {}" ,keyboardRest.getId());
-            throw new ResourceNotFoundException("Keyboard","id",keyboardRest.getId().toString());
-        }else{
-            Keyboard keyboard = fetchKeyboard.get();
-            KeyboardOps keyboardOps = new KeyboardOps(keyboard,keyboardRest);
-            customRepository.save(keyboardOps.restToEntity());
-            logger.info("Keyboard Updated with Asset Id ->{}",keyboard.getRefId());
+    public void update(Long refId, Long id, KeyboardRest keyboardRest) {
+        List<Keyboard> keyboardList = customRepository.findAllByColumnName(Keyboard.class, "refId", refId);
+        if(keyboardList.isEmpty()){
+            logger.error("Keyboard not found with Asset Id -> {} ", refId);
+            throw new ResourceNotFoundException("Keyboard","refId",refId.toString());
+        }else {
+            Optional<Keyboard> fetchKeyboard = customRepository.findByColumn("id", id, Keyboard.class);
+            if (fetchKeyboard.isEmpty()) {
+                logger.error("Unable to find ram with id -> {}", id);
+                throw new ResourceNotFoundException("Keyboard", "id", id.toString());
+            } else {
+                Keyboard keyboard = fetchKeyboard.get();
+                KeyboardOps keyboardOps = new KeyboardOps(keyboard, keyboardRest);
+                customRepository.save(keyboardOps.restToEntity());
+                logger.info("Keyboard Updated with Asset Id ->{}", keyboard.getRefId());
+            }
         }
     }
 

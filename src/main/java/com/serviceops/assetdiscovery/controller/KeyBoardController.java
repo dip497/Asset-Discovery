@@ -33,9 +33,9 @@ public class KeyBoardController {
         keyboardService.deleteByRefId(refId,id);
     }
 
-    @PutMapping(value = "/{refId}/keyboard",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateKeyboard(@PathVariable("refId") Long refId,@RequestBody KeyboardRest keyboardRest){
+    @PutMapping(value = "/{refId}/keyboard/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateKeyboard(@PathVariable("refId") Long refId,@PathVariable("id") Long id,@RequestBody KeyboardRest keyboardRest){
         logger.debug("Updating Keyboard with Asset id -> {}",refId);
-        keyboardService.update(refId,keyboardRest);
+        keyboardService.update(refId,id,keyboardRest);
     }
 }
