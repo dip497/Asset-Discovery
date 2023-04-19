@@ -39,8 +39,6 @@ public class OsServiceImpl implements OsService {
             OS os = optionalOS.get();
             os.setOsName(parseResult.get(0));
             os.setOsArchitecture(parseResult.get(2).contains("64") ? Architecture.SIXTY_FOUR : Architecture.THIRTY_TWO);
-            os.setActivationStatus("Unlicensed");
-            os.setLicenseKey("Not Required");
             os.setOsVersion(parseResult.get(1));
             os.setInstalledDate(parseDate(parseResult.get(3)));
             customRepository.save(os);
@@ -52,8 +50,6 @@ public class OsServiceImpl implements OsService {
             OS os = new OS();
             os.setRefId(refId);
             os.setOsName(parseResult.get(0));
-            os.setActivationStatus("Unlicensed");
-            os.setLicenseKey("Not Required");
             os.setOsArchitecture(parseResult.get(2).contains("64") ? Architecture.SIXTY_FOUR : Architecture.THIRTY_TWO);
             os.setOsVersion(parseResult.get(1));
             os.setInstalledDate(parseDate(parseResult.get(3)));

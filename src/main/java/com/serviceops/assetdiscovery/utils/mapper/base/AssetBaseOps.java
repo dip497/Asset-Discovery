@@ -19,7 +19,6 @@ public class AssetBaseOps<T extends AssetBase,S extends AssetBaseRest>  extends 
         assetBase.setRefId(rest.getRefId());
         assetBase.setSerialNumber(rest.getSerialNumber());
         assetBase.setManufacturer(rest.getManufacturer());
-        assetBase.setDeviceStatus(rest.getDeviceStatus());
         return assetBase;
     }
 
@@ -29,7 +28,6 @@ public class AssetBaseOps<T extends AssetBase,S extends AssetBaseRest>  extends 
         assetBaseRest.setRefId(assetBase.getRefId());
         assetBaseRest.setSerialNumber(assetBase.getSerialNumber());
         assetBaseRest.setManufacturer(assetBase.getManufacturer());
-        assetBaseRest.setDeviceStatus(assetBase.getDeviceStatus());
         return assetBaseRest;
     }
 }

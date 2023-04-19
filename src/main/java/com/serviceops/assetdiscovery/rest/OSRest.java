@@ -12,8 +12,6 @@ public class OSRest extends AssetBaseRest implements Serializable {
     private String osName;
     private String osVersion;
     private Architecture architecture;
-    private String licenseKey;
-    private String activationStatus;
     private Long installedDate;
 
 
@@ -42,22 +40,6 @@ public class OSRest extends AssetBaseRest implements Serializable {
         this.architecture = architecture;
     }
 
-    public String getLicenseKey() {
-        return licenseKey;
-    }
-
-    public void setLicenseKey(String licenseKey) {
-        this.licenseKey = licenseKey;
-    }
-
-    public String getActivationStatus() {
-        return activationStatus;
-    }
-
-    public void setActivationStatus(String activationStatus) {
-        this.activationStatus = activationStatus;
-    }
-
     public Long getInstalledDate() {
         return installedDate;
     }
@@ -70,18 +52,14 @@ public class OSRest extends AssetBaseRest implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OSRest entity = (OSRest) o;
-        return Objects.equals(this.osName, entity.osName) &&
-                Objects.equals(this.osVersion, entity.osVersion) &&
-                Objects.equals(this.architecture, entity.architecture) &&
-                Objects.equals(this.licenseKey, entity.licenseKey) &&
-                Objects.equals(this.activationStatus, entity.activationStatus) &&
-                Objects.equals(this.installedDate, entity.installedDate);
+        if (!super.equals(o)) return false;
+        OSRest osRest = (OSRest) o;
+        return Objects.equals(osName, osRest.osName) && Objects.equals(osVersion, osRest.osVersion) && architecture == osRest.architecture && Objects.equals(installedDate, osRest.installedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(osName, osVersion, architecture, licenseKey, activationStatus, installedDate);
+        return Objects.hash(super.hashCode(), osName, osVersion, architecture, installedDate);
     }
 
     @Override
@@ -89,10 +67,11 @@ public class OSRest extends AssetBaseRest implements Serializable {
         return "OSRest{" +
                 "osName='" + osName + '\'' +
                 ", osVersion='" + osVersion + '\'' +
-                ", osArchitecture='" + architecture + '\'' +
-                ", licenseKey='" + licenseKey + '\'' +
-                ", activationStatus='" + activationStatus + '\'' +
+                ", architecture=" + architecture +
                 ", installedDate=" + installedDate +
-                "} " + super.toString();
+                '}';
     }
 }
+
+
+
