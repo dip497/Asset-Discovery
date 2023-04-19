@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class NetworkAdapterServiceImpl implements NetworkAdapterService {
+public class    NetworkAdapterServiceImpl implements NetworkAdapterService {
     private final CustomRepository customRepository;
     private final Logger logger = LoggerFactory.getLogger(NetworkAdapterServiceImpl.class);
 

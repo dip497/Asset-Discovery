@@ -17,7 +17,7 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
     private  long cpuSpeed;
     private  long cpuCoreCount;
     private  long numberOfLogicalProcessors;
-    private  String numberOfProcessors;
+    private  long numberOfProcessors;
     private  String lastLoggedInUser;
 
 
@@ -101,11 +101,11 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
         this.numberOfLogicalProcessors = numberOfLogicalProcessors;
     }
 
-    public String getNumberOfProcessors() {
+    public long getNumberOfProcessors() {
         return numberOfProcessors;
     }
 
-    public void setNumberOfProcessors(String numberOfProcessors) {
+    public void setNumberOfProcessors(long numberOfProcessors) {
         this.numberOfProcessors = numberOfProcessors;
     }
 

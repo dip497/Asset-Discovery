@@ -13,7 +13,6 @@ public class Monitor extends AssetBase {
     private String description;
     private String screenHeight;
     private String screenWidth;
-
     public String getDescription() {
         return description;
     }
