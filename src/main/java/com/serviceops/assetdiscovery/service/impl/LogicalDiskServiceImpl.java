@@ -193,7 +193,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
                                 parsedResult[values][0] =ans[i].substring(ans[i].indexOf("description:") + "descripiton:".length());
                                 continue;
                             }
-                            if(ans[i].contains("name") && !nameFetched){
+                            if(ans[i].contains("logical name") && !nameFetched){
                                 parsedResult[values][1]=ans[i].substring(ans[i].indexOf("name:") + "name:".length());
                                 nameFetched = true;
                                 continue;
