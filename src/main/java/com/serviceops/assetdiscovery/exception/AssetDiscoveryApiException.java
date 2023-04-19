@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.exception;
 
 
-public class AssetDiscoveryApiException extends Exception{
+public class AssetDiscoveryApiException extends RuntimeException{
     private String message;
     public AssetDiscoveryApiException(String message) {
         super(message);

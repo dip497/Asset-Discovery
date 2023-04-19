@@ -1,11 +1,12 @@
 package com.serviceops.assetdiscovery.controller;
 
-import com.serviceops.assetdiscovery.config.NetworkScanScheduler;
 import com.serviceops.assetdiscovery.rest.NetworkScanRest;
 import com.serviceops.assetdiscovery.rest.SchedulerRest;
 import com.serviceops.assetdiscovery.service.interfaces.NetworkScanService;
+import com.serviceops.assetdiscovery.service.interfaces.SchedulersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,45 +14,40 @@ import java.util.List;
 @RestController
 public class NetworkScanController {
     private final NetworkScanService networkScanService;
-
+    private final SchedulersService schedulersService;
     private final Logger logger = LoggerFactory.getLogger(NetworkScanController.class);
 
-    public NetworkScanController(NetworkScanService networkScanService )  {
+    public NetworkScanController(NetworkScanService networkScanService, SchedulersService schedulersService)  {
         this.networkScanService = networkScanService;
-
+        this.schedulersService = schedulersService;
     }
+
     @GetMapping("/networkScan/scan/{id}")
     public void scan(@PathVariable Long id){
         logger.debug("Scanning");
         networkScanService.scan(id);
     }
 
-    @PostMapping("/networkScan")
+    @PostMapping(value = "/networkScan",consumes = MediaType.APPLICATION_JSON_VALUE)
     public void saveNetworkScan(@RequestBody NetworkScanRest networkScanRest){
         logger.debug("saving network scan -> {}" ,networkScanRest.getName());
         networkScanService.save(networkScanRest);
     }
 
-    @PutMapping("/networkScan/{id}")
+    @PutMapping(value = "/networkScan/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateNetworkScan(@PathVariable Long id,@RequestBody NetworkScanRest networkScanRest){
         logger.debug("updating network scan -> {}" ,networkScanRest.getId());
         networkScanService.update(id,networkScanRest);
 
     }
 
-    @GetMapping("/networkScan")
+    @GetMapping(value = "/networkScan", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<NetworkScanRest> getAllNetworkScan(){
         logger.debug("fetching all network scan");
         return networkScanService.findAll();
     }
 
-    @PostMapping("/networkScan/{id}/addScheduler")
-    public void addScheduler(@PathVariable Long id,@RequestBody SchedulerRest schedulerRest){
-        logger.debug("saving scheduler for networkscan with id -> {}", id);
-        networkScanService.addScheduler(id,schedulerRest);
-    }
-
-    @GetMapping("/networkScan/{id}")
+    @GetMapping(value = "/networkScan/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public NetworkScanRest getNetworkScanById(@PathVariable Long id){
         logger.debug("fetching network scan by id ->{}",id);
         return networkScanService.findById(id);
@@ -63,4 +59,8 @@ public class NetworkScanController {
         networkScanService.deleteById(id);
     }
 
+    @GetMapping(value ="/schedulers",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<SchedulerRest> getSchedulers(){
+        return schedulersService.findAll();
+    }
 }

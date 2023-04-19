@@ -1,25 +1,21 @@
-package com.serviceops.assetdiscovery.rest;
+package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.Schedulers;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import com.serviceops.assetdiscovery.entity.enums.Month;
 import com.serviceops.assetdiscovery.entity.enums.ScanType;
 import com.serviceops.assetdiscovery.entity.enums.Week;
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
-
-/**
- * A Rest for the {@link Schedulers} entity
- */
-public class SchedulerRest extends SingleBaseRest implements Serializable {
-    private Long networkScanRestId;
+@Entity
+public class Schedulers extends SingleBase {
+    private Long networkScanId;
     @Enumerated(EnumType.STRING)
     private ScanType scanType;
     private Long startTime;
@@ -31,12 +27,12 @@ public class SchedulerRest extends SingleBaseRest implements Serializable {
     private Month month;
     private Long interval;
 
-    public Long getNetworkScanRestId() {
-        return networkScanRestId;
+    public Long getNetworkScanId() {
+        return networkScanId;
     }
 
-    public void setNetworkScanRestId(Long networkScanRestId) {
-        this.networkScanRestId = networkScanRestId;
+    public void setNetworkScanId(Long networkScanId) {
+        this.networkScanId = networkScanId;
     }
 
     public ScanType getScanType() {
@@ -101,9 +97,9 @@ public class SchedulerRest extends SingleBaseRest implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        SchedulerRest that = (SchedulerRest) o;
+        Schedulers that = (Schedulers) o;
 
-        if (getNetworkScanRestId() != null ? !getNetworkScanRestId().equals(that.getNetworkScanRestId()) : that.getNetworkScanRestId() != null)
+        if (getNetworkScanId() != null ? !getNetworkScanId().equals(that.getNetworkScanId()) : that.getNetworkScanId() != null)
             return false;
         if (getScanType() != that.getScanType()) return false;
         if (getStartTime() != null ? !getStartTime().equals(that.getStartTime()) : that.getStartTime() != null)
@@ -118,7 +114,7 @@ public class SchedulerRest extends SingleBaseRest implements Serializable {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (getNetworkScanRestId() != null ? getNetworkScanRestId().hashCode() : 0);
+        result = 31 * result + (getNetworkScanId() != null ? getNetworkScanId().hashCode() : 0);
         result = 31 * result + (getScanType() != null ? getScanType().hashCode() : 0);
         result = 31 * result + (getStartTime() != null ? getStartTime().hashCode() : 0);
         result = 31 * result + (getTime() != null ? getTime().hashCode() : 0);
@@ -131,8 +127,8 @@ public class SchedulerRest extends SingleBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "SchedulerRest{" +
-                "networkScanRestId=" + networkScanRestId +
+        return "Schedulers{" +
+                "networkScanId=" + networkScanId +
                 ", scanType=" + scanType +
                 ", startTime=" + startTime +
                 ", time=" + time +
