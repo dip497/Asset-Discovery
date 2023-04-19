@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,13 +22,9 @@ public class ComputerPropertiesController {
     @GetMapping(value = "/{refId}/computerProperties",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ComputerPropertiesRest> findByRefId(@PathVariable("refId")Long refId){
 
-        List<ComputerPropertiesRest> computerPropertiesRests = new ArrayList<>();
+        logger.debug("Fetching Computer Properties with Asset Id ->{}",refId);
 
-        logger.debug("Fetching Hardware Properties with Asset Id ->{}",refId);
-
-        computerPropertiesRests.add(computerPropertiesService.findByRefId(refId));
-
-        return computerPropertiesRests;
+        return computerPropertiesService.findByRefId(refId);
 
     }
 

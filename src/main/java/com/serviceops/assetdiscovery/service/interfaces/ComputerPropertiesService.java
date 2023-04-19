@@ -2,8 +2,10 @@ package com.serviceops.assetdiscovery.service.interfaces;
 
 import com.serviceops.assetdiscovery.rest.ComputerPropertiesRest;
 
+import java.util.List;
+
 public interface ComputerPropertiesService {
 
-    ComputerPropertiesRest findByRefId(Long refId);
+    List<ComputerPropertiesRest> findByRefId(Long refId);
 
 }

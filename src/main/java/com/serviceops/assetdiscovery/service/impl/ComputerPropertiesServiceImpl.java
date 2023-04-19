@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
     }
 
     @Override
-    public ComputerPropertiesRest findByRefId(Long refId) {
+    public List<ComputerPropertiesRest> findByRefId(Long refId) {
 
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
         Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
@@ -33,6 +34,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         Optional<Asset> optionalAsset = customRepository.findByColumn("id",refId, Asset.class);
         Optional<ComputerSystem> optionalComputerSystem = customRepository.findByColumn("refId",refId,ComputerSystem.class);
         List<RamRest> ramRests = ramService.findAllByRefId(refId);
+        List<ComputerPropertiesRest> computerPropertiesRests = new ArrayList<>();
         ComputerPropertiesRest computerPropertiesRest = new ComputerPropertiesRest();
 
         if (optionalAsset.isPresent()){
@@ -50,7 +52,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
             computerPropertiesRest.setOsName(os.getOsName());
             computerPropertiesRest.setOsVersion(os.getOsVersion());
             computerPropertiesRest.setOsManufacturer(os.getManufacturer());
-            computerPropertiesRest.setOsArchitecture(os.getOsArchitecture());
+            computerPropertiesRest.setArchitecture(os.getOsArchitecture());
         }
 
         if (optionalPhysicalDisk.isPresent()) {
@@ -73,8 +75,13 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
 
         }
 
+        System.out.println(computerPropertiesRest);
+
         logger.info("Computer Properties fetched for Asset Id -> {}", refId);
-        return computerPropertiesRest;
+
+        computerPropertiesRests.add(computerPropertiesRest);
+
+        return computerPropertiesRests;
 
     }
 
