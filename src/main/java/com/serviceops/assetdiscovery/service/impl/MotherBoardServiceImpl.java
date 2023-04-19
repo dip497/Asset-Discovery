@@ -23,7 +23,7 @@ public class MotherBoardServiceImpl implements MotherBoardService{
         setCommands();
     }
     @Override
-    public void  save(Long refId ) {
+    public void save(Long refId ) {
         Optional<MotherBoard> fetchMotherBoard = customRepository.findByColumn("refId", refId, MotherBoard.class);
         if(fetchMotherBoard.isPresent()){
             List<String> parseResult = getParseResult();

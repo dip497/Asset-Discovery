@@ -1,17 +1,26 @@
 package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.utils.UnitConverter;
 import jakarta.persistence.Entity;
+
+import java.util.Objects;
 
 @Entity
 public class LogicalDisk extends AssetBase {
+    /*
+            logicalDisk.setDescription(data[0]);
+        logicalDisk.setName(data[1]);
+        logicalDisk.setSerialNumber(data[2]);
+        logicalDisk.setSize(UnitConverter.convertToBytes(data[3]));
+        logicalDisk.setFileSystemType(data[4]);*/
     private String name;
     private String description;
     private String fileSystemType;
-    private String driveType;
-
     private Long size;
-    private Long freeSpace;
+//    private String driveType;//
+//    private Long freeSpace;//
+
 
     public String getName() {
         return name;
@@ -37,14 +46,6 @@ public class LogicalDisk extends AssetBase {
         this.fileSystemType = fileSystemType;
     }
 
-    public String getDriveType() {
-        return driveType;
-    }
-
-    public void setDriveType(String driveType) {
-        this.driveType = driveType;
-    }
-
     public Long getSize() {
         return size;
     }
@@ -53,41 +54,18 @@ public class LogicalDisk extends AssetBase {
         this.size = size;
     }
 
-    public Long getFreeSpace() {
-        return freeSpace;
-    }
-
-    public void setFreeSpace(Long freeSpace) {
-        this.freeSpace = freeSpace;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
+        if (!super.equals(o)) return false;
         LogicalDisk that = (LogicalDisk) o;
-
-        if (getSize() != that.getSize()) return false;
-        if (getFreeSpace() != that.getFreeSpace()) return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
-            return false;
-        if (getFileSystemType() != null ? !getFileSystemType().equals(that.getFileSystemType()) : that.getFileSystemType() != null)
-            return false;
-        return getDriveType() != null ? getDriveType().equals(that.getDriveType()) : that.getDriveType() == null;
+        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(fileSystemType, that.fileSystemType) && Objects.equals(size, that.size);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (getFileSystemType() != null ? getFileSystemType().hashCode() : 0);
-        result = 31 * result + (getDriveType() != null ? getDriveType().hashCode() : 0);
-        result = 31 * result + (getSize() != null ? getSize().hashCode() : 0);
-        result = 31 * result + (getFreeSpace() != null ? getFreeSpace().hashCode() : 0);
-        return result;
+        return Objects.hash(super.hashCode(), name, description, fileSystemType, size);
     }
 
     @Override
@@ -96,9 +74,7 @@ public class LogicalDisk extends AssetBase {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", fileSystemType='" + fileSystemType + '\'' +
-                ", driveType='" + driveType + '\'' +
                 ", size=" + size +
-                ", freeSpace=" + freeSpace +
                 '}';
     }
 }

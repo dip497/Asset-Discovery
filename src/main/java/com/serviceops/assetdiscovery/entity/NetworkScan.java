@@ -22,7 +22,6 @@ public class NetworkScan extends SingleBase {
     private ScanType scanType;
     private Long schedulerRefId;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-
     private LocalDateTime lastScan;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
 

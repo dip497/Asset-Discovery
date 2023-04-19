@@ -10,122 +10,55 @@ import java.util.Objects;
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Monitor} entity
  */
 public class MonitorRest extends AssetBaseRest implements Serializable {
-    private  String monitorType;
+
     private  String description;
-    private  float size;
-    private  Date installedDate;
     private  String screenHeight;
     private  String screenWidth;
-    private  int weekOfManufacture;
-    private  int yearOfManufacture;
-    private  String pnpDeviceId;
-
-
-
-    public String getMonitorType() {
-        return monitorType;
-    }
 
     public String getDescription() {
         return description;
-    }
-
-    public float getSize() {
-        return size;
-    }
-
-    public Date getInstalledDate() {
-        return installedDate;
-    }
-
-    public String getScreenHeight() {
-        return screenHeight;
-    }
-
-    public String getScreenWidth() {
-        return screenWidth;
-    }
-
-    public int getWeekOfManufacture() {
-        return weekOfManufacture;
-    }
-
-    public int getYearOfManufacture() {
-        return yearOfManufacture;
-    }
-
-    public String getPnpDeviceId() {
-        return pnpDeviceId;
-    }
-
-    public void setMonitorType(String monitorType) {
-        this.monitorType = monitorType;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setSize(float size) {
-        this.size = size;
-    }
-
-    public void setInstalledDate(Date installedDate) {
-        this.installedDate = installedDate;
+    public String getScreenHeight() {
+        return screenHeight;
     }
 
     public void setScreenHeight(String screenHeight) {
         this.screenHeight = screenHeight;
     }
 
+    public String getScreenWidth() {
+        return screenWidth;
+    }
+
     public void setScreenWidth(String screenWidth) {
         this.screenWidth = screenWidth;
-    }
-
-    public void setWeekOfManufacture(int weekOfManufacture) {
-        this.weekOfManufacture = weekOfManufacture;
-    }
-
-    public void setYearOfManufacture(int yearOfManufacture) {
-        this.yearOfManufacture = yearOfManufacture;
-    }
-
-    public void setPnpDeviceId(String pnpDeviceId) {
-        this.pnpDeviceId = pnpDeviceId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MonitorRest entity = (MonitorRest) o;
-        return Objects.equals(this.monitorType, entity.monitorType) &&
-                Objects.equals(this.description, entity.description) &&
-                Objects.equals(this.size, entity.size) &&
-                Objects.equals(this.installedDate, entity.installedDate) &&
-                Objects.equals(this.screenHeight, entity.screenHeight) &&
-                Objects.equals(this.screenWidth, entity.screenWidth) &&
-                Objects.equals(this.weekOfManufacture, entity.weekOfManufacture) &&
-                Objects.equals(this.yearOfManufacture, entity.yearOfManufacture) &&
-                Objects.equals(this.pnpDeviceId, entity.pnpDeviceId);
+        if (!super.equals(o)) return false;
+        MonitorRest that = (MonitorRest) o;
+        return Objects.equals(description, that.description) && Objects.equals(screenHeight, that.screenHeight) && Objects.equals(screenWidth, that.screenWidth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(monitorType, description, size, installedDate, screenHeight, screenWidth, weekOfManufacture, yearOfManufacture, pnpDeviceId);
+        return Objects.hash(super.hashCode(), description, screenHeight, screenWidth);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "monitorType = " + monitorType + ", " +
-                "description = " + description + ", " +
-                "size = " + size + ", " +
-                "installedDate = " + installedDate + ", " +
-                "screenHeight = " + screenHeight + ", " +
-                "screenWidth = " + screenWidth + ", " +
-                "weekOfManufacture = " + weekOfManufacture + ", " +
-                "yearOfManufacture = " + yearOfManufacture + ", " +
-                "pnpDeviceId = " + pnpDeviceId + ")";
+        return "MonitorRest{" +
+                ", description='" + description + '\'' +
+                ", screenHeight='" + screenHeight + '\'' +
+                ", screenWidth='" + screenWidth + '\'' +
+                '}';
     }
 }

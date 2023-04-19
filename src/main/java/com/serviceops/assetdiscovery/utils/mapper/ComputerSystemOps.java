@@ -25,12 +25,9 @@ public class ComputerSystemOps extends AssetBaseOps<ComputerSystem, ComputerSyst
         super.restToEntity(computerSystemRest);
         computerSystem.setModelName(computerSystemRest.getModelName());
         computerSystem.setSystemType(computerSystemRest.getSystemType());
-        computerSystem.setPcSystemType(computerSystemRest.getPcSystemType());
         computerSystem.setUuid(computerSystemRest.getUuid());
         computerSystem.setBootUpState(computerSystemRest.getBootUpState());
-        computerSystem.setPartOfDomian(computerSystemRest.getPartOfDomian());
         computerSystem.setUserName(computerSystemRest.getUserName());
-        computerSystem.setDescription(computerSystemRest.getDescription());
 
         return computerSystem;
     }
@@ -39,12 +36,9 @@ public class ComputerSystemOps extends AssetBaseOps<ComputerSystem, ComputerSyst
         super.entityToRest(computerSystem);
         computerSystemRest.setModelName(computerSystem.getModelName());
         computerSystemRest.setSystemType(computerSystem.getSystemType());
-        computerSystemRest.setPcSystemType(computerSystem.getPcSystemType());
         computerSystemRest.setUuid(computerSystem.getUuid());
         computerSystemRest.setBootUpState(computerSystem.getBootUpState());
-        computerSystemRest.setPartOfDomian(computerSystem.getPartOfDomian());
         computerSystemRest.setUserName(computerSystem.getUserName());
-        computerSystemRest.setDescription(computerSystem.getDescription());
 
         return computerSystemRest;
     }

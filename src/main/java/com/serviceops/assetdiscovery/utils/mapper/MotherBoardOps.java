@@ -16,22 +16,13 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
 
     public MotherBoard restToEntity() {
          super.restToEntity(motherBoardRest);
-         motherBoard.setVersion(motherBoardRest.getVersion());
-         motherBoard.setInstalledDate(motherBoardRest.getInstalledDate());
-         motherBoard.setPartNumber(motherBoardRest.getPartNumber());
-         motherBoard.setPrimaryBusType(motherBoardRest.getPrimaryBusType());
-         motherBoard.setSecondaryBusType(motherBoardRest.getSecondaryBusType());
-         return motherBoard;
+         motherBoard.setVersion(motherBoardRest.getVersion());         return motherBoard;
 
     }
 
     public MotherBoardRest entityToRest() {
          super.entityToRest(motherBoard);
         motherBoardRest.setVersion(motherBoard.getVersion());
-        motherBoardRest.setInstalledDate(motherBoard.getInstalledDate());
-        motherBoardRest.setPartNumber(motherBoard.getPartNumber());
-        motherBoardRest.setPrimaryBusType(motherBoard.getPrimaryBusType());
-        motherBoardRest.setSecondaryBusType(motherBoard.getSecondaryBusType());
         return motherBoardRest;
     }
 

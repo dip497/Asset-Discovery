@@ -11,75 +11,33 @@ import java.util.Objects;
  */
 public class MotherBoardRest extends AssetBaseRest implements Serializable {
     private  String version;
-    private  Date installedDate;
-    private  String partNumber;
-    private  String primaryBusType;
-    private  String secondaryBusType;
 
     public String getVersion() {
         return version;
-    }
-
-    public Date getInstalledDate() {
-        return installedDate;
-    }
-
-    public String getPartNumber() {
-        return partNumber;
-    }
-
-    public String getPrimaryBusType() {
-        return primaryBusType;
-    }
-
-    public String getSecondaryBusType() {
-        return secondaryBusType;
     }
 
     public void setVersion(String version) {
         this.version = version;
     }
 
-    public void setInstalledDate(Date installedDate) {
-        this.installedDate = installedDate;
-    }
-
-    public void setPartNumber(String partNumber) {
-        this.partNumber = partNumber;
-    }
-
-    public void setPrimaryBusType(String primaryBusType) {
-        this.primaryBusType = primaryBusType;
-    }
-
-    public void setSecondaryBusType(String secondaryBusType) {
-        this.secondaryBusType = secondaryBusType;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MotherBoardRest entity = (MotherBoardRest) o;
-        return Objects.equals(this.version, entity.version) &&
-                Objects.equals(this.installedDate, entity.installedDate) &&
-                Objects.equals(this.partNumber, entity.partNumber) &&
-                Objects.equals(this.primaryBusType, entity.primaryBusType) &&
-                Objects.equals(this.secondaryBusType, entity.secondaryBusType);
+        if (!super.equals(o)) return false;
+        MotherBoardRest that = (MotherBoardRest) o;
+        return Objects.equals(version, that.version);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(version, installedDate, partNumber, primaryBusType, secondaryBusType);
+        return Objects.hash(super.hashCode(), version);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "version = " + version + ", " +
-                "installedDate = " + installedDate + ", " +
-                "partNumber = " + partNumber + ", " +
-                "primaryBusType = " + primaryBusType + ", " +
-                "secondaryBusType = " + secondaryBusType + ")";
+        return "MotherBoardRest{" +
+                "version='" + version + '\'' +
+                '}';
     }
 }
