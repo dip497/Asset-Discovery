@@ -21,7 +21,7 @@ public class ComputerPropertiesController {
     }
 
 
-    @GetMapping(value = "/{refId}/computerProperties",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{refId}/computerProperties",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ComputerPropertiesRest> findByRefId(@PathVariable("refId")Long refId){
 
         List<ComputerPropertiesRest> computerPropertiesRests = new ArrayList<>();

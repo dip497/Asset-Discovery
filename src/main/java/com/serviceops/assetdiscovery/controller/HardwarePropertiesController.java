@@ -20,7 +20,7 @@ public class HardwarePropertiesController {
         this.hardwarePropertiesService = hardwarePropertiesService;
     }
 
-    @GetMapping(value = "/{refId}/hardwareProperties" , consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{refId}/hardwareProperties" , produces = MediaType.APPLICATION_JSON_VALUE)
     public List<HardwarePropertiesRest> findByRefId(@PathVariable("refId") Long refId){
 
         List<HardwarePropertiesRest> hardwarePropertiesRests = new ArrayList<>();
