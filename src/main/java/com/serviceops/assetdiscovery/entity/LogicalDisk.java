@@ -8,20 +8,10 @@ import java.util.Objects;
 
 @Entity
 public class LogicalDisk extends AssetBase {
-    /*
-            logicalDisk.setDescription(data[0]);
-        logicalDisk.setName(data[1]);
-        logicalDisk.setSerialNumber(data[2]);
-        logicalDisk.setSize(UnitConverter.convertToBytes(data[3]));
-        logicalDisk.setFileSystemType(data[4]);*/
     private String name;
     private String description;
     private String fileSystemType;
     private Long size;
-//    private String driveType;//
-//    private Long freeSpace;//
-
-
     public String getName() {
         return name;
     }

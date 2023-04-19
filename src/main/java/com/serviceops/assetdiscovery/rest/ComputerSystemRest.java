@@ -10,7 +10,6 @@ import java.util.Objects;
  */
 public class ComputerSystemRest extends AssetBaseRest implements Serializable {
     private  String name;
-    private  String domainName;
     private  String modelName;
     private  String systemType;
     private  String uuid;
@@ -25,14 +24,6 @@ public class ComputerSystemRest extends AssetBaseRest implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDomainName() {
-        return domainName;
-    }
-
-    public void setDomainName(String domainName) {
-        this.domainName = domainName;
     }
 
     public String getModelName() {
@@ -97,19 +88,18 @@ public class ComputerSystemRest extends AssetBaseRest implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ComputerSystemRest that = (ComputerSystemRest) o;
-        return Objects.equals(name, that.name) && Objects.equals(domainName, that.domainName) && Objects.equals(modelName, that.modelName) && Objects.equals(systemType, that.systemType) && Objects.equals(uuid, that.uuid) && Objects.equals(bootUpState, that.bootUpState) && Objects.equals(numberOfLogicalProcessor, that.numberOfLogicalProcessor) && Objects.equals(numberOfProcessors, that.numberOfProcessors) && Objects.equals(userName, that.userName);
+        return Objects.equals(name, that.name) && Objects.equals(modelName, that.modelName) && Objects.equals(systemType, that.systemType) && Objects.equals(uuid, that.uuid) && Objects.equals(bootUpState, that.bootUpState) && Objects.equals(numberOfLogicalProcessor, that.numberOfLogicalProcessor) && Objects.equals(numberOfProcessors, that.numberOfProcessors) && Objects.equals(userName, that.userName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, domainName, modelName, systemType, uuid, bootUpState, numberOfLogicalProcessor, numberOfProcessors, userName);
+        return Objects.hash(super.hashCode(), name, modelName, systemType, uuid, bootUpState, numberOfLogicalProcessor, numberOfProcessors, userName);
     }
 
     @Override
     public String toString() {
         return "ComputerSystemRest{" +
                 "name='" + name + '\'' +
-                ", domainName='" + domainName + '\'' +
                 ", modelName='" + modelName + '\'' +
                 ", systemType='" + systemType + '\'' +
                 ", uuid='" + uuid + '\'' +

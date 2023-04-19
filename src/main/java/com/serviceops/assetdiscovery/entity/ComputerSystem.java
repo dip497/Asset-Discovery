@@ -12,7 +12,6 @@ public class ComputerSystem extends AssetBase {
     private String uuid;
     private String bootUpState;
     private String userName;
-
     public String getModelName() {
         return modelName;
     }

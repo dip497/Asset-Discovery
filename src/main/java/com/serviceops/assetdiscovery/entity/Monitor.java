@@ -9,11 +9,17 @@ import java.util.Objects;
 
 @Entity
 public class Monitor extends AssetBase {
-
+    private String name;
     private String description;
     private String screenHeight;
     private String screenWidth;
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
     public String getDescription() {
         return description;
     }
@@ -43,19 +49,32 @@ public class Monitor extends AssetBase {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
+
         Monitor monitor = (Monitor) o;
-        return Objects.equals(description, monitor.description) && Objects.equals(screenHeight, monitor.screenHeight) && Objects.equals(screenWidth, monitor.screenWidth);
+
+        if (getName() != null ? !getName().equals(monitor.getName()) : monitor.getName() != null) return false;
+        if (getDescription() != null ? !getDescription().equals(monitor.getDescription()) : monitor.getDescription() != null)
+            return false;
+        if (getScreenHeight() != null ? !getScreenHeight().equals(monitor.getScreenHeight()) : monitor.getScreenHeight() != null)
+            return false;
+        return getScreenWidth() != null ? getScreenWidth().equals(monitor.getScreenWidth()) : monitor.getScreenWidth() == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), description, screenHeight, screenWidth);
+        int result = super.hashCode();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getScreenHeight() != null ? getScreenHeight().hashCode() : 0);
+        result = 31 * result + (getScreenWidth() != null ? getScreenWidth().hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "Monitor{" +
-                "description='" + description + '\'' +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", screenHeight='" + screenHeight + '\'' +
                 ", screenWidth='" + screenWidth + '\'' +
                 '}';
