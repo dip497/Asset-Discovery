@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.OS;
-import com.serviceops.assetdiscovery.entity.enums.OsArchitecture;
+import com.serviceops.assetdiscovery.entity.enums.Architecture;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.OSRest;
@@ -38,7 +38,7 @@ public class OsServiceImpl implements OsService {
         if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
             os.setOsName(parseResult.get(0));
-            os.setOsArchitecture(parseResult.get(2).contains("64") ? OsArchitecture.SIXTY_FOUR : OsArchitecture.THIRTY_TWO);
+            os.setOsArchitecture(parseResult.get(2).contains("64") ? Architecture.SIXTY_FOUR : Architecture.THIRTY_TWO);
             os.setActivationStatus("Unlicensed");
             os.setLicenseKey("Not Required");
             os.setOsVersion(parseResult.get(1));
@@ -54,7 +54,7 @@ public class OsServiceImpl implements OsService {
             os.setOsName(parseResult.get(0));
             os.setActivationStatus("Unlicensed");
             os.setLicenseKey("Not Required");
-            os.setOsArchitecture(parseResult.get(2).contains("64") ? OsArchitecture.SIXTY_FOUR : OsArchitecture.THIRTY_TWO);
+            os.setOsArchitecture(parseResult.get(2).contains("64") ? Architecture.SIXTY_FOUR : Architecture.THIRTY_TWO);
             os.setOsVersion(parseResult.get(1));
             os.setInstalledDate(parseDate(parseResult.get(3)));
             customRepository.save(os);

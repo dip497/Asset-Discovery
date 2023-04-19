@@ -4,13 +4,13 @@ import com.serviceops.assetdiscovery.rest.HardwarePropertiesRest;
 import com.serviceops.assetdiscovery.service.interfaces.HardwarePropertiesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/{refId}/hardwareProperties")
 public class HardwarePropertiesController {
 
     private final HardwarePropertiesService hardwarePropertiesService;
@@ -20,7 +20,7 @@ public class HardwarePropertiesController {
         this.hardwarePropertiesService = hardwarePropertiesService;
     }
 
-    @GetMapping()
+    @GetMapping(value = "/{refId}/hardwareProperties" , consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<HardwarePropertiesRest> findByRefId(@PathVariable("refId") Long refId){
 
         List<HardwarePropertiesRest> hardwarePropertiesRests = new ArrayList<>();

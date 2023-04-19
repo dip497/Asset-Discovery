@@ -1,9 +1,6 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.entity.Asset;
-import com.serviceops.assetdiscovery.entity.OS;
-import com.serviceops.assetdiscovery.entity.PhysicalDisk;
-import com.serviceops.assetdiscovery.entity.Processor;
+import com.serviceops.assetdiscovery.entity.*;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.ComputerPropertiesRest;
 import com.serviceops.assetdiscovery.rest.RamRest;
@@ -34,6 +31,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
         Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", refId, Processor.class);
         Optional<Asset> optionalAsset = customRepository.findByColumn("id",refId, Asset.class);
+        Optional<ComputerSystem> optionalComputerSystem = customRepository.findByColumn("refId",refId,ComputerSystem.class);
         List<RamRest> ramRests = ramService.findAllByRefId(refId);
         ComputerPropertiesRest computerPropertiesRest = new ComputerPropertiesRest();
 
@@ -42,11 +40,15 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
             computerPropertiesRest.setLastLoggedInUser(asset.getLastLoggedUser());
         }
 
+        if (optionalComputerSystem.isPresent()){
+            ComputerSystem computerSystem = optionalComputerSystem.get();
+            computerPropertiesRest.setBootUpState(computerSystem.getBootUpState());
+        }
+
         if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
             computerPropertiesRest.setOsName(os.getOsName());
             computerPropertiesRest.setOsVersion(os.getOsVersion());
-            computerPropertiesRest.setActivationStatus(os.getActivationStatus());
             computerPropertiesRest.setOsManufacturer(os.getManufacturer());
             computerPropertiesRest.setOsArchitecture(os.getOsArchitecture());
         }
@@ -65,9 +67,9 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         if (!(ramRests.isEmpty())) {
             long size = 0L;
             for (RamRest ram : ramRests) {
-              //  size += Long.parseLong(ram.getSize());
+                size += ram.getSize();
             }
-            computerPropertiesRest.setMemorySize(Long.toString(size));
+            computerPropertiesRest.setMemorySize(size);
 
         }
 
