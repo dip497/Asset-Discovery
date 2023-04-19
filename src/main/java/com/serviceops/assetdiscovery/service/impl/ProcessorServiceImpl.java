@@ -104,7 +104,7 @@ public class ProcessorServiceImpl implements ProcessorService {
         } else if (Data.contains("mhz")) {
             Data = Data.replaceAll("[^0-9]", "").trim();
             Data = Data.replaceAll(" + ", "");
-            data = Long.parseLong(Data) * 1000 * 1000;
+            data = (long) Double.parseDouble(Data) * 1000 * 1000;
         } else {
             return Long.parseLong(Data);
         }

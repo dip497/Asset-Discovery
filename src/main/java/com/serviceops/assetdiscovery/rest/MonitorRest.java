@@ -11,9 +11,17 @@ import java.util.Objects;
  */
 public class MonitorRest extends AssetBaseRest implements Serializable {
 
+    private String name;
     private  String description;
     private  String screenHeight;
     private  String screenWidth;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getDescription() {
         return description;
@@ -45,17 +53,18 @@ public class MonitorRest extends AssetBaseRest implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         MonitorRest that = (MonitorRest) o;
-        return Objects.equals(description, that.description) && Objects.equals(screenHeight, that.screenHeight) && Objects.equals(screenWidth, that.screenWidth);
+        return Objects.equals(description, that.description) && Objects.equals(name, that.name) && Objects.equals(screenHeight, that.screenHeight) && Objects.equals(screenWidth, that.screenWidth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), description, screenHeight, screenWidth);
+        return Objects.hash(super.hashCode(),name, description, screenHeight, screenWidth);
     }
 
     @Override
     public String toString() {
         return "MonitorRest{" +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", screenHeight='" + screenHeight + '\'' +
                 ", screenWidth='" + screenWidth + '\'' +

@@ -125,8 +125,8 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     @Override
     public void addScheduler(Long id, SchedulerRest schedulerRest) {
         NetworkScanRest networkScan = findById(id);
-        Scheduler scheduler = schedulerService.save(schedulerRest);
-        networkScan.setSchedulerRefId(scheduler.getId());
+       // Scheduler scheduler = schedulerService.save(schedulerRest);
+       // networkScan.setSchedulerRefId(scheduler.getId());
         customRepository.update(networkScan);
     }
 
