@@ -49,11 +49,15 @@ public class OS extends AssetBase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         OS os = (OS) o;
-        return Objects.equals(osName, os.osName) && Objects.equals(osVersion, os.osVersion) && architecture == os.architecture && Objects.equals(installedDate, os.installedDate);
+        return Objects.equals(osName, os.osName) && Objects.equals(osVersion, os.osVersion)
+                && architecture == os.architecture && Objects.equals(installedDate, os.installedDate);
     }
 
     @Override
@@ -63,12 +67,8 @@ public class OS extends AssetBase {
 
     @Override
     public String toString() {
-        return "OS{" +
-                "osName='" + osName + '\'' +
-                ", osVersion='" + osVersion + '\'' +
-                ", architecture=" + architecture +
-                ", installedDate=" + installedDate +
-                '}';
+        return "OS{" + "osName='" + osName + '\'' + ", osVersion='" + osVersion + '\'' + ", architecture="
+                + architecture + ", installedDate=" + installedDate + '}';
     }
 
 }

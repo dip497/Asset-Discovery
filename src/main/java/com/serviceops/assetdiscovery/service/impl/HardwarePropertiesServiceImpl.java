@@ -13,29 +13,28 @@ import java.util.Optional;
 @Service
 public class HardwarePropertiesServiceImpl implements HardwarePropertiesService {
 
-    CustomRepository  customRepository;
+    CustomRepository customRepository;
     Logger logger = LoggerFactory.getLogger(HardwarePropertiesServiceImpl.class);
 
-    public HardwarePropertiesServiceImpl(CustomRepository customRepository){
+    public HardwarePropertiesServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
     }
 
     // Finding the Hardware Properties for specific Asset
     @Override
     public HardwarePropertiesRest findByRefId(Long refId) {
-        Optional<Asset> optionalAsset = customRepository.findByColumn("id",refId, Asset.class);
+        Optional<Asset> optionalAsset = customRepository.findByColumn("id", refId, Asset.class);
         HardwarePropertiesRest hardwarePropertiesRest = new HardwarePropertiesRest();
 
         // If Asset is present then set the Required values in Hardware Properties
-        if(optionalAsset.isPresent()){
+        if (optionalAsset.isPresent()) {
             Asset asset = optionalAsset.get();
             hardwarePropertiesRest.setSerialNumber(asset.getSerialNumber());
-            logger.info("Hardware Properties fetched with Asset Id ->{}",refId);
+            logger.info("Hardware Properties fetched with Asset Id ->{}", refId);
+        } else {
+            logger.error("No asset found with id ->{}", refId);
         }
-        else {
-            logger.error("No asset found with id ->{}",refId);
-        }
-        return  hardwarePropertiesRest;
+        return hardwarePropertiesRest;
 
     }
 

@@ -1,7 +1,5 @@
 package com.serviceops.assetdiscovery.rest;
 
-import com.serviceops.assetdiscovery.rest.AssetRest;
-
 import java.util.List;
 
 public class AllAssetRest {

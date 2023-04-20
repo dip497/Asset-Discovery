@@ -82,24 +82,38 @@ public class Asset extends SingleBase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Asset asset = (Asset) o;
 
         if (getHostName() != null ? !getHostName().equals(asset.getHostName()) : asset.getHostName() != null)
             return false;
-        if (getDomainName() != null ? !getDomainName().equals(asset.getDomainName()) : asset.getDomainName() != null)
+        if (getDomainName() != null ?
+                !getDomainName().equals(asset.getDomainName()) :
+                asset.getDomainName() != null)
             return false;
-        if (getIpAddress() != null ? !getIpAddress().equals(asset.getIpAddress()) : asset.getIpAddress() != null)
+        if (getIpAddress() != null ?
+                !getIpAddress().equals(asset.getIpAddress()) :
+                asset.getIpAddress() != null)
             return false;
-        if (getAssetType() != null ? !getAssetType().equals(asset.getAssetType()) : asset.getAssetType() != null)
+        if (getAssetType() != null ?
+                !getAssetType().equals(asset.getAssetType()) :
+                asset.getAssetType() != null)
             return false;
-        if (getSerialNumber() != null ? !getSerialNumber().equals(asset.getSerialNumber()) : asset.getSerialNumber() != null)
+        if (getSerialNumber() != null ?
+                !getSerialNumber().equals(asset.getSerialNumber()) :
+                asset.getSerialNumber() != null)
             return false;
-        if (getMacAddress() != null ? !getMacAddress().equals(asset.getMacAddress()) : asset.getMacAddress() != null)
+        if (getMacAddress() != null ?
+                !getMacAddress().equals(asset.getMacAddress()) :
+                asset.getMacAddress() != null)
             return false;
-        return getSubNetMask() != null ? getSubNetMask().equals(asset.getSubNetMask()) : asset.getSubNetMask() == null;
+        return getSubNetMask() != null ?
+                getSubNetMask().equals(asset.getSubNetMask()) :
+                asset.getSubNetMask() == null;
     }
 
     @Override
@@ -116,14 +130,9 @@ public class Asset extends SingleBase {
 
     @Override
     public String toString() {
-        return "Asset{" +
-                "hostName='" + hostName + '\'' +
-                ", domainName='" + domainName + '\'' +
-                ", ipAddress=" + ipAddress +
-                ", assetType='" + assetType + '\'' +
-                ", serialNumber='" + serialNumber + '\'' +
-                ", macAddress='" + macAddress + '\'' +
-                ", subNetMask='" + subNetMask + '\'' +
-                '}';
+        return "Asset{" + "hostName='" + hostName + '\'' + ", domainName='" + domainName + '\''
+                + ", ipAddress=" + ipAddress + ", assetType='" + assetType + '\'' + ", serialNumber='"
+                + serialNumber + '\'' + ", macAddress='" + macAddress + '\'' + ", subNetMask='" + subNetMask
+                + '\'' + '}';
     }
 }

@@ -5,7 +5,9 @@ import com.serviceops.assetdiscovery.service.interfaces.HardwarePropertiesServic
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +22,12 @@ public class HardwarePropertiesController {
         this.hardwarePropertiesService = hardwarePropertiesService;
     }
 
-    @GetMapping(value = "/{refId}/hardwareProperties" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<HardwarePropertiesRest> findByRefId(@PathVariable("refId") Long refId){
+    @GetMapping(value = "/{refId}/hardwareProperties", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<HardwarePropertiesRest> findByRefId(@PathVariable("refId") Long refId) {
 
         List<HardwarePropertiesRest> hardwarePropertiesRests = new ArrayList<>();
 
-        logger.debug("Fetching Hardware Properties with Asset Id ->{}",refId);
+        logger.debug("Fetching Hardware Properties with Asset Id ->{}", refId);
 
         hardwarePropertiesRests.add(hardwarePropertiesService.findByRefId(refId));
 

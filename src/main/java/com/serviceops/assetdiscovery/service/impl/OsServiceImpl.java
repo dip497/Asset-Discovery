@@ -2,7 +2,6 @@ package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.OS;
 import com.serviceops.assetdiscovery.entity.enums.Architecture;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.OSRest;
 import com.serviceops.assetdiscovery.service.interfaces.OsService;
@@ -11,9 +10,14 @@ import com.serviceops.assetdiscovery.utils.mapper.OsOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class OsServiceImpl implements OsService {
@@ -27,6 +31,13 @@ public class OsServiceImpl implements OsService {
         setCommands();
     }
 
+    // Helps in Parsing the String date to Milliseconds
+    private static Long parseDate(String datetime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS");
+        LocalDateTime dateTime = LocalDateTime.parse(datetime, formatter);
+        return dateTime.toInstant(java.time.ZoneOffset.UTC).toEpochMilli();
+    }
+
     // Saving Bios in DB or Updating the details during Re-scan
     @Override
     public void save(Long refId) {
@@ -38,7 +49,8 @@ public class OsServiceImpl implements OsService {
         if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
             os.setOsName(parseResult.get(0));
-            os.setOsArchitecture(parseResult.get(2).contains("64") ? Architecture.SIXTY_FOUR : Architecture.THIRTY_TWO);
+            os.setOsArchitecture(
+                    parseResult.get(2).contains("64") ? Architecture.SIXTY_FOUR : Architecture.THIRTY_TWO);
             os.setOsVersion(parseResult.get(1));
             os.setInstalledDate(parseDate(parseResult.get(3)));
             customRepository.save(os);
@@ -50,7 +62,8 @@ public class OsServiceImpl implements OsService {
             OS os = new OS();
             os.setRefId(refId);
             os.setOsName(parseResult.get(0));
-            os.setOsArchitecture(parseResult.get(2).contains("64") ? Architecture.SIXTY_FOUR : Architecture.THIRTY_TWO);
+            os.setOsArchitecture(
+                    parseResult.get(2).contains("64") ? Architecture.SIXTY_FOUR : Architecture.THIRTY_TWO);
             os.setOsVersion(parseResult.get(1));
             os.setInstalledDate(parseDate(parseResult.get(3)));
             customRepository.save(os);
@@ -76,6 +89,7 @@ public class OsServiceImpl implements OsService {
 
         // If optionalOS is not present then throw ResourceNotFoundException
         else {
+            logger.error("OS not found by IP ->{}", refId);
             return new ArrayList<>();
         }
 
@@ -84,9 +98,6 @@ public class OsServiceImpl implements OsService {
     // Deleting the OS by Ref ID
     @Override
     public void deleteByRefId(Long refId) {
-
-        // If Os is present then move further to delete the Os or else throw ResourceNotFoundException
-        findByRefId(refId);
 
         // Deleting the Os at given refId
         customRepository.deleteById(OS.class, refId, "refId");
@@ -111,7 +122,6 @@ public class OsServiceImpl implements OsService {
         // If OS is not present then throw ResourceNotFoundException
         else {
             logger.error("OS not found for Asset with ID ->{}", refId);
-            throw new ResourceNotFoundException("OSRest", "refId", Long.toString(refId));
         }
 
     }
@@ -123,16 +133,16 @@ public class OsServiceImpl implements OsService {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
 
         // Find the OS name
-        commands.put("grep '^NAME=' /etc/os-release | cut -d'\"' -f2", new String[]{});
+        commands.put("grep '^NAME=' /etc/os-release | cut -d'\"' -f2", new String[] {});
 
         // Find the OS version
-        commands.put("grep '^VERSION=' /etc/os-release | cut -d'\"' -f2", new String[]{});
+        commands.put("grep '^VERSION=' /etc/os-release | cut -d'\"' -f2", new String[] {});
 
         // Find the OS architecture
-        commands.put("uname -m", new String[]{});
+        commands.put("uname -m", new String[] {});
 
         // Find the installed date of OS.
-        commands.put("ls -lact --full-time /etc | tail -1 | awk '{print $6,$7}'", new String[]{});
+        commands.put("ls -lact --full-time /etc | tail -1 | awk '{print $6,$7}'", new String[] {});
 
         LinuxCommandExecutorManager.add(OS.class, commands);
     }
@@ -155,13 +165,6 @@ public class OsServiceImpl implements OsService {
             }
         }
         return list;
-    }
-
-    // Helps in Parsing the String date to Milliseconds
-    private static Long parseDate(String datetime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS");
-        LocalDateTime dateTime = LocalDateTime.parse(datetime, formatter);
-        return dateTime.toInstant(java.time.ZoneOffset.UTC).toEpochMilli();
     }
 
 
