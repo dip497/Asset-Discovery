@@ -72,6 +72,8 @@ public class SchedulerServiceImpl implements SchedulersService {
             Schedulers schedulers = fetchSchedulers.get();
             schedulers = new SchedulerOps(schedulers, schedulerRest).restToEntity();
             customRepository.save(schedulers);
+            schedulerRest.setId(schedulers.getId());
+            schedulerService.updateTrigger(schedulerRest);
         }
 
     }
@@ -96,5 +98,21 @@ public class SchedulerServiceImpl implements SchedulersService {
         List<Schedulers> schedulersList = customRepository.findAll(Schedulers.class);
         return schedulersList.stream().map(e -> new SchedulerOps(e, new SchedulerRest()).entityToRest())
                 .toList();
+    }
+
+    @Override
+    public void deleteByNetworkScanId(Long networkScanId) {
+        Optional<Schedulers> scheduler =
+                customRepository.findByColumn("networkScanId", networkScanId, Schedulers.class);
+        if(scheduler.isPresent()){
+            customRepository.deleteById(Schedulers.class,networkScanId,"networkScanId");
+
+            schedulerService.deleteTimer(scheduler.get().getId().toString());
+
+            logger.info("Scheduler deleted with networkScanId -> {} ", networkScanId);
+        }else{
+            logger.info("Scheduler not exist  with networkScanId -> {}", networkScanId);
+        }
+
     }
 }
