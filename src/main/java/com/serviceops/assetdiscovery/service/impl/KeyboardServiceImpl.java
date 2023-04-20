@@ -119,7 +119,11 @@ public class KeyboardServiceImpl implements KeyboardService {
     @Override
     public void deleteByRefId(Long refId, Long id) {
         boolean isDeleted = customRepository.deleteById(Keyboard.class, id, "id");
-        logger.info("Keyboard deleted of  Id ->{} ?  {}", id,isDeleted);
+        if (isDeleted) {
+            logger.info("MotherBoard deleted with Asset Id ->{}", refId);
+        } else {
+            logger.info("MotherBoard not deleted with Asset Id ->{}", refId);
+        }
     }
 
     @Override

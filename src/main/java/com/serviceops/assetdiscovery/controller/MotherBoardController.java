@@ -37,10 +37,10 @@ public class MotherBoardController {
     }
 
     @PutMapping(value = "/{refId}/motherBoard", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateMotherBoard(@PathVariable("refId") Long refId,
+    public MotherBoardRest updateMotherBoard(@PathVariable("refId") Long refId,
             @RequestBody MotherBoardRest motherBoardRest) {
         logger.debug("Updating MotherBoard with Asset id -> {}", refId);
-        motherBoardService.update(refId, motherBoardRest);
+        return motherBoardService.update(refId, motherBoardRest);
 
     }
 }

@@ -96,8 +96,12 @@ public class RamServiceImpl implements RamService {
 
     @Override
     public void deleteById(long refId, long id) {
-        customRepository.deleteById(Ram.class, id, "id");
-        logger.info("Ram deleted of  Id ->{}", id);
+        boolean isDeleted = customRepository.deleteById(Ram.class, id, "id");
+        if (isDeleted) {
+            logger.info("MotherBoard deleted with Asset Id ->{}", refId);
+        } else {
+            logger.info("MotherBoard not deleted with Asset Id ->{}", refId);
+        }
     }
 
     @Override

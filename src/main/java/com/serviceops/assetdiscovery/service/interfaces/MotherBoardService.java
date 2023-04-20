@@ -11,6 +11,6 @@ public interface MotherBoardService {
 
     void deleteByRefId(Long refId);
 
-    void update(Long refId, MotherBoardRest motherBoardRest);
+    MotherBoardRest update(Long refId, MotherBoardRest motherBoardRest);
 
 }
