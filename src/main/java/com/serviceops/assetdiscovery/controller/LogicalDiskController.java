@@ -5,7 +5,12 @@ import com.serviceops.assetdiscovery.service.interfaces.LogicalDiskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -15,35 +20,39 @@ public class LogicalDiskController {
     private final LogicalDiskService logicalDiskService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public LogicalDiskController(LogicalDiskService logicalDiskService){
+    public LogicalDiskController(LogicalDiskService logicalDiskService) {
 
         this.logicalDiskService = logicalDiskService;
 
     }
-    @GetMapping(value = "/{refId}/logicaldisk",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<LogicalDiskRest> getLogicalDisks(@PathVariable("refId") Long refId){
 
-        logger.info("Fetching LogicalDisks with Asset id -> {}",refId);
+    @GetMapping(value = "/{refId}/logicaldisk", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<LogicalDiskRest> getLogicalDisks(@PathVariable("refId") Long refId) {
+
+        logger.info("Fetching LogicalDisks with Asset id -> {}", refId);
 
         List<LogicalDiskRest> logicalDiskRests = logicalDiskService.getAllLogicalDisks(refId);
 
         return logicalDiskRests;
 
     }
+
     @DeleteMapping("/{refId}/logicaldisk/{id}")
-    public void deleteById(@PathVariable("refId") Long refId,@PathVariable("id") Long id){
+    public void deleteById(@PathVariable("refId") Long refId, @PathVariable("id") Long id) {
 
-        logger.info("deleting LogicalDisks with Asset id -> {}",refId);
+        logger.info("deleting LogicalDisks with Asset id -> {}", refId);
 
-        logicalDiskService.deleteById(refId,id);
+        logicalDiskService.deleteById(refId, id);
 
     }
-    @PutMapping(value = "/{refId}/logicaldisk/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateLogicalDiskById(@PathVariable("refId") Long refId,@PathVariable("id") Long id,@RequestBody LogicalDiskRest logicalDiskRest){
 
-        logger.debug("updating LogicalDisks with Asset id -> {}",refId);
+    @PutMapping(value = "/{refId}/logicaldisk/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateLogicalDiskById(@PathVariable("refId") Long refId, @PathVariable("id") Long id,
+            @RequestBody LogicalDiskRest logicalDiskRest) {
 
-        logicalDiskService.update(refId,id,logicalDiskRest);
+        logger.debug("updating LogicalDisks with Asset id -> {}", refId);
+
+        logicalDiskService.update(refId, id, logicalDiskRest);
     }
 
 }

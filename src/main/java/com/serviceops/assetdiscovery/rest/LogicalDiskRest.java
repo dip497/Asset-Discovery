@@ -9,10 +9,10 @@ import java.util.Objects;
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.LogicalDisk} entity
  */
 public class LogicalDiskRest extends AssetBaseRest implements Serializable {
-    private  String name;
-    private  String description;
-    private  String fileSystemType;
-    private  Long size;
+    private String name;
+    private String description;
+    private String fileSystemType;
+    private Long size;
 
     public String getName() {
         return name;
@@ -48,11 +48,15 @@ public class LogicalDiskRest extends AssetBaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         LogicalDiskRest that = (LogicalDiskRest) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(fileSystemType, that.fileSystemType) && Objects.equals(size, that.size);
+        return Objects.equals(name, that.name) && Objects.equals(description, that.description)
+                && Objects.equals(fileSystemType, that.fileSystemType) && Objects.equals(size, that.size);
     }
 
     @Override
@@ -62,11 +66,7 @@ public class LogicalDiskRest extends AssetBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "LogicalDiskRest{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", fileSystemType='" + fileSystemType + '\'' +
-                ", size=" + size +
-                '}';
+        return "LogicalDiskRest{" + "name='" + name + '\'' + ", description='" + description + '\''
+                + ", fileSystemType='" + fileSystemType + '\'' + ", size=" + size + '}';
     }
 }

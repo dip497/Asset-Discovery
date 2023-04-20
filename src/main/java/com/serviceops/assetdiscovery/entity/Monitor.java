@@ -1,10 +1,8 @@
 package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
-import java.sql.Date;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +11,7 @@ public class Monitor extends AssetBase {
     private String description;
     private String screenHeight;
     private String screenWidth;
+
     public String getDescription() {
         return description;
     }
@@ -39,11 +38,15 @@ public class Monitor extends AssetBase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         Monitor monitor = (Monitor) o;
-        return Objects.equals(description, monitor.description) && Objects.equals(screenHeight, monitor.screenHeight) && Objects.equals(screenWidth, monitor.screenWidth);
+        return Objects.equals(description, monitor.description) && Objects.equals(screenHeight,
+                monitor.screenHeight) && Objects.equals(screenWidth, monitor.screenWidth);
     }
 
     @Override
@@ -53,10 +56,7 @@ public class Monitor extends AssetBase {
 
     @Override
     public String toString() {
-        return "Monitor{" +
-                "description='" + description + '\'' +
-                ", screenHeight='" + screenHeight + '\'' +
-                ", screenWidth='" + screenWidth + '\'' +
-                '}';
+        return "Monitor{" + "description='" + description + '\'' + ", screenHeight='" + screenHeight + '\''
+                + ", screenWidth='" + screenWidth + '\'' + '}';
     }
 }
