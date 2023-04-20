@@ -2,10 +2,10 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.PointingDevice;
 import com.serviceops.assetdiscovery.rest.PointingDeviceRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 
-public class PointingDeviceOps extends AssetBaseOps<PointingDevice, PointingDeviceRest> {
+public class PointingDeviceOps extends SingleBaseOps<PointingDevice, PointingDeviceRest> {
     private final PointingDevice pointingDevice;
     private final PointingDeviceRest pointingDeviceRest;
 
@@ -17,6 +17,8 @@ public class PointingDeviceOps extends AssetBaseOps<PointingDevice, PointingDevi
 
     public PointingDevice restToEntity() {
         super.restToEntity(pointingDeviceRest);
+        pointingDevice.setRefId(pointingDeviceRest.getRefId());
+        pointingDevice.setManufacturer(pointingDeviceRest.getManufacturer());
         pointingDevice.setNumberOfButtons(pointingDeviceRest.getNumberOfButtons());
         pointingDevice.setDescription(pointingDeviceRest.getDescription());
         pointingDevice.setPointingType(pointingDeviceRest.getPointingType());
@@ -25,6 +27,8 @@ public class PointingDeviceOps extends AssetBaseOps<PointingDevice, PointingDevi
 
     public PointingDeviceRest entityToRest() {
         super.entityToRest(pointingDevice);
+        pointingDeviceRest.setManufacturer(pointingDevice.getManufacturer());
+        pointingDeviceRest.setRefId(pointingDevice.getRefId());
         pointingDeviceRest.setNumberOfButtons(pointingDevice.getNumberOfButtons());
         pointingDeviceRest.setDescription(pointingDevice.getDescription());
         pointingDeviceRest.setPointingType(pointingDevice.getPointingType());

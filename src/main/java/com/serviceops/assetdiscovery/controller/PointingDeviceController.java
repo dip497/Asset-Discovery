@@ -31,8 +31,8 @@ public class PointingDeviceController {
     }
 
     @PutMapping(value = "/{refId}/pointingDevices", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updatePointingDevice(@PathVariable("refId") String refId, @RequestBody PointingDeviceRest pointingDeviceRest) {
+    public PointingDeviceRest updatePointingDevice(@PathVariable("refId") String refId, @RequestBody PointingDeviceRest pointingDeviceRest) {
         logger.debug("PointingDevice updating with id --> {}", refId);
-        pointingDeviceService.update(Long.parseLong(refId), pointingDeviceRest);
+        return pointingDeviceService.update(Long.parseLong(refId), pointingDeviceRest);
     }
 }

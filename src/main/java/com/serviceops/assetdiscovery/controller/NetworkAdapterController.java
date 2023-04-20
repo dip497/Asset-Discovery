@@ -26,14 +26,14 @@ public class NetworkAdapterController {
     }
 
     @DeleteMapping(value = "/{refId}/networkAdapter/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public void deleteNetworkAdapter(@PathVariable("refId") long refId, @PathVariable("id") Long id) {
+    public void deleteNetworkAdapter(@PathVariable("refId") long refId, @PathVariable("id") long id) {
         logger.debug("Deleting NetworkAdapter with Asset id -> {}", refId);
         networkAdapterService.delete(refId, id);
     }
 
     @PutMapping(value = "/{refId}/networkAdapter/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateNetworkAdapter(@PathVariable("refId") long refId, @RequestBody NetworkAdapterRest networkAdapterRest, @PathVariable long id) {
+    public NetworkAdapterRest updateNetworkAdapter(@PathVariable("refId") long refId, @RequestBody NetworkAdapterRest networkAdapterRest, @PathVariable long id) {
         logger.debug("Updating NetworkAdapter with Asset id -> {}", refId);
-        networkAdapterService.update(networkAdapterRest, refId, id);
+        return networkAdapterService.update(networkAdapterRest, refId, id);
     }
 }

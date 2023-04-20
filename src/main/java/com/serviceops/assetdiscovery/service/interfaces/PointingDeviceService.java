@@ -6,11 +6,11 @@ import com.serviceops.assetdiscovery.rest.PointingDeviceRest;
 import java.util.List;
 
 public interface PointingDeviceService {
-    void save(Long id);
+    void save(long id);
 
-    void update(Long id, PointingDeviceRest pointingDeviceRest);
+    PointingDeviceRest update(long id, PointingDeviceRest pointingDeviceRest);
 
-    void deleteById(Long id);
+    void deleteById(long id);
 
-    List<PointingDeviceRest> getPointingDevices(Long id);
+    List<PointingDeviceRest> getPointingDevices(long id);
 }

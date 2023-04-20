@@ -3,8 +3,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.rest.ProcessorRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
-public class ProcessorOps extends AssetBaseOps<Processor, ProcessorRest> {
+public class ProcessorOps extends SingleBaseOps<Processor, ProcessorRest> {
     private final Processor processor;
     private final ProcessorRest processorRest;
 
@@ -17,6 +18,8 @@ public class ProcessorOps extends AssetBaseOps<Processor, ProcessorRest> {
 
     public Processor restToEntity() {
         super.restToEntity(processorRest);
+        processor.setRefId(processorRest.getRefId());
+        processor.setManufacturer(processorRest.getManufacturer());
         processor.setProcessorName(processorRest.getProcessorName());
         processor.setDescription(processorRest.getDescription());
         processor.setWidth(processorRest.getWidth());
@@ -32,6 +35,8 @@ public class ProcessorOps extends AssetBaseOps<Processor, ProcessorRest> {
 
     public ProcessorRest entityToRest() {
         super.entityToRest(processor);
+        processorRest.setRefId(processor.getRefId());
+        processorRest.setManufacturer(processor.getManufacturer());
         processorRest.setProcessorName(processor.getProcessorName());
         processorRest.setDescription(processor.getDescription());
         processorRest.setWidth(processor.getWidth());

@@ -1,5 +1,6 @@
 package com.serviceops.assetdiscovery.controller;
 
+import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.rest.ProcessorRest;
 import com.serviceops.assetdiscovery.service.interfaces.ProcessorService;
 import org.slf4j.Logger;
@@ -31,8 +32,8 @@ public class ProcessorController {
     }
 
     @PutMapping(value = "/{refId}/processor", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateProcessor(@PathVariable("refId") Long refId, @RequestBody ProcessorRest processorRest) {
+    public ProcessorRest updateProcessor(@PathVariable("refId") Long refId, @RequestBody ProcessorRest processorRest) {
         logger.debug("updating processor with id: -->{}", refId);
-        processorService.update(refId, processorRest);
+        return processorService.update(refId, processorRest);
     }
 }

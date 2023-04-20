@@ -7,7 +7,8 @@ import java.util.Objects;
 
 @Entity
 public class PhysicalDisk extends AssetBase {
-
+    private long refId;
+    private String manufacturer;
     private String name;
     private String description;
     private long size;
@@ -15,6 +16,26 @@ public class PhysicalDisk extends AssetBase {
     private String mediaType;
     private String model;
     private String interfaceType;
+
+    @Override
+    public long getRefId() {
+        return refId;
+    }
+
+    @Override
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
+
+    @Override
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    @Override
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 
     public String getName() {
         return name;
@@ -70,32 +91,5 @@ public class PhysicalDisk extends AssetBase {
 
     public void setInterfaceType(String interfaceType) {
         this.interfaceType = interfaceType;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        PhysicalDisk that = (PhysicalDisk) o;
-        return partition == that.partition && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(size, that.size) && Objects.equals(mediaType, that.mediaType) && Objects.equals(model, that.model) && Objects.equals(interfaceType, that.interfaceType);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, size, partition, mediaType, model, interfaceType);
-    }
-
-    @Override
-    public String toString() {
-        return "PhysicalDisk{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", size='" + size + '\'' +
-                ", partition=" + partition +
-                ", mediaType='" + mediaType + '\'' +
-                ", model='" + model + '\'' +
-                ", interfaceType='" + interfaceType + '\'' +
-                '}';
     }
 }

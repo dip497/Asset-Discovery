@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 @Service
 public class PointingDeviceServiceImpl implements PointingDeviceService {
-    private final Logger logger = LoggerFactory.getLogger(PointingDeviceServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PointingDeviceServiceImpl.class);
     private final CustomRepository customRepository;
 
     public PointingDeviceServiceImpl(CustomRepository customRepository) {
@@ -76,22 +76,22 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
                     switch (count) {
                         case 1:
                             if (results.contains("Buttons:")) {
-                                parsedResult[i][j] = results.substring(results.indexOf("Buttons:\t") + "Buttons:\t".length() + 1);
+                                parsedResult[i][j] = formatData(results,"Buttons:");
                                 break;
                             }
                         case 2:
                             if (results.contains("Type")) {
-                                parsedResult[i][j] = results.substring(results.indexOf("Type:") + "Type:".length());
+                                parsedResult[i][j] = formatData(results,"Type:");
                                 break;
                             }
                         case 3:
                             if (results.contains("Interface")) {
-                                parsedResult[i][j] = results.substring(results.indexOf("Interface:") + "Interface:".length());
+                                parsedResult[i][j] = formatData(results,"Interface:");
                                 break;
                             }
                         case 4:
                             if (results.contains("vendor")) {
-                                parsedResult[i][j] = results.substring(results.indexOf("vendor:") + "vendor:".length());
+                                parsedResult[i][j] = formatData(results,"vendor:");
                                 break;
                             }
                     }
@@ -103,8 +103,12 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
         }
     }
 
+    private String formatData(String data, String keyWord){
+        return data.substring(data.indexOf(keyWord) + keyWord.length()).trim();
+    }
+
     @Override
-    public void save(Long refId) {
+    public void save(long refId) {
         String[][] parsedResult = getParsedResults();
         List<PointingDevice> pointingDevices = customRepository.findAllByColumnName(PointingDevice.class, "refId", refId);
 
@@ -133,27 +137,28 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
     }
 
     @Override
-    public void update(Long refId, PointingDeviceRest pointingDeviceRest) {
+    public PointingDeviceRest update(long refId, PointingDeviceRest pointingDeviceRest) {
         Optional<PointingDevice> optionalPointingDevice = customRepository.findByColumn("refid", refId, PointingDevice.class);
         if (optionalPointingDevice.isPresent()) {
             PointingDevice pointingDevice = optionalPointingDevice.get();
             PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, pointingDeviceRest);
             logger.info("Updated PointingDevice with id --> {}", pointingDeviceRest.getId());
             customRepository.save(pointingDeviceOps.restToEntity(pointingDeviceRest));
+            return pointingDeviceRest;
         } else {
             logger.info("Could not found pointing device with id: --> {}", refId);
-            throw new ResourceNotFoundException("Pointing device", "refId", String.valueOf(refId));
+            throw new ResourceNotFoundException("Pointing device", "refId", refId);
         }
     }
 
     @Override
-    public void deleteById(Long refId) {
+    public void deleteById(long refId) {
         logger.info("Deleted pointing device with id --> {}", refId);
         customRepository.deleteById(PointingDevice.class, refId, "id");
     }
 
     @Override
-    public List<PointingDeviceRest> getPointingDevices(Long refId) {
+    public List<PointingDeviceRest> getPointingDevices(long refId) {
         List<PointingDevice> pointingDevices = customRepository.findAllByColumnName(PointingDevice.class, "refId", refId);
         if (!pointingDevices.isEmpty()) {
             List<PointingDeviceRest> pointingDeviceRestList = new ArrayList<>();
@@ -172,7 +177,7 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
         return List.of();
     }
 
-    private void savePointingDevice(Long refId) {
+    private void savePointingDevice(long refId) {
         for (String[] updatePointIngDevice : getParsedResults()) {
             PointingDevice pointingDevice = new PointingDevice();
             pointingDevice.setRefId(refId);

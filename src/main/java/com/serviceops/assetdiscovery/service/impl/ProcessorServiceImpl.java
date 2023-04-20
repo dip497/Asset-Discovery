@@ -61,7 +61,7 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
 
     @Override
-    public void save(Long id) {
+    public void save(long id) {
 
         Optional<Processor> fetchProcessor = customRepository.findByColumn("refId", id, Processor.class);
         if (fetchProcessor.isPresent()) {
@@ -118,7 +118,7 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
 
     @Override
-    public void update(Long id, ProcessorRest processorRest) {
+    public ProcessorRest update(long id, ProcessorRest processorRest) {
 
         Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
 
@@ -127,21 +127,22 @@ public class ProcessorServiceImpl implements ProcessorService {
             ProcessorOps processorOps = new ProcessorOps(processor, processorRest);
             customRepository.save(processorOps.restToEntity());
             logger.info("Processor updated with id -->{}", id);
+            return processorRest;
         } else {
             logger.error("Processor not found with id -->{}", id);
-            throw new ResourceNotFoundException("Processor", "refId", String.valueOf(id));
+            throw new ResourceNotFoundException("Processor", "refId", id);
         }
 
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(long id) {
         logger.info("Processor deleted with id -->{}", id);
         customRepository.deleteById(Processor.class, id, "id");
     }
 
     @Override
-    public List<ProcessorRest> findByRefId(Long id) {
+    public List<ProcessorRest> findByRefId(long id) {
         Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
         List<ProcessorRest> processors = new ArrayList<>();
         if (optionalProcessor.isPresent()) {

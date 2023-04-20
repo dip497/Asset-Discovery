@@ -3,14 +3,24 @@ package com.serviceops.assetdiscovery.entity;
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
-import java.util.Objects;
-
 @Entity
 public class NetworkAdapter extends AssetBase {
+    private long refId;
+    private String manufacturer;
     private String macAddress;
     private String ipAddress;
     private String description;
     private String ipSubnet;
+
+    @Override
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    @Override
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 
     public String getMacAddress() {
         return macAddress;
@@ -45,21 +55,12 @@ public class NetworkAdapter extends AssetBase {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        NetworkAdapter that = (NetworkAdapter) o;
-        return Objects.equals(macAddress, that.macAddress) && Objects.equals(description, that.description) && Objects.equals(ipAddress, that.ipAddress) && Objects.equals(ipSubnet, that.ipSubnet);
+    public long getRefId() {
+        return refId;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), macAddress, description, ipAddress, ipSubnet);
-    }
-
-    @Override
-    public String toString() {
-        return "NetworkAdapter{" + "macAddress='" + macAddress + '\'' + ", description='" + description + '\'' + ", ipAddress='" + ipAddress + '\'' + ", ipSubnet='" + ipSubnet + '\'' + '}';
+    public void setRefId(long refId) {
+        this.refId = refId;
     }
 }

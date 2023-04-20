@@ -3,12 +3,13 @@ package com.serviceops.assetdiscovery.rest;
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.PhysicalDisk} entity
  */
 public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
+    private long refId;
+    private String manufacturer;
     private String name;
     private String description;
     private long size;
@@ -16,6 +17,26 @@ public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
     private String mediaType;
     private String model;
     private String interfaceType;
+
+    @Override
+    public long getRefId() {
+        return refId;
+    }
+
+    @Override
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
+
+    @Override
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    @Override
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 
     public long getSize() {
         return size;
@@ -73,22 +94,4 @@ public class PhysicalDiskRest extends AssetBaseRest implements Serializable {
         this.interfaceType = interfaceType;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        PhysicalDiskRest that = (PhysicalDiskRest) o;
-        return size == that.size && partition == that.partition && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(mediaType, that.mediaType) && Objects.equals(model, that.model) && Objects.equals(interfaceType, that.interfaceType);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, size, partition, mediaType, model, interfaceType);
-    }
-
-    @Override
-    public String toString() {
-        return "PhysicalDiskRest{" + "name='" + name + '\'' + ", description='" + description + '\'' + ", size=" + size + ", partition=" + partition + ", mediaType='" + mediaType + '\'' + ", model='" + model + '\'' + ", interfaceType='" + interfaceType + '\'' + '}';
-    }
 }

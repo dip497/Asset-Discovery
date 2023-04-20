@@ -5,11 +5,11 @@ import com.serviceops.assetdiscovery.rest.ProcessorRest;
 import java.util.List;
 
 public interface ProcessorService {
-    void save(Long refId);
+    void save(long refId);
 
-    void update(Long refId, ProcessorRest processorRest);
+    ProcessorRest update(long refId, ProcessorRest processorRest);
 
-    void deleteById(Long refId);
+    void deleteById(long refId);
 
-    List<ProcessorRest> findByRefId(Long refId);
+    List<ProcessorRest> findByRefId(long refId);
 }

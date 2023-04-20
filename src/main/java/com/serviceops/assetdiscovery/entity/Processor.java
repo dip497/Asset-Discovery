@@ -7,6 +7,8 @@ import java.util.Objects;
 
 @Entity
 public class Processor extends AssetBase {
+    private long refId;
+    private String manufacturer;
     private String processorName;
     private String description;
     private String width;
@@ -18,22 +20,23 @@ public class Processor extends AssetBase {
     private long family;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Processor processor = (Processor) o;
-        return cpuSpeed == processor.cpuSpeed && coreCount == processor.coreCount && l1CacheSize == processor.l1CacheSize && l2CacheSize == processor.l2CacheSize && l3CacheSize == processor.l3CacheSize && Objects.equals(processorName, processor.processorName) && Objects.equals(description, processor.description) && Objects.equals(width, processor.width) && Objects.equals(family, processor.family);
+    public long getRefId() {
+        return refId;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), processorName, description, width, cpuSpeed, coreCount, l1CacheSize, l2CacheSize, l3CacheSize, family);
+    public void setRefId(long refId) {
+        this.refId = refId;
     }
 
     @Override
-    public String toString() {
-        return "Processor{" + "processorName='" + processorName + '\'' + ", description='" + description + '\'' + ", width='" + width + '\'' + ", cpuSpeed=" + cpuSpeed + ", coreCount=" + coreCount + ", l1CacheSize=" + l1CacheSize + ", l2CacheSize=" + l2CacheSize + ", l3CacheSize=" + l3CacheSize + ", family='" + family + '\'' + '}';
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    @Override
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     public String getProcessorName() {
