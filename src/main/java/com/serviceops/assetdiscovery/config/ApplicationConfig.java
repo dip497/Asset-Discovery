@@ -11,9 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -21,20 +19,21 @@ import java.util.Optional;
 
 @Configuration
 public class ApplicationConfig {
-    private final CustomRepository repository;
     private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
+    private final CustomRepository repository;
 
     public ApplicationConfig(CustomRepository repository) {
         this.repository = repository;
     }
+
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return username -> {
             Optional<Users> users = repository.findByColumn("email", username, Users.class);
-            if(users.isEmpty()){
+            if (users.isEmpty()) {
                 logger.error("user not found with email -> {}", username);
-                throw new ResourceNotFoundException("user","email",username);
-            }else{
+                throw new ResourceNotFoundException("user", "email", username);
+            } else {
                 return users.get();
             }
         };

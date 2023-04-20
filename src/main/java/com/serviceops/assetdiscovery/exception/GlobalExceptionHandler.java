@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.exception;
 
 import com.serviceops.assetdiscovery.rest.ErrorDetails;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -37,6 +38,13 @@ public class GlobalExceptionHandler {
         ErrorDetails details =
                 new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
         return new ResponseEntity<>(details, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ErrorDetails> handleGlobalException(ExpiredJwtException exception, WebRequest webRequest) {
+        ErrorDetails details =
+                new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
+        return new ResponseEntity<>(details, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AssetDiscoveryApiException.class)
