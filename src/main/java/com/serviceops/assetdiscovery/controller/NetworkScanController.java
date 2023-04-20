@@ -6,7 +6,9 @@ import com.serviceops.assetdiscovery.service.interfaces.NetworkScanService;
 import com.serviceops.assetdiscovery.service.interfaces.SchedulersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,9 +37,10 @@ public class NetworkScanController {
     }
 
     @PostMapping(value = "/networkScan", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void saveNetworkScan(@RequestBody NetworkScanRest networkScanRest) {
+    public ResponseEntity<String> saveNetworkScan(@RequestBody NetworkScanRest networkScanRest) {
         logger.debug("saving network scan -> {}", networkScanRest.getName());
         networkScanService.save(networkScanRest);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/networkScan/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
