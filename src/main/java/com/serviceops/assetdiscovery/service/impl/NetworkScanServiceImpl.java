@@ -1,28 +1,23 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.entity.Credentials;
-import com.serviceops.assetdiscovery.entity.Scheduler;
 import com.serviceops.assetdiscovery.entity.enums.IpRangeType;
 import com.serviceops.assetdiscovery.entity.NetworkScan;
-import com.serviceops.assetdiscovery.entity.enums.ScanType;
 import com.serviceops.assetdiscovery.exception.AssetDiscoveryApiException;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.repository.PersistToDB;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.rest.NetworkScanRest;
-import com.serviceops.assetdiscovery.rest.SchedulerRest;
 import com.serviceops.assetdiscovery.service.interfaces.*;
-import com.serviceops.assetdiscovery.utils.LinuxCommandExecutor;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.NetworkScanOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,15 +25,15 @@ import java.util.Optional;
 public class NetworkScanServiceImpl implements NetworkScanService {
     private final CustomRepository customRepository;
     private final CredentialsService credentialsService;
-    private final SchedulerService schedulerService;
+    private final SchedulersService schedulersService;
     private final PersistToDB persistToDB;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public NetworkScanServiceImpl(CustomRepository customRepository, CredentialsService credentialsService, SchedulerService schedulerService, PersistToDB persistToDB) {
+    public NetworkScanServiceImpl(CustomRepository customRepository, CredentialsService credentialsService, SchedulersService schedulersService, PersistToDB persistToDB) {
         this.customRepository = customRepository;
         this.credentialsService = credentialsService;
-        this.schedulerService = schedulerService;
+        this.schedulersService = schedulersService;
         this.persistToDB = persistToDB;
 
     }
@@ -49,11 +44,11 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
         if (fetchNetworkScan.isPresent()) {
             NetworkScan networkScan = fetchNetworkScan.get();
-            logger.info("NetworkScan found by id -> {}", id);
+            logger.info("NetworkScanJob found by id -> {}", id);
             return new NetworkScanOps(networkScan, new NetworkScanRest()).entityToRest();
         } else {
-            logger.error("NetworkScan not found by id -> {}", id);
-            throw new ResourceNotFoundException("NetworkScan", "id", id.toString());
+            logger.error("NetworkScanJob not found by id -> {}", id);
+            throw new ResourceNotFoundException("NetworkScanJob", "id", id.toString());
         }
     }
 
@@ -62,9 +57,11 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         Optional<NetworkScan> networkScan = customRepository.findByColumn("id", networkScanRest.getId(), NetworkScan.class);
         if (networkScan.isPresent()) {
             customRepository.save(new NetworkScanOps(networkScan.get(), networkScanRest).restToEntity());
+            logger.info("NetworkScanJob updated by id -> {}", networkScan.get().getId());
         } else {
             networkScanRest.setEnabled(true);
             customRepository.save(new NetworkScanOps(new NetworkScan(), networkScanRest).restToEntity());
+            logger.info("NetworkScanJob saved by id -> {}", networkScan.get().getId());
 
         }
 
@@ -72,21 +69,23 @@ public class NetworkScanServiceImpl implements NetworkScanService {
 
     @Override
     public List<NetworkScanRest> findAll() {
+        List<NetworkScanRest> list = customRepository.findAll(NetworkScan.class).stream().map(n -> new NetworkScanOps(n, new NetworkScanRest()).entityToRest()).toList();
         logger.info("network scan find all fetched");
-        return customRepository.findAll(NetworkScan.class).stream().map(n -> new NetworkScanOps(n, new NetworkScanRest()).entityToRest()).toList();
+        return list;
     }
 
     @Override
     public void deleteById(Long id) {
-
         customRepository.deleteById(NetworkScan.class, id, "id");
+        logger.info("network scan delete with id -> {}",id);
     }
 
     @Override
     public void update(Long id, NetworkScanRest networkScanRest) {
         Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
         if (fetchNetworkScan.isEmpty()) {
-            throw new ResourceNotFoundException("NetworkScan", "id", id.toString());
+            logger.error("networkScan not exist with id ->{}", id);
+            throw new ResourceNotFoundException("NetworkScanJob", "id", id.toString());
         } else {
             NetworkScan networkScan = fetchNetworkScan.get();
             networkScan = new NetworkScanOps(networkScan, networkScanRest).restToEntity();
@@ -100,34 +99,18 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
         if (fetchNetworkScan.isPresent()) {
             NetworkScan networkScan = fetchNetworkScan.get();
-            if (networkScan.getScanType() == ScanType.NOT_SCHEDULED) {
-                NetworkScanRest networkScanRest = new NetworkScanRest();
-                networkScanRest = new NetworkScanOps(networkScan, networkScanRest).entityToRest();
-                if (networkScan.getIpRangeType() == IpRangeType.ENTIRE_NETWORK) {
-                    performScanOnCredentialEntireNetwork(networkScanRest);
-                } else {
-                    performScanOnCredentialSpecificSetOfIp(networkScanRest);
-
-                }
+            NetworkScanRest networkScanRest = new NetworkScanRest();
+            networkScanRest = new NetworkScanOps(networkScan, networkScanRest).entityToRest();
+            if (networkScan.getIpRangeType() == IpRangeType.ENTIRE_NETWORK) {
+                performScanOnCredentialEntireNetwork(networkScanRest);
             } else {
-                try {
-                    logger.error("Cant run Schedule scan now -> {}", networkScan.getScanType());
-                    throw new AssetDiscoveryApiException("Cant run schedule scan now for " + networkScan.getScanType());
-                } catch (AssetDiscoveryApiException e) {
-                    throw new RuntimeException(e);
-                }
+                performScanOnCredentialSpecificSetOfIp(networkScanRest);
             }
-        } else {
-            throw new ResourceNotFoundException("NetworkScan", "id", id.toString());
         }
-    }
-
-    @Override
-    public void addScheduler(Long id, SchedulerRest schedulerRest) {
-        NetworkScanRest networkScan = findById(id);
-       // Scheduler scheduler = schedulerService.save(schedulerRest);
-       // networkScan.setSchedulerRefId(scheduler.getId());
-        customRepository.update(networkScan);
+        else {
+            logger.error("Network scan not found with id " + id);
+            throw new ResourceNotFoundException("NetworkScanJob", "id", id.toString());
+        }
     }
 
     private static String getNetworkAddress(String ipAddress) {
@@ -195,12 +178,17 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     }
 
     private boolean pingIp(String ipAddress) {
+
+        InetAddress inet = null;
         try {
-            InetAddress inet = InetAddress.getByName(ipAddress);
+            inet = InetAddress.getByName(ipAddress);
             return inet.isReachable(1000);
-        } catch (Exception e) {
-            System.out.println("Exception:" + e.getMessage());
+        } catch (UnknownHostException e ) {
+            logger.warn("unknown host ->{} with message ->{}", inet, e.getMessage());
+        } catch (IOException e) {
+            logger.warn("fail to ping ->{}'", e.getMessage());
         }
+
         return false;
     }
 

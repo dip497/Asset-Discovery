@@ -1,6 +1,5 @@
 package com.serviceops.assetdiscovery.service.interfaces;
 
-import com.serviceops.assetdiscovery.entity.Scheduler;
 import com.serviceops.assetdiscovery.rest.NetworkScanRest;
 import com.serviceops.assetdiscovery.rest.SchedulerRest;
 
@@ -15,6 +14,6 @@ public interface NetworkScanService {
 
     void scan(Long id);
 
-    void addScheduler(Long id, SchedulerRest schedulerRest);
+  //  void addScheduler(Long id, SchedulerRest schedulerRest);
 
 }

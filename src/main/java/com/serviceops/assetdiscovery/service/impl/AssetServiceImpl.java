@@ -39,12 +39,7 @@ public class AssetServiceImpl implements AssetService {
         // If optionalAsset is present then do not add ip and update the asset
         if (optionalAsset.isPresent()) {
             Asset updatedAsset = optionalAsset.get();
-            updatedAsset.setHostName(parseResult.get(0));
-            updatedAsset.setDomainName(parseResult.get(1));
-            updatedAsset.setMacAddress(parseResult.get(3));
-            updatedAsset.setSubNetMask(parseResult.get(6));
-            updatedAsset.setLastLoggedUser(parseResult.get(7));
-            customRepository.save(updatedAsset);
+            setContent(parseResult, updatedAsset);
             logger.info("Updated asset with IP ->{}", parseResult.get(2));
             return findByIpAddress(updatedAsset.getIpAddress());
         }
@@ -52,19 +47,24 @@ public class AssetServiceImpl implements AssetService {
         // If optionalAsset is not present then set ip address of asset and save as new asset
         else {
             Asset asset = new Asset();
-            asset.setHostName(parseResult.get(0));
-            asset.setDomainName(parseResult.get(1));
-            asset.setIpAddress(parseResult.get(2));
-            asset.setMacAddress(parseResult.get(3));
-            asset.setAssetType("LINUX "+parseResult.get(4).toUpperCase());
-            asset.setSerialNumber(parseResult.get(5));
-            asset.setSubNetMask(parseResult.get(6));
-            asset.setLastLoggedUser(parseResult.get(7));
-            customRepository.save(asset);
+            setContent(parseResult, asset);
             logger.info("Saved asset with IP ->{}", parseResult.get(2));
             return findByIpAddress(asset.getIpAddress());
         }
 
+    }
+
+    // Setting the Content in the Asset Entity.
+    private void setContent(List<String> parseResult, Asset updatedAsset) {
+        updatedAsset.setHostName(parseResult.get(0));
+        updatedAsset.setDomainName(parseResult.get(1));
+        updatedAsset.setIpAddress(parseResult.get(2));
+        updatedAsset.setMacAddress(parseResult.get(3));
+        updatedAsset.setAssetType("LINUX "+parseResult.get(4).toUpperCase());
+        updatedAsset.setSerialNumber(parseResult.get(5));
+        updatedAsset.setSubNetMask(parseResult.get(6));
+        updatedAsset.setLastLoggedUser(parseResult.get(7));
+        customRepository.save(updatedAsset);
     }
 
     // Finding Asset by IP
@@ -240,8 +240,6 @@ public class AssetServiceImpl implements AssetService {
         for (Map.Entry<String, String[]> result : stringMap.entrySet()) {
             boolean flag = false;
             String[] values = result.getValue();
-
-            System.out.println("Values is :"+values);
 
             // If the values array is empty then add null
             if (values.length == 0) {

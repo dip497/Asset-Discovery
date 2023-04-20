@@ -9,76 +9,54 @@ import java.util.Objects;
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Bios} entity
  */
 public class BiosRest extends AssetBaseRest implements Serializable {
-    private  String name;
     private  String smBiosVersion;
     private  Long releaseDate;
     private  String version;
-    private  String description;
-
-    public String getName() {
-        return name;
-    }
 
     public String getSmBiosVersion() {
         return smBiosVersion;
-    }
-
-    public Long getReleaseDate() {
-        return releaseDate;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setSmBiosVersion(String smBiosVersion) {
         this.smBiosVersion = smBiosVersion;
     }
 
+    public Long getReleaseDate() {
+        return releaseDate;
+    }
+
     public void setReleaseDate(Long releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getVersion() {
+        return version;
     }
 
     public void setVersion(String version) {
         this.version = version;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BiosRest entity = (BiosRest) o;
-        return Objects.equals(this.name, entity.name) &&
-                Objects.equals(this.smBiosVersion, entity.smBiosVersion) &&
-                Objects.equals(this.releaseDate, entity.releaseDate) &&
-                Objects.equals(this.version, entity.version) &&
-                Objects.equals(this.description, entity.description);
+        if (!super.equals(o)) return false;
+        BiosRest biosRest = (BiosRest) o;
+        return Objects.equals(smBiosVersion, biosRest.smBiosVersion) && Objects.equals(releaseDate, biosRest.releaseDate) && Objects.equals(version, biosRest.version);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, smBiosVersion, releaseDate, version, description);
+        return Objects.hash(super.hashCode(), smBiosVersion, releaseDate, version);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "name = " + name + ", " +
-                "smBiosVersion = " + smBiosVersion + ", " +
-                "realeaseDate = " + releaseDate + ", " +
-                "version = " + version + ", " +
-                "description = " + description + ")";
+        return "BiosRest{" +
+                "smBiosVersion='" + smBiosVersion + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", version='" + version + '\'' +
+                '}';
     }
 }

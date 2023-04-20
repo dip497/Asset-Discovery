@@ -1,6 +1,6 @@
 package com.serviceops.assetdiscovery.exception;
 
-public class ParseException extends Exception {
+public class ParseException extends RuntimeException {
     private String resourceName;
 
     public ParseException(String resourceName) {

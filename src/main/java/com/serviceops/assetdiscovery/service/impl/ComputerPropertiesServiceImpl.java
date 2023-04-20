@@ -57,13 +57,14 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
 
         if (optionalPhysicalDisk.isPresent()) {
             PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
-//            computerPropertiesRest.setDiskSize(physicalDisk.getSize());
+            computerPropertiesRest.setDiskSize(physicalDisk.getSize());
         }
 
         if (optionalProcessor.isPresent()) {
             Processor processor = optionalProcessor.get();
-//            computerPropertiesRest.setCpuSpeed(processor.getCpuSpeed());
-//            computerPropertiesRest.setNumberOfLogicalProcessors(processor.getCoreCount());
+            computerPropertiesRest.setCpuSpeed(processor.getCpuSpeed());
+            computerPropertiesRest.setNumberOfProcessors(processor.getCoreCount());
+            computerPropertiesRest.setNumberOfLogicalProcessors(2*processor.getCoreCount());
         }
 
         if (!(ramRests.isEmpty())) {
@@ -74,8 +75,6 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
             computerPropertiesRest.setMemorySize(size);
 
         }
-
-        System.out.println(computerPropertiesRest);
 
         logger.info("Computer Properties fetched for Asset Id -> {}", refId);
 

@@ -14,9 +14,6 @@ import java.util.List;
 public class NetworkScanRest extends SingleBaseRest {
     private String name;
     @Enumerated(EnumType.STRING)
-    private ScanType scanType;
-    private Long schedulerRefId;
-    @Enumerated(EnumType.STRING)
     private IpRangeType ipRangeType;
     private String ipRangeStart;
     private List<String> ipList;
@@ -37,13 +34,6 @@ public class NetworkScanRest extends SingleBaseRest {
         this.name = name;
     }
 
-    public ScanType getScanType() {
-        return scanType;
-    }
-
-    public void setScanType(ScanType scanType) {
-        this.scanType = scanType;
-    }
 
     public LocalDateTime getLastScan() {
         return lastScan;
@@ -85,13 +75,6 @@ public class NetworkScanRest extends SingleBaseRest {
         this.refIds = refIds;
     }
 
-    public Long getSchedulerRefId() {
-        return schedulerRefId;
-    }
-
-    public void setSchedulerRefId(Long schedulerRefId) {
-        this.schedulerRefId = schedulerRefId;
-    }
 
     public String getIpRangeStart() {
         return ipRangeStart;
@@ -119,10 +102,10 @@ public class NetworkScanRest extends SingleBaseRest {
 
         if (isEnabled() != that.isEnabled()) return false;
         if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (getScanType() != that.getScanType()) return false;
-        if (getSchedulerRefId() != null ? !getSchedulerRefId().equals(that.getSchedulerRefId()) : that.getSchedulerRefId() != null)
-            return false;
         if (getIpRangeType() != that.getIpRangeType()) return false;
+        if (getIpRangeStart() != null ? !getIpRangeStart().equals(that.getIpRangeStart()) : that.getIpRangeStart() != null)
+            return false;
+        if (getIpList() != null ? !getIpList().equals(that.getIpList()) : that.getIpList() != null) return false;
         if (getRefIds() != null ? !getRefIds().equals(that.getRefIds()) : that.getRefIds() != null) return false;
         if (getLastScan() != null ? !getLastScan().equals(that.getLastScan()) : that.getLastScan() != null)
             return false;
@@ -133,9 +116,9 @@ public class NetworkScanRest extends SingleBaseRest {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getScanType() != null ? getScanType().hashCode() : 0);
-        result = 31 * result + (getSchedulerRefId() != null ? getSchedulerRefId().hashCode() : 0);
         result = 31 * result + (getIpRangeType() != null ? getIpRangeType().hashCode() : 0);
+        result = 31 * result + (getIpRangeStart() != null ? getIpRangeStart().hashCode() : 0);
+        result = 31 * result + (getIpList() != null ? getIpList().hashCode() : 0);
         result = 31 * result + (getRefIds() != null ? getRefIds().hashCode() : 0);
         result = 31 * result + (getLastScan() != null ? getLastScan().hashCode() : 0);
         result = 31 * result + (getNextScan() != null ? getNextScan().hashCode() : 0);
@@ -147,9 +130,9 @@ public class NetworkScanRest extends SingleBaseRest {
     public String toString() {
         return "NetworkScanRest{" +
                 "name='" + name + '\'' +
-                ", scanType=" + scanType +
-                ", schedulerRefId=" + schedulerRefId +
                 ", ipRangeType=" + ipRangeType +
+                ", ipRangeStart='" + ipRangeStart + '\'' +
+                ", ipList=" + ipList +
                 ", refIds=" + refIds +
                 ", lastScan=" + lastScan +
                 ", nextScan=" + nextScan +

@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authorize)->
                         authorize.requestMatchers("/register").permitAll()
                                 .requestMatchers("/authenticate").permitAll()
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

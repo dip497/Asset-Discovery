@@ -155,8 +155,6 @@ public class RamServiceImpl implements RamService {
         String[] strings = commandResults.get("sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Size: [1-9]/{print $2}' | wc -l");
         String pattern = "-?\\d+";
         Pattern intPattern = Pattern.compile(pattern);
-        // TODO in dipendra ip address output wrong
-        // Samsung Samsung
 
         for (String element : strings) {
 

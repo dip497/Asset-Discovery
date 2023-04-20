@@ -13,18 +13,6 @@ public class SingleBase extends Base {
     private String updatedBy;
     @UpdateTimestamp
     private Timestamp updatedTime;
-
-    protected SingleBase() {
-    }
-
-    public SingleBase(String createdBy, Timestamp createdTime, String updatedBy, Timestamp updatedTime) {
-        super();
-        this.createdBy = createdBy;
-        this.createdTime = createdTime;
-        this.updatedBy = updatedBy;
-        this.updatedTime = updatedTime;
-    }
-
     public String getCreatedBy() {
         return createdBy;
     }

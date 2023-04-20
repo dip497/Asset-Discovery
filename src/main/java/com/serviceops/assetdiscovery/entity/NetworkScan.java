@@ -18,9 +18,6 @@ public class NetworkScan extends SingleBase {
     private String ipRangeStart;
     private String ipList;
     private String  refIds;
-    @Enumerated(EnumType.STRING)
-    private ScanType scanType;
-    private Long schedulerRefId;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDateTime lastScan;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
@@ -36,15 +33,6 @@ public class NetworkScan extends SingleBase {
     public void setName(String name) {
         this.name = name;
     }
-
-    public ScanType getScanType() {
-        return scanType;
-    }
-
-    public void setScanType(ScanType scanType) {
-        this.scanType = scanType;
-    }
-
     public LocalDateTime getLastScan() {
         return lastScan;
     }
@@ -101,14 +89,6 @@ public class NetworkScan extends SingleBase {
         this.ipList = ipList;
     }
 
-    public Long getSchedulerRefId() {
-        return schedulerRefId;
-    }
-
-    public void setSchedulerRefId(Long schedulerRefId) {
-        this.schedulerRefId = schedulerRefId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -124,9 +104,6 @@ public class NetworkScan extends SingleBase {
             return false;
         if (getIpList() != null ? !getIpList().equals(that.getIpList()) : that.getIpList() != null) return false;
         if (getRefIds() != null ? !getRefIds().equals(that.getRefIds()) : that.getRefIds() != null) return false;
-        if (getScanType() != that.getScanType()) return false;
-        if (getSchedulerRefId() != null ? !getSchedulerRefId().equals(that.getSchedulerRefId()) : that.getSchedulerRefId() != null)
-            return false;
         if (getLastScan() != null ? !getLastScan().equals(that.getLastScan()) : that.getLastScan() != null)
             return false;
         return getNextScan() != null ? getNextScan().equals(that.getNextScan()) : that.getNextScan() == null;
@@ -140,8 +117,6 @@ public class NetworkScan extends SingleBase {
         result = 31 * result + (getIpRangeStart() != null ? getIpRangeStart().hashCode() : 0);
         result = 31 * result + (getIpList() != null ? getIpList().hashCode() : 0);
         result = 31 * result + (getRefIds() != null ? getRefIds().hashCode() : 0);
-        result = 31 * result + (getScanType() != null ? getScanType().hashCode() : 0);
-        result = 31 * result + (getSchedulerRefId() != null ? getSchedulerRefId().hashCode() : 0);
         result = 31 * result + (getLastScan() != null ? getLastScan().hashCode() : 0);
         result = 31 * result + (getNextScan() != null ? getNextScan().hashCode() : 0);
         result = 31 * result + (isEnabled() ? 1 : 0);
@@ -156,8 +131,6 @@ public class NetworkScan extends SingleBase {
                 ", ipRangeStart='" + ipRangeStart + '\'' +
                 ", ipList='" + ipList + '\'' +
                 ", refIds='" + refIds + '\'' +
-                ", scanType=" + scanType +
-                ", schedulerRefId=" + schedulerRefId +
                 ", lastScan=" + lastScan +
                 ", nextScan=" + nextScan +
                 ", isEnabled=" + isEnabled +

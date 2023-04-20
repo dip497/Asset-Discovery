@@ -17,21 +17,17 @@ public class BiosOps extends AssetBaseOps<Bios, BiosRest> {
 
     public Bios restToEntity() {
         super.restToEntity(biosRest);
-        bios.setName(biosRest.getName());
         bios.setSmBiosVersion(biosRest.getSmBiosVersion());
         bios.setReleaseDate(biosRest.getReleaseDate());
         bios.setVersion(biosRest.getVersion());
-        bios.setDescription(biosRest.getDescription());
         return bios;
     }
 
     public BiosRest entityToRest() {
         super.entityToRest(bios);
-        biosRest.setName(bios.getName());
         biosRest.setSmBiosVersion(bios.getSmBiosVersion());
         biosRest.setReleaseDate(bios.getReleaseDate());
         biosRest.setVersion(bios.getVersion());
-        biosRest.setDescription(bios.getDescription());
         return biosRest;
     }
 

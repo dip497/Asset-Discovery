@@ -16,7 +16,6 @@ public class MonitorOps extends AssetBaseOps<Monitor,MonitorRest> {
 
     public MonitorRest entityToRest(){
         super.entityToRest(monitor);
-        monitorRest.setName(monitor.getName());
         monitorRest.setDescription(monitor.getDescription());
         monitorRest.setScreenWidth(monitor.getScreenWidth());
         monitorRest.setScreenHeight(monitor.getScreenHeight());
@@ -24,7 +23,6 @@ public class MonitorOps extends AssetBaseOps<Monitor,MonitorRest> {
     }
     public Monitor restToEntity(){
         super.restToEntity(monitorRest);
-        monitor.setName(monitorRest.getName());
         monitor.setDescription(monitorRest.getDescription());
         monitor.setScreenWidth(monitorRest.getScreenWidth());
         monitor.setScreenHeight(monitorRest.getScreenHeight());

@@ -19,7 +19,6 @@ public class NetworkScanOps extends SingleBaseOps<NetworkScan, NetworkScanRest> 
     public NetworkScanRest entityToRest(){
         super.entityToRest(networkScan);
         networkScanRest.setName(networkScan.getName());
-        networkScanRest.setScanType(networkScan.getScanType());
         networkScanRest.setLastScan(networkScan.getLastScan());
         networkScanRest.setNextScan(networkScan.getNextScan());
         networkScanRest.setEnabled(networkScan.isEnabled());
@@ -33,13 +32,11 @@ public class NetworkScanOps extends SingleBaseOps<NetworkScan, NetworkScanRest> 
                 return Long.valueOf(e);
             }
         }).toList());
-        networkScanRest.setSchedulerRefId(networkScan.getSchedulerRefId());
         return networkScanRest;
     }
     public NetworkScan restToEntity(){
         super.restToEntity(networkScanRest);
         networkScan.setName(networkScanRest.getName());
-        networkScan.setScanType(networkScanRest.getScanType());
         networkScan.setLastScan(networkScanRest.getLastScan());
         networkScan.setNextScan(networkScanRest.getNextScan());
         networkScan.setEnabled(networkScanRest.isEnabled());
@@ -57,7 +54,6 @@ public class NetworkScanOps extends SingleBaseOps<NetworkScan, NetworkScanRest> 
                 return String.valueOf(e);
             }
         }).toList()));
-        networkScan.setSchedulerRefId(networkScanRest.getSchedulerRefId());
         return networkScan;
     }
 

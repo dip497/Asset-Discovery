@@ -11,13 +11,6 @@ public class Base {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    protected Base() {
-    }
-
-    public Base(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
     }

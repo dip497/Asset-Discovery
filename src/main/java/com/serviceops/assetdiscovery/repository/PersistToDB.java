@@ -1,5 +1,6 @@
 package com.serviceops.assetdiscovery.repository;
 
+import com.serviceops.assetdiscovery.exception.AssetDiscoveryApiException;
 import com.serviceops.assetdiscovery.rest.AssetRest;
 import com.serviceops.assetdiscovery.service.interfaces.*;
 import jakarta.transaction.Transactional;
@@ -39,21 +40,29 @@ public class PersistToDB {
         this.logicalDiskService = logicalDiskService;
         this.processorService = processorService;
     }
+
     @Transactional
-    public void saveToDB(){
-        AssetRest assetRest = assetService.save();;
-        logicalDiskService.save(assetRest.getId());
-        motherBoardService.save(assetRest.getId());
-        physicalDiskService.save(assetRest.getId());
-        computerSystemService.save(assetRest.getId());
-        keyboardService.save(assetRest.getId());
-        biosService.save(assetRest);
-        networkAdapterService.save(assetRest.getId());
-        ramService.save(assetRest.getId());
-        monitorService.save(assetRest.getId());
-        osService.save(assetRest.getId());
-        pointingDeviceService.save(assetRest.getId());
-        processorService.save(assetRest.getId());
+    public void saveToDB() {
+        try {
+            AssetRest assetRest = assetService.save();
+            logger.info("Saving to db -> {}", assetRest.getIpAddress());
+            logicalDiskService.save(assetRest.getId());
+            motherBoardService.save(assetRest.getId());
+            physicalDiskService.save(assetRest.getId());
+            computerSystemService.save(assetRest.getId());
+            keyboardService.save(assetRest.getId());
+            biosService.save(assetRest);
+            networkAdapterService.save(assetRest.getId());
+            ramService.save(assetRest.getId());
+            monitorService.save(assetRest.getId());
+            osService.save(assetRest.getId());
+            pointingDeviceService.save(assetRest.getId());
+            processorService.save(assetRest.getId());
+            logger.info("saved to db -> {}", assetRest.getIpAddress());
+        }catch (Exception e){
+            logger.error("fail to save");
+            throw new AssetDiscoveryApiException("Error while Persisting asset");
+        }
     }
 
 }
