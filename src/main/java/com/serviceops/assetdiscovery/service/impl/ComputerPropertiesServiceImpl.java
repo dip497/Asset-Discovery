@@ -1,6 +1,10 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.entity.*;
+import com.serviceops.assetdiscovery.entity.Asset;
+import com.serviceops.assetdiscovery.entity.ComputerSystem;
+import com.serviceops.assetdiscovery.entity.OS;
+import com.serviceops.assetdiscovery.entity.PhysicalDisk;
+import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.ComputerPropertiesRest;
 import com.serviceops.assetdiscovery.rest.RamRest;
@@ -16,8 +20,8 @@ import java.util.Optional;
 @Service
 public class ComputerPropertiesServiceImpl implements ComputerPropertiesService {
 
-    CustomRepository customRepository;
     private final RamServiceImpl ramService;
+    CustomRepository customRepository;
     Logger logger = LoggerFactory.getLogger(ComputerPropertiesServiceImpl.class);
 
     public ComputerPropertiesServiceImpl(CustomRepository customRepository, RamServiceImpl ramService) {
@@ -29,20 +33,23 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
     public List<ComputerPropertiesRest> findByRefId(Long refId) {
 
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
-        Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
-        Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", refId, Processor.class);
-        Optional<Asset> optionalAsset = customRepository.findByColumn("id",refId, Asset.class);
-        Optional<ComputerSystem> optionalComputerSystem = customRepository.findByColumn("refId",refId,ComputerSystem.class);
+        Optional<PhysicalDisk> optionalPhysicalDisk =
+                customRepository.findByColumn("refId", refId, PhysicalDisk.class);
+        Optional<Processor> optionalProcessor =
+                customRepository.findByColumn("refId", refId, Processor.class);
+        Optional<Asset> optionalAsset = customRepository.findByColumn("id", refId, Asset.class);
+        Optional<ComputerSystem> optionalComputerSystem =
+                customRepository.findByColumn("refId", refId, ComputerSystem.class);
         List<RamRest> ramRests = ramService.findAllByRefId(refId);
         List<ComputerPropertiesRest> computerPropertiesRests = new ArrayList<>();
         ComputerPropertiesRest computerPropertiesRest = new ComputerPropertiesRest();
 
-        if (optionalAsset.isPresent()){
+        if (optionalAsset.isPresent()) {
             Asset asset = optionalAsset.get();
             computerPropertiesRest.setLastLoggedInUser(asset.getLastLoggedUser());
         }
 
-        if (optionalComputerSystem.isPresent()){
+        if (optionalComputerSystem.isPresent()) {
             ComputerSystem computerSystem = optionalComputerSystem.get();
             computerPropertiesRest.setBootUpState(computerSystem.getBootUpState());
         }
@@ -64,7 +71,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
             Processor processor = optionalProcessor.get();
             computerPropertiesRest.setCpuSpeed(processor.getCpuSpeed());
             computerPropertiesRest.setNumberOfProcessors(processor.getCoreCount());
-            computerPropertiesRest.setNumberOfLogicalProcessors(2*processor.getCoreCount());
+            computerPropertiesRest.setNumberOfLogicalProcessors(2 * processor.getCoreCount());
         }
 
         if (!(ramRests.isEmpty())) {

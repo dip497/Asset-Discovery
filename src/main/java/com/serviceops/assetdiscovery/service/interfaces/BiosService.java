@@ -13,6 +13,6 @@ public interface BiosService {
 
     void deleteByRefId(Long refId);
 
-    void update(Long refId,BiosRest biosRest);
+    void update(Long refId, BiosRest biosRest);
 
 }
