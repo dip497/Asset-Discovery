@@ -3,20 +3,20 @@ package com.serviceops.assetdiscovery.utils.mapper;
 import com.serviceops.assetdiscovery.entity.Credentials;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class CredentialsOps extends SingleBaseOps<Credentials, CredentialsRest> {
-    private Credentials credentials;
-    private CredentialsRest credentialsRest;
+    private final Credentials credentials;
+    private final CredentialsRest credentialsRest;
     private PasswordEncoder passwordEncoder;
+
     public CredentialsOps(Credentials credentials, CredentialsRest credentialsRest) {
         super(credentials, credentialsRest);
         this.credentials = credentials;
         this.credentialsRest = credentialsRest;
     }
 
-    public  CredentialsRest entityToRest() {
+    public CredentialsRest entityToRest() {
         super.entityToRest(credentials);
         credentialsRest.setUsername(credentials.getUsername());
         credentialsRest.setPassword(credentials.getPassword());

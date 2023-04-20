@@ -3,7 +3,6 @@ package com.serviceops.assetdiscovery.entity;
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
 import jakarta.persistence.Entity;
 
-import java.sql.Date;
 import java.util.Objects;
 
 @Entity
@@ -13,10 +12,10 @@ public class MotherBoard extends AssetBase {
             motherBoard.setSerialNumber(parseResult.get(1));
             motherBoard.setVersion(parseResult.get(2));*/
     private String version;
-//    private Date installedDate;
-//    private String partNumber;
-//    private String primaryBusType;
-//    private String secondaryBusType;
+    //    private Date installedDate;
+    //    private String partNumber;
+    //    private String primaryBusType;
+    //    private String secondaryBusType;
 
     public String getVersion() {
         return version;
@@ -28,9 +27,12 @@ public class MotherBoard extends AssetBase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         MotherBoard that = (MotherBoard) o;
         return Objects.equals(version, that.version);
     }
@@ -42,8 +44,6 @@ public class MotherBoard extends AssetBase {
 
     @Override
     public String toString() {
-        return "MotherBoard{" +
-                "version='" + version + '\'' +
-                '}';
+        return "MotherBoard{" + "version='" + version + '\'' + '}';
     }
 }

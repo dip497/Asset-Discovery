@@ -3,7 +3,7 @@ package com.serviceops.assetdiscovery.utils.mapper.base;
 import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
 
-public class SingleBaseOps<T extends SingleBase,S extends SingleBaseRest> extends BaseOps<T,S>{
+public class SingleBaseOps<T extends SingleBase, S extends SingleBaseRest> extends BaseOps<T, S> {
     T singleBase;
     S singleBaseRest;
 

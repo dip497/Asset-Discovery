@@ -1,10 +1,16 @@
 package com.serviceops.assetdiscovery.entity.enums;
 
 public enum Week {
-    SUNDAY (0),MONDAY (1) ,TUESDAY (2),WEDNESDAY(3),THURSDAY(4),FRIDAY(5),SATURDAY(6);
+    SUNDAY(0),
+    MONDAY(1),
+    TUESDAY(2),
+    WEDNESDAY(3),
+    THURSDAY(4),
+    FRIDAY(5),
+    SATURDAY(6);
     private final int code;
 
-    private Week(int code) {
+    Week(int code) {
         this.code = code;
     }
 

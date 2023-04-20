@@ -7,7 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -20,34 +26,34 @@ public class CredentialsController {
         this.credentialsService = credentialsService;
     }
 
-    @PostMapping(value = "/credentials",consumes = MediaType.APPLICATION_JSON_VALUE ,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CredentialsRest> addCredentials(@RequestBody CredentialsRest credentialsRest){
-        logger.debug("Creating Credentials with username -> {}",credentialsRest.getUsername());
+    @PostMapping(value = "/credentials", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CredentialsRest> addCredentials(@RequestBody CredentialsRest credentialsRest) {
+        logger.debug("Creating Credentials with username -> {}", credentialsRest.getUsername());
         return new ResponseEntity<>(credentialsService.save(credentialsRest), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/credentials/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CredentialsRest getCredential(@PathVariable Long id){
+    public CredentialsRest getCredential(@PathVariable Long id) {
         logger.debug("Finding credentials with id ->{}", id);
         return credentialsService.findById(id);
     }
 
-    @GetMapping(value = "/credentials",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CredentialsRest> getAllCredentials(){
+    @GetMapping(value = "/credentials", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CredentialsRest> getAllCredentials() {
         logger.debug("Finding all credentials");
         return credentialsService.findAll();
     }
 
     @DeleteMapping("/credentials/{id}")
-    public void deleteCredentialsById(@PathVariable Long id){
-        logger.debug("Deleting Credentials with id -> {}",id);
+    public void deleteCredentialsById(@PathVariable Long id) {
+        logger.debug("Deleting Credentials with id -> {}", id);
         credentialsService.deleteById(id);
     }
 
-    @PutMapping(value = "/credentials/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateCredential(@PathVariable("id") Long id,@RequestBody CredentialsRest credentialsRest){
-        logger.debug("Updating Credentials with id -> {}",id);
-        credentialsService.update(id,credentialsRest);
+    @PutMapping(value = "/credentials/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateCredential(@PathVariable("id") Long id, @RequestBody CredentialsRest credentialsRest) {
+        logger.debug("Updating Credentials with id -> {}", id);
+        credentialsService.update(id, credentialsRest);
     }
 
 }

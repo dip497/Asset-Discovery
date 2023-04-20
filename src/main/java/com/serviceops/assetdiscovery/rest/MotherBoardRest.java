@@ -3,14 +3,13 @@ package com.serviceops.assetdiscovery.rest;
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.Objects;
 
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.MotherBoard} entity
  */
 public class MotherBoardRest extends AssetBaseRest implements Serializable {
-    private  String version;
+    private String version;
 
     public String getVersion() {
         return version;
@@ -22,9 +21,12 @@ public class MotherBoardRest extends AssetBaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         MotherBoardRest that = (MotherBoardRest) o;
         return Objects.equals(version, that.version);
     }
@@ -36,8 +38,6 @@ public class MotherBoardRest extends AssetBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "MotherBoardRest{" +
-                "version='" + version + '\'' +
-                '}';
+        return "MotherBoardRest{" + "version='" + version + '\'' + '}';
     }
 }

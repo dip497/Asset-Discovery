@@ -8,11 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
-
 @Entity
 public class Schedulers extends SingleBase {
     private Long networkScanId;
@@ -93,21 +88,33 @@ public class Schedulers extends SingleBase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
 
         Schedulers that = (Schedulers) o;
 
-        if (getNetworkScanId() != null ? !getNetworkScanId().equals(that.getNetworkScanId()) : that.getNetworkScanId() != null)
+        if (getNetworkScanId() != null ?
+                !getNetworkScanId().equals(that.getNetworkScanId()) :
+                that.getNetworkScanId() != null)
             return false;
-        if (getScanType() != that.getScanType()) return false;
-        if (getStartTime() != null ? !getStartTime().equals(that.getStartTime()) : that.getStartTime() != null)
+        if (getScanType() != that.getScanType())
             return false;
-        if (getTime() != null ? !getTime().equals(that.getTime()) : that.getTime() != null) return false;
-        if (getDate() != null ? !getDate().equals(that.getDate()) : that.getDate() != null) return false;
-        if (getWeek() != that.getWeek()) return false;
-        if (getMonth() != that.getMonth()) return false;
+        if (getStartTime() != null ?
+                !getStartTime().equals(that.getStartTime()) :
+                that.getStartTime() != null)
+            return false;
+        if (getTime() != null ? !getTime().equals(that.getTime()) : that.getTime() != null)
+            return false;
+        if (getDate() != null ? !getDate().equals(that.getDate()) : that.getDate() != null)
+            return false;
+        if (getWeek() != that.getWeek())
+            return false;
+        if (getMonth() != that.getMonth())
+            return false;
         return getInterval() != null ? getInterval().equals(that.getInterval()) : that.getInterval() == null;
     }
 
@@ -127,15 +134,8 @@ public class Schedulers extends SingleBase {
 
     @Override
     public String toString() {
-        return "Schedulers{" +
-                "networkScanId=" + networkScanId +
-                ", scanType=" + scanType +
-                ", startTime=" + startTime +
-                ", time=" + time +
-                ", date=" + date +
-                ", week=" + week +
-                ", month=" + month +
-                ", interval=" + interval +
-                "} " + super.toString();
+        return "Schedulers{" + "networkScanId=" + networkScanId + ", scanType=" + scanType + ", startTime="
+                + startTime + ", time=" + time + ", date=" + date + ", week=" + week + ", month=" + month
+                + ", interval=" + interval + "} " + super.toString();
     }
 }

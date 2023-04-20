@@ -37,11 +37,15 @@ public class AssetBase extends SingleBase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         AssetBase assetBase = (AssetBase) o;
-        return Objects.equals(refId, assetBase.refId) && Objects.equals(serialNumber, assetBase.serialNumber) && Objects.equals(manufacturer, assetBase.manufacturer);
+        return Objects.equals(refId, assetBase.refId) && Objects.equals(serialNumber, assetBase.serialNumber)
+                && Objects.equals(manufacturer, assetBase.manufacturer);
     }
 
     @Override
@@ -51,10 +55,7 @@ public class AssetBase extends SingleBase {
 
     @Override
     public String toString() {
-        return "AssetBase{" +
-                "refId=" + refId +
-                ", serialNumber='" + serialNumber + '\'' +
-                ", manufacturer='" + manufacturer + '\'' +
-                '}';
+        return "AssetBase{" + "refId=" + refId + ", serialNumber='" + serialNumber + '\'' + ", manufacturer='"
+                + manufacturer + '\'' + '}';
     }
 }

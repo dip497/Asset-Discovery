@@ -1,8 +1,9 @@
 package com.serviceops.assetdiscovery.exception;
 
 
-public class AssetDiscoveryApiException extends RuntimeException{
-    private String message;
+public class AssetDiscoveryApiException extends RuntimeException {
+    private final String message;
+
     public AssetDiscoveryApiException(String message) {
         super(message);
         this.message = message;
@@ -13,7 +14,4 @@ public class AssetDiscoveryApiException extends RuntimeException{
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

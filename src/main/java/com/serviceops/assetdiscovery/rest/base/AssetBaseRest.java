@@ -7,20 +7,20 @@ import java.util.Objects;
  * A DTO for the {@link com.serviceops.assetdiscovery.entity.base.AssetBase} entity
  */
 public class AssetBaseRest extends SingleBaseRest implements Serializable {
-    private  Long refId;
-    private  String serialNumber;
+    private Long refId;
+    private String serialNumber;
     private String manufacturer;
 
     public Long getRefId() {
         return refId;
     }
 
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
     public void setRefId(Long refId) {
         this.refId = refId;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
     public void setSerialNumber(String serialNumber) {
@@ -37,11 +37,15 @@ public class AssetBaseRest extends SingleBaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         AssetBaseRest that = (AssetBaseRest) o;
-        return Objects.equals(refId, that.refId) && Objects.equals(serialNumber, that.serialNumber) && Objects.equals(manufacturer, that.manufacturer);
+        return Objects.equals(refId, that.refId) && Objects.equals(serialNumber, that.serialNumber)
+                && Objects.equals(manufacturer, that.manufacturer);
     }
 
     @Override
@@ -55,10 +59,7 @@ public class AssetBaseRest extends SingleBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "AssetBaseRest{" +
-                "refId=" + refId +
-                ", serialNumber='" + serialNumber + '\'' +
-                ", manufacturer='" + manufacturer + '\'' +
-                "} " + super.toString();
+        return "AssetBaseRest{" + "refId=" + refId + ", serialNumber='" + serialNumber + '\''
+                + ", manufacturer='" + manufacturer + '\'' + "} " + super.toString();
     }
 }

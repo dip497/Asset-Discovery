@@ -7,6 +7,7 @@ import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
     private final MotherBoard motherBoard;
     private final MotherBoardRest motherBoardRest;
+
     public MotherBoardOps(MotherBoard motherBoard, MotherBoardRest motherBoardRest) {
         super(motherBoard, motherBoardRest);
         this.motherBoard = motherBoard;
@@ -15,13 +16,14 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
 
 
     public MotherBoard restToEntity() {
-         super.restToEntity(motherBoardRest);
-         motherBoard.setVersion(motherBoardRest.getVersion());         return motherBoard;
+        super.restToEntity(motherBoardRest);
+        motherBoard.setVersion(motherBoardRest.getVersion());
+        return motherBoard;
 
     }
 
     public MotherBoardRest entityToRest() {
-         super.entityToRest(motherBoard);
+        super.entityToRest(motherBoard);
         motherBoardRest.setVersion(motherBoard.getVersion());
         return motherBoardRest;
     }

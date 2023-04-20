@@ -4,15 +4,16 @@ import com.serviceops.assetdiscovery.entity.Users;
 import com.serviceops.assetdiscovery.rest.UsersRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
-public class UsersOps extends SingleBaseOps<Users,UsersRest> {
-    private Users users;
-    private UsersRest usersRest;
+public class UsersOps extends SingleBaseOps<Users, UsersRest> {
+    private final Users users;
+    private final UsersRest usersRest;
 
     public UsersOps(Users users, UsersRest usersRest) {
         super(users, usersRest);
         this.users = users;
         this.usersRest = usersRest;
     }
+
     @Override
     public UsersRest entityToRest(Users users) {
         super.entityToRest(users);

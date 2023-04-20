@@ -17,7 +17,6 @@ import java.util.Optional;
 @Service
 public class CredentialsServiceImpl implements CredentialsService {
     private final CustomRepository customRepository;
-    private CredentialsOps credentialsOps;
     private final Logger logger = LoggerFactory.getLogger(CredentialsServiceImpl.class);
 
     public CredentialsServiceImpl(CustomRepository customRepository) {
@@ -26,16 +25,16 @@ public class CredentialsServiceImpl implements CredentialsService {
 
     @Override
     public CredentialsRest save(CredentialsRest credentialsRest) {
-        logger.info("Getting credential with id {}", credentialsRest.getId());
-        if (customRepository.findByColumn("id", credentialsRest.getId(), Credentials.class).isPresent()){
-            logger.error("Credentials already exists with id -> {} ",credentialsRest.getId());
-            throw new ResourceAlreadyExistsException(this.getClass().getSimpleName(),"id",credentialsRest.getId().toString());
-        }else{
+        if (customRepository.findByColumn("id", credentialsRest.getId(), Credentials.class).isPresent()) {
+            logger.error("Credentials already exists with id -> {} ", credentialsRest.getId());
+            throw new ResourceAlreadyExistsException(this.getClass().getSimpleName(), "id",
+                    credentialsRest.getId().toString());
+        } else {
             Credentials credential = new Credentials();
-            credentialsOps = new CredentialsOps(credential, credentialsRest);
+            CredentialsOps credentialsOps = new CredentialsOps(credential, credentialsRest);
             customRepository.save(credentialsOps.restToEntity());
-            logger.debug("saved credentials of ip -> {} ",credentialsRest.getId());
-            return new CredentialsOps(credential,credentialsRest).entityToRest();
+            logger.debug("saved credentials of username -> {} ", credentialsRest.getUsername());
+            return new CredentialsOps(credential, credentialsRest).entityToRest();
         }
     }
 
@@ -43,19 +42,20 @@ public class CredentialsServiceImpl implements CredentialsService {
     public List<CredentialsRest> findAll() {
         List<Credentials> credential = customRepository.findAll(Credentials.class);
         logger.info("found all credential");
-        return credential.stream().map(c -> new CredentialsOps(c ,new CredentialsRest()).entityToRest()).toList();
+        return credential.stream().map(c -> new CredentialsOps(c, new CredentialsRest()).entityToRest())
+                .toList();
     }
 
 
     @Override
     public CredentialsRest findById(Long id) {
         Optional<Credentials> fetchCredentials = customRepository.findByColumn("id", id, Credentials.class);
-        if(fetchCredentials.isPresent()){
+        if (fetchCredentials.isPresent()) {
             logger.info("Credential found -> {}", id);
             return new CredentialsOps(fetchCredentials.get(), new CredentialsRest()).entityToRest();
 
-        }else{
-            throw new ResourceNotFoundException("Credentials","id",Long.toString(id));
+        } else {
+            throw new ResourceNotFoundException("Credentials", "id", Long.toString(id));
 
         }
     }
@@ -63,23 +63,23 @@ public class CredentialsServiceImpl implements CredentialsService {
     @Override
     public void deleteById(Long id) {
 
-        customRepository.deleteById(Credentials.class,id,"id");
+        customRepository.deleteById(Credentials.class, id, "id");
 
-        logger.info("Credential deleted with id ->{}",id);
+        logger.info("Credential deleted with id ->{}", id);
     }
 
     @Override
     public void update(Long id, CredentialsRest credentialsRest) {
         Optional<Credentials> fetchCredential = customRepository.findByColumn("id", id, Credentials.class);
-        if(fetchCredential.isEmpty()){
-            throw new ResourceNotFoundException("Credentials","id",id.toString());
-        }else{
+        if (fetchCredential.isEmpty()) {
+            throw new ResourceNotFoundException("Credentials", "id", id.toString());
+        } else {
             Credentials credential = fetchCredential.get();
             credential = new CredentialsOps(credential, credentialsRest).restToEntity();
 
             customRepository.save(credential);
 
-            logger.info("Updated credentials with id -> {}",credentialsRest.getId());
+            logger.info("Updated credentials with id -> {}", credentialsRest.getId());
         }
 
     }

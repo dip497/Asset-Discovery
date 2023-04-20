@@ -6,14 +6,13 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Credentials} entity
  */
 public class CredentialsRest extends SingleBaseRest implements Serializable {
-    private  String username;
-    private  String password;
+    private String username;
+    private String password;
     private String description;
     @Enumerated(value = EnumType.STRING)
     private CredentialType credentialType;
@@ -23,12 +22,12 @@ public class CredentialsRest extends SingleBaseRest implements Serializable {
         return username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
@@ -53,9 +52,12 @@ public class CredentialsRest extends SingleBaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
 
         CredentialsRest that = (CredentialsRest) o;
 
@@ -63,7 +65,9 @@ public class CredentialsRest extends SingleBaseRest implements Serializable {
             return false;
         if (getPassword() != null ? !getPassword().equals(that.getPassword()) : that.getPassword() != null)
             return false;
-        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
+        if (getDescription() != null ?
+                !getDescription().equals(that.getDescription()) :
+                that.getDescription() != null)
             return false;
         return getCredentialType() == that.getCredentialType();
     }
@@ -80,11 +84,8 @@ public class CredentialsRest extends SingleBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "CredentialsRest{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", description='" + description + '\'' +
-                ", credentialType=" + credentialType +
-                "} " + super.toString();
+        return "CredentialsRest{" + "username='" + username + '\'' + ", password='" + password + '\''
+                + ", description='" + description + '\'' + ", credentialType=" + credentialType + "} "
+                + super.toString();
     }
 }

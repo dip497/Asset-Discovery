@@ -26,7 +26,7 @@ public class UserServiceImpl implements UsersService {
     @Override
     public Boolean checkForUserInDB(String email) {
 
-        Optional<Users> users = customRepository.findByColumn("email",email, Users.class);
+        Optional<Users> users = customRepository.findByColumn("email", email, Users.class);
 
         return users.isPresent();
 

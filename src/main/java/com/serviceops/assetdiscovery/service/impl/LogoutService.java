@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
-import com.serviceops.assetdiscovery.entity.enums.TokenType;
 import com.serviceops.assetdiscovery.entity.Tokens;
+import com.serviceops.assetdiscovery.entity.enums.TokenType;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,13 +18,11 @@ public class LogoutService implements LogoutHandler {
     }
 
     @Override
-    public void logout(HttpServletRequest request,
-                       HttpServletResponse response,
-                       Authentication authentication
-    ) {
+    public void logout(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        if(authHeader == null || !authHeader.startsWith("Bearer")){
+        if (authHeader == null || !authHeader.startsWith("Bearer")) {
             return;
         }
         jwt = authHeader.substring(7);

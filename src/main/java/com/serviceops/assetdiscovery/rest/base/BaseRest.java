@@ -7,7 +7,7 @@ import java.util.Objects;
  * A DTO for the {@link com.serviceops.assetdiscovery.entity.base.Base} entity
  */
 public class BaseRest implements Serializable {
-    private  Long id;
+    private Long id;
 
     public Long getId() {
         return id;
@@ -19,8 +19,10 @@ public class BaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         BaseRest entity = (BaseRest) o;
         return Objects.equals(this.id, entity.id);
     }
@@ -32,8 +34,6 @@ public class BaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "BaseRest{" +
-                "id=" + id +
-                '}';
+        return "BaseRest{" + "id=" + id + '}';
     }
 }

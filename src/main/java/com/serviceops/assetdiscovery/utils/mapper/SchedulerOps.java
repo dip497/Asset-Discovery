@@ -7,10 +7,11 @@ import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 public class SchedulerOps extends SingleBaseOps<Schedulers, SchedulerRest> {
     private final Schedulers schedulers;
     private final SchedulerRest schedulerRest;
+
     public SchedulerOps(Schedulers schedulers, SchedulerRest schedulerRest) {
         super(schedulers, schedulerRest);
         this.schedulers = schedulers;
-        this.schedulerRest =schedulerRest;
+        this.schedulerRest = schedulerRest;
     }
 
     public SchedulerRest entityToRest() {

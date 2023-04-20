@@ -11,29 +11,38 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 @Configuration
 public class ApplicationConfig {
     private final CustomRepository repository;
-    private final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
 
     public ApplicationConfig(CustomRepository repository) {
         this.repository = repository;
     }
-
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> repository.findByColumn("email",username,Users.class).orElseThrow(()->{
-            logger.error("user not found with email -> {}" , username);
-            return new ResourceNotFoundException("User","email",username);
-        });
+        return username -> {
+            Optional<Users> users = repository.findByColumn("email", username, Users.class);
+            if(users.isEmpty()){
+                logger.error("user not found with email -> {}", username);
+                throw new ResourceNotFoundException("user","email",username);
+            }else{
+                return users.get();
+            }
+        };
     }
 
+
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
@@ -41,11 +50,13 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
+            throws Exception {
         return configuration.getAuthenticationManager();
     }
+
     @Bean
-    public  PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

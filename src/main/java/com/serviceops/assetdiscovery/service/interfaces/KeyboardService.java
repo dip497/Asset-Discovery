@@ -11,7 +11,7 @@ public interface KeyboardService {
 
     List<KeyboardRest> findAllByRefId(Long refId);
 
-    void deleteByRefId(Long refId,Long id);
+    void deleteByRefId(Long refId, Long id);
 
     void update(Long refId, Long id, KeyboardRest keyboardRest);
 }

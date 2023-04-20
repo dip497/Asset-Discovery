@@ -2,7 +2,11 @@ package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import com.serviceops.assetdiscovery.entity.enums.Role;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +25,7 @@ public class Users extends SingleBase implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy ="user")
+    @OneToMany(mappedBy = "user")
     private List<Tokens> tokens;
 
 
@@ -51,9 +55,6 @@ public class Users extends SingleBase implements UserDetails {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -62,6 +63,10 @@ public class Users extends SingleBase implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -91,15 +96,22 @@ public class Users extends SingleBase implements UserDetails {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
 
         Users users = (Users) o;
 
-        if (getName() != null ? !getName().equals(users.getName()) : users.getName() != null) return false;
-        if (getEmail() != null ? !getEmail().equals(users.getEmail()) : users.getEmail() != null) return false;
-        return getPassword() != null ? getPassword().equals(users.getPassword()) : users.getPassword() == null;
+        if (getName() != null ? !getName().equals(users.getName()) : users.getName() != null)
+            return false;
+        if (getEmail() != null ? !getEmail().equals(users.getEmail()) : users.getEmail() != null)
+            return false;
+        return getPassword() != null ?
+                getPassword().equals(users.getPassword()) :
+                users.getPassword() == null;
     }
 
     @Override
@@ -113,10 +125,7 @@ public class Users extends SingleBase implements UserDetails {
 
     @Override
     public String toString() {
-        return "Users{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                "} " + super.toString();
+        return "Users{" + "name='" + name + '\'' + ", email='" + email + '\'' + ", password='" + password
+                + '\'' + "} " + super.toString();
     }
 }

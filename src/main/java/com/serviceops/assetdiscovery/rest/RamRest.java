@@ -4,17 +4,16 @@ import com.serviceops.assetdiscovery.entity.Ram;
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Rest for the {@link Ram} entity
  */
 public class RamRest extends AssetBaseRest implements Serializable {
-    private  Long size;
-    private  String memoryType;
-    private  Long width;
-    private  Long clockSpeed;
-    private  String bankLocater;
+    private Long size;
+    private String memoryType;
+    private Long width;
+    private Long clockSpeed;
+    private String bankLocater;
 
     public Long getSize() {
         return size;
@@ -58,12 +57,8 @@ public class RamRest extends AssetBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "RamRest{" +
-                "size=" + size +
-                ", memoryType='" + memoryType + '\'' +
-                ", width=" + width +
-                ", clockSpeed=" + clockSpeed +
-                ", bankLocater='" + bankLocater + '\'' +
-                "} " + super.toString();
+        return "RamRest{" + "size=" + size + ", memoryType='" + memoryType + '\'' + ", width=" + width
+                + ", clockSpeed=" + clockSpeed + ", bankLocater='" + bankLocater + '\'' + "} "
+                + super.toString();
     }
 }

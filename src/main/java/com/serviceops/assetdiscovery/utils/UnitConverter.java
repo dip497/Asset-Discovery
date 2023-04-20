@@ -1,11 +1,12 @@
 package com.serviceops.assetdiscovery.utils;
 
 public class UnitConverter {
-    private UnitConverter(){
+    private UnitConverter() {
 
     }
-    public static Long convertToBytes(String data){
-        if(data!=null) {
+
+    public static Long convertToBytes(String data) {
+        if (data != null) {
             String toConvert = data.replaceAll("[^0-9]", "");
             if (!toConvert.trim().isEmpty()) {
                 if (data.contains("M")) {
@@ -17,12 +18,7 @@ public class UnitConverter {
                 }
             }
         }
-        return 0l;
+        return 0L;
     }
-//    public static Long convertToHertz(String data){
-//        String toConvert = data.replaceAll("[^0-9]", "");
-//        if(!toConvert.trim().isEmpty()){
-//            return Long.parseLong(toConvert)
-//        }
-//    }
+
 }

@@ -7,7 +7,9 @@ import java.util.List;
 public interface SchedulersService {
 
     void save(Long networkScanId, SchedulerRest schedulerRest);
-    void update(Long networkScanId,Long id,SchedulerRest schedulerRest);
+
+    void update(Long networkScanId, Long id, SchedulerRest schedulerRest);
+
     SchedulerRest findByNetworkScanId(Long networkScanId);
 
     List<SchedulerRest> findAll();

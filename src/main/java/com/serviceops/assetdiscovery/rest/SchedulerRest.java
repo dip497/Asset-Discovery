@@ -9,10 +9,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 import java.io.Serializable;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
 
 
 /**
@@ -97,21 +93,33 @@ public class SchedulerRest extends SingleBaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
 
         SchedulerRest that = (SchedulerRest) o;
 
-        if (getNetworkScanRestId() != null ? !getNetworkScanRestId().equals(that.getNetworkScanRestId()) : that.getNetworkScanRestId() != null)
+        if (getNetworkScanRestId() != null ?
+                !getNetworkScanRestId().equals(that.getNetworkScanRestId()) :
+                that.getNetworkScanRestId() != null)
             return false;
-        if (getScanType() != that.getScanType()) return false;
-        if (getStartTime() != null ? !getStartTime().equals(that.getStartTime()) : that.getStartTime() != null)
+        if (getScanType() != that.getScanType())
             return false;
-        if (getTime() != null ? !getTime().equals(that.getTime()) : that.getTime() != null) return false;
-        if (getDate() != null ? !getDate().equals(that.getDate()) : that.getDate() != null) return false;
-        if (getWeek() != that.getWeek()) return false;
-        if (getMonth() != that.getMonth()) return false;
+        if (getStartTime() != null ?
+                !getStartTime().equals(that.getStartTime()) :
+                that.getStartTime() != null)
+            return false;
+        if (getTime() != null ? !getTime().equals(that.getTime()) : that.getTime() != null)
+            return false;
+        if (getDate() != null ? !getDate().equals(that.getDate()) : that.getDate() != null)
+            return false;
+        if (getWeek() != that.getWeek())
+            return false;
+        if (getMonth() != that.getMonth())
+            return false;
         return getInterval() != null ? getInterval().equals(that.getInterval()) : that.getInterval() == null;
     }
 
@@ -131,15 +139,8 @@ public class SchedulerRest extends SingleBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "SchedulerRest{" +
-                "networkScanRestId=" + networkScanRestId +
-                ", scanType=" + scanType +
-                ", startTime=" + startTime +
-                ", time=" + time +
-                ", date=" + date +
-                ", week=" + week +
-                ", month=" + month +
-                ", interval=" + interval +
-                "} " + super.toString();
+        return "SchedulerRest{" + "networkScanRestId=" + networkScanRestId + ", scanType=" + scanType
+                + ", startTime=" + startTime + ", time=" + time + ", date=" + date + ", week=" + week
+                + ", month=" + month + ", interval=" + interval + "} " + super.toString();
     }
 }

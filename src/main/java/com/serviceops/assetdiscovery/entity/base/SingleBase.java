@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+
 @MappedSuperclass
 public class SingleBase extends Base {
     private String createdBy;
@@ -13,6 +14,7 @@ public class SingleBase extends Base {
     private String updatedBy;
     @UpdateTimestamp
     private Timestamp updatedTime;
+
     public String getCreatedBy() {
         return createdBy;
     }
@@ -47,18 +49,28 @@ public class SingleBase extends Base {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         SingleBase that = (SingleBase) o;
 
-        if (getCreatedBy() != null ? !getCreatedBy().equals(that.getCreatedBy()) : that.getCreatedBy() != null)
+        if (getCreatedBy() != null ?
+                !getCreatedBy().equals(that.getCreatedBy()) :
+                that.getCreatedBy() != null)
             return false;
-        if (getCreatedTime() != null ? !getCreatedTime().equals(that.getCreatedTime()) : that.getCreatedTime() != null)
+        if (getCreatedTime() != null ?
+                !getCreatedTime().equals(that.getCreatedTime()) :
+                that.getCreatedTime() != null)
             return false;
-        if (getUpdatedBy() != null ? !getUpdatedBy().equals(that.getUpdatedBy()) : that.getUpdatedBy() != null)
+        if (getUpdatedBy() != null ?
+                !getUpdatedBy().equals(that.getUpdatedBy()) :
+                that.getUpdatedBy() != null)
             return false;
-        return getUpdatedTime() != null ? getUpdatedTime().equals(that.getUpdatedTime()) : that.getUpdatedTime() == null;
+        return getUpdatedTime() != null ?
+                getUpdatedTime().equals(that.getUpdatedTime()) :
+                that.getUpdatedTime() == null;
     }
 
     @Override
@@ -72,11 +84,8 @@ public class SingleBase extends Base {
 
     @Override
     public String toString() {
-        return "SingleBase{" +
-                "createdBy='" + createdBy + '\'' +
-                ", createdTime=" + createdTime +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", updatedTime=" + updatedTime +
-                '}' + super.toString();
+        return "SingleBase{" + "createdBy='" + createdBy + '\'' + ", createdTime=" + createdTime
+                + ", updatedBy='" + updatedBy + '\'' + ", updatedTime=" + updatedTime + '}'
+                + super.toString();
     }
 }

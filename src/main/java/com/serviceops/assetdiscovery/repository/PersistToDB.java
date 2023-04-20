@@ -25,7 +25,12 @@ public class PersistToDB {
     private final ProcessorService processorService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public PersistToDB(AssetService assetService, MotherBoardService motherBoardService, PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService, KeyboardService keyboardService, BiosService biosService, RamService ramService, MonitorService monitorService, OsService osService, NetworkAdapterService networkAdapterService, PointingDeviceService pointingDeviceService, LogicalDiskService logicalDiskService, ProcessorService processorService) {
+    public PersistToDB(AssetService assetService, MotherBoardService motherBoardService,
+            PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService,
+            KeyboardService keyboardService, BiosService biosService, RamService ramService,
+            MonitorService monitorService, OsService osService, NetworkAdapterService networkAdapterService,
+            PointingDeviceService pointingDeviceService, LogicalDiskService logicalDiskService,
+            ProcessorService processorService) {
         this.assetService = assetService;
         this.motherBoardService = motherBoardService;
         this.physicalDiskService = physicalDiskService;
@@ -59,7 +64,7 @@ public class PersistToDB {
             pointingDeviceService.save(assetRest.getId());
             processorService.save(assetRest.getId());
             logger.info("saved to db -> {}", assetRest.getIpAddress());
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("fail to save");
             throw new AssetDiscoveryApiException("Error while Persisting asset");
         }

@@ -11,17 +11,17 @@ public class RamOps extends AssetBaseOps<Ram, RamRest> {
     public RamOps(Ram ram, RamRest ramRest) {
         super(ram, ramRest);
         this.ram = ram;
-        this.ramRest  = ramRest;
+        this.ramRest = ramRest;
     }
 
     public Ram restToEntity() {
-         super.restToEntity(ramRest);
-         ram.setSize(ramRest.getSize());
-         ram.setMemoryType(ramRest.getMemoryType());
-         ram.setWidth(ramRest.getWidth());
-         ram.setClockSpeed(ramRest.getClockSpeed());
-         ram.setBankLocater(ramRest.getBankLocater());
-         return ram;
+        super.restToEntity(ramRest);
+        ram.setSize(ramRest.getSize());
+        ram.setMemoryType(ramRest.getMemoryType());
+        ram.setWidth(ramRest.getWidth());
+        ram.setClockSpeed(ramRest.getClockSpeed());
+        ram.setBankLocater(ramRest.getBankLocater());
+        return ram;
 
     }
 

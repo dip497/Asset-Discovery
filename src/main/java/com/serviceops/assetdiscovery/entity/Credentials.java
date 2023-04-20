@@ -48,9 +48,12 @@ public class Credentials extends SingleBase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
 
         Credentials that = (Credentials) o;
 
@@ -58,7 +61,9 @@ public class Credentials extends SingleBase {
             return false;
         if (getPassword() != null ? !getPassword().equals(that.getPassword()) : that.getPassword() != null)
             return false;
-        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
+        if (getDescription() != null ?
+                !getDescription().equals(that.getDescription()) :
+                that.getDescription() != null)
             return false;
         return getCredentialType() == that.getCredentialType();
     }
@@ -75,11 +80,8 @@ public class Credentials extends SingleBase {
 
     @Override
     public String toString() {
-        return "Credentials{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", description='" + description + '\'' +
-                ", credentialType=" + credentialType +
-                "} " + super.toString();
+        return "Credentials{" + "username='" + username + '\'' + ", password='" + password + '\''
+                + ", description='" + description + '\'' + ", credentialType=" + credentialType + "} "
+                + super.toString();
     }
 }

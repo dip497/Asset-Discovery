@@ -54,19 +54,30 @@ public class Ram extends AssetBase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
 
         Ram ram = (Ram) o;
 
-        if (getSize() != null ? !getSize().equals(ram.getSize()) : ram.getSize() != null) return false;
-        if (getMemoryType() != null ? !getMemoryType().equals(ram.getMemoryType()) : ram.getMemoryType() != null)
+        if (getSize() != null ? !getSize().equals(ram.getSize()) : ram.getSize() != null)
             return false;
-        if (getWidth() != null ? !getWidth().equals(ram.getWidth()) : ram.getWidth() != null) return false;
-        if (getClockSpeed() != null ? !getClockSpeed().equals(ram.getClockSpeed()) : ram.getClockSpeed() != null)
+        if (getMemoryType() != null ?
+                !getMemoryType().equals(ram.getMemoryType()) :
+                ram.getMemoryType() != null)
             return false;
-        return getBankLocater() != null ? getBankLocater().equals(ram.getBankLocater()) : ram.getBankLocater() == null;
+        if (getWidth() != null ? !getWidth().equals(ram.getWidth()) : ram.getWidth() != null)
+            return false;
+        if (getClockSpeed() != null ?
+                !getClockSpeed().equals(ram.getClockSpeed()) :
+                ram.getClockSpeed() != null)
+            return false;
+        return getBankLocater() != null ?
+                getBankLocater().equals(ram.getBankLocater()) :
+                ram.getBankLocater() == null;
     }
 
     @Override
@@ -82,12 +93,8 @@ public class Ram extends AssetBase {
 
     @Override
     public String toString() {
-        return "Ram{" +
-                "size=" + size +
-                ", memoryType='" + memoryType + '\'' +
-                ", width=" + width +
-                ", clockSpeed=" + clockSpeed +
-                ", bankLocater='" + bankLocater + '\'' +
-                "} " + super.toString();
+        return "Ram{" + "size=" + size + ", memoryType='" + memoryType + '\'' + ", width=" + width
+                + ", clockSpeed=" + clockSpeed + ", bankLocater='" + bankLocater + '\'' + "} "
+                + super.toString();
     }
 }
