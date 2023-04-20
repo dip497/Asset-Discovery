@@ -97,9 +97,9 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         try {
             physicalDisk.setPartition(customRepository.findAllByColumnName(LogicalDisk.class, "refId", refId).size());
             physicalDisk.setSize(convertToBaseUnit(getParseResult().get(0)));
-            physicalDisk.setName(getParseResult().get(1));
+            physicalDisk.setName(formatData(getParseResult().get(1), "diskName"));
             physicalDisk.setSerialNumber(formatData(getParseResult().get(2), "serial: "));
-            physicalDisk.setInterfaceType(getParseResult().get(3));
+            physicalDisk.setInterfaceType(formatData(getParseResult().get(3), "ID_BUS="));
             physicalDisk.setMediaType(formatData(getParseResult().get(4), "DEVTYPE="));
             physicalDisk.setManufacturer(formatData(getParseResult().get(5), "vendor:"));
             physicalDisk.setDescription(formatData(getParseResult().get(6), "description:"));
@@ -116,6 +116,8 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
         if (data.contains(keyword)) {
             return (data.substring(data.indexOf(keyword) + keyword.length())).trim();
+        } else if (data.contains("bash: blkid: command not found")) {
+            return "";
         } else {
             return null;
         }
