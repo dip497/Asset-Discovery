@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Asset;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.AllAssetRest;
 import com.serviceops.assetdiscovery.rest.AssetRest;
@@ -92,10 +92,10 @@ public class AssetServiceImpl implements AssetService {
             return assetOps.entityToRest();
         }
 
-        // if optionalAsset is not present then throw ResourceNotFoundException
+        // if optionalAsset is not present then throw ComponentNotFoundException
         else {
             logger.error("Asset not found by IP ->{}", ipAddress);
-            throw new ResourceNotFoundException("AssetRest", "id", 0);
+            throw new ComponentNotFoundException("AssetRest", "id", 0);
         }
 
     }
@@ -114,10 +114,10 @@ public class AssetServiceImpl implements AssetService {
             return assetOps.entityToRest();
         }
 
-        // If optionalAsset is not present then throw ResourceNotFoundException
+        // If optionalAsset is not present then throw ComponentNotFoundException
         else {
             logger.error("Asset not found by ID ->{}", id);
-            throw new ResourceNotFoundException("AssetRest", "id", id);
+            throw new ComponentNotFoundException("AssetRest", "id", id);
         }
 
     }
@@ -171,7 +171,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public void deleteById(long id) {
 
-        // If Asset is present then move further to delete the Asset or else throw ResourceNotFoundException
+        // If Asset is present then move further to delete the Asset or else throw ComponentNotFoundException
         findById(id);
 
         // Deleting the Asset at given ID
@@ -204,10 +204,10 @@ public class AssetServiceImpl implements AssetService {
 
         }
 
-        // If Asset is not present then throw ResourceNotFoundException
+        // If Asset is not present then throw ComponentNotFoundException
         else {
             logger.error("Asset not found by ID ->{}", id);
-            throw new ResourceNotFoundException("AssetRest", "id", id);
+            throw new ComponentNotFoundException("AssetRest", "id", id);
         }
 
     }

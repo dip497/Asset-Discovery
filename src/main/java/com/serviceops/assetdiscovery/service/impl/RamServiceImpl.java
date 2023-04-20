@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Ram;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.RamRest;
 import com.serviceops.assetdiscovery.service.interfaces.RamService;
@@ -78,7 +78,7 @@ public class RamServiceImpl implements RamService {
             logger.info("Ram fetched with Asset Id ->{}", refId);
             return ramOps.entityToRest();
         } else {
-            throw new ResourceNotFoundException("Ram", "refId",refId);
+            throw new ComponentNotFoundException("Ram", "refId", refId);
         }
 
     }
@@ -96,41 +96,25 @@ public class RamServiceImpl implements RamService {
 
     @Override
     public void deleteById(long refId, long id) {
-        List<Ram> ramList = customRepository.findAllByColumnName(Ram.class, "refId", refId);
-        if (ramList.isEmpty()) {
-            throw new ResourceNotFoundException("Ram", "refId", refId);
-        } else {
-            Optional<Ram> fetchRam = customRepository.findByColumn("id", id, Ram.class);
-            if (fetchRam.isPresent()) {
-                customRepository.deleteById(Ram.class, id, "id");
-                logger.info("Ram deleted of  Id ->{}", id);
-            } else {
-                throw new ResourceNotFoundException("Ram", "Id", id);
-
-            }
-        }
+        customRepository.deleteById(Ram.class, id, "id");
+        logger.info("Ram deleted of  Id ->{}", id);
     }
 
     @Override
-    public void update(long refId, long id, RamRest ramRest) {
-       // HashMap<long, long> fields = new HashMap<>();
-       // fields.put("refId",refId);
-       // customRepository.findByColumns(,Ram.class);
-        List<Ram> ramList = customRepository.findAllByColumnName(Ram.class, "refId", refId);
+    public RamRest update(long refId, long id, RamRest ramRest) {
+        HashMap<String, Long> fields = new HashMap<>();
+        fields.put("refId", refId);
+        fields.put("id", id);
+        List<Ram> ramList = customRepository.findByColumns(fields, Ram.class);
         if (ramList.isEmpty()) {
             logger.error("Ram not found with Asset Id -> {} ", refId);
-            throw new ResourceNotFoundException("Ram", "refId", refId);
+            throw new ComponentNotFoundException("Ram", "refId", refId);
         } else {
-            Optional<Ram> fetchRam = customRepository.findByColumn("id", id, Ram.class);
-            if (fetchRam.isEmpty()) {
-                logger.error("Unable to find ram with id -> {}", id);
-                throw new ResourceNotFoundException("Ram", "id", id);
-            } else {
-                Ram ram = fetchRam.get();
-                RamOps ramOps = new RamOps(ram, ramRest);
-                customRepository.save(ramOps.restToEntity());
-                logger.info("Ram Updated with Asset Id ->{}", ram.getRefId());
-            }
+            Ram ram = ramList.get(0);
+            RamOps ramOps = new RamOps(ram, ramRest);
+            customRepository.save(ramOps.restToEntity());
+            logger.info("Ram Updated with Asset Id ->{}", ram.getRefId());
+            return ramOps.entityToRest();
         }
     }
 

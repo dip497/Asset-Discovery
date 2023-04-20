@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.MotherBoard;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 import com.serviceops.assetdiscovery.service.interfaces.MotherBoardService;
@@ -80,7 +80,7 @@ public class MotherBoardServiceImpl implements MotherBoardService {
                 customRepository.findByColumn("refId", refId, MotherBoard.class);
         if (fetchMotherboard.isEmpty()) {
             logger.error("Motherboard not found with Asset Id -> {}", refId);
-            throw new ResourceNotFoundException("MotherBoard", "refId", refId);
+            throw new ComponentNotFoundException("MotherBoard", "refId", refId);
         } else {
 
             MotherBoard motherBoard = fetchMotherboard.get();

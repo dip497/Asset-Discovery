@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Processor;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.ProcessorRest;
 import com.serviceops.assetdiscovery.service.interfaces.ProcessorService;
@@ -130,7 +130,7 @@ public class ProcessorServiceImpl implements ProcessorService {
             return processorRest;
         } else {
             logger.error("Processor not found with id -->{}", id);
-            throw new ResourceNotFoundException("Processor", "refId", id);
+            throw new ComponentNotFoundException("Processor", "refId", id);
         }
 
     }

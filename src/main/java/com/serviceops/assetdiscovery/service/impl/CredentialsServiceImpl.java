@@ -2,7 +2,7 @@ package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Credentials;
 import com.serviceops.assetdiscovery.exception.ResourceAlreadyExistsException;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.service.interfaces.CredentialsService;
@@ -57,7 +57,7 @@ public class CredentialsServiceImpl implements CredentialsService {
             return new CredentialsOps(fetchCredentials.get(), new CredentialsRest()).entityToRest();
 
         } else {
-            throw new ResourceNotFoundException("Credentials", "id", id);
+            throw new ComponentNotFoundException("Credentials", "id", id);
 
         }
     }
@@ -74,7 +74,7 @@ public class CredentialsServiceImpl implements CredentialsService {
     public void update(Long id, CredentialsRest credentialsRest) {
         Optional<Credentials> fetchCredential = customRepository.findByColumn("id", id, Credentials.class);
         if (fetchCredential.isEmpty()) {
-            throw new ResourceNotFoundException("Credentials", "id", id);
+            throw new ComponentNotFoundException("Credentials", "id", id);
         } else {
             Credentials credential = fetchCredential.get();
             credentialsRest.setPassword(PasswordEncoderSSH.encryptPassword(credentialsRest.getPassword()));

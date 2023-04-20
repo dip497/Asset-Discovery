@@ -36,9 +36,9 @@ public class RamController {
     }
 
     @PutMapping(value = "/{refId}/ram/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateRam(@PathVariable("refId") Long refId, @PathVariable("id") Long id,
+    public RamRest updateRam(@PathVariable("refId") Long refId, @PathVariable("id") Long id,
             @RequestBody RamRest ramRest) {
         logger.debug("Updating Ram with  id -> {}", id);
-        ramService.update(refId, id, ramRest);
+        return ramService.update(refId, id, ramRest);
     }
 }

@@ -87,7 +87,7 @@ public class OsServiceImpl implements OsService {
             return osRests;
         }
 
-        // If optionalOS is not present then throw ResourceNotFoundException
+        // If optionalOS is not present then throw ComponentNotFoundException
         else {
             logger.error("OS not found by IP ->{}", refId);
             return new ArrayList<>();
@@ -119,7 +119,7 @@ public class OsServiceImpl implements OsService {
             logger.info("OS Updated with Asset Id ->{}", osRest.getRefId());
         }
 
-        // If OS is not present then throw ResourceNotFoundException
+        // If OS is not present then throw ComponentNotFoundException
         else {
             logger.error("OS not found for Asset with ID ->{}", refId);
         }

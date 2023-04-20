@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.NetworkAdapter;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.NetworkAdapterRest;
 import com.serviceops.assetdiscovery.service.interfaces.NetworkAdapterService;
@@ -180,7 +180,7 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
             customRepository.deleteById(NetworkAdapter.class, id, "id");
         } else {
             logger.error("Deleting Network Adapter with Asset ->{} and id --> {} not exist", refId,id);
-            throw new ResourceNotFoundException("Network adapter","id",id);
+            throw new ComponentNotFoundException("Network adapter","id",id);
         }
     }
 
@@ -196,7 +196,7 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
 
         if (networkAdapters.isEmpty()) {
             logger.info("Could not found NetworkAdapter with id --> {} and refId -> {} ", id, refId);
-            throw new ResourceNotFoundException("Network adapter","id",id);
+            throw new ComponentNotFoundException("Network adapter","id",id);
         } else {
             NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps(networkAdapters.get(0), networkAdapterRest);
             logger.info("NetworkAdapter Updated with Asset Id ->{}", networkAdapterRest.getRefId());
