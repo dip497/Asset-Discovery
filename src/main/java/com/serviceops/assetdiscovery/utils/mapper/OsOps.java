@@ -15,7 +15,7 @@ public class OsOps extends AssetBaseOps<OS, OSRest> {
         this.osRest = osRest;
     }
 
-    public OS restToEntity(){
+    public OS restToEntity() {
         super.restToEntity(osRest);
         os.setOsName(osRest.getOsName());
         os.setOsVersion(osRest.getOsVersion());
@@ -25,7 +25,7 @@ public class OsOps extends AssetBaseOps<OS, OSRest> {
         return os;
     }
 
-    public OSRest entityToRest(){
+    public OSRest entityToRest() {
         super.entityToRest(os);
         osRest.setOsName(os.getOsName());
         osRest.setOsVersion(os.getOsVersion());

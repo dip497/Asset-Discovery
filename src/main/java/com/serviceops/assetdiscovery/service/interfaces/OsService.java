@@ -2,7 +2,6 @@ package com.serviceops.assetdiscovery.service.interfaces;
 
 import com.serviceops.assetdiscovery.rest.OSRest;
 
-import java.text.ParseException;
 import java.util.List;
 
 public interface OsService {
@@ -13,6 +12,6 @@ public interface OsService {
 
     void deleteByRefId(Long refId);
 
-    void update(Long refId,OSRest osRest);
+    void update(Long refId, OSRest osRest);
 
 }
