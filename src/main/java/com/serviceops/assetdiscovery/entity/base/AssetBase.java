@@ -6,15 +6,15 @@ import java.util.Objects;
 
 @MappedSuperclass
 public class AssetBase extends SingleBase {
-    private Long refId;
+    private long refId;
     private String serialNumber;
     private String manufacturer;
 
-    public Long getRefId() {
+    public long getRefId() {
         return refId;
     }
 
-    public void setRefId(Long refId) {
+    public void setRefId(long refId) {
         this.refId = refId;
     }
 

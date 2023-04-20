@@ -9,17 +9,17 @@ import java.io.Serializable;
  * A Rest for the {@link Ram} entity
  */
 public class RamRest extends AssetBaseRest implements Serializable {
-    private Long size;
+    private long size;
     private String memoryType;
-    private Long width;
-    private Long clockSpeed;
+    private long width;
+    private long clockSpeed;
     private String bankLocater;
 
-    public Long getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(Long size) {
+    public void setSize(long size) {
         this.size = size;
     }
 
@@ -31,19 +31,19 @@ public class RamRest extends AssetBaseRest implements Serializable {
         this.memoryType = memoryType;
     }
 
-    public Long getWidth() {
+    public long getWidth() {
         return width;
     }
 
-    public void setWidth(Long width) {
+    public void setWidth(long width) {
         this.width = width;
     }
 
-    public Long getClockSpeed() {
+    public long getClockSpeed() {
         return clockSpeed;
     }
 
-    public void setClockSpeed(Long clockSpeed) {
+    public void setClockSpeed(long clockSpeed) {
         this.clockSpeed = clockSpeed;
     }
 

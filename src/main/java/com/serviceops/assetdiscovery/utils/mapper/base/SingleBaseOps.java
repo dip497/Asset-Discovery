@@ -16,19 +16,19 @@ public class SingleBaseOps<T extends SingleBase, S extends SingleBaseRest> exten
     @Override
     public S entityToRest(T singleBase) {
         super.entityToRest(singleBase);
-        singleBaseRest.setCreatedBy(singleBase.getCreatedBy());
+        singleBaseRest.setCreatedById(singleBase.getCreatedById());
         singleBaseRest.setCreatedTime(singleBase.getCreatedTime());
         singleBaseRest.setUpdatedTime(singleBase.getUpdatedTime());
-        singleBaseRest.setUpdatedBy(singleBase.getUpdatedBy());
+        singleBaseRest.setUpdateById(singleBase.getUpdatedById());
         return singleBaseRest;
     }
 
     @Override
     public T restToEntity(S singleBaseRest) {
         super.restToEntity(singleBaseRest);
-        singleBase.setCreatedBy(singleBaseRest.getCreatedBy());
+        singleBase.setCreatedById(singleBaseRest.getCreatedById());
         singleBase.setCreatedTime(singleBaseRest.getCreatedTime());
-        singleBase.setUpdatedBy(singleBaseRest.getUpdatedBy());
+        singleBase.setUpdatedById(singleBaseRest.getUpdateById());
         singleBase.setUpdatedTime(singleBaseRest.getUpdatedTime());
         return singleBase;
     }

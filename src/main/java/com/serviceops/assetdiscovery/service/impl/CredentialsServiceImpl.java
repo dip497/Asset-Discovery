@@ -29,7 +29,7 @@ public class CredentialsServiceImpl implements CredentialsService {
         if (customRepository.findByColumn("id", credentialsRest.getId(), Credentials.class).isPresent()) {
             logger.error("Credentials already exists with id -> {} ", credentialsRest.getId());
             throw new ResourceAlreadyExistsException(this.getClass().getSimpleName(), "id",
-                    credentialsRest.getId().toString());
+                    String.valueOf(credentialsRest.getId()));
         } else {
             Credentials credential = new Credentials();
             credentialsRest.setPassword(PasswordEncoderSSH.encryptPassword(credentialsRest.getPassword()));

@@ -9,13 +9,13 @@ import jakarta.persistence.MappedSuperclass;
 public class Base {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -28,12 +28,12 @@ public class Base {
 
         Base base = (Base) o;
 
-        return getId() != null ? getId().equals(base.getId()) : base.getId() == null;
+        return getId() == base.getId();
     }
 
     @Override
     public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
+        return (int) (getId() ^ (getId() >>> 32));
     }
 
     @Override

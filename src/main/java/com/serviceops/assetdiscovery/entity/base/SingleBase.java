@@ -8,19 +8,19 @@ import java.sql.Timestamp;
 
 @MappedSuperclass
 public class SingleBase extends Base {
-    private String createdBy;
+    private long createdById;
     @CreationTimestamp
     private Timestamp createdTime;
-    private String updatedBy;
+    private long updatedById;
     @UpdateTimestamp
     private Timestamp updatedTime;
 
-    public String getCreatedBy() {
-        return createdBy;
+    public long getCreatedById() {
+        return createdById;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setCreatedById(long createdById) {
+        this.createdById = createdById;
     }
 
     public Timestamp getCreatedTime() {
@@ -31,12 +31,12 @@ public class SingleBase extends Base {
         this.createdTime = createdTime;
     }
 
-    public String getUpdatedBy() {
-        return updatedBy;
+    public long getUpdatedById() {
+        return updatedById;
     }
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setUpdatedById(long updatedById) {
+        this.updatedById = updatedById;
     }
 
     public Timestamp getUpdatedTime() {
@@ -53,20 +53,18 @@ public class SingleBase extends Base {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
+        if (!super.equals(o))
+            return false;
 
         SingleBase that = (SingleBase) o;
 
-        if (getCreatedBy() != null ?
-                !getCreatedBy().equals(that.getCreatedBy()) :
-                that.getCreatedBy() != null)
+        if (getCreatedById() != that.getCreatedById())
+            return false;
+        if (getUpdatedById() != that.getUpdatedById())
             return false;
         if (getCreatedTime() != null ?
                 !getCreatedTime().equals(that.getCreatedTime()) :
                 that.getCreatedTime() != null)
-            return false;
-        if (getUpdatedBy() != null ?
-                !getUpdatedBy().equals(that.getUpdatedBy()) :
-                that.getUpdatedBy() != null)
             return false;
         return getUpdatedTime() != null ?
                 getUpdatedTime().equals(that.getUpdatedTime()) :
@@ -75,17 +73,17 @@ public class SingleBase extends Base {
 
     @Override
     public int hashCode() {
-        int result = getCreatedBy() != null ? getCreatedBy().hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (int) (getCreatedById() ^ (getCreatedById() >>> 32));
         result = 31 * result + (getCreatedTime() != null ? getCreatedTime().hashCode() : 0);
-        result = 31 * result + (getUpdatedBy() != null ? getUpdatedBy().hashCode() : 0);
+        result = 31 * result + (int) (getUpdatedById() ^ (getUpdatedById() >>> 32));
         result = 31 * result + (getUpdatedTime() != null ? getUpdatedTime().hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "SingleBase{" + "createdBy='" + createdBy + '\'' + ", createdTime=" + createdTime
-                + ", updatedBy='" + updatedBy + '\'' + ", updatedTime=" + updatedTime + '}'
-                + super.toString();
+        return "SingleBase{" + "createdById=" + createdById + ", createdTime=" + createdTime
+                + ", updatedById=" + updatedById + ", updatedTime=" + updatedTime + "} " + super.toString();
     }
 }

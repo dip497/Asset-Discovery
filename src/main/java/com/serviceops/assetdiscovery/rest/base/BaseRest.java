@@ -7,13 +7,13 @@ import java.util.Objects;
  * A DTO for the {@link com.serviceops.assetdiscovery.entity.base.Base} entity
  */
 public class BaseRest implements Serializable {
-    private Long id;
+    private long id;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -23,13 +23,15 @@ public class BaseRest implements Serializable {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        BaseRest entity = (BaseRest) o;
-        return Objects.equals(this.id, entity.id);
+
+        BaseRest baseRest = (BaseRest) o;
+
+        return getId() == baseRest.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return (int) (getId() ^ (getId() >>> 32));
     }
 
     @Override

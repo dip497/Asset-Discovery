@@ -6,17 +6,17 @@ import jakarta.persistence.Entity;
 @Entity
 public class Ram extends AssetBase {
 
-    private Long size;
+    private long size;
     private String memoryType;
-    private Long width;
-    private Long clockSpeed;
+    private long width;
+    private long clockSpeed;
     private String bankLocater;
 
-    public Long getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(Long size) {
+    public void setSize(long size) {
         this.size = size;
     }
 
@@ -28,19 +28,19 @@ public class Ram extends AssetBase {
         this.memoryType = memoryType;
     }
 
-    public Long getWidth() {
+    public long getWidth() {
         return width;
     }
 
-    public void setWidth(Long width) {
+    public void setWidth(long width) {
         this.width = width;
     }
 
-    public Long getClockSpeed() {
+    public long getClockSpeed() {
         return clockSpeed;
     }
 
-    public void setClockSpeed(Long clockSpeed) {
+    public void setClockSpeed(long clockSpeed) {
         this.clockSpeed = clockSpeed;
     }
 
@@ -63,17 +63,15 @@ public class Ram extends AssetBase {
 
         Ram ram = (Ram) o;
 
-        if (getSize() != null ? !getSize().equals(ram.getSize()) : ram.getSize() != null)
+        if (getSize() != ram.getSize())
+            return false;
+        if (getWidth() != ram.getWidth())
+            return false;
+        if (getClockSpeed() != ram.getClockSpeed())
             return false;
         if (getMemoryType() != null ?
                 !getMemoryType().equals(ram.getMemoryType()) :
                 ram.getMemoryType() != null)
-            return false;
-        if (getWidth() != null ? !getWidth().equals(ram.getWidth()) : ram.getWidth() != null)
-            return false;
-        if (getClockSpeed() != null ?
-                !getClockSpeed().equals(ram.getClockSpeed()) :
-                ram.getClockSpeed() != null)
             return false;
         return getBankLocater() != null ?
                 getBankLocater().equals(ram.getBankLocater()) :
@@ -83,10 +81,10 @@ public class Ram extends AssetBase {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (getSize() != null ? getSize().hashCode() : 0);
+        result = 31 * result + (int) (getSize() ^ (getSize() >>> 32));
         result = 31 * result + (getMemoryType() != null ? getMemoryType().hashCode() : 0);
-        result = 31 * result + (getWidth() != null ? getWidth().hashCode() : 0);
-        result = 31 * result + (getClockSpeed() != null ? getClockSpeed().hashCode() : 0);
+        result = 31 * result + (int) (getWidth() ^ (getWidth() >>> 32));
+        result = 31 * result + (int) (getClockSpeed() ^ (getClockSpeed() >>> 32));
         result = 31 * result + (getBankLocater() != null ? getBankLocater().hashCode() : 0);
         return result;
     }

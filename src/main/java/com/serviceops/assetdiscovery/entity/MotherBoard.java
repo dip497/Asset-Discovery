@@ -7,15 +7,7 @@ import java.util.Objects;
 
 @Entity
 public class MotherBoard extends AssetBase {
-    /*
-            motherBoard.setManufacturer(parseResult.get(0));
-            motherBoard.setSerialNumber(parseResult.get(1));
-            motherBoard.setVersion(parseResult.get(2));*/
     private String version;
-    //    private Date installedDate;
-    //    private String partNumber;
-    //    private String primaryBusType;
-    //    private String secondaryBusType;
 
     public String getVersion() {
         return version;

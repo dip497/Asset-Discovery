@@ -7,15 +7,15 @@ import java.util.Objects;
  * A DTO for the {@link com.serviceops.assetdiscovery.entity.base.AssetBase} entity
  */
 public class AssetBaseRest extends SingleBaseRest implements Serializable {
-    private Long refId;
+    private long refId;
     private String serialNumber;
     private String manufacturer;
 
-    public Long getRefId() {
+    public long getRefId() {
         return refId;
     }
 
-    public void setRefId(Long refId) {
+    public void setRefId(long refId) {
         this.refId = refId;
     }
 
@@ -43,15 +43,24 @@ public class AssetBaseRest extends SingleBaseRest implements Serializable {
             return false;
         if (!super.equals(o))
             return false;
+
         AssetBaseRest that = (AssetBaseRest) o;
-        return Objects.equals(refId, that.refId) && Objects.equals(serialNumber, that.serialNumber)
-                && Objects.equals(manufacturer, that.manufacturer);
+
+        if (getRefId() != that.getRefId())
+            return false;
+        if (getSerialNumber() != null ?
+                !getSerialNumber().equals(that.getSerialNumber()) :
+                that.getSerialNumber() != null)
+            return false;
+        return getManufacturer() != null ?
+                getManufacturer().equals(that.getManufacturer()) :
+                that.getManufacturer() == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (getRefId() != null ? getRefId().hashCode() : 0);
+        result = 31 * result + (int) (getRefId() ^ (getRefId() >>> 32));
         result = 31 * result + (getSerialNumber() != null ? getSerialNumber().hashCode() : 0);
         result = 31 * result + (getManufacturer() != null ? getManufacturer().hashCode() : 0);
         return result;

@@ -107,7 +107,7 @@ public class SchedulerServiceImpl implements SchedulersService {
         if(scheduler.isPresent()){
             customRepository.deleteById(Schedulers.class,networkScanId,"networkScanId");
 
-            schedulerService.deleteTimer(scheduler.get().getId().toString());
+            schedulerService.deleteTimer(String.valueOf(scheduler.get().getId()));
 
             logger.info("Scheduler deleted with networkScanId -> {} ", networkScanId);
         }else{

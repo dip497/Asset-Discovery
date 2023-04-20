@@ -25,7 +25,7 @@ public class SchedulerService {
         Long id = info.getNetworkScanRestId();
         jobDataMap.put("id", id);
 
-        return JobBuilder.newJob(jobClass).withIdentity(info.getId().toString()).setJobData(jobDataMap)
+        return JobBuilder.newJob(jobClass).withIdentity(String.valueOf(info.getId())).setJobData(jobDataMap)
                 .build();
     }
 
@@ -33,7 +33,7 @@ public class SchedulerService {
 
 
         TriggerBuilder<Trigger> cronTriggerTriggerBuilder =
-                TriggerBuilder.newTrigger().withIdentity(info.getId().toString())
+                TriggerBuilder.newTrigger().withIdentity(String.valueOf(info.getId()))
                         .startAt(new Date(info.getStartTime()));
 
         switch (info.getScanType()) {
@@ -98,12 +98,12 @@ public class SchedulerService {
 
     public void updateTrigger(final SchedulerRest info) {
         try {
-            final JobDetail jobDetail = scheduler.getJobDetail(new JobKey(info.getId().toString()));
+            final JobDetail jobDetail = scheduler.getJobDetail(new JobKey(String.valueOf(info.getId())));
             if (jobDetail == null) {
                 logger.error("Failed to find job with ID -> {}'", info.getId());
                 return;
             }
-            deleteTimer(info.getId().toString());
+            deleteTimer(String.valueOf(info.getId()));
             scheduler.scheduleJob(jobDetail, buildTrigger(info));
             logger.info("scheduler updated for schedulers id ->{}", info.getId());
         } catch (final SchedulerException e) {

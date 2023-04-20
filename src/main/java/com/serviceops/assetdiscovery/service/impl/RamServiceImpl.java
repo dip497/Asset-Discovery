@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class RamServiceImpl implements RamService {
     }
 
     @Override
-    public void save(Long id) {
+    public void save(long id) {
         String[][] strings = parseResults();
         List<Ram> rams = customRepository.findAllByColumnName(Ram.class, "refId", id);
         if (!rams.isEmpty()) {
@@ -67,7 +68,7 @@ public class RamServiceImpl implements RamService {
     }
 
     @Override
-    public RamRest findByRefId(Long refId) {
+    public RamRest findByRefId(long refId) {
 
         Optional<Ram> ramOptional = customRepository.findByColumn("refId", refId, Ram.class);
 
@@ -77,13 +78,13 @@ public class RamServiceImpl implements RamService {
             logger.info("Ram fetched with Asset Id ->{}", refId);
             return ramOps.entityToRest();
         } else {
-            throw new ResourceNotFoundException("Ram", "refId", Long.toString(refId));
+            throw new ResourceNotFoundException("Ram", "refId", long.toString(refId));
         }
 
     }
 
     @Override
-    public List<RamRest> findAllByRefId(Long refId) {
+    public List<RamRest> findAllByRefId(long refId) {
         List<Ram> fetchRams = customRepository.findAllByColumnName(Ram.class, "refId", refId);
         if (fetchRams.isEmpty()) {
             logger.error("Ram not found with refId -> {} ", refId);
@@ -94,7 +95,7 @@ public class RamServiceImpl implements RamService {
     }
 
     @Override
-    public void deleteById(Long refId, Long id) {
+    public void deleteById(long refId, long id) {
         List<Ram> ramList = customRepository.findAllByColumnName(Ram.class, "refId", refId);
         if (ramList.isEmpty()) {
             throw new ResourceNotFoundException("Ram", "refId", refId.toString());
@@ -111,16 +112,19 @@ public class RamServiceImpl implements RamService {
     }
 
     @Override
-    public void update(Long refId, Long id, RamRest ramRest) {
+    public void update(long refId, long id, RamRest ramRest) {
+       // HashMap<long, long> fields = new HashMap<>();
+       // fields.put("refId",refId);
+       // customRepository.findByColumns(,Ram.class);
         List<Ram> ramList = customRepository.findAllByColumnName(Ram.class, "refId", refId);
         if (ramList.isEmpty()) {
             logger.error("Ram not found with Asset Id -> {} ", refId);
-            throw new ResourceNotFoundException("Ram", "refId", refId.toString());
+            throw new ResourceNotFoundException("Ram", "refId", refId);
         } else {
             Optional<Ram> fetchRam = customRepository.findByColumn("id", id, Ram.class);
             if (fetchRam.isEmpty()) {
                 logger.error("Unable to find ram with id -> {}", id);
-                throw new ResourceNotFoundException("Ram", "id", id.toString());
+                throw new ResourceNotFoundException("Ram", "id", id);
             } else {
                 Ram ram = fetchRam.get();
                 RamOps ramOps = new RamOps(ram, ramRest);
