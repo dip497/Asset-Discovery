@@ -63,6 +63,7 @@ public class NetworkScanController {
     public void deleteNetworkScanById(@PathVariable Long id) {
         logger.debug("deleting network scan by id ->{}", id);
         networkScanService.deleteById(id);
+        schedulersService.deleteByNetworkScanId(id);
     }
 
     @GetMapping(value = "/schedulers", produces = MediaType.APPLICATION_JSON_VALUE)

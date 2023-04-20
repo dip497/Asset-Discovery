@@ -13,4 +13,6 @@ public interface SchedulersService {
     SchedulerRest findByNetworkScanId(Long networkScanId);
 
     List<SchedulerRest> findAll();
+
+    void deleteByNetworkScanId(Long id);
 }

@@ -3,15 +3,7 @@ package com.serviceops.assetdiscovery.config;
 import com.serviceops.assetdiscovery.rest.SchedulerRest;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.JobBuilder;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
+import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,7 +25,7 @@ public class SchedulerService {
         Long id = info.getNetworkScanRestId();
         jobDataMap.put("id", id);
 
-        return JobBuilder.newJob(jobClass).withIdentity(jobClass.getSimpleName()).setJobData(jobDataMap)
+        return JobBuilder.newJob(jobClass).withIdentity(info.getId().toString()).setJobData(jobDataMap)
                 .build();
     }
 
@@ -41,7 +33,7 @@ public class SchedulerService {
 
 
         TriggerBuilder<Trigger> cronTriggerTriggerBuilder =
-                TriggerBuilder.newTrigger().withIdentity(jobClass.getSimpleName())
+                TriggerBuilder.newTrigger().withIdentity(info.getId().toString())
                         .startAt(new Date(info.getStartTime()));
 
         switch (info.getScanType()) {
@@ -54,9 +46,10 @@ public class SchedulerService {
             case MONTHLY -> cronTriggerTriggerBuilder.withSchedule(
                     CronScheduleBuilder.monthlyOnDayAndHourAndMinute(info.getMonth().toInt(),
                             getHoursMinutes(info.getTime())[0], getHoursMinutes(info.getTime())[1]));
-            case INTERVAL -> cronTriggerTriggerBuilder.withSchedule(
-                    SimpleScheduleBuilder.simpleSchedule().repeatForever()
-                            .withIntervalInMinutes(Math.toIntExact(info.getInterval())));
+            case INTERVAL -> cronTriggerTriggerBuilder.withSchedule(CronScheduleBuilder.cronSchedule(
+                    "0 */" + convertToMinute(info.getInterval()) + " * ? * *"));
+                    /*SimpleScheduleBuilder.simpleSchedule().repeatForever()
+                            .withIntervalInMinutes(Math.toIntExact(info.getInterval())));*/
         }
 
         return cronTriggerTriggerBuilder.build();
@@ -68,6 +61,11 @@ public class SchedulerService {
         int remainingSeconds = seconds % 3600;
         int minutes = remainingSeconds / 60;
         return new int[] { hours, minutes };
+    }
+
+    private static String convertToMinute(Long milliseconds) {
+        int minutes = (int) (milliseconds / 60000);
+        return String.valueOf(minutes);
     }
 
     @PostConstruct
@@ -99,6 +97,33 @@ public class SchedulerService {
         logger.info("scheduler created for schedulers id ->{}", schedulerRest.getId());
 
 
+    }
+
+    public void updateTrigger( final SchedulerRest info) {
+        try {
+            final JobDetail jobDetail = scheduler.getJobDetail(new JobKey(info.getId().toString()));
+            if (jobDetail == null) {
+                logger.error("Failed to find job with ID '{}'", info.getId().toString());
+                return;
+            }
+            deleteTimer(info.getId().toString());
+            scheduler.scheduleJob(jobDetail,buildTrigger(NetworkScanJob.class,info));
+            logger.info("scheduler updated for schedulers id ->{}", info.getId());
+        } catch (final SchedulerException e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+
+
+
+    public void deleteTimer(String id) {
+        try {
+            scheduler.unscheduleJob(TriggerKey.triggerKey(id));
+            logger.info("trigger deleted with id -> {}", id);
+        } catch (SchedulerException e) {
+            logger.error("fail to delete trigger with id -> {}", id);
+        }
     }
 
 

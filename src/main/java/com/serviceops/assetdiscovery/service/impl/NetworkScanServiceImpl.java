@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.NetworkScan;
+import com.serviceops.assetdiscovery.entity.Schedulers;
 import com.serviceops.assetdiscovery.entity.enums.IpRangeType;
 import com.serviceops.assetdiscovery.exception.AssetDiscoveryApiException;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
