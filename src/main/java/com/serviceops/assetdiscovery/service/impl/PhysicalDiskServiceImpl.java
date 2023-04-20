@@ -45,7 +45,7 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         // command for parsing information about the serial number.
         commands.put("sudo lshw -c disk | grep serial: ", new String[]{});
         // command for parsing information about the interface.
-        commands.put("udevadm info --query=property --name=/dev/sda | grep ID_BUS\n", new String[]{});
+        commands.put("udevadm info --query=property --name=/dev/sda | grep ID_BUS", new String[]{});
         // command for parsing information about the media type.
         commands.put("udevadm info --query=property --name=/dev/sda | grep DEVTYPE= ", new String[]{});
         // command for parsing information of disk manufacturer.
@@ -97,7 +97,7 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         try {
             physicalDisk.setPartition(customRepository.findAllByColumnName(LogicalDisk.class, "refId", refId).size());
             physicalDisk.setSize(convertToBaseUnit(getParseResult().get(0)));
-            physicalDisk.setName(formatData(getParseResult().get(1), "diskName"));
+            physicalDisk.setName(getParseResult().get(1).equals("bash: blkid: command not found") ? null : getParseResult().get(1));
             physicalDisk.setSerialNumber(formatData(getParseResult().get(2), "serial: "));
             physicalDisk.setInterfaceType(formatData(getParseResult().get(3), "ID_BUS="));
             physicalDisk.setMediaType(formatData(getParseResult().get(4), "DEVTYPE="));
@@ -116,8 +116,6 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
         if (data.contains(keyword)) {
             return (data.substring(data.indexOf(keyword) + keyword.length())).trim();
-        } else if (data.contains("bash: blkid: command not found")) {
-            return "";
         } else {
             return null;
         }
