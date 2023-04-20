@@ -9,15 +9,15 @@ import java.util.Objects;
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Processor} entity
  */
 public class ProcessorRest extends AssetBaseRest implements Serializable {
-    private   String processorName;
-    private   String description;
-    private   String width;
+    private String processorName;
+    private String description;
+    private String width;
     private long cpuSpeed;
     private long coreCount;
     private long l1CacheSize;
     private long l2CacheSize;
     private long l3CacheSize;
-    private   long family;
+    private long family;
 
     public String getProcessorName() {
         return processorName;
@@ -107,16 +107,6 @@ public class ProcessorRest extends AssetBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "ProcessorRest{" +
-                "processorName='" + processorName + '\'' +
-                ", description='" + description + '\'' +
-                ", width='" + width + '\'' +
-                ", cpuSpeed=" + cpuSpeed +
-                ", coreCount=" + coreCount +
-                ", l1CacheSize=" + l1CacheSize +
-                ", l2CacheSize=" + l2CacheSize +
-                ", l3CacheSize=" + l3CacheSize +
-                ", family=" + family +
-                '}';
+        return "ProcessorRest{" + "processorName='" + processorName + '\'' + ", description='" + description + '\'' + ", width='" + width + '\'' + ", cpuSpeed=" + cpuSpeed + ", coreCount=" + coreCount + ", l1CacheSize=" + l1CacheSize + ", l2CacheSize=" + l2CacheSize + ", l3CacheSize=" + l3CacheSize + ", family=" + family + '}';
     }
 }

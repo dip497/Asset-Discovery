@@ -3,7 +3,6 @@ package com.serviceops.assetdiscovery.rest;
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.Objects;
 
 /**
@@ -12,9 +11,10 @@ import java.util.Objects;
 public class MonitorRest extends AssetBaseRest implements Serializable {
 
     private String name;
-    private  String description;
-    private  String screenHeight;
-    private  String screenWidth;
+    private String description;
+    private String screenHeight;
+    private String screenWidth;
+
     public String getName() {
         return name;
     }
@@ -49,25 +49,26 @@ public class MonitorRest extends AssetBaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         MonitorRest that = (MonitorRest) o;
-        return Objects.equals(description, that.description) && Objects.equals(name, that.name) && Objects.equals(screenHeight, that.screenHeight) && Objects.equals(screenWidth, that.screenWidth);
+        return Objects.equals(description, that.description) && Objects.equals(name, that.name)
+                && Objects.equals(screenHeight, that.screenHeight) && Objects.equals(screenWidth,
+                that.screenWidth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(),name, description, screenHeight, screenWidth);
+        return Objects.hash(super.hashCode(), name, description, screenHeight, screenWidth);
     }
 
     @Override
     public String toString() {
-        return "MonitorRest{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", screenHeight='" + screenHeight + '\'' +
-                ", screenWidth='" + screenWidth + '\'' +
-                '}';
+        return "MonitorRest{" + ", name='" + name + '\'' + ", description='" + description + '\''
+                + ", screenHeight='" + screenHeight + '\'' + ", screenWidth='" + screenWidth + '\'' + '}';
     }
 }

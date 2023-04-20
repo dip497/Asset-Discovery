@@ -105,9 +105,9 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
             physicalDisk.setDescription(formatData(getParseResult().get(6), "description:"));
             physicalDisk.setModel(formatData(getParseResult().get(7), "version:"));
             customRepository.save(physicalDisk);
-        } catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             customRepository.save(physicalDisk);
-            logger.info("index out of bound exception in physical disk with id: -->{} ",  refId);
+            logger.info("index out of bound exception in physical disk with id: -->{} ", refId);
         }
 
     }

@@ -9,20 +9,20 @@ import java.util.Objects;
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.PointingDevice} entity
  */
 public class PointingDeviceRest extends AssetBaseRest implements Serializable {
-    private   int numberOfButtons; // TODO make it long or int if possible
-    private   String description;
-    private   String pointingType;
+    private int numberOfButtons;
+    private String description;
+    private String pointingType;
 
     public String getDescription() {
         return description;
     }
 
-    public String getPointingType() {
-        return pointingType;
-    }
-
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPointingType() {
+        return pointingType;
     }
 
     public void setPointingType(String pointingType) {

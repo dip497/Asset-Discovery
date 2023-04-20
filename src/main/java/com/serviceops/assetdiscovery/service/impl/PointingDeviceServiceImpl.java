@@ -176,7 +176,7 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
         for (String[] updatePointIngDevice : getParsedResults()) {
             PointingDevice pointingDevice = new PointingDevice();
             pointingDevice.setRefId(refId);
-            try{
+            try {
 
                 pointingDevice.setNumberOfButtons(Integer.parseInt(updatePointIngDevice[1].trim()));
                 pointingDevice.setPointingType(updatePointIngDevice[2]);
@@ -185,7 +185,7 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
 
                 logger.info("Saved pointing device with id: --> {}", refId);
                 customRepository.save(pointingDevice);
-            } catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 customRepository.save(pointingDevice);
             }
         }

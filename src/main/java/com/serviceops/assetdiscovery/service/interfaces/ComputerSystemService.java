@@ -7,8 +7,11 @@ import java.util.List;
 public interface ComputerSystemService {
 
     void save(Long Id);
+
     List<ComputerSystemRest> get(Long id);
+
     void deleteById(Long id);
+
     void update(Long refId, ComputerSystemRest computerSystemRest);
 
 }

@@ -77,7 +77,7 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
 
     private void setData(Processor processor) {
-        try{
+        try {
             processor.setL2CacheSize(convertToBaseUnit(getParseResult().get(0)));
             processor.setL3CacheSize(convertToBaseUnit(getParseResult().get(1)));
             processor.setManufacturer(getParseResult().get(2));
@@ -88,7 +88,7 @@ public class ProcessorServiceImpl implements ProcessorService {
             processor.setL1CacheSize(!getParseResult().get(8).isEmpty() ? convertToBaseUnit(getParseResult().get(8)) : convertToBaseUnit(getParseResult().get(9)));
             processor.setProcessorName(getParseResult().get(10).substring(getParseResult().get(10).indexOf(": ") + 2).trim());
             customRepository.save(processor);
-        } catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             logger.error("index out of bound exception in Processor with id -->{}", processor.getId());
             customRepository.save(processor);
         }
@@ -107,8 +107,8 @@ public class ProcessorServiceImpl implements ProcessorService {
             Data = Data.replaceAll(" + ", "");
             data = Long.parseLong(Data) * 1024;
         } else if (Data.contains("mhz")) {
+            Data = Data.substring(0, Data.indexOf("."));
             Data = Data.replaceAll("[^0-9]", "").trim();
-            Data = Data.replaceAll(" + ", "");
             data = (long) Double.parseDouble(Data) * 1000 * 1000;
         } else {
             return Long.parseLong(Data);

@@ -18,20 +18,20 @@ public class ProcessorController {
         this.processorService = processorService;
     }
 
-    @GetMapping(value = "/{refId}/processor",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ProcessorRest> findProcessorById(@PathVariable("refId") Long refId){
+    @GetMapping(value = "/{refId}/processor", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ProcessorRest> findProcessorById(@PathVariable("refId") Long refId) {
         logger.debug("finding processor with id: -->{}", refId);
         return processorService.findByRefId(refId);
     }
 
     @DeleteMapping("/{refId}/processor")
-    public void deleteProcessorById(@PathVariable("refId") Long refId){
+    public void deleteProcessorById(@PathVariable("refId") Long refId) {
         logger.debug("deleting processor with id: -->{}", refId);
         processorService.deleteById(refId);
     }
 
-    @PutMapping(value = "/{refId}/processor",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateProcessor(@PathVariable("refId") Long refId,@RequestBody ProcessorRest processorRest){
+    @PutMapping(value = "/{refId}/processor", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateProcessor(@PathVariable("refId") Long refId, @RequestBody ProcessorRest processorRest) {
         logger.debug("updating processor with id: -->{}", refId);
         processorService.update(refId, processorRest);
     }

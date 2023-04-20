@@ -1,7 +1,6 @@
 package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
-import com.serviceops.assetdiscovery.utils.UnitConverter;
 import jakarta.persistence.Entity;
 
 import java.util.Objects;
@@ -12,6 +11,7 @@ public class LogicalDisk extends AssetBase {
     private String description;
     private String fileSystemType;
     private Long size;
+
     public String getName() {
         return name;
     }
@@ -46,11 +46,15 @@ public class LogicalDisk extends AssetBase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         LogicalDisk that = (LogicalDisk) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(fileSystemType, that.fileSystemType) && Objects.equals(size, that.size);
+        return Objects.equals(name, that.name) && Objects.equals(description, that.description)
+                && Objects.equals(fileSystemType, that.fileSystemType) && Objects.equals(size, that.size);
     }
 
     @Override
@@ -60,11 +64,7 @@ public class LogicalDisk extends AssetBase {
 
     @Override
     public String toString() {
-        return "LogicalDisk{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", fileSystemType='" + fileSystemType + '\'' +
-                ", size=" + size +
-                '}';
+        return "LogicalDisk{" + "name='" + name + '\'' + ", description='" + description + '\''
+                + ", fileSystemType='" + fileSystemType + '\'' + ", size=" + size + '}';
     }
 }

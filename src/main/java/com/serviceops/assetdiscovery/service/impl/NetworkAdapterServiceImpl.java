@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class    NetworkAdapterServiceImpl implements NetworkAdapterService {
+public class NetworkAdapterServiceImpl implements NetworkAdapterService {
     private final CustomRepository customRepository;
     private final Logger logger = LoggerFactory.getLogger(NetworkAdapterServiceImpl.class);
 
@@ -159,7 +159,7 @@ public class    NetworkAdapterServiceImpl implements NetworkAdapterService {
                 networkAdapter.setIpAddress(updateNetworkAdapter[4]);
                 networkAdapter.setIpSubnet(updateNetworkAdapter[5]);
                 customRepository.save(networkAdapter);
-            } catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 customRepository.save(networkAdapter);
                 logger.info("index out of bound exception in NetworkAdapter with id : --> {}", refId);
             }

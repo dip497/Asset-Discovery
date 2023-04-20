@@ -9,14 +9,14 @@ import java.util.Objects;
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.ComputerSystem} entity
  */
 public class ComputerSystemRest extends AssetBaseRest implements Serializable {
-    private  String name;
-    private  String modelName;
-    private  String systemType;
-    private  String uuid;
-    private  String bootUpState;
-    private  Long numberOfLogicalProcessor;
-    private  Long numberOfProcessors;
-    private  String userName;
+    private String name;
+    private String modelName;
+    private String systemType;
+    private String uuid;
+    private String bootUpState;
+    private Long numberOfLogicalProcessor;
+    private Long numberOfProcessors;
+    private String userName;
 
     public String getName() {
         return name;
@@ -84,29 +84,31 @@ public class ComputerSystemRest extends AssetBaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         ComputerSystemRest that = (ComputerSystemRest) o;
-        return Objects.equals(name, that.name) && Objects.equals(modelName, that.modelName) && Objects.equals(systemType, that.systemType) && Objects.equals(uuid, that.uuid) && Objects.equals(bootUpState, that.bootUpState) && Objects.equals(numberOfLogicalProcessor, that.numberOfLogicalProcessor) && Objects.equals(numberOfProcessors, that.numberOfProcessors) && Objects.equals(userName, that.userName);
+        return Objects.equals(name, that.name) && Objects.equals(modelName, that.modelName) && Objects.equals(
+                systemType, that.systemType) && Objects.equals(uuid, that.uuid) && Objects.equals(bootUpState,
+                that.bootUpState) && Objects.equals(numberOfLogicalProcessor, that.numberOfLogicalProcessor)
+                && Objects.equals(numberOfProcessors, that.numberOfProcessors) && Objects.equals(userName,
+                that.userName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, modelName, systemType, uuid, bootUpState, numberOfLogicalProcessor, numberOfProcessors, userName);
+        return Objects.hash(super.hashCode(), name, modelName, systemType, uuid, bootUpState,
+                numberOfLogicalProcessor, numberOfProcessors, userName);
     }
 
     @Override
     public String toString() {
-        return "ComputerSystemRest{" +
-                "name='" + name + '\'' +
-                ", modelName='" + modelName + '\'' +
-                ", systemType='" + systemType + '\'' +
-                ", uuid='" + uuid + '\'' +
-                ", bootUpState='" + bootUpState + '\'' +
-                ", numberOfLogicalProcessor=" + numberOfLogicalProcessor +
-                ", numberOfProcessors=" + numberOfProcessors +
-                ", userName='" + userName + '\'' +
-                '}';
+        return "ComputerSystemRest{" + "name='" + name + '\'' + ", modelName='" + modelName + '\''
+                + ", systemType='" + systemType + '\'' + ", uuid='" + uuid + '\'' + ", bootUpState='"
+                + bootUpState + '\'' + ", numberOfLogicalProcessor=" + numberOfLogicalProcessor
+                + ", numberOfProcessors=" + numberOfProcessors + ", userName='" + userName + '\'' + '}';
     }
 }
