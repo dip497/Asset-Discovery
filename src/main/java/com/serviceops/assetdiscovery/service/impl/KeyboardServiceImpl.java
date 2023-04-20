@@ -98,7 +98,7 @@ public class KeyboardServiceImpl implements KeyboardService {
             logger.info("Keyboard fetched with Asset Id ->{}", refId);
             return keyboardOps.entityToRest();
         } else {
-            throw new ResourceNotFoundException("Keyboard", "refId", Long.toString(refId));
+            throw new ResourceNotFoundException("Keyboard", "refId", refId);
         }
 
     }
@@ -120,14 +120,14 @@ public class KeyboardServiceImpl implements KeyboardService {
     public void deleteByRefId(Long refId, Long id) {
         List<Keyboard> keyboards = customRepository.findAllByColumnName(Keyboard.class, "refId", refId);
         if (keyboards.isEmpty()) {
-            throw new ResourceNotFoundException("keyboard", "refId", refId.toString());
+            throw new ResourceNotFoundException("keyboard", "refId", refId);
         } else {
             Optional<Keyboard> fetchKeyboard = customRepository.findByColumn("id", id, Keyboard.class);
             if (fetchKeyboard.isPresent()) {
                 customRepository.deleteById(Keyboard.class, id, "id");
                 logger.info("Keyboard deleted of  Id ->{}", id);
             } else {
-                throw new ResourceNotFoundException("Keyboard", "Id", id.toString());
+                throw new ResourceNotFoundException("Keyboard", "Id", id);
 
             }
         }
@@ -138,12 +138,12 @@ public class KeyboardServiceImpl implements KeyboardService {
         List<Keyboard> keyboardList = customRepository.findAllByColumnName(Keyboard.class, "refId", refId);
         if (keyboardList.isEmpty()) {
             logger.error("Keyboard not found with Asset Id -> {} ", refId);
-            throw new ResourceNotFoundException("Keyboard", "refId", refId.toString());
+            throw new ResourceNotFoundException("Keyboard", "refId", refId);
         } else {
             Optional<Keyboard> fetchKeyboard = customRepository.findByColumn("id", id, Keyboard.class);
             if (fetchKeyboard.isEmpty()) {
                 logger.error("Unable to find ram with id -> {}", id);
-                throw new ResourceNotFoundException("Keyboard", "id", id.toString());
+                throw new ResourceNotFoundException("Keyboard", "id", id);
             } else {
                 Keyboard keyboard = fetchKeyboard.get();
                 KeyboardOps keyboardOps = new KeyboardOps(keyboard, keyboardRest);

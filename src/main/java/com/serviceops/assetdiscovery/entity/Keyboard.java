@@ -1,13 +1,20 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
 
-import java.util.Objects;
-
 @Entity
-public class Keyboard extends AssetBase {
+public class Keyboard extends SingleBase {
+    private long refId;
     private String name;
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
 
     public String getName() {
         return name;
@@ -17,25 +24,4 @@ public class Keyboard extends AssetBase {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-        Keyboard keyboard = (Keyboard) o;
-        return Objects.equals(name, keyboard.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name);
-    }
-
-    @Override
-    public String toString() {
-        return "Keyboard{" + "name='" + name + '\'' + '}';
-    }
 }

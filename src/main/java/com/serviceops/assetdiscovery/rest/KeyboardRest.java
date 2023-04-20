@@ -1,15 +1,25 @@
 package com.serviceops.assetdiscovery.rest;
 
-import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Keyboard} entity
  */
-public class KeyboardRest extends AssetBaseRest implements Serializable {
+public class KeyboardRest extends SingleBaseRest implements Serializable {
+    private long refId;
     private String name;
+
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
 
     public String getName() {
         return name;
@@ -17,27 +27,5 @@ public class KeyboardRest extends AssetBaseRest implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-        KeyboardRest that = (KeyboardRest) o;
-        return Objects.equals(name, that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name);
-    }
-
-    @Override
-    public String toString() {
-        return "KeyboardRest{" + "name='" + name + '\'' + '}';
     }
 }

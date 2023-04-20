@@ -1,16 +1,42 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Ram extends AssetBase {
-
+public class Ram extends SingleBase {
+    private long refId;
+    private String serialNumber;
+    private String manufacturer;
     private long size;
     private String memoryType;
     private long width;
     private long clockSpeed;
     private String bankLocater;
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 
     public long getSize() {
         return size;
@@ -50,49 +76,5 @@ public class Ram extends AssetBase {
 
     public void setBankLocater(String bankLocater) {
         this.bankLocater = bankLocater;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-
-        Ram ram = (Ram) o;
-
-        if (getSize() != ram.getSize())
-            return false;
-        if (getWidth() != ram.getWidth())
-            return false;
-        if (getClockSpeed() != ram.getClockSpeed())
-            return false;
-        if (getMemoryType() != null ?
-                !getMemoryType().equals(ram.getMemoryType()) :
-                ram.getMemoryType() != null)
-            return false;
-        return getBankLocater() != null ?
-                getBankLocater().equals(ram.getBankLocater()) :
-                ram.getBankLocater() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (int) (getSize() ^ (getSize() >>> 32));
-        result = 31 * result + (getMemoryType() != null ? getMemoryType().hashCode() : 0);
-        result = 31 * result + (int) (getWidth() ^ (getWidth() >>> 32));
-        result = 31 * result + (int) (getClockSpeed() ^ (getClockSpeed() >>> 32));
-        result = 31 * result + (getBankLocater() != null ? getBankLocater().hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Ram{" + "size=" + size + ", memoryType='" + memoryType + '\'' + ", width=" + width
-                + ", clockSpeed=" + clockSpeed + ", bankLocater='" + bankLocater + '\'' + "} "
-                + super.toString();
     }
 }

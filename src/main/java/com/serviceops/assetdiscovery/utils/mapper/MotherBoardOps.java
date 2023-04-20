@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.MotherBoard;
 import com.serviceops.assetdiscovery.rest.MotherBoardRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
-public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
+public class MotherBoardOps extends SingleBaseOps<MotherBoard, MotherBoardRest> {
     private final MotherBoard motherBoard;
     private final MotherBoardRest motherBoardRest;
 
@@ -17,6 +17,9 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
 
     public MotherBoard restToEntity() {
         super.restToEntity(motherBoardRest);
+        motherBoard.setRefId(motherBoardRest.getRefId());
+        motherBoard.setManufacturer(motherBoardRest.getManufacturer());
+        motherBoard.setSerialNumber(motherBoardRest.getSerialNumber());
         motherBoard.setVersion(motherBoardRest.getVersion());
         return motherBoard;
 
@@ -24,6 +27,9 @@ public class MotherBoardOps extends AssetBaseOps<MotherBoard, MotherBoardRest> {
 
     public MotherBoardRest entityToRest() {
         super.entityToRest(motherBoard);
+        motherBoardRest.setRefId(motherBoard.getRefId());
+        motherBoardRest.setManufacturer(motherBoard.getManufacturer());
+        motherBoardRest.setSerialNumber(motherBoard.getSerialNumber());
         motherBoardRest.setVersion(motherBoard.getVersion());
         return motherBoardRest;
     }

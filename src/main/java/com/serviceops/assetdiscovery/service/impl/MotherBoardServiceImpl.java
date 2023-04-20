@@ -80,7 +80,7 @@ public class MotherBoardServiceImpl implements MotherBoardService {
                 customRepository.findByColumn("refId", refId, MotherBoard.class);
         if (fetchMotherboard.isEmpty()) {
             logger.error("Motherboard not found with Asset Id -> {}", refId);
-            throw new ResourceNotFoundException("MotherBoard", "refId", refId.toString());
+            throw new ResourceNotFoundException("MotherBoard", "refId", refId);
         } else {
 
             MotherBoard motherBoard = fetchMotherboard.get();

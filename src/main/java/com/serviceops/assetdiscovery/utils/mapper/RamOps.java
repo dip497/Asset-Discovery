@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Ram;
 import com.serviceops.assetdiscovery.rest.RamRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
-public class RamOps extends AssetBaseOps<Ram, RamRest> {
+public class RamOps extends SingleBaseOps<Ram, RamRest> {
     private final Ram ram;
     private final RamRest ramRest;
 
@@ -16,6 +16,9 @@ public class RamOps extends AssetBaseOps<Ram, RamRest> {
 
     public Ram restToEntity() {
         super.restToEntity(ramRest);
+        ram.setRefId(ramRest.getRefId());
+        ram.setManufacturer(ramRest.getManufacturer());
+        ram.setSerialNumber(ramRest.getSerialNumber());
         ram.setSize(ramRest.getSize());
         ram.setMemoryType(ramRest.getMemoryType());
         ram.setWidth(ramRest.getWidth());
@@ -27,6 +30,9 @@ public class RamOps extends AssetBaseOps<Ram, RamRest> {
 
     public RamRest entityToRest() {
         super.entityToRest(ram);
+        ramRest.setRefId(ram.getRefId());
+        ramRest.setManufacturer(ram.getManufacturer());
+        ramRest.setSerialNumber(ram.getSerialNumber());
         ramRest.setSize(ram.getSize());
         ramRest.setMemoryType(ram.getMemoryType());
         ramRest.setWidth(ram.getWidth());
