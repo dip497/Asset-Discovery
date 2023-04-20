@@ -49,7 +49,7 @@ public class OsServiceImpl implements OsService {
         if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
             os.setOsName(parseResult.get(0));
-            os.setOsArchitecture(
+            os.setArchitecture(
                     parseResult.get(2).contains("64") ? Architecture.SIXTY_FOUR : Architecture.THIRTY_TWO);
             os.setOsVersion(parseResult.get(1));
             os.setInstalledDate(parseDate(parseResult.get(3)));
@@ -62,7 +62,7 @@ public class OsServiceImpl implements OsService {
             OS os = new OS();
             os.setRefId(refId);
             os.setOsName(parseResult.get(0));
-            os.setOsArchitecture(
+            os.setArchitecture(
                     parseResult.get(2).contains("64") ? Architecture.SIXTY_FOUR : Architecture.THIRTY_TWO);
             os.setOsVersion(parseResult.get(1));
             os.setInstalledDate(parseDate(parseResult.get(3)));
