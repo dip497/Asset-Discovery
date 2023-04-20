@@ -25,7 +25,7 @@ public class ComputerSystemController {
     }
 
     @GetMapping(value = "/{refId}/computersystem", name = "ComputerSystemDetails", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ComputerSystemRest> getComputerSystem(@PathVariable("refId") Long refId) {
+    public List<ComputerSystemRest> getComputerSystem(@PathVariable("refId") long refId) {
 
 
         List<ComputerSystemRest> computerSystemRests = computerSystemService.get(refId);
@@ -36,7 +36,7 @@ public class ComputerSystemController {
     }
 
     @DeleteMapping(value = "/{refId}/computersystem")
-    public void deleteComputerSystem(@PathVariable("refId") Long refId) {
+    public void deleteComputerSystem(@PathVariable("refId") long refId) {
 
         logger.info("Deleting ComputerSystem with Asset id -> {}", refId);
 
@@ -44,7 +44,7 @@ public class ComputerSystemController {
     }
 
     @PutMapping(value = "/{refId}/computersystem", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateComputerSystem(@PathVariable("refId") Long refId,
+    public void updateComputerSystem(@PathVariable("refId") long refId,
             @RequestBody ComputerSystemRest computerSystemRest) {
 
         logger.info("Updating updateComputerSystem with Asset id -> {}", refId);

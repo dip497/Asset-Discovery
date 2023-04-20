@@ -1,17 +1,28 @@
 package com.serviceops.assetdiscovery.entity;
 
 import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
 
 import java.util.Objects;
 
 @Entity
-public class ComputerSystem extends AssetBase {
+public class ComputerSystem extends SingleBase {
+    private long refId;
     private String modelName;
     private String systemType;
     private String uuid;
     private String bootUpState;
     private String userName;
+    private String manufacturer;
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
 
     public String getModelName() {
         return modelName;
@@ -53,29 +64,18 @@ public class ComputerSystem extends AssetBase {
         this.userName = userName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-        ComputerSystem that = (ComputerSystem) o;
-        return Objects.equals(modelName, that.modelName) && Objects.equals(systemType, that.systemType)
-                && Objects.equals(uuid, that.uuid) && Objects.equals(bootUpState, that.bootUpState)
-                && Objects.equals(userName, that.userName);
+    public String getManufacturer() {
+        return manufacturer;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), modelName, systemType, uuid, bootUpState, userName);
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     @Override
     public String toString() {
-        return "ComputerSystem{" + "modelName='" + modelName + '\'' + ", systemType='" + systemType + '\''
-                + ", uuid='" + uuid + '\'' + ", bootUpState='" + bootUpState + '\'' + ", userName='"
-                + userName + '\'' + '}';
+        return "ComputerSystem{" + "refId=" + refId + ", modelName='" + modelName + '\'' + ", systemType='"
+                + systemType + '\'' + ", uuid='" + uuid + '\'' + ", bootUpState='" + bootUpState + '\''
+                + ", userName='" + userName + '\'' + ", manufacturer='" + manufacturer + '\'' + '}';
     }
 }

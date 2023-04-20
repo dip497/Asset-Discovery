@@ -14,10 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +26,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
 
     private final CustomRepository customRepository;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(LogicalDiskServiceImpl.class);
 
     public LogicalDiskServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -35,7 +35,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
 
     @Override
     @Transactional
-    public void save(Long id) {
+    public void save(long id) {
         String[][] parseResults = parseResults();
         if (parseResults.length > 0) {
             List<LogicalDisk> logicalDisks =
@@ -75,7 +75,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
     }
 
     @Override
-    public void deleteById(Long refId, Long id) {
+    public void deleteById(long refId, long id) {
         if (!customRepository.findAllByColumnName(LogicalDisk.class, "refId", refId).isEmpty()) {
             if (customRepository.findByColumn("id", id, LogicalDisk.class).isPresent()) {
                 customRepository.deleteById(LogicalDisk.class, id, "id");
@@ -90,25 +90,23 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
     }
 
     @Override
-    public void update(Long refId, Long id, LogicalDiskRest logicalDiskRest) {
-        if (!customRepository.findAllByColumnName(LogicalDisk.class, "refId", refId).isEmpty()) {
-            Optional<LogicalDisk> logicalDisk = customRepository.findByColumn("id", id, LogicalDisk.class);
-            if (logicalDisk.isPresent()) {
-                LogicalDiskOps logicalDiskOps = new LogicalDiskOps(logicalDisk.get(), logicalDiskRest);
-                customRepository.save(logicalDiskOps.restToEntity());
-                logger.info("logicalDisk Updated with Asset Id ->{}", refId);
-            } else {
-                logger.error("Logical Disk with Asset -> {} not found", refId);
-                throw new ResourceNotFoundException("LogicalDisk", "refId", String.valueOf(refId));
-            }
+    public void update(long refId, long id, LogicalDiskRest logicalDiskRest) {
+        Map<String,Long> fields = new HashMap<>();
+        fields.put("refId",refId);
+        fields.put("id",id);
+        List<LogicalDisk> logicalDisks = customRepository.findByColumns(fields, LogicalDisk.class);
+        if (!logicalDisks.isEmpty()) {
+            LogicalDiskOps logicalDiskOps = new LogicalDiskOps(logicalDisks.get(0), logicalDiskRest);
+            customRepository.save(logicalDiskOps.restToEntity());
+            logger.info("logicalDisk Updated with Asset Id ->{}", refId);
         } else {
-            logger.error("Logical Disks with Asset -> {} not exist");
-            throw new ResourceNotFoundException("LogicalDisks", "refId", String.valueOf(refId));
+            logger.error("Logical Disks with id -> {} & Asset -> {} not exist",id,refId);
+            throw new ResourceNotFoundException("LogicalDisks", "refId", refId);
         }
     }
 
     @Override
-    public List<LogicalDiskRest> getAllLogicalDisks(Long refId) {
+    public List<LogicalDiskRest> getAllLogicalDisks(long refId) {
         List<LogicalDisk> logicalDisks =
                 customRepository.findAllByColumnName(LogicalDisk.class, "refId", refId);
         if (!logicalDisks.isEmpty()) {
@@ -137,7 +135,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
     private void setcommands() {
 
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
-        //command for fetching number of logical disks it have
+        //command for fetching number of logical disks it
         commands.put("sudo lshw -c volume | grep description | wc -l", new String[] {});
         //command for fetching volume data
         commands.put("sudo lshw -c volume", new String[] {});
@@ -174,7 +172,6 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
                 }
             }
             String[][] parsedResult = new String[numberOfLogicalDisk][5];
-            String result = "";
             int j = 0;
             for (Map.Entry<String, String[]> commandResult : commandResults.entrySet()) {
                 if (j == 0) {

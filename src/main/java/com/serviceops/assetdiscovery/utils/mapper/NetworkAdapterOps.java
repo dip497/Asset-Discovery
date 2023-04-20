@@ -16,6 +16,7 @@ public class NetworkAdapterOps extends SingleBaseOps<NetworkAdapter, NetworkAdap
         this.networkAdapterRest = networkAdapterRest;
     }
 
+
     public NetworkAdapter restToEntity() {
         super.restToEntity(networkAdapterRest);
         networkAdapter.setRefId(networkAdapterRest.getRefId());

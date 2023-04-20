@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface MonitorService {
 
-    void save(Long id);
+    void save(long id);
 
-    void update(Long refId, Long id, MonitorRest monitorRest);
+    MonitorRest update(long refId, long id, MonitorRest monitorRest);
 
-    void deleteById(Long refId, Long id);
+    void deleteById(long refId, long id);
 
-    List<MonitorRest> getMonitors(Long id);
+    List<MonitorRest> getMonitors(long id);
 
 
 }

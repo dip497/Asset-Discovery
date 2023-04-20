@@ -26,7 +26,7 @@ public class MonitorController {
     }
 
     @GetMapping(value = "/{refId}/monitor", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<MonitorRest> getMonitor(@PathVariable("refId") Long refId) {
+    public List<MonitorRest> getMonitor(@PathVariable("refId") long refId) {
 
         logger.info("Fetching Monitor with Asset id -> {}", refId);
         List<MonitorRest> monitors = monitorService.getMonitors(refId);
@@ -36,14 +36,14 @@ public class MonitorController {
     }
 
     @DeleteMapping("/{refId}/monitor/{id}")
-    public void deleteMonitor(@PathVariable("refId") Long refId, @PathVariable("id") Long id) {
+    public void deleteMonitor(@PathVariable("refId") long refId, @PathVariable("id") long id) {
 
         logger.info("Deleting Monitor with Asset id -> {}", refId);
         monitorService.deleteById(refId, id);
     }
 
     @PutMapping(value = "/{refId}/monitor/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateMonitor(@PathVariable("refId") Long refId, @PathVariable("id") Long id,
+    public void updateMonitor(@PathVariable("refId") long refId, @PathVariable("id") long id,
             @RequestBody MonitorRest monitorRest) {
 
         logger.debug("Updating monitor with Asset id -> {}", refId);

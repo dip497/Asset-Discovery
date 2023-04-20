@@ -1,16 +1,26 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
 
 import java.util.Objects;
 
 @Entity
-public class Monitor extends AssetBase {
+public class Monitor extends SingleBase {
 
+    private long refId;
     private String description;
     private String screenHeight;
     private String screenWidth;
+    private String manufacturer;
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
 
     public String getDescription() {
         return description;
@@ -36,27 +46,18 @@ public class Monitor extends AssetBase {
         this.screenWidth = screenWidth;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-        Monitor monitor = (Monitor) o;
-        return Objects.equals(description, monitor.description) && Objects.equals(screenHeight,
-                monitor.screenHeight) && Objects.equals(screenWidth, monitor.screenWidth);
+    public String getManufacturer() {
+        return manufacturer;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), description, screenHeight, screenWidth);
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     @Override
     public String toString() {
-        return "Monitor{" + "description='" + description + '\'' + ", screenHeight='" + screenHeight + '\''
-                + ", screenWidth='" + screenWidth + '\'' + '}';
+        return "Monitor{" + "refId=" + refId + ", description='" + description + '\'' + ", screenHeight='"
+                + screenHeight + '\'' + ", screenWidth='" + screenWidth + '\'' + ", manufacturer='"
+                + manufacturer + '\'' + '}';
     }
 }

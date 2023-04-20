@@ -5,20 +5,20 @@ public class UnitConverter {
 
     }
 
-    public static Long convertToBytes(String data) {
+    public static long convertToBytes(String data) {
         if (data != null) {
-            String toConvert = data.replaceAll("[^0-9]", "");
+            String toConvert = data.replaceAll("^[0-9]+(\\.[0-9]+)?$", "");
             if (!toConvert.trim().isEmpty()) {
                 if (data.contains("M")) {
-                    return Long.parseLong(toConvert) * 1048576;
+                    return (long)Double.parseDouble(toConvert) * 1048576;
                 } else if (data.contains("G")) {
-                    return Long.parseLong(toConvert) * 1073741824;
+                    return (long)Double.parseDouble(toConvert) * 1073741824;
                 } else if (data.contains("bi")) {
-                    return Long.parseLong(toConvert) / 8;
+                    return (long)Double.parseDouble(toConvert) / 8;
                 }
             }
         }
-        return 0L;
+        return 0l;
     }
 
 }

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     @Transactional
-    public void save(Long refId) {
+    public void save(long refId) {
         String[][] parsedResults = parseResults();
         if (parsedResults.length != 0) {
             List<Monitor> monitors = customRepository.findAllByColumnName(Monitor.class, "refId", refId);
@@ -72,26 +73,25 @@ public class MonitorServiceImpl implements MonitorService {
     }
 
     @Override
-    public void update(Long refId, Long id, MonitorRest monitorRest) {
-        if (!customRepository.findAllByColumnName(Monitor.class, "refId", refId).isEmpty()) {
-            Optional<Monitor> monitor = customRepository.findByColumn("id", id, Monitor.class);
-            if (monitor.isPresent()) {
-                MonitorOps monitorOps = new MonitorOps(monitor.get(), monitorRest);
+    public MonitorRest update(long refId, long id, MonitorRest monitorRest) {
+        Map<String,Long> fields = new HashMap<>();
+        fields.put("refId",refId);
+        fields.put("id",id);
+        List<Monitor> monitors = customRepository.findByColumns(fields, Monitor.class);
+        if (!monitors.isEmpty()) {
+                MonitorOps monitorOps = new MonitorOps(monitors.get(0), monitorRest);
                 customRepository.save(monitorOps.restToEntity());
                 logger.info("Monitor Updated with Asset Id ->{}", refId);
-            } else {
-                logger.error("Monitorwith Asset -> {} not found", refId);
-                throw new ResourceNotFoundException("Monitor", "refID", String.valueOf(refId));
-            }
-        } else {
-            logger.error("Monitor with Asset -> {} not exist");
-            throw new ResourceNotFoundException("Monitor", "refId", String.valueOf(refId));
+                return monitorRest;
+        }else {
+            logger.error("Monitor with Id -> {} & Asset Id -> {} not exist",id, refId);
+            throw new ResourceNotFoundException("Monitor", "refId", refId);
         }
     }
 
     @Transactional
     @Override
-    public void deleteById(Long refId, Long id) {
+    public void deleteById(long refId, long id) {
         if (!customRepository.findAllByColumnName(Monitor.class, "refId", refId).isEmpty()) {
             if (customRepository.findByColumn("id", id, Monitor.class).isPresent()) {
                 logger.info("Deleting Monitor with id->{}", id);
@@ -105,7 +105,7 @@ public class MonitorServiceImpl implements MonitorService {
     }
 
     @Override
-    public List<MonitorRest> getMonitors(Long id) {
+    public List<MonitorRest> getMonitors(long id) {
         List<Monitor> monitorsList = customRepository.findAllByColumnName(Monitor.class, "refId", id);
         if (!monitorsList.isEmpty()) {
             List<MonitorRest> monitorRestList = new ArrayList<>();

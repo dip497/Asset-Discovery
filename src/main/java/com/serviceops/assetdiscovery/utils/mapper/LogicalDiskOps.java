@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.LogicalDisk;
 import com.serviceops.assetdiscovery.rest.LogicalDiskRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
-public class LogicalDiskOps extends AssetBaseOps<LogicalDisk, LogicalDiskRest> {
+public class LogicalDiskOps extends SingleBaseOps<LogicalDisk, LogicalDiskRest> {
 
     private final LogicalDisk logicalDisk;
     private final LogicalDiskRest logicalDiskRest;
@@ -17,6 +17,8 @@ public class LogicalDiskOps extends AssetBaseOps<LogicalDisk, LogicalDiskRest> {
 
     public LogicalDiskRest entityToRest() {
         super.entityToRest(logicalDisk);
+        logicalDiskRest.setSerialNumber(logicalDisk.getSerialNumber());
+        logicalDiskRest.setRefId(logicalDisk.getRefId());
         logicalDiskRest.setDescription(logicalDisk.getDescription());
         logicalDiskRest.setFileSystemType(logicalDisk.getFileSystemType());
         logicalDiskRest.setSize(logicalDisk.getSize());
@@ -28,6 +30,8 @@ public class LogicalDiskOps extends AssetBaseOps<LogicalDisk, LogicalDiskRest> {
 
     public LogicalDisk restToEntity() {
         super.restToEntity(logicalDiskRest);
+        logicalDisk.setSerialNumber(logicalDiskRest.getSerialNumber());
+        logicalDisk.setRefId(logicalDiskRest.getRefId());
         logicalDisk.setFileSystemType(logicalDiskRest.getFileSystemType());
         logicalDisk.setDescription(logicalDiskRest.getDescription());
         logicalDisk.setSize(logicalDiskRest.getSize());

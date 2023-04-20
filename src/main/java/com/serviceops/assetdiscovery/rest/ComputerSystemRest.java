@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
+import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,7 +9,8 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.ComputerSystem} entity
  */
-public class ComputerSystemRest extends AssetBaseRest implements Serializable {
+public class ComputerSystemRest extends SingleBaseRest implements Serializable {
+    private long refId;
     private String name;
     private String modelName;
     private String systemType;
@@ -17,6 +19,15 @@ public class ComputerSystemRest extends AssetBaseRest implements Serializable {
     private Long numberOfLogicalProcessor;
     private Long numberOfProcessors;
     private String userName;
+    private String manufacturer;
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
 
     public String getName() {
         return name;
@@ -80,6 +91,14 @@ public class ComputerSystemRest extends AssetBaseRest implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     @Override

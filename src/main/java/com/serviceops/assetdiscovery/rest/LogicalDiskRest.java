@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
+import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,11 +9,22 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.LogicalDisk} entity
  */
-public class LogicalDiskRest extends AssetBaseRest implements Serializable {
+public class LogicalDiskRest extends SingleBaseRest implements Serializable {
+
+    private long refId;
     private String name;
     private String description;
     private String fileSystemType;
-    private Long size;
+    private long size;
+    private String serialNumber;
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
 
     public String getName() {
         return name;
@@ -38,35 +50,26 @@ public class LogicalDiskRest extends AssetBaseRest implements Serializable {
         this.fileSystemType = fileSystemType;
     }
 
-    public Long getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(Long size) {
+    public void setSize(long size) {
         this.size = size;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-        LogicalDiskRest that = (LogicalDiskRest) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description)
-                && Objects.equals(fileSystemType, that.fileSystemType) && Objects.equals(size, that.size);
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, fileSystemType, size);
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     @Override
     public String toString() {
-        return "LogicalDiskRest{" + "name='" + name + '\'' + ", description='" + description + '\''
-                + ", fileSystemType='" + fileSystemType + '\'' + ", size=" + size + '}';
+        return "LogicalDiskRest{" + "refId=" + refId + ", name='" + name + '\'' + ", description='" + description
+                + '\'' + ", fileSystemType='" + fileSystemType + '\'' + ", size=" + size + ", serialNumber='"
+                + serialNumber + '\'' + '}';
     }
 }

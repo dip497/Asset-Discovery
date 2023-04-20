@@ -5,11 +5,11 @@ import com.serviceops.assetdiscovery.rest.LogicalDiskRest;
 import java.util.List;
 
 public interface LogicalDiskService {
-    void save(Long id);
+    void save(long id);
 
-    void deleteById(Long id, Long aLong);
+    void deleteById(long id, long aLong);
 
-    void update(Long refId, Long id, LogicalDiskRest logicalDiskRest);
+    void update(long refId, long id, LogicalDiskRest logicalDiskRest);
 
-    List<LogicalDiskRest> getAllLogicalDisks(Long refId);
+    List<LogicalDiskRest> getAllLogicalDisks(long refId);
 }
