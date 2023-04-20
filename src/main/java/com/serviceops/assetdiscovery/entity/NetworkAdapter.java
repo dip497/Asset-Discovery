@@ -60,11 +60,6 @@ public class NetworkAdapter extends AssetBase {
 
     @Override
     public String toString() {
-        return "NetworkAdapter{" +
-                "macAddress='" + macAddress + '\'' +
-                ", description='" + description + '\'' +
-                ", ipAddress='" + ipAddress + '\'' +
-                ", ipSubnet='" + ipSubnet + '\'' +
-                '}';
+        return "NetworkAdapter{" + "macAddress='" + macAddress + '\'' + ", description='" + description + '\'' + ", ipAddress='" + ipAddress + '\'' + ", ipSubnet='" + ipSubnet + '\'' + '}';
     }
 }

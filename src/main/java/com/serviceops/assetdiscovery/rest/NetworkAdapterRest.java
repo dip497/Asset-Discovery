@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
     private String description;
-    @Pattern(regexp ="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$\n")
+    @Pattern(regexp = "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$\n")
     private String macAddress;
     @Pattern(regexp = "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$\n")
     private String ipAddress;

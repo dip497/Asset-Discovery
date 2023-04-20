@@ -6,9 +6,9 @@ import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
 public class ProcessorOps extends AssetBaseOps<Processor, ProcessorRest> {
     private final Processor processor;
-    private final ProcessorRest  processorRest;
+    private final ProcessorRest processorRest;
 
-    public ProcessorOps( Processor processor, ProcessorRest processorRest) {
+    public ProcessorOps(Processor processor, ProcessorRest processorRest) {
         super(processor, processorRest);
         this.processor = processor;
         this.processorRest = processorRest;

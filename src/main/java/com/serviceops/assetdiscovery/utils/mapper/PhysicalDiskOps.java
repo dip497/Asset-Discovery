@@ -14,7 +14,7 @@ public class PhysicalDiskOps extends AssetBaseOps<PhysicalDisk, PhysicalDiskRest
         this.physicalDiskRest = physicalDiskRest;
     }
 
-    public PhysicalDisk restToEntity(){
+    public PhysicalDisk restToEntity() {
         super.restToEntity(physicalDiskRest);
         physicalDisk.setRefId(physicalDiskRest.getRefId());
         physicalDisk.setDescription(physicalDiskRest.getDescription());
@@ -27,7 +27,7 @@ public class PhysicalDiskOps extends AssetBaseOps<PhysicalDisk, PhysicalDiskRest
         return physicalDisk;
     }
 
-    public PhysicalDiskRest entityToRest(){
+    public PhysicalDiskRest entityToRest() {
         super.entityToRest(physicalDisk);
         physicalDiskRest.setDescription(physicalDisk.getDescription());
         physicalDiskRest.setName(physicalDisk.getName());

@@ -33,17 +33,7 @@ public class Processor extends AssetBase {
 
     @Override
     public String toString() {
-        return "Processor{" +
-                "processorName='" + processorName + '\'' +
-                ", description='" + description + '\'' +
-                ", width='" + width + '\'' +
-                ", cpuSpeed=" + cpuSpeed +
-                ", coreCount=" + coreCount +
-                ", l1CacheSize=" + l1CacheSize +
-                ", l2CacheSize=" + l2CacheSize +
-                ", l3CacheSize=" + l3CacheSize +
-                ", family='" + family + '\'' +
-                '}';
+        return "Processor{" + "processorName='" + processorName + '\'' + ", description='" + description + '\'' + ", width='" + width + '\'' + ", cpuSpeed=" + cpuSpeed + ", coreCount=" + coreCount + ", l1CacheSize=" + l1CacheSize + ", l2CacheSize=" + l2CacheSize + ", l3CacheSize=" + l3CacheSize + ", family='" + family + '\'' + '}';
     }
 
     public String getProcessorName() {

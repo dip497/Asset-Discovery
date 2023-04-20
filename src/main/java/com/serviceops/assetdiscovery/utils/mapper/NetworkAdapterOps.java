@@ -13,6 +13,7 @@ public class NetworkAdapterOps extends AssetBaseOps<NetworkAdapter, NetworkAdapt
         this.networkAdapter = networkAdapter;
         this.networkAdapterRest = networkAdapterRest;
     }
+
     public NetworkAdapter restToEntity() {
         super.restToEntity(networkAdapterRest);
         networkAdapter.setDescription(networkAdapterRest.getDescription());

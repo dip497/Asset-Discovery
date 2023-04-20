@@ -26,9 +26,11 @@ public class PointingDevice extends AssetBase {
     public void setPointingType(String pointingType) {
         this.pointingType = pointingType;
     }
- public int getNumberOfButtons() {
+
+    public int getNumberOfButtons() {
         return numberOfButtons;
     }
+
     public void setNumberOfButtons(int numberOfButtons) {
         this.numberOfButtons = numberOfButtons;
     }
