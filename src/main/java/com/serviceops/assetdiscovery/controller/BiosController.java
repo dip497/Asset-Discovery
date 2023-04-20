@@ -18,7 +18,7 @@ import java.util.List;
 public class BiosController {
 
     private final BiosServiceImpl biosService;
-    Logger logger = LoggerFactory.getLogger(BiosController.class);
+    private static final Logger logger = LoggerFactory.getLogger(BiosController.class);
 
     public BiosController(BiosServiceImpl biosService) {
         this.biosService = biosService;
@@ -33,7 +33,7 @@ public class BiosController {
     }
 
     @DeleteMapping("/{refId}/bios")
-    public void delete(@PathVariable("refId") Long refId) {
+    public void delete(@PathVariable("refId") long refId) {
 
         logger.debug("Deleting Bios with Asset id -> {}", refId);
 

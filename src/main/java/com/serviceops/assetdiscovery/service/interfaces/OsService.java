@@ -6,12 +6,12 @@ import java.util.List;
 
 public interface OsService {
 
-    void save(Long refId);
+    void save(long refId);
 
-    List<OSRest> findByRefId(Long refId);
+    List<OSRest> findByRefId(long refId);
 
-    void deleteByRefId(Long refId);
+    void deleteByRefId(long refId);
 
-    void update(Long refId, OSRest osRest);
+    void update(long refId, OSRest osRest);
 
 }

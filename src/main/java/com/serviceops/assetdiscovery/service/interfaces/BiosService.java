@@ -9,10 +9,10 @@ public interface BiosService {
 
     void save(AssetRest assetRest);
 
-    List<BiosRest> findByRefId(Long refId);
+    List<BiosRest> findByRefId(long refId);
 
-    void deleteByRefId(Long refId);
+    void deleteByRefId(long refId);
 
-    void update(Long refId, BiosRest biosRest);
+    void update(long refId, BiosRest biosRest);
 
 }

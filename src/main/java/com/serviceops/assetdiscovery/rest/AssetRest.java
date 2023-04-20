@@ -82,31 +82,4 @@ public class AssetRest extends SingleBaseRest implements Serializable {
         this.subNetMask = subNetMask;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        AssetRest entity = (AssetRest) o;
-        return Objects.equals(this.hostName, entity.hostName) && Objects.equals(this.domainName,
-                entity.domainName) && Objects.equals(this.ipAddress, entity.ipAddress) && Objects.equals(
-                this.assetType, entity.assetType) && Objects.equals(this.serialNumber, entity.serialNumber)
-                && Objects.equals(this.macAddress, entity.macAddress) && Objects.equals(this.subNetMask,
-                entity.subNetMask);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(hostName, domainName, ipAddress, assetType, serialNumber, macAddress, subNetMask);
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "(" + "hostName = " + hostName + ", " + "domainName = "
-                + domainName + ", " + "ipAddress = " + ipAddress + ", " + "assetType = " + assetType + ", "
-                + "serialNumber = " + serialNumber + ", " + "macAddress = " + macAddress + ", "
-                + "subNetMask = " + subNetMask + ")";
-    }
 }

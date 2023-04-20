@@ -18,14 +18,14 @@ import java.util.List;
 public class OSController {
 
     private final OsServiceImpl osService;
-    Logger logger = LoggerFactory.getLogger(OSController.class);
+    private static final Logger logger = LoggerFactory.getLogger(OSController.class);
 
     public OSController(OsServiceImpl osService) {
         this.osService = osService;
     }
 
     @GetMapping(value = "/{refId}/os", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<OSRest> getByRefId(@PathVariable("refId") Long refId) {
+    public List<OSRest> getByRefId(@PathVariable("refId") long refId) {
 
         logger.debug("Fetching OS with Asset id -> {}", refId);
 
@@ -34,7 +34,7 @@ public class OSController {
     }
 
     @DeleteMapping("/{refId}/os")
-    public void delete(@PathVariable("refId") Long refId) {
+    public void delete(@PathVariable("refId") long refId) {
 
         logger.debug("Deleting Bios with Asset id -> {}", refId);
 

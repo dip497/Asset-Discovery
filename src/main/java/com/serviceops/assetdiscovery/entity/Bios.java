@@ -1,15 +1,42 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
 
-import java.util.Objects;
-
 @Entity
-public class Bios extends AssetBase {
+public class Bios extends SingleBase {
+
+    private long refId;
+    private String serialNumber;
+    private String manufacturer;
     private String smBiosVersion;
-    private Long releaseDate;
+    private long releaseDate;
     private String version;
+
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 
     public String getSmBiosVersion() {
         return smBiosVersion;
@@ -19,11 +46,11 @@ public class Bios extends AssetBase {
         this.smBiosVersion = smBiosVersion;
     }
 
-    public Long getReleaseDate() {
+    public long getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Long releaseDate) {
+    public void setReleaseDate(long releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -33,29 +60,5 @@ public class Bios extends AssetBase {
 
     public void setVersion(String version) {
         this.version = version;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-        Bios bios = (Bios) o;
-        return Objects.equals(smBiosVersion, bios.smBiosVersion) && Objects.equals(releaseDate,
-                bios.releaseDate) && Objects.equals(version, bios.version);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), smBiosVersion, releaseDate, version);
-    }
-
-    @Override
-    public String toString() {
-        return "Bios{" + ", smBiosVersion='" + smBiosVersion + '\'' + ", releaseDate=" + releaseDate
-                + ", version='" + version + '\'' + '}';
     }
 }

@@ -16,14 +16,14 @@ import java.util.List;
 public class HardwarePropertiesController {
 
     private final HardwarePropertiesService hardwarePropertiesService;
-    Logger logger = LoggerFactory.getLogger(HardwarePropertiesController.class);
+    private static final Logger logger = LoggerFactory.getLogger(HardwarePropertiesController.class);
 
     public HardwarePropertiesController(HardwarePropertiesService hardwarePropertiesService) {
         this.hardwarePropertiesService = hardwarePropertiesService;
     }
 
     @GetMapping(value = "/{refId}/hardwareProperties", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<HardwarePropertiesRest> findByRefId(@PathVariable("refId") Long refId) {
+    public List<HardwarePropertiesRest> findByRefId(@PathVariable("refId") long refId) {
 
         List<HardwarePropertiesRest> hardwarePropertiesRests = new ArrayList<>();
 

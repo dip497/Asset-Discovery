@@ -14,7 +14,7 @@ import java.util.Optional;
 public class HardwarePropertiesServiceImpl implements HardwarePropertiesService {
 
     CustomRepository customRepository;
-    Logger logger = LoggerFactory.getLogger(HardwarePropertiesServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(HardwarePropertiesServiceImpl.class);
 
     public HardwarePropertiesServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -22,7 +22,7 @@ public class HardwarePropertiesServiceImpl implements HardwarePropertiesService 
 
     // Finding the Hardware Properties for specific Asset
     @Override
-    public HardwarePropertiesRest findByRefId(Long refId) {
+    public HardwarePropertiesRest findByRefId(long refId) {
         Optional<Asset> optionalAsset = customRepository.findByColumn("id", refId, Asset.class);
         HardwarePropertiesRest hardwarePropertiesRest = new HardwarePropertiesRest();
 

@@ -4,6 +4,6 @@ import com.serviceops.assetdiscovery.rest.HardwarePropertiesRest;
 
 public interface HardwarePropertiesService {
 
-    HardwarePropertiesRest findByRefId(Long refId);
+    HardwarePropertiesRest findByRefId(long refId);
 
 }

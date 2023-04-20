@@ -25,7 +25,7 @@ public class BiosServiceImpl implements BiosService {
 
     CustomRepository customRepository;
 
-    Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BiosServiceImpl.class);
 
     public BiosServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -72,7 +72,7 @@ public class BiosServiceImpl implements BiosService {
 
     // Finding Bios by Ref ID
     @Override
-    public List<BiosRest> findByRefId(Long refId) {
+    public List<BiosRest> findByRefId(long refId) {
 
         Optional<Bios> optionalBios = customRepository.findByColumn("refId", refId, Bios.class);
 
@@ -95,7 +95,7 @@ public class BiosServiceImpl implements BiosService {
 
     // Deleting Asset by Ref ID
     @Override
-    public void deleteByRefId(Long refId) {
+    public void deleteByRefId(long refId) {
 
         // If Bios is present then move further to delete the Bios or else throw ResourceNotFoundException
         findByRefId(refId);
@@ -107,7 +107,7 @@ public class BiosServiceImpl implements BiosService {
     }
 
     // Updating Asset by ID
-    public void update(Long refId, BiosRest biosRest) {
+    public void update(long refId, BiosRest biosRest) {
 
         // If Bios is present then move further to update the Bios or else throw ResourceNotFoundException
         Optional<Bios> optionalBios = customRepository.findByColumn("refId", refId, Bios.class);
@@ -123,7 +123,7 @@ public class BiosServiceImpl implements BiosService {
         // If Bios not present then throw ResourceNotFoundException
         else {
             logger.error("Bios not found for Asset with ID ->{}", refId);
-            throw new ResourceNotFoundException("BiosRest", "refId", Long.toString(refId));
+            throw new ResourceNotFoundException("BiosRest", "refId", refId);
         }
     }
 

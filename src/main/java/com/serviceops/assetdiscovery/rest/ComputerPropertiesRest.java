@@ -1,12 +1,12 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.entity.enums.Architecture;
-import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
+import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
 
 import java.io.Serializable;
-import java.util.Objects;
 
-public class ComputerPropertiesRest extends AssetBaseRest implements Serializable {
+public class ComputerPropertiesRest extends SingleBaseRest implements Serializable {
+    private long refId;
     private String osName;
     private String osVersion;
     private String osManufacturer;
@@ -20,6 +20,13 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
     private long numberOfProcessors;
     private String lastLoggedInUser;
 
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
 
     public String getOsName() {
         return osName;
@@ -115,41 +122,5 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
 
     public void setLastLoggedInUser(String lastLoggedInUser) {
         this.lastLoggedInUser = lastLoggedInUser;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-        ComputerPropertiesRest that = (ComputerPropertiesRest) o;
-        return memorySize == that.memorySize && diskSize == that.diskSize && cpuSpeed == that.cpuSpeed
-                && cpuCoreCount == that.cpuCoreCount
-                && numberOfLogicalProcessors == that.numberOfLogicalProcessors && Objects.equals(osName,
-                that.osName) && Objects.equals(osVersion, that.osVersion) && Objects.equals(osManufacturer,
-                that.osManufacturer) && architecture == that.architecture && Objects.equals(bootUpState,
-                that.bootUpState) && Objects.equals(numberOfProcessors, that.numberOfProcessors)
-                && Objects.equals(lastLoggedInUser, that.lastLoggedInUser);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), osName, osVersion, osManufacturer, architecture, bootUpState,
-                memorySize, diskSize, cpuSpeed, cpuCoreCount, numberOfLogicalProcessors, numberOfProcessors,
-                lastLoggedInUser);
-    }
-
-    @Override
-    public String toString() {
-        return "ComputerPropertiesRest{" + "osName='" + osName + '\'' + ", osVersion='" + osVersion + '\''
-                + ", osManufacturer='" + osManufacturer + '\'' + ", architecture=" + architecture
-                + ", bootUpState='" + bootUpState + '\'' + ", memorySize=" + memorySize + ", diskSize="
-                + diskSize + ", cpuSpeed=" + cpuSpeed + ", cpuCoreCount=" + cpuCoreCount
-                + ", numberOfLogicalProcessors=" + numberOfLogicalProcessors + ", numberOfProcessors='"
-                + numberOfProcessors + '\'' + ", lastLoggedInUser='" + lastLoggedInUser + '\'' + '}';
     }
 }

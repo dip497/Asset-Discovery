@@ -1,18 +1,32 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import com.serviceops.assetdiscovery.entity.enums.Architecture;
 import jakarta.persistence.Entity;
 
-import java.util.Objects;
-
 @Entity
-public class OS extends AssetBase {
+public class OS extends SingleBase {
+    private long refId;
     private String osName;
     private String osVersion;
     private Architecture architecture;
-    private Long installedDate;
+    private long installedDate;
 
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
+
+    public Architecture getArchitecture() {
+        return architecture;
+    }
+
+    public void setArchitecture(Architecture architecture) {
+        this.architecture = architecture;
+    }
 
     public String getOsName() {
         return osName;
@@ -38,37 +52,13 @@ public class OS extends AssetBase {
         this.architecture = architecture;
     }
 
-    public Long getInstalledDate() {
+    public long getInstalledDate() {
         return installedDate;
     }
 
-    public void setInstalledDate(Long installedDate) {
+    public void setInstalledDate(long installedDate) {
         this.installedDate = installedDate;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-        OS os = (OS) o;
-        return Objects.equals(osName, os.osName) && Objects.equals(osVersion, os.osVersion)
-                && architecture == os.architecture && Objects.equals(installedDate, os.installedDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), osName, osVersion, architecture, installedDate);
-    }
-
-    @Override
-    public String toString() {
-        return "OS{" + "osName='" + osName + '\'' + ", osVersion='" + osVersion + '\'' + ", architecture="
-                + architecture + ", installedDate=" + installedDate + '}';
-    }
 
 }

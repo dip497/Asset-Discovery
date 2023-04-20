@@ -21,7 +21,7 @@ import java.util.Map;
 public class AssetController {
 
     private final AssetServiceImpl assetService;
-    Logger logger = LoggerFactory.getLogger(AssetController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AssetController.class);
 
     public AssetController(AssetServiceImpl assetService) {
         this.assetService = assetService;
@@ -48,7 +48,7 @@ public class AssetController {
     }
 
     @PatchMapping(value = "/asset/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+    public void update(@PathVariable long id, @RequestBody Map<String, Object> fields) {
 
         logger.debug("Updating Asset field -> {} for Asset id {}", fields, id);
 

@@ -22,7 +22,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
 
     private final RamServiceImpl ramService;
     CustomRepository customRepository;
-    Logger logger = LoggerFactory.getLogger(ComputerPropertiesServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ComputerPropertiesServiceImpl.class);
 
     public ComputerPropertiesServiceImpl(CustomRepository customRepository, RamServiceImpl ramService) {
         this.customRepository = customRepository;
@@ -30,7 +30,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
     }
 
     @Override
-    public List<ComputerPropertiesRest> findByRefId(Long refId) {
+    public List<ComputerPropertiesRest> findByRefId(long refId) {
 
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
         Optional<PhysicalDisk> optionalPhysicalDisk =

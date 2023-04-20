@@ -24,7 +24,7 @@ public class OsServiceImpl implements OsService {
 
     CustomRepository customRepository;
 
-    Logger logger = LoggerFactory.getLogger(OsServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(OsServiceImpl.class);
 
     public OsServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -32,7 +32,7 @@ public class OsServiceImpl implements OsService {
     }
 
     // Helps in Parsing the String date to Milliseconds
-    private static Long parseDate(String datetime) {
+    private static long parseDate(String datetime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS");
         LocalDateTime dateTime = LocalDateTime.parse(datetime, formatter);
         return dateTime.toInstant(java.time.ZoneOffset.UTC).toEpochMilli();
@@ -40,7 +40,7 @@ public class OsServiceImpl implements OsService {
 
     // Saving Bios in DB or Updating the details during Re-scan
     @Override
-    public void save(Long refId) {
+    public void save(long refId) {
 
         List<String> parseResult = getParseResult();
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
@@ -73,7 +73,7 @@ public class OsServiceImpl implements OsService {
 
     // Finding the OS by Ref ID
     @Override
-    public List<OSRest> findByRefId(Long refId) {
+    public List<OSRest> findByRefId(long refId) {
 
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
 
@@ -97,7 +97,7 @@ public class OsServiceImpl implements OsService {
 
     // Deleting the OS by Ref ID
     @Override
-    public void deleteByRefId(Long refId) {
+    public void deleteByRefId(long refId) {
 
         // Deleting the Os at given refId
         customRepository.deleteById(OS.class, refId, "refId");
@@ -107,7 +107,7 @@ public class OsServiceImpl implements OsService {
 
     // Updating the data for OS
     @Override
-    public void update(Long refId, OSRest osRest) {
+    public void update(long refId, OSRest osRest) {
 
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
 

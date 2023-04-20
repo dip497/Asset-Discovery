@@ -15,7 +15,7 @@ import java.util.List;
 public class ComputerPropertiesController {
 
     private final ComputerPropertiesService computerPropertiesService;
-    Logger logger = LoggerFactory.getLogger(ComputerPropertiesController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ComputerPropertiesController.class);
 
     public ComputerPropertiesController(ComputerPropertiesService computerPropertiesService) {
         this.computerPropertiesService = computerPropertiesService;
@@ -23,7 +23,7 @@ public class ComputerPropertiesController {
 
 
     @GetMapping(value = "/{refId}/computerProperties", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ComputerPropertiesRest> findByRefId(@PathVariable("refId") Long refId) {
+    public List<ComputerPropertiesRest> findByRefId(@PathVariable("refId") long refId) {
 
         logger.debug("Fetching Computer Properties with Asset Id ->{}", refId);
 

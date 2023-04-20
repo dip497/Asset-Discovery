@@ -11,14 +11,14 @@ public interface AssetService {
 
     AssetRest findByIpAddress(String ipAddress);
 
-    AssetRest findById(Long id);
+    AssetRest findById(long id);
 
     AllAssetRest findPaginatedData(int pageNo, int pageSize, String sortBy, String sortDir);
 
     int findTotalCount();
 
-    void deleteById(Long id);
+    void deleteById(long id);
 
-    void update(Long id, Map<String, Object> fields);
+    void update(long id, Map<String, Object> fields);
 
 }

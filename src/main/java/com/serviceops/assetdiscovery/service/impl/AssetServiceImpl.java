@@ -28,7 +28,7 @@ import java.util.Optional;
 public class AssetServiceImpl implements AssetService {
 
     CustomRepository customRepository;
-    Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
 
     public AssetServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -95,16 +95,16 @@ public class AssetServiceImpl implements AssetService {
         // if optionalAsset is not present then throw ResourceNotFoundException
         else {
             logger.error("Asset not found by IP ->{}", ipAddress);
-            throw new ResourceNotFoundException("AssetRest", "ipAddress", ipAddress);
+            throw new ResourceNotFoundException("AssetRest", "id", 0);
         }
 
     }
 
     // Finding Asset by ID
     @Override
-    public AssetRest findById(Long id) {
+    public AssetRest findById(long id) {
 
-        Optional<Asset> optionalAsset = customRepository.findByColumn("id", id.toString(), Asset.class);
+        Optional<Asset> optionalAsset = customRepository.findByColumn("id", id, Asset.class);
 
         // If optionalAsset is present then return the AssetRest
         if (optionalAsset.isPresent()) {
@@ -117,7 +117,7 @@ public class AssetServiceImpl implements AssetService {
         // If optionalAsset is not present then throw ResourceNotFoundException
         else {
             logger.error("Asset not found by ID ->{}", id);
-            throw new ResourceNotFoundException("AssetRest", "id", Long.toString(id));
+            throw new ResourceNotFoundException("AssetRest", "id", id);
         }
 
     }
@@ -169,7 +169,7 @@ public class AssetServiceImpl implements AssetService {
 
     // Deleting Asset by Id
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(long id) {
 
         // If Asset is present then move further to delete the Asset or else throw ResourceNotFoundException
         findById(id);
@@ -183,9 +183,9 @@ public class AssetServiceImpl implements AssetService {
 
     // Updating a particular field for Asset
     @Override
-    public void update(Long id, Map<String, Object> fields) {
+    public void update(long id, Map<String, Object> fields) {
 
-        Optional<Asset> optionalAsset = customRepository.findByColumn("id", id.toString(), Asset.class);
+        Optional<Asset> optionalAsset = customRepository.findByColumn("id", id, Asset.class);
 
         if (optionalAsset.isPresent()) {
 
@@ -194,7 +194,6 @@ public class AssetServiceImpl implements AssetService {
             // Fetching the filed from the Asset table using the concept of Reflection
             fields.forEach((key, value) -> {
                 Field field = ReflectionUtils.findRequiredField(Asset.class, key);
-                field.setAccessible(true);
                 ReflectionUtils.setField(field, asset, value);
             });
 
@@ -208,7 +207,7 @@ public class AssetServiceImpl implements AssetService {
         // If Asset is not present then throw ResourceNotFoundException
         else {
             logger.error("Asset not found by ID ->{}", id);
-            throw new ResourceNotFoundException("AssetRest", "id", Long.toString(id));
+            throw new ResourceNotFoundException("AssetRest", "id", id);
         }
 
     }
