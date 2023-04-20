@@ -44,14 +44,6 @@ public class OS extends SingleBase {
         this.osVersion = osVersion;
     }
 
-    public Architecture getOsArchitecture() {
-        return architecture;
-    }
-
-    public void setOsArchitecture(Architecture architecture) {
-        this.architecture = architecture;
-    }
-
     public long getInstalledDate() {
         return installedDate;
     }

@@ -58,8 +58,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
             OS os = optionalOS.get();
             computerPropertiesRest.setOsName(os.getOsName());
             computerPropertiesRest.setOsVersion(os.getOsVersion());
-            computerPropertiesRest.setOsManufacturer(os.getManufacturer());
-            computerPropertiesRest.setArchitecture(os.getOsArchitecture());
+            computerPropertiesRest.setArchitecture(os.getArchitecture());
         }
 
         if (optionalPhysicalDisk.isPresent()) {

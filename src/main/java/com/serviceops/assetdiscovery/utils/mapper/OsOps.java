@@ -3,8 +3,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 import com.serviceops.assetdiscovery.entity.OS;
 import com.serviceops.assetdiscovery.rest.OSRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
-public class OsOps extends AssetBaseOps<OS, OSRest> {
+public class OsOps extends SingleBaseOps<OS, OSRest> {
 
     private final OS os;
     private final OSRest osRest;
@@ -17,20 +18,20 @@ public class OsOps extends AssetBaseOps<OS, OSRest> {
 
     public OS restToEntity() {
         super.restToEntity(osRest);
+        os.setRefId(osRest.getRefId());
         os.setOsName(osRest.getOsName());
         os.setOsVersion(osRest.getOsVersion());
-        os.setOsArchitecture(osRest.getOsArchitecture());
-        os.setManufacturer(osRest.getManufacturer());
+        os.setArchitecture(osRest.getArchitecture());
         os.setInstalledDate(osRest.getInstalledDate());
         return os;
     }
 
     public OSRest entityToRest() {
         super.entityToRest(os);
+        osRest.setRefId(os.getRefId());
         osRest.setOsName(os.getOsName());
         osRest.setOsVersion(os.getOsVersion());
-        osRest.setManufacturer(os.getManufacturer());
-        osRest.setOsArchitecture(os.getOsArchitecture());
+        osRest.setArchitecture(os.getArchitecture());
         osRest.setInstalledDate(os.getInstalledDate());
         return osRest;
     }

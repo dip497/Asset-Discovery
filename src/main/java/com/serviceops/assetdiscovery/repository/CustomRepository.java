@@ -86,12 +86,12 @@ public class CustomRepository {
     }
 
     @Transactional
-    public <T> void deleteById(final Class<T> clazz, Long id, String columnName) {
+    public <T> boolean deleteById(final Class<T> clazz, Long id, String columnName) {
         CriteriaDelete<T> query = criteriaBuilder.createCriteriaDelete(clazz);
         Root<T> from = query.from(clazz);
         query.where(criteriaBuilder.equal(from.get(columnName),
                 criteriaBuilder.parameter(Long.class, columnName)));
-        em.createQuery(query).setParameter(columnName, id).executeUpdate();
+        return (em.createQuery(query).setParameter(columnName, id).executeUpdate()) != 0;
     }
 
     public <T> List<T> findPaginatedData(Pageable pageable, String sortBy, String sortDir, Class<T> clazz) {
