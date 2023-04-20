@@ -77,16 +77,21 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
 
     private void setData(Processor processor) {
-        processor.setL2CacheSize(convertToBaseUnit(getParseResult().get(0)));
-        processor.setL3CacheSize(convertToBaseUnit(getParseResult().get(1)));
-        processor.setManufacturer(getParseResult().get(2));
-        processor.setFamily(convertToBaseUnit(getParseResult().get(3)));
-        processor.setWidth(getParseResult().get(4));
-        processor.setCpuSpeed(convertToBaseUnit(getParseResult().get(5)));
-        processor.setCoreCount(convertToBaseUnit(getParseResult().get(6)));
-        processor.setL1CacheSize(!getParseResult().get(8).isEmpty() ? convertToBaseUnit(getParseResult().get(8)) : convertToBaseUnit(getParseResult().get(9)));
-        processor.setProcessorName(getParseResult().get(10).substring(getParseResult().get(10).indexOf(": ") + 2).trim());
-        customRepository.save(processor);
+        try{
+            processor.setL2CacheSize(convertToBaseUnit(getParseResult().get(0)));
+            processor.setL3CacheSize(convertToBaseUnit(getParseResult().get(1)));
+            processor.setManufacturer(getParseResult().get(2));
+            processor.setFamily(convertToBaseUnit(getParseResult().get(3)));
+            processor.setWidth(getParseResult().get(4));
+            processor.setCpuSpeed(convertToBaseUnit(getParseResult().get(5)));
+            processor.setCoreCount(convertToBaseUnit(getParseResult().get(6)));
+            processor.setL1CacheSize(!getParseResult().get(8).isEmpty() ? convertToBaseUnit(getParseResult().get(8)) : convertToBaseUnit(getParseResult().get(9)));
+            processor.setProcessorName(getParseResult().get(10).substring(getParseResult().get(10).indexOf(": ") + 2).trim());
+            customRepository.save(processor);
+        } catch (IndexOutOfBoundsException e){
+            logger.error("index out of bound exception in Processor with id -->{}", processor.getId());
+            customRepository.save(processor);
+        }
     }
 
     private long convertToBaseUnit(String Data) {

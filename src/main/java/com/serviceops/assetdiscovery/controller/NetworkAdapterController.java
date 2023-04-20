@@ -18,22 +18,22 @@ public class NetworkAdapterController {
         this.networkAdapterService = networkAdapterService;
     }
 
-    @GetMapping(value = "/{refId}/networkAdapter",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{refId}/networkAdapter", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<NetworkAdapterRest> getNetworkAdapterList(@PathVariable("refId") long refId) {
         List<NetworkAdapterRest> networkAdapterRestList = networkAdapterService.findByRefId(refId);
-        logger.debug("Finding NetworkAdapter with id --> {}",refId);
+        logger.debug("Finding NetworkAdapter with id --> {}", refId);
         return networkAdapterRestList;
     }
 
-    @DeleteMapping(value = "/{refId}/networkAdapter", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public void deleteNetworkAdapter(@PathVariable("refId") long refId){
-        logger.debug("Deleting NetworkAdapter with Asset id -> {}",refId);
-        networkAdapterService.delete(refId);
+    @DeleteMapping(value = "/{refId}/networkAdapter/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public void deleteNetworkAdapter(@PathVariable("refId") long refId, @PathVariable("id") Long id) {
+        logger.debug("Deleting NetworkAdapter with Asset id -> {}", refId);
+        networkAdapterService.delete(refId, id);
     }
 
-    @PutMapping(value = "/{refId}/networkAdapter", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateNetworkAdapter(@PathVariable("refId") long refId,@RequestBody NetworkAdapterRest networkAdapterRest){
-        logger.debug("Updating NetworkAdapter with Asset id -> {}",refId);
-        networkAdapterService.update(networkAdapterRest);
+    @PutMapping(value = "/{refId}/networkAdapter/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateNetworkAdapter(@PathVariable("refId") long refId, @RequestBody NetworkAdapterRest networkAdapterRest, @PathVariable long id) {
+        logger.debug("Updating NetworkAdapter with Asset id -> {}", refId);
+        networkAdapterService.update(networkAdapterRest, refId, id);
     }
 }

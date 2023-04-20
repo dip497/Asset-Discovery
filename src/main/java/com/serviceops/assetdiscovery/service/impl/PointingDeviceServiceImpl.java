@@ -155,31 +155,39 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
     @Override
     public List<PointingDeviceRest> getPointingDevices(Long refId) {
         List<PointingDevice> pointingDevices = customRepository.findAllByColumnName(PointingDevice.class, "refId", refId);
-        List<PointingDeviceRest> pointingDeviceRestList = new ArrayList<>();
         if (!pointingDevices.isEmpty()) {
-            for (PointingDevice pointingDevice : pointingDevices) {
-                PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, new PointingDeviceRest());
-                pointingDeviceRestList.add(pointingDeviceOps.entityToRest());
-                logger.info("Fetched pointing device with id: --> {}", refId);
+            List<PointingDeviceRest> pointingDeviceRestList = new ArrayList<>();
+            if (!pointingDevices.isEmpty()) {
+                for (PointingDevice pointingDevice : pointingDevices) {
+                    PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, new PointingDeviceRest());
+                    pointingDeviceRestList.add(pointingDeviceOps.entityToRest());
+                    logger.info("Fetched pointing device with id: --> {}", refId);
+                }
+            } else {
+                logger.info("Could not found pointing device with id: --> {}", refId);
+                pointingDeviceRestList.add(new PointingDeviceRest());
             }
-        } else {
-            logger.info("Could not found pointing device with id: --> {}", refId);
-            pointingDeviceRestList.add(new PointingDeviceRest());
+            return pointingDeviceRestList;
         }
-        return pointingDeviceRestList;
+        return List.of();
     }
 
     private void savePointingDevice(Long refId) {
         for (String[] updatePointIngDevice : getParsedResults()) {
             PointingDevice pointingDevice = new PointingDevice();
             pointingDevice.setRefId(refId);
-            pointingDevice.setNumberOfButtons(Integer.parseInt(updatePointIngDevice[1].trim()));
-            pointingDevice.setPointingType(updatePointIngDevice[2]);
-            pointingDevice.setDescription(updatePointIngDevice[3]);
-            pointingDevice.setManufacturer(updatePointIngDevice[4]);
+            try{
 
-            logger.info("Saved pointing device with id: --> {}", refId);
-            customRepository.save(pointingDevice);
+                pointingDevice.setNumberOfButtons(Integer.parseInt(updatePointIngDevice[1].trim()));
+                pointingDevice.setPointingType(updatePointIngDevice[2]);
+                pointingDevice.setDescription(updatePointIngDevice[3]);
+                pointingDevice.setManufacturer(updatePointIngDevice[4]);
+
+                logger.info("Saved pointing device with id: --> {}", refId);
+                customRepository.save(pointingDevice);
+            } catch (IndexOutOfBoundsException e){
+                customRepository.save(pointingDevice);
+            }
         }
     }
 }
