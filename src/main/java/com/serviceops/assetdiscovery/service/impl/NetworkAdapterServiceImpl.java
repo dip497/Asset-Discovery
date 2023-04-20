@@ -1,7 +1,6 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.NetworkAdapter;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.NetworkAdapterRest;
 import com.serviceops.assetdiscovery.service.interfaces.NetworkAdapterService;
@@ -182,21 +181,21 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
 
 
     @Override
-    public void update(NetworkAdapterRest networkAdapterRest, long id, long refId) {
-        Optional<NetworkAdapter> optionalNetworkAdapter = customRepository.findByColumn("refId", networkAdapterRest.getRefId(), NetworkAdapter.class);
-        if (optionalNetworkAdapter.isPresent()) {
-            Optional<NetworkAdapter> fetchNetworkAdapter = customRepository.findByColumn("id", id, NetworkAdapter.class);
-            if (fetchNetworkAdapter.isEmpty()) {
-                logger.info("Could not found NetworkAdapter with id : --> {}", networkAdapterRest.getRefId());
-            } else {
+    public void update(NetworkAdapterRest networkAdapterRest, long refId, long id) {
 
-                NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps(fetchNetworkAdapter.get(), networkAdapterRest);
-                customRepository.save(networkAdapterOps.restToEntity());
-                logger.info("NetworkAdapter Updated with Asset Id ->{}", networkAdapterRest.getRefId());
-            }
+        Map<String,Long> fields = new HashMap<>();
+        fields.put("id",id);
+        fields.put("refId",refId);
+
+        List<NetworkAdapter> networkAdapters = customRepository.findByColumns(fields, NetworkAdapter.class);
+        System.out.println(networkAdapters);
+
+        if (networkAdapters.isEmpty()) {
+            logger.info("Could not found NetworkAdapter with id --> {} and refId -> {} ", id, refId);
         } else {
-            logger.info("Could not found NetworkAdapter with refId : --> {}", refId);
-            throw new ResourceNotFoundException("No Network adapter found with refId --> {}", "refId", String.valueOf(networkAdapterRest.getRefId()));
+            NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps(networkAdapters.get(0), networkAdapterRest);
+            customRepository.save(networkAdapterOps.restToEntity());
+            logger.info("NetworkAdapter Updated with Asset Id ->{}", networkAdapterRest.getRefId());
         }
     }
 

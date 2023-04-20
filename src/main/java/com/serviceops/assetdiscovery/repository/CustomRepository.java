@@ -13,7 +13,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -44,13 +46,17 @@ public class CustomRepository {
         }
     }
 
-    public <F, T> List<T> findByColumns(List<String> column, List<F> value, Class<T> clazz) {
+    public <F, T> List<T> findByColumns(Map<String,F> data, Class<T> clazz) {
         CriteriaQuery<T> cq = criteriaBuilder.createQuery(clazz);
         Root<T> root = cq.from(clazz);
-        Predicate[] predicates = new Predicate[column.size()];
-        for (int i = 0; i < column.size(); ++i) {
-            predicates[i] = criteriaBuilder.equal(root.get(column.get(i)), value.get(i));
+        Predicate[] predicates = new Predicate[data.size()];
+        int count=0;
+
+        for (String key : data.keySet()) {
+            predicates[count] = criteriaBuilder.equal(root.get(key), data.get(key));
+            count++;
         }
+
         cq.select(root).where(predicates);
         return em.createQuery(cq).getResultList();
     }
@@ -70,13 +76,13 @@ public class CustomRepository {
     }
 
     @Transactional
-    public <T> void save(T t) {
+    public <T> T save(T t) {
         if (em.contains(t)) {
-            em.merge(t);  // update if already managed
+           return em.merge(t);
         } else {
-            em.persist(t); // insert if not managed
+            em.persist(t);
+            return t;
         }
-        em.flush();
     }
 
     @Transactional
