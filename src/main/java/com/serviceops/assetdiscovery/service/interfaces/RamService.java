@@ -5,13 +5,13 @@ import com.serviceops.assetdiscovery.rest.RamRest;
 import java.util.List;
 
 public interface RamService {
-    void save(Long id);
+    void save(long id);
 
-    RamRest findByRefId(Long refId);
+    RamRest findByRefId(long refId);
 
-    List<RamRest> findAllByRefId(Long refId);
+    List<RamRest> findAllByRefId(long refId);
 
-    void deleteById(Long refId, Long id);
+    void deleteById(long refId, long id);
 
-    void update(Long refId, Long id, RamRest ramRest);
+    void update(long refId, long id, RamRest ramRest);
 }

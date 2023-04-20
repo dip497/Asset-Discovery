@@ -44,7 +44,7 @@ public class AuthenticationService {
             return new AuthenticationResponse(jwtToken, user.getEmail(), user.getName());
 
         } else
-            throw new ResourceAlreadyExistsException("User", "Email", user.getEmail());
+            throw new ResourceAlreadyExistsException("User", "Email", user.getId());
 
     }
 

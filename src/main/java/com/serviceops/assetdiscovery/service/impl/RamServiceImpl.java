@@ -78,7 +78,7 @@ public class RamServiceImpl implements RamService {
             logger.info("Ram fetched with Asset Id ->{}", refId);
             return ramOps.entityToRest();
         } else {
-            throw new ResourceNotFoundException("Ram", "refId", long.toString(refId));
+            throw new ResourceNotFoundException("Ram", "refId",refId);
         }
 
     }
@@ -98,14 +98,14 @@ public class RamServiceImpl implements RamService {
     public void deleteById(long refId, long id) {
         List<Ram> ramList = customRepository.findAllByColumnName(Ram.class, "refId", refId);
         if (ramList.isEmpty()) {
-            throw new ResourceNotFoundException("Ram", "refId", refId.toString());
+            throw new ResourceNotFoundException("Ram", "refId", refId);
         } else {
             Optional<Ram> fetchRam = customRepository.findByColumn("id", id, Ram.class);
             if (fetchRam.isPresent()) {
                 customRepository.deleteById(Ram.class, id, "id");
                 logger.info("Ram deleted of  Id ->{}", id);
             } else {
-                throw new ResourceNotFoundException("Ram", "Id", id.toString());
+                throw new ResourceNotFoundException("Ram", "Id", id);
 
             }
         }

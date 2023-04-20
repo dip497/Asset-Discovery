@@ -29,7 +29,7 @@ public class CredentialsServiceImpl implements CredentialsService {
         if (customRepository.findByColumn("id", credentialsRest.getId(), Credentials.class).isPresent()) {
             logger.error("Credentials already exists with id -> {} ", credentialsRest.getId());
             throw new ResourceAlreadyExistsException(this.getClass().getSimpleName(), "id",
-                    String.valueOf(credentialsRest.getId()));
+                    credentialsRest.getId());
         } else {
             Credentials credential = new Credentials();
             credentialsRest.setPassword(PasswordEncoderSSH.encryptPassword(credentialsRest.getPassword()));
@@ -57,7 +57,7 @@ public class CredentialsServiceImpl implements CredentialsService {
             return new CredentialsOps(fetchCredentials.get(), new CredentialsRest()).entityToRest();
 
         } else {
-            throw new ResourceNotFoundException("Credentials", "id", Long.toString(id));
+            throw new ResourceNotFoundException("Credentials", "id", id);
 
         }
     }
@@ -74,7 +74,7 @@ public class CredentialsServiceImpl implements CredentialsService {
     public void update(Long id, CredentialsRest credentialsRest) {
         Optional<Credentials> fetchCredential = customRepository.findByColumn("id", id, Credentials.class);
         if (fetchCredential.isEmpty()) {
-            throw new ResourceNotFoundException("Credentials", "id", id.toString());
+            throw new ResourceNotFoundException("Credentials", "id", id);
         } else {
             Credentials credential = fetchCredential.get();
             credentialsRest.setPassword(PasswordEncoderSSH.encryptPassword(credentialsRest.getPassword()));

@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface SchedulersService {
 
-    void save(Long networkScanId, SchedulerRest schedulerRest);
+    void save(long networkScanId, SchedulerRest schedulerRest);
 
-    void update(Long networkScanId, Long id, SchedulerRest schedulerRest);
+    void update(long networkScanId, long id, SchedulerRest schedulerRest);
 
-    SchedulerRest findByNetworkScanId(Long networkScanId);
+    SchedulerRest findByNetworkScanId(long networkScanId);
 
     List<SchedulerRest> findAll();
 
-    void deleteByNetworkScanId(Long id);
+    void deleteByNetworkScanId(long id);
 }

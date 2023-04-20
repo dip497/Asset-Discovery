@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ResourceAlreadyExistsException extends RuntimeException {
     private final String resourceName;
     private final String fieldName;
-    private final String fieldValue;
+    private final long fieldValue;
 
-    public ResourceAlreadyExistsException(String resourceName, String fieldName, String fieldValue) {
+    public ResourceAlreadyExistsException(String resourceName, String fieldName, long fieldValue) {
         super(String.format("%s already found with %s : %s", resourceName, fieldName,
                 fieldValue));
         this.resourceName = resourceName;
@@ -25,7 +25,7 @@ public class ResourceAlreadyExistsException extends RuntimeException {
         return fieldName;
     }
 
-    public String getFieldValue() {
+    public long getFieldValue() {
         return fieldValue;
     }
 

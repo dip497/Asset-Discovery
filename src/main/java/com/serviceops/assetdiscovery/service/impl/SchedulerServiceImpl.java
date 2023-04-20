@@ -29,18 +29,18 @@ public class SchedulerServiceImpl implements SchedulersService {
     }
 
     @Override
-    public void save(Long networkScanId, SchedulerRest schedulerRest) {
+    public void save(long networkScanId, SchedulerRest schedulerRest) {
         Optional<NetworkScan> networkScan =
                 customRepository.findByColumn("id", networkScanId, NetworkScan.class);
         if(networkScan.isEmpty()){
             logger.error("network Scan not exists with id -> {}", networkScanId);
-            throw  new ResourceNotFoundException("NetworkScan", "id",networkScanId.toString());
+            throw  new ResourceNotFoundException("NetworkScan", "id",networkScanId);
         }else{
             Optional<Schedulers> fetchScheduler =
                     customRepository.findByColumn("networkScanId", networkScanId, Schedulers.class);
             if (fetchScheduler.isPresent()) {
                 logger.error("Scheduler already exists with networkScanId -> {} ", networkScanId);
-                throw new ResourceAlreadyExistsException("Scheduler", "networkScanId", networkScanId.toString());
+                throw new ResourceAlreadyExistsException("Scheduler", "networkScanId", networkScanId);
 
             } else {
                 Schedulers schedulers = new Schedulers();
@@ -62,12 +62,12 @@ public class SchedulerServiceImpl implements SchedulersService {
 
     }
 
-    public void update(Long networkScanId, Long id, SchedulerRest schedulerRest) {
+    public void update(long networkScanId, long id, SchedulerRest schedulerRest) {
         Optional<Schedulers> fetchSchedulers =
                 customRepository.findByColumn("networkScanId", networkScanId, Schedulers.class);
         if (fetchSchedulers.isEmpty()) {
             logger.error("Scheduler not exist with networkScanId -> {} ", networkScanId);
-            throw new ResourceNotFoundException("Scheduler", "networkScanId", networkScanId.toString());
+            throw new ResourceNotFoundException("Scheduler", "networkScanId", networkScanId);
         } else {
             Schedulers schedulers = fetchSchedulers.get();
             schedulers = new SchedulerOps(schedulers, schedulerRest).restToEntity();
@@ -79,7 +79,7 @@ public class SchedulerServiceImpl implements SchedulersService {
     }
 
     @Override
-    public SchedulerRest findByNetworkScanId(Long networkScanId) {
+    public SchedulerRest findByNetworkScanId(long networkScanId) {
         Optional<Schedulers> fetchScheduler =
                 customRepository.findByColumn("networkScanId", networkScanId, Schedulers.class);
         if (fetchScheduler.isPresent()) {
@@ -89,7 +89,7 @@ public class SchedulerServiceImpl implements SchedulersService {
             return schedulerRest;
         } else {
             logger.error("Scheduler not exist with networkScanId -> {} ", networkScanId);
-            throw new ResourceNotFoundException("Scheduler", "networkScanId", networkScanId.toString());
+            throw new ResourceNotFoundException("Scheduler", "networkScanId", networkScanId);
         }
     }
 
@@ -101,7 +101,7 @@ public class SchedulerServiceImpl implements SchedulersService {
     }
 
     @Override
-    public void deleteByNetworkScanId(Long networkScanId) {
+    public void deleteByNetworkScanId(long networkScanId) {
         Optional<Schedulers> scheduler =
                 customRepository.findByColumn("networkScanId", networkScanId, Schedulers.class);
         if(scheduler.isPresent()){
