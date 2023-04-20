@@ -5,7 +5,10 @@ import com.serviceops.assetdiscovery.service.interfaces.ComputerPropertiesServic
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
 @RestController
@@ -19,10 +22,10 @@ public class ComputerPropertiesController {
     }
 
 
-    @GetMapping(value = "/{refId}/computerProperties",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ComputerPropertiesRest> findByRefId(@PathVariable("refId")Long refId){
+    @GetMapping(value = "/{refId}/computerProperties", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ComputerPropertiesRest> findByRefId(@PathVariable("refId") Long refId) {
 
-        logger.debug("Fetching Computer Properties with Asset Id ->{}",refId);
+        logger.debug("Fetching Computer Properties with Asset Id ->{}", refId);
 
         return computerPropertiesService.findByRefId(refId);
 

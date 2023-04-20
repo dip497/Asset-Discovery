@@ -2,6 +2,7 @@ package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.entity.enums.Architecture;
 import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -50,11 +51,15 @@ public class OSRest extends AssetBaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         OSRest osRest = (OSRest) o;
-        return Objects.equals(osName, osRest.osName) && Objects.equals(osVersion, osRest.osVersion) && architecture == osRest.architecture && Objects.equals(installedDate, osRest.installedDate);
+        return Objects.equals(osName, osRest.osName) && Objects.equals(osVersion, osRest.osVersion)
+                && architecture == osRest.architecture && Objects.equals(installedDate, osRest.installedDate);
     }
 
     @Override
@@ -64,12 +69,8 @@ public class OSRest extends AssetBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "OSRest{" +
-                "osName='" + osName + '\'' +
-                ", osVersion='" + osVersion + '\'' +
-                ", architecture=" + architecture +
-                ", installedDate=" + installedDate +
-                '}';
+        return "OSRest{" + "osName='" + osName + '\'' + ", osVersion='" + osVersion + '\'' + ", architecture="
+                + architecture + ", installedDate=" + installedDate + '}';
     }
 }
 

@@ -3,7 +3,6 @@ package com.serviceops.assetdiscovery.rest;
 import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
 
 import java.io.Serializable;
-import java.net.InetAddress;
 import java.util.Objects;
 
 /**
@@ -86,16 +85,16 @@ public class AssetRest extends SingleBaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         AssetRest entity = (AssetRest) o;
-        return Objects.equals(this.hostName, entity.hostName) &&
-                Objects.equals(this.domainName, entity.domainName) &&
-                Objects.equals(this.ipAddress, entity.ipAddress) &&
-                Objects.equals(this.assetType, entity.assetType) &&
-                Objects.equals(this.serialNumber, entity.serialNumber) &&
-                Objects.equals(this.macAddress, entity.macAddress) &&
-                Objects.equals(this.subNetMask, entity.subNetMask);
+        return Objects.equals(this.hostName, entity.hostName) && Objects.equals(this.domainName,
+                entity.domainName) && Objects.equals(this.ipAddress, entity.ipAddress) && Objects.equals(
+                this.assetType, entity.assetType) && Objects.equals(this.serialNumber, entity.serialNumber)
+                && Objects.equals(this.macAddress, entity.macAddress) && Objects.equals(this.subNetMask,
+                entity.subNetMask);
     }
 
     @Override
@@ -105,13 +104,9 @@ public class AssetRest extends SingleBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "hostName = " + hostName + ", " +
-                "domainName = " + domainName + ", " +
-                "ipAddress = " + ipAddress + ", " +
-                "assetType = " + assetType + ", " +
-                "serialNumber = " + serialNumber + ", " +
-                "macAddress = " + macAddress + ", " +
-                "subNetMask = " + subNetMask + ")";
+        return getClass().getSimpleName() + "(" + "hostName = " + hostName + ", " + "domainName = "
+                + domainName + ", " + "ipAddress = " + ipAddress + ", " + "assetType = " + assetType + ", "
+                + "serialNumber = " + serialNumber + ", " + "macAddress = " + macAddress + ", "
+                + "subNetMask = " + subNetMask + ")";
     }
 }

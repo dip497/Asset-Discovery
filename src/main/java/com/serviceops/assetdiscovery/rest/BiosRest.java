@@ -9,9 +9,9 @@ import java.util.Objects;
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Bios} entity
  */
 public class BiosRest extends AssetBaseRest implements Serializable {
-    private  String smBiosVersion;
-    private  Long releaseDate;
-    private  String version;
+    private String smBiosVersion;
+    private Long releaseDate;
+    private String version;
 
     public String getSmBiosVersion() {
         return smBiosVersion;
@@ -39,11 +39,15 @@ public class BiosRest extends AssetBaseRest implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         BiosRest biosRest = (BiosRest) o;
-        return Objects.equals(smBiosVersion, biosRest.smBiosVersion) && Objects.equals(releaseDate, biosRest.releaseDate) && Objects.equals(version, biosRest.version);
+        return Objects.equals(smBiosVersion, biosRest.smBiosVersion) && Objects.equals(releaseDate,
+                biosRest.releaseDate) && Objects.equals(version, biosRest.version);
     }
 
     @Override
@@ -53,10 +57,7 @@ public class BiosRest extends AssetBaseRest implements Serializable {
 
     @Override
     public String toString() {
-        return "BiosRest{" +
-                "smBiosVersion='" + smBiosVersion + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", version='" + version + '\'' +
-                '}';
+        return "BiosRest{" + "smBiosVersion='" + smBiosVersion + '\'' + ", releaseDate=" + releaseDate
+                + ", version='" + version + '\'' + '}';
     }
 }

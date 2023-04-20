@@ -7,18 +7,18 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class ComputerPropertiesRest extends AssetBaseRest implements Serializable {
-    private  String osName;
-    private  String osVersion;
-    private  String osManufacturer;
+    private String osName;
+    private String osVersion;
+    private String osManufacturer;
     private Architecture architecture;
-    private  String bootUpState;
-    private  long memorySize;
-    private  long diskSize;
-    private  long cpuSpeed;
-    private  long cpuCoreCount;
-    private  long numberOfLogicalProcessors;
-    private  long numberOfProcessors;
-    private  String lastLoggedInUser;
+    private String bootUpState;
+    private long memorySize;
+    private long diskSize;
+    private long cpuSpeed;
+    private long cpuCoreCount;
+    private long numberOfLogicalProcessors;
+    private long numberOfProcessors;
+    private String lastLoggedInUser;
 
 
     public String getOsName() {
@@ -120,33 +120,36 @@ public class ComputerPropertiesRest extends AssetBaseRest implements Serializabl
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         ComputerPropertiesRest that = (ComputerPropertiesRest) o;
-        return memorySize == that.memorySize && diskSize == that.diskSize && cpuSpeed == that.cpuSpeed && cpuCoreCount == that.cpuCoreCount && numberOfLogicalProcessors == that.numberOfLogicalProcessors && Objects.equals(osName, that.osName) && Objects.equals(osVersion, that.osVersion) && Objects.equals(osManufacturer, that.osManufacturer) && architecture == that.architecture && Objects.equals(bootUpState, that.bootUpState) && Objects.equals(numberOfProcessors, that.numberOfProcessors) && Objects.equals(lastLoggedInUser, that.lastLoggedInUser);
+        return memorySize == that.memorySize && diskSize == that.diskSize && cpuSpeed == that.cpuSpeed
+                && cpuCoreCount == that.cpuCoreCount
+                && numberOfLogicalProcessors == that.numberOfLogicalProcessors && Objects.equals(osName,
+                that.osName) && Objects.equals(osVersion, that.osVersion) && Objects.equals(osManufacturer,
+                that.osManufacturer) && architecture == that.architecture && Objects.equals(bootUpState,
+                that.bootUpState) && Objects.equals(numberOfProcessors, that.numberOfProcessors)
+                && Objects.equals(lastLoggedInUser, that.lastLoggedInUser);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), osName, osVersion, osManufacturer, architecture, bootUpState, memorySize, diskSize, cpuSpeed, cpuCoreCount, numberOfLogicalProcessors, numberOfProcessors, lastLoggedInUser);
+        return Objects.hash(super.hashCode(), osName, osVersion, osManufacturer, architecture, bootUpState,
+                memorySize, diskSize, cpuSpeed, cpuCoreCount, numberOfLogicalProcessors, numberOfProcessors,
+                lastLoggedInUser);
     }
 
     @Override
     public String toString() {
-        return "ComputerPropertiesRest{" +
-                "osName='" + osName + '\'' +
-                ", osVersion='" + osVersion + '\'' +
-                ", osManufacturer='" + osManufacturer + '\'' +
-                ", architecture=" + architecture +
-                ", bootUpState='" + bootUpState + '\'' +
-                ", memorySize=" + memorySize +
-                ", diskSize=" + diskSize +
-                ", cpuSpeed=" + cpuSpeed +
-                ", cpuCoreCount=" + cpuCoreCount +
-                ", numberOfLogicalProcessors=" + numberOfLogicalProcessors +
-                ", numberOfProcessors='" + numberOfProcessors + '\'' +
-                ", lastLoggedInUser='" + lastLoggedInUser + '\'' +
-                '}';
+        return "ComputerPropertiesRest{" + "osName='" + osName + '\'' + ", osVersion='" + osVersion + '\''
+                + ", osManufacturer='" + osManufacturer + '\'' + ", architecture=" + architecture
+                + ", bootUpState='" + bootUpState + '\'' + ", memorySize=" + memorySize + ", diskSize="
+                + diskSize + ", cpuSpeed=" + cpuSpeed + ", cpuCoreCount=" + cpuCoreCount
+                + ", numberOfLogicalProcessors=" + numberOfLogicalProcessors + ", numberOfProcessors='"
+                + numberOfProcessors + '\'' + ", lastLoggedInUser='" + lastLoggedInUser + '\'' + '}';
     }
 }

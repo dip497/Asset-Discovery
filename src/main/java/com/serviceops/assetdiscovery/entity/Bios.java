@@ -37,11 +37,15 @@ public class Bios extends AssetBase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         Bios bios = (Bios) o;
-        return Objects.equals(smBiosVersion, bios.smBiosVersion) && Objects.equals(releaseDate, bios.releaseDate) && Objects.equals(version, bios.version);
+        return Objects.equals(smBiosVersion, bios.smBiosVersion) && Objects.equals(releaseDate,
+                bios.releaseDate) && Objects.equals(version, bios.version);
     }
 
     @Override
@@ -51,10 +55,7 @@ public class Bios extends AssetBase {
 
     @Override
     public String toString() {
-        return "Bios{" +
-                ", smBiosVersion='" + smBiosVersion + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", version='" + version + '\'' +
-                '}';
+        return "Bios{" + ", smBiosVersion='" + smBiosVersion + '\'' + ", releaseDate=" + releaseDate
+                + ", version='" + version + '\'' + '}';
     }
 }
