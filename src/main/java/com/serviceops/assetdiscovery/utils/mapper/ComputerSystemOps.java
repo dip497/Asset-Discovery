@@ -2,11 +2,7 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.ComputerSystem;
 import com.serviceops.assetdiscovery.rest.ComputerSystemRest;
-import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
-import org.springframework.stereotype.Component;
-
-import java.util.*;
 
 
 public class ComputerSystemOps extends AssetBaseOps<ComputerSystem, ComputerSystemRest> {
@@ -42,8 +38,6 @@ public class ComputerSystemOps extends AssetBaseOps<ComputerSystem, ComputerSyst
 
         return computerSystemRest;
     }
-
-
 
 
 

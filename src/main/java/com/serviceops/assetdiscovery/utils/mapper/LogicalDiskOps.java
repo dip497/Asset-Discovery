@@ -6,15 +6,16 @@ import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 
 public class LogicalDiskOps extends AssetBaseOps<LogicalDisk, LogicalDiskRest> {
 
-    private LogicalDisk logicalDisk;
-    private LogicalDiskRest logicalDiskRest;
+    private final LogicalDisk logicalDisk;
+    private final LogicalDiskRest logicalDiskRest;
+
     public LogicalDiskOps(LogicalDisk logicalDisk, LogicalDiskRest logicalDiskRest) {
         super(logicalDisk, logicalDiskRest);
-        this.logicalDisk=logicalDisk;
-        this.logicalDiskRest=logicalDiskRest;
+        this.logicalDisk = logicalDisk;
+        this.logicalDiskRest = logicalDiskRest;
     }
 
-    public LogicalDiskRest entityToRest(){
+    public LogicalDiskRest entityToRest() {
         super.entityToRest(logicalDisk);
         logicalDiskRest.setDescription(logicalDisk.getDescription());
         logicalDiskRest.setFileSystemType(logicalDisk.getFileSystemType());
@@ -25,7 +26,7 @@ public class LogicalDiskOps extends AssetBaseOps<LogicalDisk, LogicalDiskRest> {
         return logicalDiskRest;
     }
 
-    public LogicalDisk restToEntity(){
+    public LogicalDisk restToEntity() {
         super.restToEntity(logicalDiskRest);
         logicalDisk.setFileSystemType(logicalDiskRest.getFileSystemType());
         logicalDisk.setDescription(logicalDiskRest.getDescription());
