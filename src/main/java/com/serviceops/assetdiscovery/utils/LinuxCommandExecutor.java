@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 
 public class LinuxCommandExecutor implements AutoCloseable {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -33,7 +34,7 @@ public class LinuxCommandExecutor implements AutoCloseable {
         JSch jsch = new JSch();
         try {
             session = jsch.getSession(username, host, port);
-            session.setPassword(password);
+            session.setPassword(PasswordEncoderSSH.decryptPassword(password));
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
             logger.info("Connected to -> {}", host);
@@ -61,7 +62,7 @@ public class LinuxCommandExecutor implements AutoCloseable {
         channel.connect();
         logger.debug("executing command  -> {} ", command);
         if (useSudo) {
-            out.write((password + "\n").getBytes());
+            out.write((PasswordEncoderSSH.decryptPassword(password) + "\n").getBytes());
             out.flush();
         }
 
@@ -75,7 +76,7 @@ public class LinuxCommandExecutor implements AutoCloseable {
                 String line = new String(tmp, 0, i);
                 line = line.replaceAll("[\\p{C}&&[^\n\t]]", "");
                 line = line.replaceAll("^\\*+\\s*", "");
-                if (line.contains(password) || line.startsWith("[sudo]")) {
+                if (line.contains(Objects.requireNonNull(PasswordEncoderSSH.decryptPassword(password))) || line.startsWith("[sudo]")) {
                     in.read(tmp, 0, 1024);
                     continue; // skip the line with the sudo command
                 }

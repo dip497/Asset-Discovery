@@ -6,6 +6,7 @@ import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.service.interfaces.CredentialsService;
+import com.serviceops.assetdiscovery.utils.PasswordEncoderSSH;
 import com.serviceops.assetdiscovery.utils.mapper.CredentialsOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ public class CredentialsServiceImpl implements CredentialsService {
                     credentialsRest.getId().toString());
         } else {
             Credentials credential = new Credentials();
+            credentialsRest.setPassword(PasswordEncoderSSH.encryptPassword(credentialsRest.getPassword()));
             CredentialsOps credentialsOps = new CredentialsOps(credential, credentialsRest);
             customRepository.save(credentialsOps.restToEntity());
             logger.debug("saved credentials of username -> {} ", credentialsRest.getUsername());
@@ -75,8 +77,8 @@ public class CredentialsServiceImpl implements CredentialsService {
             throw new ResourceNotFoundException("Credentials", "id", id.toString());
         } else {
             Credentials credential = fetchCredential.get();
+            credentialsRest.setPassword(PasswordEncoderSSH.encryptPassword(credentialsRest.getPassword()));
             credential = new CredentialsOps(credential, credentialsRest).restToEntity();
-
             customRepository.save(credential);
 
             logger.info("Updated credentials with id -> {}", credentialsRest.getId());

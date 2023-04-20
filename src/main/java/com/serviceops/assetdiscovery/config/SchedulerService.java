@@ -20,7 +20,7 @@ public class SchedulerService {
         this.scheduler = scheduler;
     }
 
-    public static JobDetail buildJobDetail(final Class jobClass, final SchedulerRest info) {
+    public static JobDetail buildJobDetail(final Class<? extends Job> jobClass, final SchedulerRest info) {
         final JobDataMap jobDataMap = new JobDataMap();
         Long id = info.getNetworkScanRestId();
         jobDataMap.put("id", id);
@@ -29,7 +29,7 @@ public class SchedulerService {
                 .build();
     }
 
-    public static Trigger buildTrigger(final Class jobClass, final SchedulerRest info) {
+    public static Trigger buildTrigger(final SchedulerRest info) {
 
 
         TriggerBuilder<Trigger> cronTriggerTriggerBuilder =
@@ -48,8 +48,6 @@ public class SchedulerService {
                             getHoursMinutes(info.getTime())[0], getHoursMinutes(info.getTime())[1]));
             case INTERVAL -> cronTriggerTriggerBuilder.withSchedule(CronScheduleBuilder.cronSchedule(
                     "0 */" + convertToMinute(info.getInterval()) + " * ? * *"));
-                    /*SimpleScheduleBuilder.simpleSchedule().repeatForever()
-                            .withIntervalInMinutes(Math.toIntExact(info.getInterval())));*/
         }
 
         return cronTriggerTriggerBuilder.build();
@@ -90,8 +88,7 @@ public class SchedulerService {
 
         JobDetail jobDetail = buildJobDetail(NetworkScanJob.class, schedulerRest);
         logger.info("job details created for schedulers id ->{}", schedulerRest.getId());
-
-        Trigger trigger = buildTrigger(NetworkScanJob.class, schedulerRest);
+        Trigger trigger = buildTrigger(schedulerRest);
         logger.info("trigger created for schedulers id ->{}", schedulerRest.getId());
         scheduler.scheduleJob(jobDetail, trigger);
         logger.info("scheduler created for schedulers id ->{}", schedulerRest.getId());
@@ -99,23 +96,20 @@ public class SchedulerService {
 
     }
 
-    public void updateTrigger( final SchedulerRest info) {
+    public void updateTrigger(final SchedulerRest info) {
         try {
             final JobDetail jobDetail = scheduler.getJobDetail(new JobKey(info.getId().toString()));
             if (jobDetail == null) {
-                logger.error("Failed to find job with ID '{}'", info.getId().toString());
+                logger.error("Failed to find job with ID -> {}'", info.getId());
                 return;
             }
             deleteTimer(info.getId().toString());
-            scheduler.scheduleJob(jobDetail,buildTrigger(NetworkScanJob.class,info));
+            scheduler.scheduleJob(jobDetail, buildTrigger(info));
             logger.info("scheduler updated for schedulers id ->{}", info.getId());
         } catch (final SchedulerException e) {
             logger.error(e.getMessage(), e);
         }
     }
-
-
-
 
     public void deleteTimer(String id) {
         try {
