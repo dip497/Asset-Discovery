@@ -25,7 +25,6 @@ public class RamServiceImpl implements RamService {
     private final CustomRepository customRepository;
     private final Logger logger = LoggerFactory.getLogger(RamServiceImpl.class);
 
-
     public RamServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
         setCommands();
@@ -69,9 +68,7 @@ public class RamServiceImpl implements RamService {
 
     @Override
     public RamRest findByRefId(long refId) {
-
         Optional<Ram> ramOptional = customRepository.findByColumn("refId", refId, Ram.class);
-
         if (ramOptional.isPresent()) {
             RamRest ramRest = new RamRest();
             RamOps ramOps = new RamOps(ramOptional.get(), ramRest);
