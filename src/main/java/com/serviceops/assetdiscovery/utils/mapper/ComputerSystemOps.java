@@ -7,18 +7,9 @@ import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class ComputerSystemOps extends SingleBaseOps<ComputerSystem, ComputerSystemRest> {
 
-    private final ComputerSystem computerSystem;
-    private final ComputerSystemRest computerSystemRest;
-
-    public ComputerSystemOps(ComputerSystem computerSystem, ComputerSystemRest computerSystemRest) {
-        super(computerSystem, computerSystemRest);
-        this.computerSystem = computerSystem;
-        this.computerSystemRest = computerSystemRest;
-    }
-
-
-    public ComputerSystem restToEntity() {
-        super.restToEntity(computerSystemRest);
+    @Override
+    public ComputerSystem restToEntity(ComputerSystem computerSystem, ComputerSystemRest computerSystemRest) {
+        super.restToEntity(computerSystem, computerSystemRest);
         computerSystem.setRefId(computerSystemRest.getRefId());
         computerSystem.setManufacturer(computerSystemRest.getManufacturer());
         computerSystem.setModelName(computerSystemRest.getModelName());
@@ -30,8 +21,10 @@ public class ComputerSystemOps extends SingleBaseOps<ComputerSystem, ComputerSys
         return computerSystem;
     }
 
-    public ComputerSystemRest entityToRest() {
-        super.entityToRest(computerSystem);
+    @Override
+    public ComputerSystemRest entityToRest(ComputerSystem computerSystem,
+            ComputerSystemRest computerSystemRest) {
+        super.entityToRest(computerSystem, computerSystemRest);
         computerSystemRest.setRefId(computerSystem.getRefId());
         computerSystemRest.setManufacturer(computerSystem.getManufacturer());
         computerSystemRest.setModelName(computerSystem.getModelName());

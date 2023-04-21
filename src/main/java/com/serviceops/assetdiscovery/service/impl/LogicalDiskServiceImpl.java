@@ -25,9 +25,10 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
 
     private static final Logger logger = LoggerFactory.getLogger(LogicalDiskServiceImpl.class);
     private final CustomRepository customRepository;
-
+    private final LogicalDiskOps logicalDiskOps;
     public LogicalDiskServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        logicalDiskOps = new LogicalDiskOps();
         setcommands();
     }
 
@@ -78,8 +79,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
         if (!logicalDisks.isEmpty()) {
             List<LogicalDiskRest> logicalDiskRests = new ArrayList<>();
             for (LogicalDisk logicalDisk : logicalDisks) {
-                LogicalDiskOps logicalDiskOps = new LogicalDiskOps(logicalDisk, new LogicalDiskRest());
-                logicalDiskRests.add(logicalDiskOps.entityToRest());
+                logicalDiskRests.add(logicalDiskOps.entityToRest(logicalDisk,new LogicalDiskRest()));
                 logger.info("Retrieving LogicalDisk of refId -> {}", refId);
             }
             return logicalDiskRests;
@@ -97,8 +97,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
         fields.put("id", id);
         List<LogicalDisk> logicalDisks = customRepository.findByColumns(fields, LogicalDisk.class);
         if (!logicalDisks.isEmpty()) {
-            LogicalDiskOps logicalDiskOps = new LogicalDiskOps(logicalDisks.get(0), logicalDiskRest);
-            customRepository.save(logicalDiskOps.restToEntity());
+            customRepository.save(logicalDiskOps.restToEntity(logicalDisks.get(0),logicalDiskRest));
             logger.info("logicalDisk Updated with Asset Id ->{}", refId);
             return logicalDiskRest;
         } else {

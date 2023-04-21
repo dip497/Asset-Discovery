@@ -25,9 +25,11 @@ public class MonitorServiceImpl implements MonitorService {
 
     private static final Logger logger = LoggerFactory.getLogger(MonitorServiceImpl.class);
     private final CustomRepository customRepository;
+    private final MonitorOps monitorOps;
 
     public MonitorServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        monitorOps = new MonitorOps();
         setCommands();
     }
 
@@ -75,8 +77,7 @@ public class MonitorServiceImpl implements MonitorService {
         if (!monitorsList.isEmpty()) {
             List<MonitorRest> monitorRestList = new ArrayList<>();
             for (Monitor monitor : monitorsList) {
-                MonitorOps monitorOps = new MonitorOps(monitor, new MonitorRest());
-                monitorRestList.add(monitorOps.entityToRest());
+                monitorRestList.add(monitorOps.entityToRest(monitor,new MonitorRest()));
                 logger.info("Retrieving Monitor of refId -> {}", id);
             }
             return monitorRestList;
@@ -94,8 +95,7 @@ public class MonitorServiceImpl implements MonitorService {
         fields.put("id", id);
         List<Monitor> monitors = customRepository.findByColumns(fields, Monitor.class);
         if (!monitors.isEmpty()) {
-            MonitorOps monitorOps = new MonitorOps(monitors.get(0), monitorRest);
-            customRepository.save(monitorOps.restToEntity());
+            customRepository.save(monitorOps.restToEntity(monitors.get(0),monitorRest));
             logger.info("Monitor Updated with Asset Id ->{}", refId);
             return monitorRest;
         } else {

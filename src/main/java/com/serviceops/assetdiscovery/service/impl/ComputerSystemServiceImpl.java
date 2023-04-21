@@ -24,9 +24,11 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
 
     private static final Logger logger = LoggerFactory.getLogger(ComputerSystemServiceImpl.class);
     private final CustomRepository customRepository;
+    private final ComputerSystemOps computerSystemOps;
 
     public ComputerSystemServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        this.computerSystemOps = new ComputerSystemOps();
         setCommands();
     }
 
@@ -55,9 +57,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
                 customRepository.findByColumn("refId", refId, ComputerSystem.class);
         if (optionalComputerSystem.isPresent()) {
             logger.info("Retrieving Computer System of refId -> {}", refId);
-            ComputerSystemOps computerSystemOps =
-                    new ComputerSystemOps(optionalComputerSystem.get(), new ComputerSystemRest());
-            ComputerSystemRest computerSystemRest = computerSystemOps.entityToRest();
+            ComputerSystemRest computerSystemRest = computerSystemOps.entityToRest(optionalComputerSystem.get(),new ComputerSystemRest());
             Optional<Processor> optionalProcessor =
                     customRepository.findByColumn("refId", refId, Processor.class);
             if (optionalProcessor.isPresent()) {
@@ -82,9 +82,8 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
             throw new ComponentNotFoundException("ComputerSystem", "refId", refId);
         } else {
             ComputerSystem computerSystem = optionalComputerSystem.get();
-            ComputerSystemOps computerSystemOps = new ComputerSystemOps(computerSystem, computerSystemRest);
             logger.info("Updating ComputerSystem of AssetId -> {}", refId);
-            customRepository.save(computerSystemOps.restToEntity());
+            customRepository.save(computerSystemOps.restToEntity(computerSystem,computerSystemRest));
             return computerSystemRest;
         }
     }
