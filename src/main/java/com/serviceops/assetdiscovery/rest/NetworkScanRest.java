@@ -2,14 +2,14 @@ package com.serviceops.assetdiscovery.rest;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.serviceops.assetdiscovery.entity.enums.IpRangeType;
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class NetworkScanRest extends SingleBaseRest {
+public class NetworkScanRest extends AuditBaseRest {
     private String name;
     @Enumerated(EnumType.STRING)
     private IpRangeType ipRangeType;

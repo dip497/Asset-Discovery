@@ -1,13 +1,13 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import com.serviceops.assetdiscovery.entity.enums.CredentialType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 @Entity
-public class Credentials extends SingleBase {
+public class Credentials extends AuditBase {
     private String username;
     private String password;
     private String description;

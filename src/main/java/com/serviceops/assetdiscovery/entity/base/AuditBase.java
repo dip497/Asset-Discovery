@@ -3,7 +3,7 @@ package com.serviceops.assetdiscovery.entity.base;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class SingleBase extends Base {
+public abstract class AuditBase extends Base {
     private long createdById;
     private long createdTime;
     private long updatedById;
@@ -50,7 +50,7 @@ public class SingleBase extends Base {
         if (!super.equals(o))
             return false;
 
-        SingleBase that = (SingleBase) o;
+        AuditBase that = (AuditBase) o;
 
         if (getCreatedById() != that.getCreatedById())
             return false;
@@ -73,7 +73,7 @@ public class SingleBase extends Base {
 
     @Override
     public String toString() {
-        return "SingleBase{" + "createdById=" + createdById + ", createdTime=" + createdTime
+        return "AuditBase{" + "createdById=" + createdById + ", createdTime=" + createdTime
                 + ", updatedById=" + updatedById + ", updatedTime=" + updatedTime + "} " + super.toString();
     }
 }

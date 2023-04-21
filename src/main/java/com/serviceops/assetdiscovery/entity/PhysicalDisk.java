@@ -1,11 +1,11 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import jakarta.persistence.Entity;
 
 
 @Entity
-public class PhysicalDisk extends SingleBase {
+public class PhysicalDisk extends AuditBase {
     private long refId;
     private String manufacturer;
     private String name;

@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Credentials;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class CredentialsOps extends SingleBaseOps<Credentials, CredentialsRest> {
+public class CredentialsOps extends AuditBaseOps<Credentials, CredentialsRest> {
 
     @Override
     public CredentialsRest entityToRest(Credentials credentials, CredentialsRest credentialsRest) {

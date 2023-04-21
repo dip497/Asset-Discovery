@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.rest.ProcessorRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class ProcessorOps extends SingleBaseOps<Processor, ProcessorRest> {
+public class ProcessorOps extends AuditBaseOps<Processor, ProcessorRest> {
 
     @Override
     public Processor restToEntity(Processor processor, ProcessorRest processorRest) {

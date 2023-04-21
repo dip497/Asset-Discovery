@@ -2,10 +2,10 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.PointingDevice;
 import com.serviceops.assetdiscovery.rest.PointingDeviceRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
 
-public class PointingDeviceOps extends SingleBaseOps<PointingDevice, PointingDeviceRest> {
+public class PointingDeviceOps extends AuditBaseOps<PointingDevice, PointingDeviceRest> {
 
     @Override
     public PointingDevice restToEntity(PointingDevice pointingDevice, PointingDeviceRest pointingDeviceRest) {

@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Asset;
 import com.serviceops.assetdiscovery.rest.AssetRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class AssetOps extends SingleBaseOps<Asset, AssetRest> {
+public class AssetOps extends AuditBaseOps<Asset, AssetRest> {
 
     @Override
     public Asset restToEntity(Asset asset,AssetRest assetRest) {

@@ -1,6 +1,6 @@
 package com.serviceops.assetdiscovery.repository;
 
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -11,8 +11,6 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
@@ -79,7 +77,7 @@ public class CustomRepository {
     }
 
     @Transactional
-    public <T extends SingleBase> T save(T t) {
+    public <T extends AuditBase> T save(T t) {
         if (em.contains(t)) {
             t.setUpdatedById(
                     Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName()));

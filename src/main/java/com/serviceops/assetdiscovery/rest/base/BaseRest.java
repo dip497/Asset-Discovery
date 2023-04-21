@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * A DTO for the {@link com.serviceops.assetdiscovery.entity.base.Base} entity
  */
-public class BaseRest implements Serializable {
+public abstract class BaseRest implements Serializable {
     private long id;
 
     public long getId() {

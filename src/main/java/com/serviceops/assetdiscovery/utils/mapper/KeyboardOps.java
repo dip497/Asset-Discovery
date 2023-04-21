@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Keyboard;
 import com.serviceops.assetdiscovery.rest.KeyboardRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class KeyboardOps extends SingleBaseOps<Keyboard, KeyboardRest> {
+public class KeyboardOps extends AuditBaseOps<Keyboard, KeyboardRest> {
 
     @Override
     public Keyboard restToEntity(Keyboard keyboard, KeyboardRest keyboardRest) {

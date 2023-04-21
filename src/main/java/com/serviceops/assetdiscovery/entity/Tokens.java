@@ -1,18 +1,15 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import com.serviceops.assetdiscovery.entity.enums.TokenType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Tokens extends SingleBase {
+public class Tokens extends AuditBase {
     private String token;
     @Enumerated(EnumType.STRING)
     private TokenType tokenType;

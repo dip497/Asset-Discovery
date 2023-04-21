@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Schedulers;
 import com.serviceops.assetdiscovery.rest.SchedulerRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class SchedulerOps extends SingleBaseOps<Schedulers, SchedulerRest> {
+public class SchedulerOps extends AuditBaseOps<Schedulers, SchedulerRest> {
 
     @Override
     public SchedulerRest entityToRest(Schedulers schedulers, SchedulerRest schedulerRest) {

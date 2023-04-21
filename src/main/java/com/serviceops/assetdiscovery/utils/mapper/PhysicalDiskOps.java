@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.PhysicalDisk;
 import com.serviceops.assetdiscovery.rest.PhysicalDiskRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class PhysicalDiskOps extends SingleBaseOps<PhysicalDisk, PhysicalDiskRest> {
+public class PhysicalDiskOps extends AuditBaseOps<PhysicalDisk, PhysicalDiskRest> {
 
     @Override
     public PhysicalDisk restToEntity(PhysicalDisk physicalDisk, PhysicalDiskRest physicalDiskRest) {

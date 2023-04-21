@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Ram;
 import com.serviceops.assetdiscovery.rest.RamRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class RamOps extends SingleBaseOps<Ram, RamRest> {
+public class RamOps extends AuditBaseOps<Ram, RamRest> {
 
     @Override
     public Ram restToEntity(Ram ram, RamRest ramRest) {

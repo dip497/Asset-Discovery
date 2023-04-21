@@ -1,6 +1,6 @@
 package com.serviceops.assetdiscovery.rest;
 
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.ComputerSystem} entity
  */
-public class ComputerSystemRest extends SingleBaseRest implements Serializable {
+public class ComputerSystemRest extends AuditBaseRest implements Serializable {
     private long refId;
     private String name;
     private String modelName;

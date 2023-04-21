@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.entity.NetworkAdapter;
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 import jakarta.validation.constraints.Pattern;
 
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * A Rest for the {@link NetworkAdapter} entity
  */
-public class NetworkAdapterRest extends SingleBaseRest implements Serializable {
+public class NetworkAdapterRest extends AuditBaseRest implements Serializable {
     private long refId;
     private String manufacturer;
     private String description;

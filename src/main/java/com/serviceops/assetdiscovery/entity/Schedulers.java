@@ -1,6 +1,6 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import com.serviceops.assetdiscovery.entity.enums.Month;
 import com.serviceops.assetdiscovery.entity.enums.ScanType;
 import com.serviceops.assetdiscovery.entity.enums.Week;
@@ -9,7 +9,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 @Entity
-public class Schedulers extends SingleBase {
+public class Schedulers extends AuditBase {
     private long networkScanId;
     @Enumerated(EnumType.STRING)
     private ScanType scanType;

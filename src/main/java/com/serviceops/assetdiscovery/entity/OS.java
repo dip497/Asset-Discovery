@@ -1,11 +1,11 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import com.serviceops.assetdiscovery.entity.enums.Architecture;
 import jakarta.persistence.Entity;
 
 @Entity
-public class OS extends SingleBase {
+public class OS extends AuditBase {
     private long refId;
     private String osName;
     private String osVersion;

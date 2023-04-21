@@ -1,13 +1,13 @@
 package com.serviceops.assetdiscovery.rest;
 
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 
 import java.io.Serializable;
 
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Asset} entity
  */
-public class AssetRest extends SingleBaseRest implements Serializable {
+public class AssetRest extends AuditBaseRest implements Serializable {
     private String hostName;
     private String domainName;
     private String ipAddress;

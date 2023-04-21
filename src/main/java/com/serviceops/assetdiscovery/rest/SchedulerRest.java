@@ -4,7 +4,7 @@ import com.serviceops.assetdiscovery.entity.Schedulers;
 import com.serviceops.assetdiscovery.entity.enums.Month;
 import com.serviceops.assetdiscovery.entity.enums.ScanType;
 import com.serviceops.assetdiscovery.entity.enums.Week;
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -14,7 +14,7 @@ import java.io.Serializable;
 /**
  * A Rest for the {@link Schedulers} entity
  */
-public class SchedulerRest extends SingleBaseRest implements Serializable {
+public class SchedulerRest extends AuditBaseRest implements Serializable {
     private long networkScanRestId;
     @Enumerated(EnumType.STRING)
     private ScanType scanType;

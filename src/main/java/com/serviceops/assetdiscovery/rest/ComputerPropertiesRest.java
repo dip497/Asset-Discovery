@@ -1,11 +1,11 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.entity.enums.Architecture;
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 
 import java.io.Serializable;
 
-public class ComputerPropertiesRest extends SingleBaseRest implements Serializable {
+public class ComputerPropertiesRest extends AuditBaseRest implements Serializable {
     private long refId;
     private String osName;
     private String osVersion;

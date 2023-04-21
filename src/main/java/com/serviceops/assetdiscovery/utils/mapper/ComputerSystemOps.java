@@ -2,10 +2,10 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.ComputerSystem;
 import com.serviceops.assetdiscovery.rest.ComputerSystemRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
 
-public class ComputerSystemOps extends SingleBaseOps<ComputerSystem, ComputerSystemRest> {
+public class ComputerSystemOps extends AuditBaseOps<ComputerSystem, ComputerSystemRest> {
 
     @Override
     public ComputerSystem restToEntity(ComputerSystem computerSystem, ComputerSystemRest computerSystemRest) {

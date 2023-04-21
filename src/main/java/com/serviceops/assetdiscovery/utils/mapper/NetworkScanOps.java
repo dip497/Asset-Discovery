@@ -2,12 +2,12 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.NetworkScan;
 import com.serviceops.assetdiscovery.rest.NetworkScanRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class NetworkScanOps extends SingleBaseOps<NetworkScan, NetworkScanRest> {
+public class NetworkScanOps extends AuditBaseOps<NetworkScan, NetworkScanRest> {
 
     @Override
     public NetworkScanRest entityToRest(NetworkScan networkScan, NetworkScanRest networkScanRest) {

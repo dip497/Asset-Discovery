@@ -1,11 +1,11 @@
 package com.serviceops.assetdiscovery.utils.mapper.base;
 
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 
-public class SingleBaseOps<T extends SingleBase, S extends SingleBaseRest> extends BaseOps<T, S> {
+public abstract class AuditBaseOps<T extends AuditBase, S extends AuditBaseRest> extends BaseOps<T, S> {
 
-    protected SingleBaseOps() {
+    protected AuditBaseOps() {
     }
 
     @Override

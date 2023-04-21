@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class Base {
+public abstract class Base {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

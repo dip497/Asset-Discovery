@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.NetworkAdapter;
 import com.serviceops.assetdiscovery.rest.NetworkAdapterRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class NetworkAdapterOps extends SingleBaseOps<NetworkAdapter, NetworkAdapterRest> {
+public class NetworkAdapterOps extends AuditBaseOps<NetworkAdapter, NetworkAdapterRest> {
 
     @Override
     public NetworkAdapter restToEntity(NetworkAdapter networkAdapter, NetworkAdapterRest networkAdapterRest) {

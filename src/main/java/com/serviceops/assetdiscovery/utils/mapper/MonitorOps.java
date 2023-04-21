@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Monitor;
 import com.serviceops.assetdiscovery.rest.MonitorRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class MonitorOps extends SingleBaseOps<Monitor, MonitorRest> {
+public class MonitorOps extends AuditBaseOps<Monitor, MonitorRest> {
 
     @Override
     public MonitorRest entityToRest(Monitor monitor, MonitorRest monitorRest) {

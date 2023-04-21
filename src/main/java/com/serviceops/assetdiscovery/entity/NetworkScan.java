@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import com.serviceops.assetdiscovery.entity.enums.IpRangeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +11,7 @@ import jakarta.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 @Entity
-public class NetworkScan extends SingleBase {
+public class NetworkScan extends AuditBase {
     @Column(nullable = false)
     private String name;
     @Enumerated(EnumType.STRING)

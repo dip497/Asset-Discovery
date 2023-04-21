@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.entity.enums.CredentialType;
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Credentials} entity
  */
-public class CredentialsRest extends SingleBaseRest implements Serializable {
+public class CredentialsRest extends AuditBaseRest implements Serializable {
     private String username;
     private String password;
     private String description;

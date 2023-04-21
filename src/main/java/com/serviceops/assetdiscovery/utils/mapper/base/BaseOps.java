@@ -3,7 +3,7 @@ package com.serviceops.assetdiscovery.utils.mapper.base;
 import com.serviceops.assetdiscovery.entity.base.Base;
 import com.serviceops.assetdiscovery.rest.base.BaseRest;
 
-public class BaseOps<T extends Base, S extends BaseRest> {
+public abstract class BaseOps<T extends Base, S extends BaseRest> {
 
     protected BaseOps() {
 

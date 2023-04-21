@@ -1,10 +1,10 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Keyboard extends SingleBase {
+public class Keyboard extends AuditBase {
     private long refId;
     private String name;
 

@@ -1,12 +1,13 @@
 package com.serviceops.assetdiscovery.rest.base;
 
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
+
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
- * A DTO for the {@link com.serviceops.assetdiscovery.entity.base.SingleBase} entity
+ * A DTO for the {@link AuditBase} entity
  */
-public class SingleBaseRest extends BaseRest implements Serializable {
+public abstract class AuditBaseRest extends BaseRest implements Serializable {
     private long createdById;
     private long createdTime;
     private long updateById;

@@ -1,13 +1,13 @@
 package com.serviceops.assetdiscovery.rest;
 
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 
 import java.io.Serializable;
 
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.LogicalDisk} entity
  */
-public class LogicalDiskRest extends SingleBaseRest implements Serializable {
+public class LogicalDiskRest extends AuditBaseRest implements Serializable {
 
     private long refId;
     private String name;

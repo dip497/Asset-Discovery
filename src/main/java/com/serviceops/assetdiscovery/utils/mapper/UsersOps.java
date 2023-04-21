@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Users;
 import com.serviceops.assetdiscovery.rest.UsersRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class UsersOps extends SingleBaseOps<Users, UsersRest> {
+public class UsersOps extends AuditBaseOps<Users, UsersRest> {
 
     @Override
     public UsersRest entityToRest(Users entity, UsersRest rest) {

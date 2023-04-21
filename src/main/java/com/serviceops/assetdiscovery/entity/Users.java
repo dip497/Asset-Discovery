@@ -1,6 +1,6 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import com.serviceops.assetdiscovery.entity.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Users extends SingleBase implements UserDetails {
+public class Users extends AuditBase implements UserDetails {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)

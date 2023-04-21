@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.MotherBoard;
 import com.serviceops.assetdiscovery.rest.MotherBoardRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class MotherBoardOps extends SingleBaseOps<MotherBoard, MotherBoardRest> {
+public class MotherBoardOps extends AuditBaseOps<MotherBoard, MotherBoardRest> {
 
     @Override
     public MotherBoard restToEntity(MotherBoard motherBoard, MotherBoardRest motherBoardRest) {

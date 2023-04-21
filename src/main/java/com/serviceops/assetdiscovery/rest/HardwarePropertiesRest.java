@@ -1,13 +1,13 @@
 package com.serviceops.assetdiscovery.rest;
 
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 
 import java.io.Serializable;
 
 /**
  * A Rest for the entity
  */
-public class HardwarePropertiesRest extends SingleBaseRest implements Serializable {
+public class HardwarePropertiesRest extends AuditBaseRest implements Serializable {
     private String serialNumber;
 
     public String getSerialNumber() {

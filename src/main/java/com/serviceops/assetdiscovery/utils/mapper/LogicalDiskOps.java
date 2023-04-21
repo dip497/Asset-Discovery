@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.LogicalDisk;
 import com.serviceops.assetdiscovery.rest.LogicalDiskRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class LogicalDiskOps extends SingleBaseOps<LogicalDisk, LogicalDiskRest> {
+public class LogicalDiskOps extends AuditBaseOps<LogicalDisk, LogicalDiskRest> {
 
     @Override
     public LogicalDiskRest entityToRest(LogicalDisk logicalDisk, LogicalDiskRest logicalDiskRest) {

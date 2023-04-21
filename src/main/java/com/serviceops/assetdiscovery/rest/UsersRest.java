@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.entity.enums.Role;
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.Users} entity
  */
-public class UsersRest extends SingleBaseRest implements Serializable {
+public class UsersRest extends AuditBaseRest implements Serializable {
     private String name;
     private String email;
     private String password;

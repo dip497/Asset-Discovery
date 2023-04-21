@@ -1,14 +1,14 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.entity.Ram;
-import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
+import com.serviceops.assetdiscovery.rest.base.AuditBaseRest;
 
 import java.io.Serializable;
 
 /**
  * A Rest for the {@link Ram} entity
  */
-public class RamRest extends SingleBaseRest implements Serializable {
+public class RamRest extends AuditBaseRest implements Serializable {
     private long refId;
     private String serialNumber;
     private String manufacturer;

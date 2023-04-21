@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.utils;
 
 import com.jcraft.jsch.JSchException;
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import com.serviceops.assetdiscovery.exception.AssetDiscoveryApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import java.util.Map;
  *
  */
 public class LinuxCommandExecutorManager {
-    private static final HashMap<Class<? extends SingleBase>, LinkedHashMap<String, String[]>>
+    private static final HashMap<Class<? extends AuditBase>, LinkedHashMap<String, String[]>>
             commandResults = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(LinuxCommandExecutorManager.class);
     private final String hostname;
@@ -40,18 +40,18 @@ public class LinuxCommandExecutorManager {
         }
     }
 
-    public static <T extends SingleBase> void add(Class<T> key, LinkedHashMap<String, String[]> hashMap) {
+    public static <T extends AuditBase> void add(Class<T> key, LinkedHashMap<String, String[]> hashMap) {
         commandResults.put(key, hashMap);
     }
 
-    public static <T extends SingleBase> Map<String, String[]> get(Class<T> key) {
+    public static <T extends AuditBase> Map<String, String[]> get(Class<T> key) {
         return commandResults.get(key);
     }
 
     public void fetch() throws AssetDiscoveryApiException {
         try (LinuxCommandExecutor linuxCommandExecutor = new LinuxCommandExecutor(hostname, username,
                 password, port)) {
-            for (Map.Entry<Class<? extends SingleBase>, LinkedHashMap<String, String[]>> commandResultsLocal : commandResults.entrySet()) {
+            for (Map.Entry<Class<? extends AuditBase>, LinkedHashMap<String, String[]>> commandResultsLocal : commandResults.entrySet()) {
                 LinkedHashMap<String, String[]> commands = commandResultsLocal.getValue();
                 for (Map.Entry<String, String[]> entry : commands.entrySet()) {
                     String[] result = linuxCommandExecutor.execute(entry.getKey());

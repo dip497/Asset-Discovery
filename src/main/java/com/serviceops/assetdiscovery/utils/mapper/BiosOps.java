@@ -2,9 +2,9 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Bios;
 import com.serviceops.assetdiscovery.rest.BiosRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
+import com.serviceops.assetdiscovery.utils.mapper.base.AuditBaseOps;
 
-public class BiosOps extends SingleBaseOps<Bios, BiosRest> {
+public class BiosOps extends AuditBaseOps<Bios, BiosRest> {
 
     @Override
     public Bios restToEntity(Bios bios,BiosRest biosRest) {

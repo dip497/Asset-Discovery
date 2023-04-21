@@ -1,10 +1,10 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
+import com.serviceops.assetdiscovery.entity.base.AuditBase;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Monitor extends SingleBase {
+public class Monitor extends AuditBase {
 
     private long refId;
     private String description;
