@@ -29,17 +29,17 @@ public class MonitorController {
     public List<MonitorRest> getMonitor(@PathVariable("refId") long refId) {
 
         logger.info("Fetching Monitor with Asset id -> {}", refId);
-        List<MonitorRest> monitors = monitorService.getMonitors(refId);
+        List<MonitorRest> monitors = monitorService.findAllByRefId(refId);
 
         return monitors;
 
     }
 
     @DeleteMapping("/{refId}/monitor/{id}")
-    public void deleteMonitor(@PathVariable("refId") long refId, @PathVariable("id") long id) {
+    public boolean deleteMonitor(@PathVariable("refId") long refId, @PathVariable("id") long id) {
 
         logger.info("Deleting Monitor with Asset id -> {}", refId);
-        monitorService.deleteById(refId, id);
+        return monitorService.deleteById(refId, id);
     }
 
     @PutMapping(value = "/{refId}/monitor/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +48,7 @@ public class MonitorController {
 
         logger.debug("Updating monitor with Asset id -> {}", refId);
 
-        monitorService.update(refId, id, monitorRest);
+        monitorService.updateById(refId, id, monitorRest);
     }
 
 }

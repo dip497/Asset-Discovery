@@ -15,8 +15,8 @@ public class ComputerSystemRest extends SingleBaseRest implements Serializable {
     private String systemType;
     private String uuid;
     private String bootUpState;
-    private Long numberOfLogicalProcessor;
-    private Long numberOfProcessors;
+    private long numberOfLogicalProcessor;
+    private long numberOfProcessors;
     private String userName;
     private String manufacturer;
 
@@ -68,19 +68,19 @@ public class ComputerSystemRest extends SingleBaseRest implements Serializable {
         this.bootUpState = bootUpState;
     }
 
-    public Long getNumberOfLogicalProcessor() {
+    public long getNumberOfLogicalProcessor() {
         return numberOfLogicalProcessor;
     }
 
-    public void setNumberOfLogicalProcessor(Long numberOfLogicalProcessor) {
+    public void setNumberOfLogicalProcessor(long numberOfLogicalProcessor) {
         this.numberOfLogicalProcessor = numberOfLogicalProcessor;
     }
 
-    public Long getNumberOfProcessors() {
+    public long getNumberOfProcessors() {
         return numberOfProcessors;
     }
 
-    public void setNumberOfProcessors(Long numberOfProcessors) {
+    public void setNumberOfProcessors(long numberOfProcessors) {
         this.numberOfProcessors = numberOfProcessors;
     }
 

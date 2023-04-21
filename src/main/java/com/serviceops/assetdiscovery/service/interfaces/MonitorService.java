@@ -8,11 +8,11 @@ public interface MonitorService {
 
     void save(long id);
 
-    MonitorRest update(long refId, long id, MonitorRest monitorRest);
+    MonitorRest updateById(long refId, long id, MonitorRest monitorRest);
 
-    void deleteById(long refId, long id);
+    boolean deleteById(long refId, long id);
 
-    List<MonitorRest> getMonitors(long id);
+    List<MonitorRest> findAllByRefId(long id);
 
 
 }

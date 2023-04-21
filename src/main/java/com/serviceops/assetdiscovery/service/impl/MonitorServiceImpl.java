@@ -24,8 +24,8 @@ import java.util.regex.Pattern;
 @Service
 public class MonitorServiceImpl implements MonitorService {
 
+    private static final Logger logger = LoggerFactory.getLogger(MonitorServiceImpl.class);
     private final CustomRepository customRepository;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public MonitorServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -72,39 +72,7 @@ public class MonitorServiceImpl implements MonitorService {
     }
 
     @Override
-    public MonitorRest update(long refId, long id, MonitorRest monitorRest) {
-        Map<String,Long> fields = new HashMap<>();
-        fields.put("refId",refId);
-        fields.put("id",id);
-        List<Monitor> monitors = customRepository.findByColumns(fields, Monitor.class);
-        if (!monitors.isEmpty()) {
-                MonitorOps monitorOps = new MonitorOps(monitors.get(0), monitorRest);
-                customRepository.save(monitorOps.restToEntity());
-                logger.info("Monitor Updated with Asset Id ->{}", refId);
-                return monitorRest;
-        }else {
-            logger.error("Monitor with Id -> {} & Asset Id -> {} not exist",id, refId);
-            throw new ComponentNotFoundException("Monitor", "refId", refId);
-        }
-    }
-
-    @Transactional
-    @Override
-    public void deleteById(long refId, long id) {
-        if (!customRepository.findAllByColumnName(Monitor.class, "refId", refId).isEmpty()) {
-            if (customRepository.findByColumn("id", id, Monitor.class).isPresent()) {
-                logger.info("Deleting Monitor with id->{}", id);
-                customRepository.deleteById(Monitor.class, id, "id");
-            } else {
-                logger.error("Deleting Monitor with Asset ->{} not exist", refId);
-            }
-        } else {
-            logger.error("Monitor with Asset -> {} not found", refId);
-        }
-    }
-
-    @Override
-    public List<MonitorRest> getMonitors(long id) {
+    public List<MonitorRest> findAllByRefId(long id) {
         List<Monitor> monitorsList = customRepository.findAllByColumnName(Monitor.class, "refId", id);
         if (!monitorsList.isEmpty()) {
             List<MonitorRest> monitorRestList = new ArrayList<>();
@@ -119,6 +87,34 @@ public class MonitorServiceImpl implements MonitorService {
             return List.of();
         }
 
+    }
+
+    @Override
+    public MonitorRest updateById(long refId, long id, MonitorRest monitorRest) {
+        Map<String, Long> fields = new HashMap<>();
+        fields.put("refId", refId);
+        fields.put("id", id);
+        List<Monitor> monitors = customRepository.findByColumns(fields, Monitor.class);
+        if (!monitors.isEmpty()) {
+            MonitorOps monitorOps = new MonitorOps(monitors.get(0), monitorRest);
+            customRepository.save(monitorOps.restToEntity());
+            logger.info("Monitor Updated with Asset Id ->{}", refId);
+            return monitorRest;
+        } else {
+            logger.error("Monitor with Id -> {} & Asset Id -> {} not exist", id, refId);
+            throw new ComponentNotFoundException("Monitor", "refId", refId);
+        }
+    }
+
+    @Override
+    public boolean deleteById(long refId, long id) {
+        boolean isDeleted = customRepository.deleteById(Monitor.class, id, "id");
+        if (isDeleted) {
+            logger.info("Monitor with Id-> {} & Asset Id-> {}", id, refId);
+        } else {
+            logger.info("Monitor with Asset -> {} not found", refId);
+        }
+        return isDeleted;
     }
 
     private void setMonitor(Monitor monitor, String[] data) {

@@ -24,9 +24,8 @@ import java.util.regex.Pattern;
 @Service
 public class LogicalDiskServiceImpl implements LogicalDiskService {
 
-    private final CustomRepository customRepository;
-
     private static final Logger logger = LoggerFactory.getLogger(LogicalDiskServiceImpl.class);
+    private final CustomRepository customRepository;
 
     public LogicalDiskServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -75,38 +74,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
     }
 
     @Override
-    public void deleteById(long refId, long id) {
-        if (!customRepository.findAllByColumnName(LogicalDisk.class, "refId", refId).isEmpty()) {
-            if (customRepository.findByColumn("id", id, LogicalDisk.class).isPresent()) {
-                customRepository.deleteById(LogicalDisk.class, id, "id");
-                logger.info("Deleting LogicalDisk with id->{}", id);
-            } else {
-                logger.error("Logical Disk with Asset ->{} not exist", refId);
-            }
-        } else {
-            logger.error("Logical Disk with Asset -> {} not found", refId);
-        }
-
-    }
-
-    @Override
-    public void update(long refId, long id, LogicalDiskRest logicalDiskRest) {
-        Map<String,Long> fields = new HashMap<>();
-        fields.put("refId",refId);
-        fields.put("id",id);
-        List<LogicalDisk> logicalDisks = customRepository.findByColumns(fields, LogicalDisk.class);
-        if (!logicalDisks.isEmpty()) {
-            LogicalDiskOps logicalDiskOps = new LogicalDiskOps(logicalDisks.get(0), logicalDiskRest);
-            customRepository.save(logicalDiskOps.restToEntity());
-            logger.info("logicalDisk Updated with Asset Id ->{}", refId);
-        } else {
-            logger.error("Logical Disks with id -> {} & Asset -> {} not exist",id,refId);
-            throw new ComponentNotFoundException("LogicalDisks", "refId", refId);
-        }
-    }
-
-    @Override
-    public List<LogicalDiskRest> getAllLogicalDisks(long refId) {
+    public List<LogicalDiskRest> findAllByRefId(long refId) {
         List<LogicalDisk> logicalDisks =
                 customRepository.findAllByColumnName(LogicalDisk.class, "refId", refId);
         if (!logicalDisks.isEmpty()) {
@@ -122,6 +90,34 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
             return List.of();
         }
 
+    }
+
+    @Override
+    public void updateById(long refId, long id, LogicalDiskRest logicalDiskRest) {
+        Map<String, Long> fields = new HashMap<>();
+        fields.put("refId", refId);
+        fields.put("id", id);
+        List<LogicalDisk> logicalDisks = customRepository.findByColumns(fields, LogicalDisk.class);
+        if (!logicalDisks.isEmpty()) {
+            LogicalDiskOps logicalDiskOps = new LogicalDiskOps(logicalDisks.get(0), logicalDiskRest);
+            customRepository.save(logicalDiskOps.restToEntity());
+            logger.info("logicalDisk Updated with Asset Id ->{}", refId);
+        } else {
+            logger.error("Logical Disks with id -> {} & Asset -> {} not exist", id, refId);
+            throw new ComponentNotFoundException("LogicalDisks", "refId", refId);
+        }
+    }
+
+    @Override
+    public boolean deleteById(long refId, long id) {
+
+        boolean isDeleted = customRepository.deleteById(LogicalDisk.class, id, "id");
+        if (isDeleted) {
+            logger.info("Logical Disk with Asset ->{} deleted", refId);
+        } else {
+            logger.info("Logical Disk with Asset -> {} not found", refId);
+        }
+        return isDeleted;
     }
 
     private void setLogicalDisk(LogicalDisk logicalDisk, String[] data) {
@@ -227,19 +223,18 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
                             continue;
                         }
                         if (ans[i].contains("filesystem")) {
-                            String sub = ans[i].substring(ans[i].indexOf("filesystem"), ans[i].length());
+                            String sub = ans[i].substring(ans[i].indexOf("filesystem"));
                             if (sub.split(" ").length == 1) {
-                                parsedResult[values][4] = sub.substring("filesystem=".length(), sub.length());
+                                parsedResult[values][4] = sub.substring("filesystem=".length());
                             } else {
                                 parsedResult[values][4] =
                                         sub.substring("filesystem=".length(), sub.indexOf(" "));
                             }
                             continue;
                         } else if (ans[i].contains("mount.fstype")) {
-                            String sub = ans[i].substring(ans[i].indexOf("mount.fstype"), ans[i].length());
+                            String sub = ans[i].substring(ans[i].indexOf("mount.fstype"));
                             if (sub.split(" ").length == 1) {
-                                parsedResult[values][4] =
-                                        sub.substring("mount.fstype=".length(), sub.length());
+                                parsedResult[values][4] = sub.substring("mount.fstype=".length());
                             } else {
                                 parsedResult[values][4] =
                                         sub.substring("mount.fstype=".length(), sub.indexOf(" "));
