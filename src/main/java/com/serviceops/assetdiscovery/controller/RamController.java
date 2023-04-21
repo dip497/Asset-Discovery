@@ -24,20 +24,20 @@ public class RamController {
     }
 
     @GetMapping(value = "/{refId}/ram", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RamRest> getRam(@PathVariable("refId") Long refId) {
+    public List<RamRest> getRam(@PathVariable("refId") long refId) {
         logger.debug("Fetching Ram with Asset id -> {}", refId);
         return ramService.findAllByRefId(refId);
     }
 
     @PutMapping(value = "/{refId}/ram/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public RamRest updateRam(@PathVariable("refId") Long refId, @PathVariable("id") Long id,
+    public RamRest updateRam(@PathVariable("refId") long refId, @PathVariable("id") long id,
             @RequestBody RamRest ramRest) {
         logger.debug("Updating Ram with  id -> {}", id);
         return ramService.update(refId, id, ramRest);
     }
 
     @DeleteMapping("/{refId}/ram/{id}")
-    public boolean deleteRam(@PathVariable("refId") Long refId, @PathVariable("id") Long id) {
+    public boolean deleteRam(@PathVariable("refId") long refId, @PathVariable("id") long id) {
         logger.debug("Deleting Ram with  id -> {}", id);
         return ramService.deleteById(refId, id);
     }

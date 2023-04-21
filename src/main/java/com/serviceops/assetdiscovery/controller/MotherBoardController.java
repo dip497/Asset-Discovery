@@ -24,13 +24,13 @@ public class MotherBoardController {
     }
 
     @GetMapping(value = "/{refId}/motherBoard", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<MotherBoardRest> getMotherBoard(@PathVariable("refId") Long refId) {
+    public List<MotherBoardRest> getMotherBoard(@PathVariable("refId") long refId) {
         logger.debug("Fetching MotherBoard with Asset id -> {}", refId);
         return motherBoardService.findByRefId(refId);
     }
 
     @PutMapping(value = "/{refId}/motherBoard", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public MotherBoardRest updateMotherBoard(@PathVariable("refId") Long refId,
+    public MotherBoardRest updateMotherBoard(@PathVariable("refId") long refId,
             @RequestBody MotherBoardRest motherBoardRest) {
         logger.debug("Updating MotherBoard with Asset id -> {}", refId);
         return motherBoardService.update(refId, motherBoardRest);
@@ -38,7 +38,7 @@ public class MotherBoardController {
     }
 
     @DeleteMapping("/{refId}/motherBoard")
-    public boolean deleteMotherBoard(@PathVariable("refId") Long refId) {
+    public boolean deleteMotherBoard(@PathVariable("refId") long refId) {
         logger.debug("Deleting MotherBoard with Asset id -> {}", refId);
         return motherBoardService.deleteByRefId(refId);
 

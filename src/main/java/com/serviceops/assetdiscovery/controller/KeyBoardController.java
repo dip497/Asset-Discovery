@@ -25,20 +25,20 @@ public class KeyBoardController {
     }
 
     @GetMapping(value = "/{refId}/keyboard", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<KeyboardRest> getKeyboard(@PathVariable("refId") Long refId) {
+    public List<KeyboardRest> getKeyboard(@PathVariable("refId") long refId) {
         logger.debug("Fetching KeyBoard with Asset id -> {}", refId);
         return keyboardService.findAllByRefId(refId);
     }
 
     @PutMapping(value = "/{refId}/keyboard/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public KeyboardRest updateKeyboard(@PathVariable("refId") Long refId, @PathVariable("id") Long id,
+    public KeyboardRest updateKeyboard(@PathVariable("refId") long refId, @PathVariable("id") Long id,
             @RequestBody KeyboardRest keyboardRest) {
         logger.debug("Updating Keyboard with Asset id -> {}", refId);
         return keyboardService.update(refId, id, keyboardRest);
     }
 
     @DeleteMapping(value = "/{refId}/keyboard/{id}")
-    public boolean deleteKeyBoard(@PathVariable("refId") Long refId, @PathVariable("id") long id) {
+    public boolean deleteKeyBoard(@PathVariable("refId") long refId, @PathVariable("id") long id) {
         logger.debug("Deleting Keyboard with  id -> {}", id);
         return keyboardService.deleteByRefId(refId, id);
     }
