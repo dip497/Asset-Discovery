@@ -28,9 +28,10 @@ public class LinuxCommandExecutor implements AutoCloseable {
         this.username = username;
         this.password = password;
         this.port = port;
+        connect();
     }
 
-    public boolean connect() {
+    private void connect() {
         JSch jsch = new JSch();
         try {
             session = jsch.getSession(username, host, port);
@@ -38,10 +39,8 @@ public class LinuxCommandExecutor implements AutoCloseable {
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
             logger.info("Connected to -> {}", host);
-            return true;
         } catch (JSchException e) {
             logger.error("Failed to connect to -> {}", host);
-            return false;
         }
     }
 

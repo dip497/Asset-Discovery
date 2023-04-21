@@ -31,7 +31,7 @@ public class KeyboardServiceImpl implements KeyboardService {
     @Override
     public void save(long id) {
         String[][] strings = parseResults();
-        List<Keyboard> keyboards = customRepository.findAllByColumnName(Keyboard.class, "refId", id);
+        List<Keyboard> keyboards = customRepository.findAllByColumn( "refId", id,Keyboard.class);
         if (!keyboards.isEmpty()) {
             if (strings[0][0].equals(String.valueOf(keyboards.size()))) {
                 for (int i = 0; i < keyboards.size(); i++) {
@@ -66,7 +66,7 @@ public class KeyboardServiceImpl implements KeyboardService {
 
     @Override
     public List<KeyboardRest> findAllByRefId(long refId) {
-        List<Keyboard> fetchKeyboard = customRepository.findAllByColumnName(Keyboard.class, "refId", refId);
+        List<Keyboard> fetchKeyboard = customRepository.findAllByColumn("refId", refId,Keyboard.class);
         if (fetchKeyboard.isEmpty()) {
             logger.error("Keyboard not found with refId -> {} ", refId);
             return List.of();

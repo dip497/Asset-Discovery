@@ -33,10 +33,9 @@ public class LinuxCommandExecutorManager {
     public static boolean testConnection(String hostname, String username, String password, int port) {
         try (LinuxCommandExecutor linuxCommandExecutor = new LinuxCommandExecutor(hostname, username,
                 password, port)) {
-            return linuxCommandExecutor.connect();
+            return true;
         } catch (Exception e) {
             logger.error("Auth fail -> {}", e.getMessage());
-            //  throw new AssetDiscoveryApiException(e.getMessage());
         }
         return false;
     }
@@ -52,7 +51,6 @@ public class LinuxCommandExecutorManager {
     public void fetch() throws AssetDiscoveryApiException {
         try (LinuxCommandExecutor linuxCommandExecutor = new LinuxCommandExecutor(hostname, username,
                 password, port)) {
-            linuxCommandExecutor.connect();
             for (Map.Entry<Class<? extends SingleBase>, LinkedHashMap<String, String[]>> commandResultsLocal : commandResults.entrySet()) {
                 LinkedHashMap<String, String[]> commands = commandResultsLocal.getValue();
                 for (Map.Entry<String, String[]> entry : commands.entrySet()) {

@@ -33,7 +33,7 @@ public class RamServiceImpl implements RamService {
     @Override
     public void save(long id) {
         String[][] strings = parseResults();
-        List<Ram> rams = customRepository.findAllByColumnName(Ram.class, "refId", id);
+        List<Ram> rams = customRepository.findAllByColumn("refId", id,Ram.class);
         if (!rams.isEmpty()) {
             if (strings[0][0].equals(String.valueOf(rams.size()))) {
                 for (int i = 0; i < rams.size(); i++) {
@@ -69,7 +69,7 @@ public class RamServiceImpl implements RamService {
 
     @Override
     public List<RamRest> findAllByRefId(long refId) {
-        List<Ram> fetchRams = customRepository.findAllByColumnName(Ram.class, "refId", refId);
+        List<Ram> fetchRams = customRepository.findAllByColumn("refId", refId,Ram.class);
         if (fetchRams.isEmpty()) {
             logger.error("Ram not found with refId -> {} ", refId);
             return List.of();
