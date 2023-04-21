@@ -8,10 +8,10 @@ public interface ComputerSystemService {
 
     void save(long Id);
 
-    List<ComputerSystemRest> findAllByRefId(long id);
+    List<ComputerSystemRest> findByRefId(long id);
 
-    boolean deleteById(long id);
+    void updateByRefId(long refId, ComputerSystemRest computerSystemRest);
 
-    void updateById(long refId, ComputerSystemRest computerSystemRest);
+    boolean deleteByRefId(long id);
 
 }

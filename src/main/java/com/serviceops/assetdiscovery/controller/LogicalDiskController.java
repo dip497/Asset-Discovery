@@ -17,8 +17,8 @@ import java.util.List;
 @RestController
 public class LogicalDiskController {
 
+    private static final Logger logger = LoggerFactory.getLogger(LogicalDiskController.class);
     private final LogicalDiskService logicalDiskService;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public LogicalDiskController(LogicalDiskService logicalDiskService) {
 
@@ -37,8 +37,17 @@ public class LogicalDiskController {
 
     }
 
+    @PutMapping(value = "/{refId}/logicaldisk/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateLogicalDisk(@PathVariable("refId") long refId, @PathVariable("id") long id,
+            @RequestBody LogicalDiskRest logicalDiskRest) {
+
+        logger.debug("updating LogicalDisks with Asset id -> {}", refId);
+
+        logicalDiskService.updateById(refId, id, logicalDiskRest);
+    }
+
     @DeleteMapping("/{refId}/logicaldisk/{id}")
-    public boolean deleteById(@PathVariable("refId") long refId, @PathVariable("id") long id) {
+    public boolean deleteLogicalDisk(@PathVariable("refId") long refId, @PathVariable("id") long id) {
 
         logger.info("deleting LogicalDisks with Asset id -> {}", refId);
 
@@ -46,13 +55,6 @@ public class LogicalDiskController {
 
     }
 
-    @PutMapping(value = "/{refId}/logicaldisk/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateLogicalDiskById(@PathVariable("refId") long refId, @PathVariable("id") long id,
-            @RequestBody LogicalDiskRest logicalDiskRest) {
 
-        logger.debug("updating LogicalDisks with Asset id -> {}", refId);
-
-        logicalDiskService.updateById(refId, id, logicalDiskRest);
-    }
 
 }

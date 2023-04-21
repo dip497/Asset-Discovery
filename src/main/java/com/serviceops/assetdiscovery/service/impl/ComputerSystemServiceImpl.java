@@ -50,7 +50,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     }
 
     @Override
-    public List<ComputerSystemRest> findAllByRefId(long refId) {
+    public List<ComputerSystemRest> findByRefId(long refId) {
         Optional<ComputerSystem> optionalComputerSystem =
                 customRepository.findByColumn("refId", refId, ComputerSystem.class);
         if (optionalComputerSystem.isPresent()) {
@@ -75,7 +75,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     }
 
     @Override
-    public void updateById(long refId, ComputerSystemRest computerSystemRest) {
+    public void updateByRefId(long refId, ComputerSystemRest computerSystemRest) {
         Optional<ComputerSystem> optionalComputerSystem =
                 customRepository.findByColumn("refId", refId, ComputerSystem.class);
         if (!optionalComputerSystem.isPresent()) {
@@ -90,7 +90,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     }
 
     @Override
-    public boolean deleteById(long refId) {
+    public boolean deleteByRefId(long refId) {
         boolean isDeleted = customRepository.deleteById(ComputerSystem.class,refId,"id");
         if(isDeleted){
             logger.info("ComputerSystem deleted with Asset Id -> {}",refId);
