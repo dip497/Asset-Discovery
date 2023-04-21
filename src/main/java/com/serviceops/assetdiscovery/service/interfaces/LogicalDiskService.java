@@ -7,9 +7,11 @@ import java.util.List;
 public interface LogicalDiskService {
     void save(long id);
 
-    boolean deleteById(long id, long aLong);
+    List<LogicalDiskRest> findAllByRefId(long refId);
 
     void updateById(long refId, long id, LogicalDiskRest logicalDiskRest);
 
-    List<LogicalDiskRest> findAllByRefId(long refId);
+    boolean deleteById(long id, long aLong);
+
+
 }

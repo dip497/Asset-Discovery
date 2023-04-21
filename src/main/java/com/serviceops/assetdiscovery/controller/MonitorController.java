@@ -18,28 +18,21 @@ import java.util.List;
 @RestController
 public class MonitorController {
 
+    private static final Logger logger = LoggerFactory.getLogger(MonitorController.class);
     private final MonitorService monitorService;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public MonitorController(MonitorService monitorService) {
         this.monitorService = monitorService;
     }
 
     @GetMapping(value = "/{refId}/monitor", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<MonitorRest> getMonitor(@PathVariable("refId") long refId) {
+    public List<MonitorRest> getMonitors(@PathVariable("refId") long refId) {
 
         logger.info("Fetching Monitor with Asset id -> {}", refId);
         List<MonitorRest> monitors = monitorService.findAllByRefId(refId);
 
         return monitors;
 
-    }
-
-    @DeleteMapping("/{refId}/monitor/{id}")
-    public boolean deleteMonitor(@PathVariable("refId") long refId, @PathVariable("id") long id) {
-
-        logger.info("Deleting Monitor with Asset id -> {}", refId);
-        return monitorService.deleteById(refId, id);
     }
 
     @PutMapping(value = "/{refId}/monitor/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -49,6 +42,13 @@ public class MonitorController {
         logger.debug("Updating monitor with Asset id -> {}", refId);
 
         monitorService.updateById(refId, id, monitorRest);
+    }
+
+    @DeleteMapping("/{refId}/monitor/{id}")
+    public boolean deleteMonitor(@PathVariable("refId") long refId, @PathVariable("id") long id) {
+
+        logger.info("Deleting Monitor with Asset id -> {}", refId);
+        return monitorService.deleteById(refId, id);
     }
 
 }

@@ -17,8 +17,8 @@ import java.util.List;
 @RestController
 public class ComputerSystemController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ComputerSystemController.class);
     private final ComputerSystemService computerSystemService;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public ComputerSystemController(ComputerSystemService computerSystemService) {
         this.computerSystemService = computerSystemService;
@@ -28,19 +28,11 @@ public class ComputerSystemController {
     public List<ComputerSystemRest> getComputerSystem(@PathVariable("refId") long refId) {
 
 
-        List<ComputerSystemRest> computerSystemRests = computerSystemService.findAllByRefId(refId);
+        List<ComputerSystemRest> computerSystemRests = computerSystemService.findByRefId(refId);
 
         logger.info("Fetching ComputerSystem with Asset id -> {}", refId);
 
         return computerSystemRests;
-    }
-
-    @DeleteMapping(value = "/{refId}/computersystem")
-    public void deleteComputerSystem(@PathVariable("refId") long refId) {
-
-        logger.info("Deleting ComputerSystem with Asset id -> {}", refId);
-
-        computerSystemService.deleteById(refId);
     }
 
     @PutMapping(value = "/{refId}/computersystem", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -49,7 +41,15 @@ public class ComputerSystemController {
 
         logger.info("Updating updateComputerSystem with Asset id -> {}", refId);
 
-        computerSystemService.updateById(refId, computerSystemRest);
+        computerSystemService.updateByRefId(refId, computerSystemRest);
+    }
+
+    @DeleteMapping(value = "/{refId}/computersystem")
+    public void deleteComputerSystem(@PathVariable("refId") long refId) {
+
+        logger.info("Deleting ComputerSystem with Asset id -> {}", refId);
+
+        computerSystemService.deleteByRefId(refId);
     }
 
 }
