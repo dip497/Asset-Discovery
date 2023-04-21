@@ -4,7 +4,7 @@ import com.serviceops.assetdiscovery.config.SchedulerService;
 import com.serviceops.assetdiscovery.entity.NetworkScan;
 import com.serviceops.assetdiscovery.entity.Schedulers;
 import com.serviceops.assetdiscovery.exception.ResourceAlreadyExistsException;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.SchedulerRest;
 import com.serviceops.assetdiscovery.service.interfaces.SchedulersService;
@@ -34,7 +34,7 @@ public class SchedulerServiceImpl implements SchedulersService {
                 customRepository.findByColumn("id", networkScanId, NetworkScan.class);
         if(networkScan.isEmpty()){
             logger.error("network Scan not exists with id -> {}", networkScanId);
-            throw  new ResourceNotFoundException("NetworkScan", "id",networkScanId);
+            throw  new ComponentNotFoundException("NetworkScan", "id",networkScanId);
         }else{
             Optional<Schedulers> fetchScheduler =
                     customRepository.findByColumn("networkScanId", networkScanId, Schedulers.class);
@@ -67,7 +67,7 @@ public class SchedulerServiceImpl implements SchedulersService {
                 customRepository.findByColumn("networkScanId", networkScanId, Schedulers.class);
         if (fetchSchedulers.isEmpty()) {
             logger.error("Scheduler not exist with networkScanId -> {} ", networkScanId);
-            throw new ResourceNotFoundException("Scheduler", "networkScanId", networkScanId);
+            throw new ComponentNotFoundException("Scheduler", "networkScanId", networkScanId);
         } else {
             Schedulers schedulers = fetchSchedulers.get();
             schedulers = new SchedulerOps(schedulers, schedulerRest).restToEntity();
@@ -89,7 +89,7 @@ public class SchedulerServiceImpl implements SchedulersService {
             return schedulerRest;
         } else {
             logger.error("Scheduler not exist with networkScanId -> {} ", networkScanId);
-            throw new ResourceNotFoundException("Scheduler", "networkScanId", networkScanId);
+            throw new ComponentNotFoundException("Scheduler", "networkScanId", networkScanId);
         }
     }
 

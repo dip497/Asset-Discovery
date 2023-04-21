@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.MotherBoard;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 import com.serviceops.assetdiscovery.service.interfaces.MotherBoardService;
@@ -75,25 +75,30 @@ public class MotherBoardServiceImpl implements MotherBoardService {
     }
 
     @Override
-    public void update(Long refId, MotherBoardRest motherBoardRest) {
+    public MotherBoardRest update(Long refId, MotherBoardRest motherBoardRest) {
         Optional<MotherBoard> fetchMotherboard =
                 customRepository.findByColumn("refId", refId, MotherBoard.class);
         if (fetchMotherboard.isEmpty()) {
             logger.error("Motherboard not found with Asset Id -> {}", refId);
-            throw new ResourceNotFoundException("MotherBoard", "refId", refId);
+            throw new ComponentNotFoundException("MotherBoard", "refId", refId);
         } else {
 
             MotherBoard motherBoard = fetchMotherboard.get();
             MotherBoardOps motherBoardOps = new MotherBoardOps(motherBoard, motherBoardRest);
             customRepository.save(motherBoardOps.restToEntity());
             logger.info("MotherBoard Updated with Asset Id ->{}", motherBoard.getRefId());
+            return motherBoardOps.entityToRest();
         }
     }
 
     @Override
     public void deleteByRefId(Long refId) {
-        customRepository.deleteById(MotherBoard.class, refId, "refId");
-        logger.info("MotherBoard deleted with Asset Id ->{}", refId);
+        boolean isDeleted = customRepository.deleteById(MotherBoard.class, refId, "refId");
+        if (isDeleted) {
+            logger.info("MotherBoard deleted with Asset Id ->{}", refId);
+        } else {
+            logger.info("MotherBoard not deleted with Asset Id ->{}", refId);
+        }
     }
 
     private void setCommands() {

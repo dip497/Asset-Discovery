@@ -2,7 +2,7 @@ package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Monitor;
 import com.serviceops.assetdiscovery.entity.PointingDevice;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.PointingDeviceRest;
 import com.serviceops.assetdiscovery.service.interfaces.PointingDeviceService;
@@ -147,7 +147,7 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
             return pointingDeviceRest;
         } else {
             logger.info("Could not found pointing device with id: --> {}", refId);
-            throw new ResourceNotFoundException("Pointing device", "refId", refId);
+            throw new ComponentNotFoundException("Pointing device", "refId", refId);
         }
     }
 

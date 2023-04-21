@@ -1,17 +1,15 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.NetworkScan;
-import com.serviceops.assetdiscovery.entity.Schedulers;
 import com.serviceops.assetdiscovery.entity.enums.IpRangeType;
 import com.serviceops.assetdiscovery.exception.AssetDiscoveryApiException;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.repository.PersistToDB;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.rest.NetworkScanRest;
 import com.serviceops.assetdiscovery.service.interfaces.CredentialsService;
 import com.serviceops.assetdiscovery.service.interfaces.NetworkScanService;
-import com.serviceops.assetdiscovery.service.interfaces.SchedulersService;
 import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.NetworkScanOps;
 import org.slf4j.Logger;
@@ -57,7 +55,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
             return new NetworkScanOps(networkScan, new NetworkScanRest()).entityToRest();
         } else {
             logger.error("NetworkScanJob not found by id -> {}", id);
-            throw new ResourceNotFoundException("NetworkScan", "id", id);
+            throw new ComponentNotFoundException("NetworkScan", "id", id);
         }
     }
 
@@ -96,7 +94,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
         if (fetchNetworkScan.isEmpty()) {
             logger.error("networkScan not exist with id ->{}", id);
-            throw new ResourceNotFoundException("NetworkScanJob", "id", id);
+            throw new ComponentNotFoundException("NetworkScanJob", "id", id);
         } else {
             NetworkScan networkScan = fetchNetworkScan.get();
             networkScan = new NetworkScanOps(networkScan, networkScanRest).restToEntity();
@@ -119,7 +117,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
             }
         } else {
             logger.error("Network scan not found with id ->{} " , id);
-            throw new ResourceNotFoundException("NetworkScanJob", "id", id);
+            throw new ComponentNotFoundException("NetworkScanJob", "id", id);
         }
     }
 

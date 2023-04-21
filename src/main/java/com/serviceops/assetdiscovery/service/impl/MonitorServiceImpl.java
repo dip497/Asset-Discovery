@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Monitor;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.MonitorRest;
 import com.serviceops.assetdiscovery.service.interfaces.MonitorService;
@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,7 +84,7 @@ public class MonitorServiceImpl implements MonitorService {
                 return monitorRest;
         }else {
             logger.error("Monitor with Id -> {} & Asset Id -> {} not exist",id, refId);
-            throw new ResourceNotFoundException("Monitor", "refId", refId);
+            throw new ComponentNotFoundException("Monitor", "refId", refId);
         }
     }
 

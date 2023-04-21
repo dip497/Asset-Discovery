@@ -13,5 +13,5 @@ public interface RamService {
 
     void deleteById(long refId, long id);
 
-    void update(long refId, long id, RamRest ramRest);
+    RamRest update(long refId, long id, RamRest ramRest);
 }

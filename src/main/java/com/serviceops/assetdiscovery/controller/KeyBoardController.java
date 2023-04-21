@@ -37,9 +37,9 @@ public class KeyBoardController {
     }
 
     @PutMapping(value = "/{refId}/keyboard/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateKeyboard(@PathVariable("refId") Long refId, @PathVariable("id") Long id,
+    public KeyboardRest updateKeyboard(@PathVariable("refId") Long refId, @PathVariable("id") Long id,
             @RequestBody KeyboardRest keyboardRest) {
         logger.debug("Updating Keyboard with Asset id -> {}", refId);
-        keyboardService.update(refId, id, keyboardRest);
+        return keyboardService.update(refId, id, keyboardRest);
     }
 }

@@ -17,8 +17,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception,
+    @ExceptionHandler(ComponentNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ComponentNotFoundException exception,
             WebRequest webRequest) {
         ErrorDetails details =
                 new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));

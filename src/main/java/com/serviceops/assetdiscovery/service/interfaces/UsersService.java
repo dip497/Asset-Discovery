@@ -5,5 +5,5 @@ import com.serviceops.assetdiscovery.rest.UsersRest;
 public interface UsersService {
     UsersRest save(UsersRest usersRest);
 
-    Boolean checkForUserInDB(String email);
+    boolean checkForUserInDB(String email);
 }

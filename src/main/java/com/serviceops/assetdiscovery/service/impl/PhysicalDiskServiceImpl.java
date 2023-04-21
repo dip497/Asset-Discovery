@@ -2,7 +2,7 @@ package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.LogicalDisk;
 import com.serviceops.assetdiscovery.entity.PhysicalDisk;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.PhysicalDiskRest;
 import com.serviceops.assetdiscovery.service.interfaces.PhysicalDiskService;
@@ -142,7 +142,7 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
         } else {
             logger.error("Physical disk not found with id; --> {}", refId);
-            throw new ResourceNotFoundException("No PhysicalDisk", "refId", refId);
+            throw new ComponentNotFoundException("No PhysicalDisk", "refId", refId);
         }
     }
 

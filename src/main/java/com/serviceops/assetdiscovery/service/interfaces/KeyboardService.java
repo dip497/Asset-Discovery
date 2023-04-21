@@ -13,5 +13,5 @@ public interface KeyboardService {
 
     void deleteByRefId(Long refId, Long id);
 
-    void update(Long refId, Long id, KeyboardRest keyboardRest);
+    KeyboardRest update(Long refId, Long id, KeyboardRest keyboardRest);
 }

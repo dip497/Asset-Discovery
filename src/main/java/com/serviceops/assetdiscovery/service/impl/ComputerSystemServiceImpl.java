@@ -3,7 +3,7 @@ package com.serviceops.assetdiscovery.service.impl;
 import com.serviceops.assetdiscovery.entity.ComputerSystem;
 import com.serviceops.assetdiscovery.entity.OS;
 import com.serviceops.assetdiscovery.entity.Processor;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.ComputerSystemRest;
 import com.serviceops.assetdiscovery.service.interfaces.ComputerSystemService;
@@ -81,7 +81,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
                 customRepository.findByColumn("refId", refId, ComputerSystem.class);
         if (!optionalComputerSystem.isPresent()) {
             logger.error("Computer System with Asset -> {} not found", refId);
-            throw new ResourceNotFoundException("ConputerSystem", "refId", refId);
+            throw new ComponentNotFoundException("ConputerSystem", "refId", refId);
         } else {
             ComputerSystem computerSystem = optionalComputerSystem.get();
             ComputerSystemOps computerSystemOps = new ComputerSystemOps(computerSystem, computerSystemRest);
@@ -97,7 +97,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
             customRepository.deleteById(ComputerSystem.class, refId, "refId");
         } else {
             logger.error("Computer System with Asset -> {} not found", refId);
-            throw new ResourceNotFoundException("ComputerSystem", "refId", refId);
+            throw new ComponentNotFoundException("ComputerSystem", "refId", refId);
         }
 
     }

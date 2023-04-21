@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.LogicalDisk;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.LogicalDiskRest;
 import com.serviceops.assetdiscovery.service.interfaces.LogicalDiskService;
@@ -101,7 +101,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
             logger.info("logicalDisk Updated with Asset Id ->{}", refId);
         } else {
             logger.error("Logical Disks with id -> {} & Asset -> {} not exist",id,refId);
-            throw new ResourceNotFoundException("LogicalDisks", "refId", refId);
+            throw new ComponentNotFoundException("LogicalDisks", "refId", refId);
         }
     }
 

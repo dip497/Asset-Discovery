@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Bios;
-import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.AssetRest;
 import com.serviceops.assetdiscovery.rest.BiosRest;
@@ -86,7 +86,7 @@ public class BiosServiceImpl implements BiosService {
             return biosRests;
         }
 
-        // If optionalBios is not then throw ResourceNotFoundException
+        // If optionalBios is not then throw ComponentNotFoundException
         else {
             return new ArrayList<>();
         }
@@ -97,7 +97,7 @@ public class BiosServiceImpl implements BiosService {
     @Override
     public void deleteByRefId(long refId) {
 
-        // If Bios is present then move further to delete the Bios or else throw ResourceNotFoundException
+        // If Bios is present then move further to delete the Bios or else throw ComponentNotFoundException
         findByRefId(refId);
 
         // Deleting the Bios at given refId
@@ -109,7 +109,7 @@ public class BiosServiceImpl implements BiosService {
     // Updating Asset by ID
     public void update(long refId, BiosRest biosRest) {
 
-        // If Bios is present then move further to update the Bios or else throw ResourceNotFoundException
+        // If Bios is present then move further to update the Bios or else throw ComponentNotFoundException
         Optional<Bios> optionalBios = customRepository.findByColumn("refId", refId, Bios.class);
 
         // If Bios is present then update data as per BiosRest
@@ -120,10 +120,10 @@ public class BiosServiceImpl implements BiosService {
             logger.info("Bios Updated with Asset Id ->{}", bios.getRefId());
         }
 
-        // If Bios not present then throw ResourceNotFoundException
+        // If Bios not present then throw ComponentNotFoundException
         else {
             logger.error("Bios not found for Asset with ID ->{}", refId);
-            throw new ResourceNotFoundException("BiosRest", "refId", refId);
+            throw new ComponentNotFoundException("BiosRest", "refId", refId);
         }
     }
 
