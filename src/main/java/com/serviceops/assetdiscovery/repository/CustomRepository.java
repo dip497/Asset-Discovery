@@ -68,7 +68,7 @@ public class CustomRepository {
         return em.createQuery(query).getResultList();
     }
 
-    public <F, T> List<T> findAllByColumnName(final Class<T> clazz, final String column, F value) {
+    public <F, T> List<T> findAllByColumn(final String column, F value,final Class<T> clazz) {
         CriteriaQuery<T> query = criteriaBuilder.createQuery(clazz);
         Root<T> from = query.from(clazz);
         query.select(from).where(criteriaBuilder.equal(from.get(column), value));

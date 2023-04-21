@@ -23,9 +23,8 @@ import java.util.Optional;
 @Service
 public class OsServiceImpl implements OsService {
 
-    CustomRepository customRepository;
-
     private static final Logger logger = LoggerFactory.getLogger(OsServiceImpl.class);
+    private final CustomRepository customRepository;
 
     public OsServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -103,10 +102,9 @@ public class OsServiceImpl implements OsService {
         // Deleting the Os at given refId
         boolean isDeleted = customRepository.deleteById(OS.class, refId, "refId");
 
-        if(isDeleted) {
+        if (isDeleted) {
             logger.info("OS deleted with Asset Id ->{}", refId);
-        }
-        else {
+        } else {
             logger.info("OS could not be deleted with Asset Id ->{}", refId);
         }
 
@@ -131,7 +129,7 @@ public class OsServiceImpl implements OsService {
         // If OS is not present then throw ComponentNotFoundException
         else {
             logger.error("OS not found for Asset with ID ->{}", refId);
-            throw new ComponentNotFoundException("OsRest","refId",refId);
+            throw new ComponentNotFoundException("OsRest", "refId", refId);
         }
 
     }

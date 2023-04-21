@@ -15,8 +15,8 @@ import java.util.Optional;
 @Service
 public class HardwarePropertiesServiceImpl implements HardwarePropertiesService {
 
-    CustomRepository customRepository;
     private static final Logger logger = LoggerFactory.getLogger(HardwarePropertiesServiceImpl.class);
+    private final CustomRepository customRepository;
 
     public HardwarePropertiesServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;

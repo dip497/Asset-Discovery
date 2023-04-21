@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 public class BiosServiceImpl implements BiosService {
 
     private static final Logger logger = LoggerFactory.getLogger(BiosServiceImpl.class);
-    CustomRepository customRepository;
+    private final CustomRepository customRepository;
 
     public BiosServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;

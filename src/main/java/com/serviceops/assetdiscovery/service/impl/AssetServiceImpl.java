@@ -29,7 +29,7 @@ import java.util.Optional;
 public class AssetServiceImpl implements AssetService {
 
     private static final Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
-    CustomRepository customRepository;
+    private final CustomRepository customRepository;
 
     public AssetServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;

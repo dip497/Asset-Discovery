@@ -5,9 +5,9 @@ import com.serviceops.assetdiscovery.entity.ComputerSystem;
 import com.serviceops.assetdiscovery.entity.OS;
 import com.serviceops.assetdiscovery.entity.PhysicalDisk;
 import com.serviceops.assetdiscovery.entity.Processor;
+import com.serviceops.assetdiscovery.entity.Ram;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.ComputerPropertiesRest;
-import com.serviceops.assetdiscovery.rest.RamRest;
 import com.serviceops.assetdiscovery.service.interfaces.ComputerPropertiesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +21,10 @@ import java.util.Optional;
 public class ComputerPropertiesServiceImpl implements ComputerPropertiesService {
 
     private static final Logger logger = LoggerFactory.getLogger(ComputerPropertiesServiceImpl.class);
-    private final RamServiceImpl ramService;
-    CustomRepository customRepository;
+    private final CustomRepository customRepository;
 
-    public ComputerPropertiesServiceImpl(CustomRepository customRepository, RamServiceImpl ramService) {
+    public ComputerPropertiesServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
-        this.ramService = ramService;
     }
 
     @Override
@@ -40,7 +38,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         Optional<Asset> optionalAsset = customRepository.findByColumn("id", refId, Asset.class);
         Optional<ComputerSystem> optionalComputerSystem =
                 customRepository.findByColumn("refId", refId, ComputerSystem.class);
-        List<RamRest> ramRests = ramService.findAllByRefId(refId);
+        List<Ram> rams = customRepository.findAllByColumn("refId", refId, Ram.class);
         List<ComputerPropertiesRest> computerPropertiesRests = new ArrayList<>();
         ComputerPropertiesRest computerPropertiesRest = new ComputerPropertiesRest();
 
@@ -73,9 +71,9 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
             computerPropertiesRest.setNumberOfLogicalProcessors(2 * processor.getCoreCount());
         }
 
-        if (!(ramRests.isEmpty())) {
+        if (!(rams.isEmpty())) {
             long size = 0L;
-            for (RamRest ram : ramRests) {
+            for (Ram ram : rams) {
                 size += ram.getSize();
             }
             computerPropertiesRest.setMemorySize(size);
