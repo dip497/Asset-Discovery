@@ -55,20 +55,6 @@ public class BiosServiceImpl implements BiosService {
 
     }
 
-    // Setting the content for Bios entity
-    private void setContent(AssetRest assetRest, List<String> parseResult, Bios bios) {
-        try {
-            bios.setSerialNumber(assetRest.getSerialNumber());
-            bios.setReleaseDate(Long.parseLong(parseResult.get(0)));
-            bios.setVersion(parseResult.get(1));
-            bios.setSmBiosVersion(extractSMVersion(parseResult.get(2)));
-            bios.setManufacturer(parseResult.get(3));
-            customRepository.save(bios);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            customRepository.save(bios);
-        }
-    }
-
     // Finding Bios by Ref ID
     @Override
     public List<BiosRest> findByRefId(long refId) {
@@ -182,6 +168,19 @@ public class BiosServiceImpl implements BiosService {
         return versionNumber;
     }
 
+    // Setting the content for Bios entity
+    private void setContent(AssetRest assetRest, List<String> parseResult, Bios bios) {
+        try {
+            bios.setSerialNumber(assetRest.getSerialNumber());
+            bios.setReleaseDate(Long.parseLong(parseResult.get(0)));
+            bios.setVersion(parseResult.get(1));
+            bios.setSmBiosVersion(extractSMVersion(parseResult.get(2)));
+            bios.setManufacturer(parseResult.get(3));
+            customRepository.save(bios);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            customRepository.save(bios);
+        }
+    }
 
 
 }
