@@ -37,7 +37,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
         String[][] parseResults = parseResults();
         if (parseResults.length > 0) {
             List<LogicalDisk> logicalDisks =
-                    customRepository.findAllByColumnName(LogicalDisk.class, "refId", id);
+                    customRepository.findAllByColumn("refId", id,LogicalDisk.class);
             if (!logicalDisks.isEmpty()) {
                 if (logicalDisks.size() == parseResults.length) {
                     for (int i = 0; i < logicalDisks.size(); i++) {
@@ -75,7 +75,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
     @Override
     public List<LogicalDiskRest> findAllByRefId(long refId) {
         List<LogicalDisk> logicalDisks =
-                customRepository.findAllByColumnName(LogicalDisk.class, "refId", refId);
+                customRepository.findAllByColumn("refId", refId,LogicalDisk.class);
         if (!logicalDisks.isEmpty()) {
             List<LogicalDiskRest> logicalDiskRests = new ArrayList<>();
             for (LogicalDisk logicalDisk : logicalDisks) {

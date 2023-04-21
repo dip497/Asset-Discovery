@@ -36,7 +36,7 @@ public class MonitorServiceImpl implements MonitorService {
     public void save(long refId) {
         String[][] parsedResults = parseResults();
         if (parsedResults.length != 0) {
-            List<Monitor> monitors = customRepository.findAllByColumnName(Monitor.class, "refId", refId);
+            List<Monitor> monitors = customRepository.findAllByColumn("refId", refId,Monitor.class);
             if (!monitors.isEmpty()) {
                 if (monitors.size() == parsedResults.length) {
                     for (int i = 0; i < monitors.size(); i++) {
@@ -72,7 +72,7 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public List<MonitorRest> findAllByRefId(long id) {
-        List<Monitor> monitorsList = customRepository.findAllByColumnName(Monitor.class, "refId", id);
+        List<Monitor> monitorsList = customRepository.findAllByColumn("refId", id,Monitor.class);
         if (!monitorsList.isEmpty()) {
             List<MonitorRest> monitorRestList = new ArrayList<>();
             for (Monitor monitor : monitorsList) {
