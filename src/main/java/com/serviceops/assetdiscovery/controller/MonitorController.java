@@ -1,7 +1,6 @@
 package com.serviceops.assetdiscovery.controller;
 
 
-import com.serviceops.assetdiscovery.rest.LogicalDiskRest;
 import com.serviceops.assetdiscovery.rest.MonitorRest;
 import com.serviceops.assetdiscovery.service.interfaces.MonitorService;
 import org.slf4j.Logger;

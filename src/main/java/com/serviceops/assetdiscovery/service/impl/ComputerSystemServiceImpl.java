@@ -64,7 +64,6 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
                 computerSystemRest.setNumberOfProcessors(optionalProcessor.get().getCoreCount());
                 computerSystemRest.setNumberOfLogicalProcessor(2 * optionalProcessor.get().getCoreCount());
             }
-            Optional<OS> optionalOs = customRepository.findByColumn("refId", refId, OS.class);
             List<ComputerSystemRest> computerSystemRests = new ArrayList<>();
             computerSystemRests.add(computerSystemRest);
             return computerSystemRests;
