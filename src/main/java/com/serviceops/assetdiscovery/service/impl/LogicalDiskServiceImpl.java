@@ -33,7 +33,6 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
     }
 
     @Override
-    @Transactional
     public void save(long id) {
         String[][] parseResults = parseResults();
         if (parseResults.length > 0) {
@@ -82,7 +81,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
             for (LogicalDisk logicalDisk : logicalDisks) {
                 LogicalDiskOps logicalDiskOps = new LogicalDiskOps(logicalDisk, new LogicalDiskRest());
                 logicalDiskRests.add(logicalDiskOps.entityToRest());
-                logger.info("Retrieving Monitor of refId -> {}", refId);
+                logger.info("Retrieving LogicalDisk of refId -> {}", refId);
             }
             return logicalDiskRests;
         } else {

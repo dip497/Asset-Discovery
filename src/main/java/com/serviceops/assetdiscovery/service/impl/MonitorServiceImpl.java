@@ -33,7 +33,6 @@ public class MonitorServiceImpl implements MonitorService {
     }
 
     @Override
-    @Transactional
     public void save(long refId) {
         String[][] parsedResults = parseResults();
         if (parsedResults.length != 0) {
@@ -42,7 +41,7 @@ public class MonitorServiceImpl implements MonitorService {
                 if (monitors.size() == parsedResults.length) {
                     for (int i = 0; i < monitors.size(); i++) {
                         setMonitor(monitors.get(i), parsedResults[i]);
-                        logger.info("Updated LogicalDisk with Asset Id->{}", refId);
+                        logger.info("Updated Monitor with Asset Id->{}", refId);
                         customRepository.save(monitors.get(i));
                     }
                 } else {
