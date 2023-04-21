@@ -16,39 +16,28 @@ import java.util.List;
 
 @RestController
 public class BiosController {
-
-    private final BiosServiceImpl biosService;
     private static final Logger logger = LoggerFactory.getLogger(BiosController.class);
+    private final BiosServiceImpl biosService;
 
     public BiosController(BiosServiceImpl biosService) {
         this.biosService = biosService;
     }
 
     @GetMapping(value = "/{refId}/bios", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BiosRest> getByRefId(@PathVariable("refId") Long refId) {
-
+    public List<BiosRest> getByRefId(@PathVariable("refId") long refId) {
         logger.debug("Fetching Bios with Asset id -> {}", refId);
-
         return biosService.findByRefId(refId);
     }
 
-    @DeleteMapping("/{refId}/bios")
-    public void delete(@PathVariable("refId") long refId) {
-
-        logger.debug("Deleting Bios with Asset id -> {}", refId);
-
-        biosService.deleteByRefId(refId);
-
-    }
-
     @PutMapping(value = "/{refId}/bios", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@PathVariable("refId") long refId, @RequestBody BiosRest biosRest) {
-
+    public BiosRest update(@PathVariable("refId") long refId, @RequestBody BiosRest biosRest) {
         logger.debug("Updating Bios with Asset id -> {}", refId);
-
-        biosService.update(refId, biosRest);
-
+        return biosService.update(refId, biosRest);
     }
 
-
+    @DeleteMapping("/{refId}/bios")
+    public boolean delete(@PathVariable("refId") long refId) {
+        logger.debug("Deleting Bios with Asset id -> {}", refId);
+        return biosService.deleteByRefId(refId);
+    }
 }

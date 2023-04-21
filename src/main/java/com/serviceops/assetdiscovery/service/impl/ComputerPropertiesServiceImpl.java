@@ -20,9 +20,9 @@ import java.util.Optional;
 @Service
 public class ComputerPropertiesServiceImpl implements ComputerPropertiesService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ComputerPropertiesServiceImpl.class);
     private final RamServiceImpl ramService;
     CustomRepository customRepository;
-    private static final Logger logger = LoggerFactory.getLogger(ComputerPropertiesServiceImpl.class);
 
     public ComputerPropertiesServiceImpl(CustomRepository customRepository, RamServiceImpl ramService) {
         this.customRepository = customRepository;

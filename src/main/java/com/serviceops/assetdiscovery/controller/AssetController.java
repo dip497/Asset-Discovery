@@ -19,9 +19,8 @@ import java.util.Map;
 
 @RestController
 public class AssetController {
-
-    private final AssetServiceImpl assetService;
     private static final Logger logger = LoggerFactory.getLogger(AssetController.class);
+    private final AssetServiceImpl assetService;
 
     public AssetController(AssetServiceImpl assetService) {
         this.assetService = assetService;
@@ -33,36 +32,25 @@ public class AssetController {
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
-
         logger.debug("Fetching Assets");
-
         return assetService.findPaginatedData(pageNo, pageSize, sortBy, sortDir);
     }
 
     @GetMapping(value = "/asset/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetRest getById(@PathVariable("id") long id) {
-
         logger.debug("Fetching Asset with id -> {}", id);
-
         return assetService.findById(id);
     }
 
     @PatchMapping(value = "/asset/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@PathVariable long id, @RequestBody Map<String, Object> fields) {
-
+    public AssetRest update(@PathVariable long id, @RequestBody Map<String, Object> fields) {
         logger.debug("Updating Asset field -> {} for Asset id {}", fields, id);
-
-        assetService.update(id, fields);
-
+        return assetService.update(id, fields);
     }
 
     @DeleteMapping(value = "/asset/{id}")
-    public void delete(@PathVariable Long id) {
-
+    public boolean delete(@PathVariable long id) {
         logger.debug("Deleting Asset with id -> {}", id);
-
-        assetService.deleteById(id);
-
+        return assetService.deleteById(id);
     }
-
 }

@@ -2,6 +2,7 @@ package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Asset;
 import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
+import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.AllAssetRest;
 import com.serviceops.assetdiscovery.rest.AssetRest;
@@ -27,8 +28,8 @@ import java.util.Optional;
 @Service
 public class AssetServiceImpl implements AssetService {
 
-    CustomRepository customRepository;
     private static final Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
+    CustomRepository customRepository;
 
     public AssetServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -79,8 +80,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     // Finding Asset by IP
-    @Override
-    public AssetRest findByIpAddress(String ipAddress) {
+    private AssetRest findByIpAddress(String ipAddress) {
 
         Optional<Asset> optionalAsset = customRepository.findByColumn("ipAddress", ipAddress, Asset.class);
 
@@ -95,7 +95,7 @@ public class AssetServiceImpl implements AssetService {
         // if optionalAsset is not present then throw ComponentNotFoundException
         else {
             logger.error("Asset not found by IP ->{}", ipAddress);
-            throw new ComponentNotFoundException("AssetRest", "id", 0);
+            throw new ResourceNotFoundException("AssetRest", "ip", ipAddress);
         }
 
     }
@@ -140,23 +140,22 @@ public class AssetServiceImpl implements AssetService {
         // Fetching the Total number of Assets
         int count = findTotalCount();
 
-        // Setting the AllAssetRest response
-        AllAssetRest data = new AllAssetRest();
-        data.setAssetRestList(assetRests);
-        data.setPageNo(pageNo);
-        data.setTotalElements(count);
-        data.setPageSize(pageSize);
+        // Preparing the rest.
+        AllAssetRest allAssetRest = new AllAssetRest();
+        allAssetRest.setAssetRestList(assetRests);
+        allAssetRest.setPageNo(pageNo);
+        allAssetRest.setTotalElements(count);
+        allAssetRest.setPageSize(pageSize);
 
         logger.info("Assets found in {} order on {} page number {}", sortDir, sortBy, pageNo);
 
         // Return the AllAssetRest response
-        return data;
+        return allAssetRest;
 
     }
 
     // Finding total number of Assets
-    @Override
-    public int findTotalCount() {
+    private int findTotalCount() {
 
         // Fetching the total number of Assets
         int count = customRepository.getCount(Asset.class);
@@ -169,21 +168,24 @@ public class AssetServiceImpl implements AssetService {
 
     // Deleting Asset by Id
     @Override
-    public void deleteById(long id) {
-
-        // If Asset is present then move further to delete the Asset or else throw ComponentNotFoundException
-        findById(id);
+    public boolean deleteById(long id) {
 
         // Deleting the Asset at given ID
-        customRepository.deleteById(Asset.class, id, "id");
+        boolean isDeleted = customRepository.deleteById(Asset.class, id, "id");
 
-        logger.info("Asset deleted with id ->{}", id);
+        if (isDeleted) {
+            logger.info("Asset deleted with id ->{}", id);
+        } else {
+            logger.info("Asset could not be deleted with id ->{}", id);
+        }
+
+        return isDeleted;
 
     }
 
     // Updating a particular field for Asset
     @Override
-    public void update(long id, Map<String, Object> fields) {
+    public AssetRest update(long id, Map<String, Object> fields) {
 
         Optional<Asset> optionalAsset = customRepository.findByColumn("id", id, Asset.class);
 
@@ -192,15 +194,22 @@ public class AssetServiceImpl implements AssetService {
             Asset asset = optionalAsset.get();
 
             // Fetching the filed from the Asset table using the concept of Reflection
+            Asset finalAsset = asset;
             fields.forEach((key, value) -> {
                 Field field = ReflectionUtils.findRequiredField(Asset.class, key);
-                ReflectionUtils.setField(field, asset, value);
+                ReflectionUtils.setField(field, finalAsset, value);
             });
 
             // Updating the Asset by Changing the Asset Field
-            customRepository.save(asset);
+            asset = customRepository.save(asset);
+
+            AssetRest assetRest = new AssetRest();
+
+            AssetOps assetOps = new AssetOps(asset, assetRest);
 
             logger.info("Updated Asset field -> {} for Asset id {}", fields, id);
+
+            return assetOps.entityToRest();
 
         }
 

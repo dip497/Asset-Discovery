@@ -23,9 +23,8 @@ import java.util.regex.Pattern;
 @Service
 public class BiosServiceImpl implements BiosService {
 
-    CustomRepository customRepository;
-
     private static final Logger logger = LoggerFactory.getLogger(BiosServiceImpl.class);
+    CustomRepository customRepository;
 
     public BiosServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -95,19 +94,22 @@ public class BiosServiceImpl implements BiosService {
 
     // Deleting Asset by Ref ID
     @Override
-    public void deleteByRefId(long refId) {
-
-        // If Bios is present then move further to delete the Bios or else throw ComponentNotFoundException
-        findByRefId(refId);
+    public boolean deleteByRefId(long refId) {
 
         // Deleting the Bios at given refId
-        customRepository.deleteById(Bios.class, refId, "refId");
+        boolean isDeleted = customRepository.deleteById(Bios.class, refId, "refId");
 
-        logger.info("Bios deleted with Asset Id ->{}", refId);
+        if (isDeleted) {
+            logger.info("Bios deleted with Asset Id ->{}", refId);
+        } else {
+            logger.info("Bios could not be deleted with Asset Id ->{}", refId);
+        }
+
+        return isDeleted;
     }
 
     // Updating Asset by ID
-    public void update(long refId, BiosRest biosRest) {
+    public BiosRest update(long refId, BiosRest biosRest) {
 
         // If Bios is present then move further to updateByRefId the Bios or else throw ComponentNotFoundException
         Optional<Bios> optionalBios = customRepository.findByColumn("refId", refId, Bios.class);
@@ -118,6 +120,7 @@ public class BiosServiceImpl implements BiosService {
             BiosOps biosOps = new BiosOps(bios, biosRest);
             customRepository.save(biosOps.restToEntity());
             logger.info("Bios Updated with Asset Id ->{}", bios.getRefId());
+            return biosRest;
         }
 
         // If Bios not present then throw ComponentNotFoundException

@@ -14,9 +14,8 @@ import java.util.List;
 
 @RestController
 public class HardwarePropertiesController {
-
-    private final HardwarePropertiesService hardwarePropertiesService;
     private static final Logger logger = LoggerFactory.getLogger(HardwarePropertiesController.class);
+    private final HardwarePropertiesService hardwarePropertiesService;
 
     public HardwarePropertiesController(HardwarePropertiesService hardwarePropertiesService) {
         this.hardwarePropertiesService = hardwarePropertiesService;
@@ -24,14 +23,9 @@ public class HardwarePropertiesController {
 
     @GetMapping(value = "/{refId}/hardwareProperties", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<HardwarePropertiesRest> findByRefId(@PathVariable("refId") long refId) {
-
         List<HardwarePropertiesRest> hardwarePropertiesRests = new ArrayList<>();
-
         logger.debug("Fetching Hardware Properties with Asset Id ->{}", refId);
-
         hardwarePropertiesRests.add(hardwarePropertiesService.findByRefId(refId));
-
         return hardwarePropertiesRests;
     }
-
 }

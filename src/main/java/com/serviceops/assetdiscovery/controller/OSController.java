@@ -16,9 +16,8 @@ import java.util.List;
 
 @RestController
 public class OSController {
-
-    private final OsServiceImpl osService;
     private static final Logger logger = LoggerFactory.getLogger(OSController.class);
+    private final OsServiceImpl osService;
 
     public OSController(OsServiceImpl osService) {
         this.osService = osService;
@@ -26,29 +25,20 @@ public class OSController {
 
     @GetMapping(value = "/{refId}/os", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<OSRest> getByRefId(@PathVariable("refId") long refId) {
-
         logger.debug("Fetching OS with Asset id -> {}", refId);
-
         return osService.findByRefId(refId);
+    }
+
+    @PutMapping(value = "/{refId}/os", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void update(@PathVariable("refId") long refId, @RequestBody OSRest osRest) {
+        logger.debug("Updating Bios with Asset id -> {}", refId);
+        osService.update(refId, osRest);
 
     }
 
     @DeleteMapping("/{refId}/os")
     public void delete(@PathVariable("refId") long refId) {
-
         logger.debug("Deleting Bios with Asset id -> {}", refId);
-
         osService.deleteByRefId(refId);
-
     }
-
-    @PutMapping(value = "/{refId}/os", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@PathVariable("refId") long refId, @RequestBody OSRest osRest) {
-
-        logger.debug("Updating Bios with Asset id -> {}", refId);
-
-        osService.update(refId, osRest);
-
-    }
-
 }

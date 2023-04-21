@@ -6,7 +6,5 @@ import org.springframework.expression.spel.ast.LongLiteral;
 import java.util.List;
 
 public interface ComputerPropertiesService {
-
     List<ComputerPropertiesRest> findByRefId(long refId);
-
 }

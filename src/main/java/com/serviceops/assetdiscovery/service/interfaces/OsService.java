@@ -5,7 +5,6 @@ import com.serviceops.assetdiscovery.rest.OSRest;
 import java.util.List;
 
 public interface OsService {
-
     void save(long refId);
 
     List<OSRest> findByRefId(long refId);
@@ -13,5 +12,4 @@ public interface OsService {
     void deleteByRefId(long refId);
 
     void update(long refId, OSRest osRest);
-
 }
