@@ -29,7 +29,7 @@ public class MotherBoardServiceImpl implements MotherBoardService {
     }
 
     @Override
-    public void save(Long refId) {
+    public void save(long refId) {
         Optional<MotherBoard> fetchMotherBoard =
                 customRepository.findByColumn("refId", refId, MotherBoard.class);
         if (fetchMotherBoard.isPresent()) {
@@ -54,7 +54,7 @@ public class MotherBoardServiceImpl implements MotherBoardService {
     }
 
     @Override
-    public List<MotherBoardRest> findByRefId(Long refId) {
+    public List<MotherBoardRest> findByRefId(long refId) {
 
         Optional<MotherBoard> motherBoardOptional =
                 customRepository.findByColumn("refId", refId, MotherBoard.class);
@@ -75,7 +75,7 @@ public class MotherBoardServiceImpl implements MotherBoardService {
     }
 
     @Override
-    public MotherBoardRest update(Long refId, MotherBoardRest motherBoardRest) {
+    public MotherBoardRest update(long refId, MotherBoardRest motherBoardRest) {
         Optional<MotherBoard> fetchMotherboard =
                 customRepository.findByColumn("refId", refId, MotherBoard.class);
         if (fetchMotherboard.isEmpty()) {
@@ -92,7 +92,7 @@ public class MotherBoardServiceImpl implements MotherBoardService {
     }
 
     @Override
-    public boolean deleteByRefId(Long refId) {
+    public boolean deleteByRefId(long refId) {
         boolean isDeleted = customRepository.deleteById(MotherBoard.class, refId, "refId");
         if (isDeleted) {
             logger.info("MotherBoard deleted with Asset Id ->{}", refId);

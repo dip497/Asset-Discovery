@@ -5,12 +5,12 @@ import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 import java.util.List;
 
 public interface MotherBoardService {
-    void save(Long refId);
+    void save(long refId);
 
-    List<MotherBoardRest> findByRefId(Long refId);
+    List<MotherBoardRest> findByRefId(long refId);
 
-    boolean deleteByRefId(Long refId);
+    boolean deleteByRefId(long refId);
 
-    MotherBoardRest update(Long refId, MotherBoardRest motherBoardRest);
+    MotherBoardRest update(long refId, MotherBoardRest motherBoardRest);
 
 }
