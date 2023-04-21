@@ -16,8 +16,8 @@ import java.util.List;
 
 @RestController
 public class RamController {
-    private static final Logger logger = LoggerFactory.getLogger(RamController.class);
     private final RamService ramService;
+    private static final Logger logger = LoggerFactory.getLogger(RamController.class);
 
     public RamController(RamService motherBoardService) {
         this.ramService = motherBoardService;

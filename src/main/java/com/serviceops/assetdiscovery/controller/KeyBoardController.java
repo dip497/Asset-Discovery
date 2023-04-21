@@ -38,7 +38,7 @@ public class KeyBoardController {
     }
 
     @DeleteMapping(value = "/{refId}/keyboard/{id}")
-    public boolean deleteKeyBoard(@PathVariable("refId") long refId, @PathVariable("id") long id) {
+    public boolean deleteKeyboard(@PathVariable("refId") long refId, @PathVariable("id") long id) {
         logger.debug("Deleting Keyboard with  id -> {}", id);
         return keyboardService.deleteByRefId(refId, id);
     }
