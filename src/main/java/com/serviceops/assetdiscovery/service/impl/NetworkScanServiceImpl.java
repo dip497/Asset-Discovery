@@ -4,6 +4,7 @@ import com.serviceops.assetdiscovery.entity.NetworkScan;
 import com.serviceops.assetdiscovery.entity.enums.IpRangeType;
 import com.serviceops.assetdiscovery.exception.AssetDiscoveryApiException;
 import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
+import com.serviceops.assetdiscovery.exception.ResourceAlreadyExistsException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.repository.PersistToDB;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
@@ -14,6 +15,7 @@ import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.mapper.NetworkScanOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -60,8 +62,8 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         Optional<NetworkScan> networkScan =
                 customRepository.findByColumn("id", networkScanRest.getId(), NetworkScan.class);
         if (networkScan.isPresent()) {
-            customRepository.save(new NetworkScanOps(networkScan.get(), networkScanRest).restToEntity());
-            logger.info("NetworkScan updated by id -> {}", networkScan.get().getId());
+            logger.info("NetworkScan already exists by id -> {}", networkScan.get().getId());
+            throw new ResourceAlreadyExistsException("NetworkScan","id",String.valueOf(networkScanRest.getId()));
         } else {
             networkScanRest.setEnabled(true);
             customRepository.save(new NetworkScanOps(new NetworkScan(), networkScanRest).restToEntity());
@@ -100,6 +102,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
             throw new ComponentNotFoundException("NetworkScanJob", "id", id);
         } else {
             NetworkScan networkScan = fetchNetworkScan.get();
+            networkScanRest.setUpdateById(Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName()));
             networkScan = new NetworkScanOps(networkScan, networkScanRest).restToEntity();
             customRepository.save(networkScan);
             logger.info("network scan updated -> {}", networkScan.getId());

@@ -1,5 +1,6 @@
 package com.serviceops.assetdiscovery.entity;
 
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import com.serviceops.assetdiscovery.entity.enums.TokenType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,10 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Tokens {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+public class Tokens extends SingleBase {
     private String token;
     @Enumerated(EnumType.STRING)
     private TokenType tokenType;
@@ -25,13 +23,6 @@ public class Tokens {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getToken() {
         return token;
@@ -79,14 +70,14 @@ public class Tokens {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
+        if (!super.equals(o))
+            return false;
 
         Tokens tokens = (Tokens) o;
 
         if (isExpired() != tokens.isExpired())
             return false;
         if (isRevoked() != tokens.isRevoked())
-            return false;
-        if (getId() != null ? !getId().equals(tokens.getId()) : tokens.getId() != null)
             return false;
         if (getToken() != null ? !getToken().equals(tokens.getToken()) : tokens.getToken() != null)
             return false;
@@ -97,7 +88,7 @@ public class Tokens {
 
     @Override
     public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
+        int result = super.hashCode();
         result = 31 * result + (getToken() != null ? getToken().hashCode() : 0);
         result = 31 * result + (getTokenType() != null ? getTokenType().hashCode() : 0);
         result = 31 * result + (isExpired() ? 1 : 0);
@@ -108,7 +99,7 @@ public class Tokens {
 
     @Override
     public String toString() {
-        return "Tokens{" + "id=" + id + ", token='" + token + '\'' + ", tokenType=" + tokenType + ", expired="
-                + expired + ", revoked=" + revoked + ", user=" + user + '}';
+        return "Tokens{" + "token='" + token + '\'' + ", tokenType=" + tokenType + ", expired=" + expired
+                + ", revoked=" + revoked + ", user=" + user + "} " + super.toString();
     }
 }

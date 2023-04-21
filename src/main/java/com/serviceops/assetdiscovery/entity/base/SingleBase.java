@@ -1,19 +1,13 @@
 package com.serviceops.assetdiscovery.entity.base;
 
 import jakarta.persistence.MappedSuperclass;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.sql.Timestamp;
 
 @MappedSuperclass
 public class SingleBase extends Base {
     private long createdById;
-    @CreationTimestamp
-    private Timestamp createdTime;
+    private long createdTime;
     private long updatedById;
-    @UpdateTimestamp
-    private Timestamp updatedTime;
+    private long updatedTime;
 
     public long getCreatedById() {
         return createdById;
@@ -23,11 +17,11 @@ public class SingleBase extends Base {
         this.createdById = createdById;
     }
 
-    public Timestamp getCreatedTime() {
+    public long getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Timestamp createdTime) {
+    public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
     }
 
@@ -39,11 +33,11 @@ public class SingleBase extends Base {
         this.updatedById = updatedById;
     }
 
-    public Timestamp getUpdatedTime() {
+    public long getUpdatedTime() {
         return updatedTime;
     }
 
-    public void setUpdatedTime(Timestamp updatedTime) {
+    public void setUpdatedTime(long updatedTime) {
         this.updatedTime = updatedTime;
     }
 
@@ -60,24 +54,20 @@ public class SingleBase extends Base {
 
         if (getCreatedById() != that.getCreatedById())
             return false;
+        if (getCreatedTime() != that.getCreatedTime())
+            return false;
         if (getUpdatedById() != that.getUpdatedById())
             return false;
-        if (getCreatedTime() != null ?
-                !getCreatedTime().equals(that.getCreatedTime()) :
-                that.getCreatedTime() != null)
-            return false;
-        return getUpdatedTime() != null ?
-                getUpdatedTime().equals(that.getUpdatedTime()) :
-                that.getUpdatedTime() == null;
+        return getUpdatedTime() == that.getUpdatedTime();
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (int) (getCreatedById() ^ (getCreatedById() >>> 32));
-        result = 31 * result + (getCreatedTime() != null ? getCreatedTime().hashCode() : 0);
+        result = 31 * result + (int) (getCreatedTime() ^ (getCreatedTime() >>> 32));
         result = 31 * result + (int) (getUpdatedById() ^ (getUpdatedById() >>> 32));
-        result = 31 * result + (getUpdatedTime() != null ? getUpdatedTime().hashCode() : 0);
+        result = 31 * result + (int) (getUpdatedTime() ^ (getUpdatedTime() >>> 32));
         return result;
     }
 

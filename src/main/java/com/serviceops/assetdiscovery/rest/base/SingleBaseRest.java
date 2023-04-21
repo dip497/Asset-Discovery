@@ -8,9 +8,9 @@ import java.sql.Timestamp;
  */
 public class SingleBaseRest extends BaseRest implements Serializable {
     private long createdById;
-    private Timestamp createdTime;
+    private long createdTime;
     private long updateById;
-    private Timestamp updatedTime;
+    private long updatedTime;
 
     public long getCreatedById() {
         return createdById;
@@ -20,11 +20,11 @@ public class SingleBaseRest extends BaseRest implements Serializable {
         this.createdById = createdById;
     }
 
-    public Timestamp getCreatedTime() {
+    public long getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Timestamp createdTime) {
+    public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
     }
 
@@ -36,11 +36,11 @@ public class SingleBaseRest extends BaseRest implements Serializable {
         this.updateById = updateById;
     }
 
-    public Timestamp getUpdatedTime() {
+    public long getUpdatedTime() {
         return updatedTime;
     }
 
-    public void setUpdatedTime(Timestamp updatedTime) {
+    public void setUpdatedTime(long updatedTime) {
         this.updatedTime = updatedTime;
     }
 

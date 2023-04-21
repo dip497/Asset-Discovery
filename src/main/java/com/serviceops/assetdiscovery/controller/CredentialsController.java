@@ -1,6 +1,5 @@
 package com.serviceops.assetdiscovery.controller;
 
-import com.serviceops.assetdiscovery.entity.base.Base;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.service.interfaces.CredentialsService;
 import org.slf4j.Logger;
@@ -16,18 +15,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 public class CredentialsController {
-    private final CredentialsService credentialsService;
     private static final Logger logger = LoggerFactory.getLogger(CredentialsController.class);
+    private final CredentialsService credentialsService;
 
     public CredentialsController(CredentialsService credentialsService) {
         this.credentialsService = credentialsService;
     }
+
     @GetMapping(value = "/credentials/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CredentialsRest getCredential(@PathVariable long id) {
         logger.debug("Finding credentials with id ->{}", id);
@@ -40,9 +39,8 @@ public class CredentialsController {
         return credentialsService.findAll();
     }
 
-    @PostMapping(value = "/credentials/testConnection",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean testConnection(@RequestBody Map<String,String> parameters, Principal principal){
-        System.out.println(principal.getName());
+    @PostMapping(value = "/credentials/testConnection", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public boolean testConnection(@RequestBody Map<String, String> parameters) {
         logger.debug("Testing connection");
         return credentialsService.testConnection(parameters);
     }

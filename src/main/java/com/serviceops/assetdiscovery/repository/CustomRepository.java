@@ -1,5 +1,6 @@
 package com.serviceops.assetdiscovery.repository;
 
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -10,6 +11,9 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -75,10 +79,17 @@ public class CustomRepository {
     }
 
     @Transactional
-    public <T> T save(T t) {
+    public <T extends SingleBase> T save(T t) {
         if (em.contains(t)) {
+            t.setUpdatedById(
+                    Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName()));
+            t.setUpdatedTime(System.currentTimeMillis());
             return em.merge(t);
         } else {
+            t.setCreatedById((SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) ?
+                    t.getId() :
+                    Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName()));
+            t.setCreatedTime(System.currentTimeMillis());
             em.persist(t);
             return t;
         }
