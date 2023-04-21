@@ -75,7 +75,7 @@ public class MotherBoardServiceImpl implements MotherBoardService {
     }
 
     @Override
-    public MotherBoardRest update(long refId, MotherBoardRest motherBoardRest) {
+    public MotherBoardRest updateByRefId(long refId, MotherBoardRest motherBoardRest) {
         Optional<MotherBoard> fetchMotherboard =
                 customRepository.findByColumn("refId", refId, MotherBoard.class);
         if (fetchMotherboard.isEmpty()) {

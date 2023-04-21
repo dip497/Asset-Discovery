@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +29,7 @@ public class KeyboardServiceImpl implements KeyboardService {
     }
 
     @Override
-    public void save(Long id) {
+    public void save(long id) {
         String[][] strings = parseResults();
         List<Keyboard> keyboards = customRepository.findAllByColumnName(Keyboard.class, "refId", id);
         if (!keyboards.isEmpty()) {
@@ -65,47 +64,8 @@ public class KeyboardServiceImpl implements KeyboardService {
         }
     }
 
-    private void setKeyboard(Keyboard keyboard, String[] data) {
-        keyboard.setName(data[1]);
-    }
-
-    /* @Override
-     public void save(Long id) {
-         Optional<Keyboard> optionalKeyboard = customRepository.findByColumn("refId", id, Keyboard.class);
-         if (optionalKeyboard.isPresent()) {
-             List<String> parseResult = getParseResult();
-             Keyboard keyboard = optionalKeyboard.get();
-             keyboard.setName(parseResult.get(0));
-             customRepository.save(keyboard);
-             logger.debug("Updated keyboard with refId -> {}", keyboard.getRefId());
-         } else {
-             Keyboard keyboard = new Keyboard();
-             keyboard.setRefId(id);
-             List<String> parseResult = getParseResult();
-             keyboard.setName(parseResult.get(0));
-             customRepository.save(keyboard);
-             logger.debug("Saved keyboard with refId -> {}", keyboard.getRefId());
-
-         }
-
-     }*/
     @Override
-    public KeyboardRest findByRefId(Long refId) {
-        Optional<Keyboard> keyboardOptional = customRepository.findByColumn("refId", refId, Keyboard.class);
-
-        if (keyboardOptional.isPresent()) {
-            KeyboardRest keyboardRest = new KeyboardRest();
-            KeyboardOps keyboardOps = new KeyboardOps(keyboardOptional.get(), keyboardRest);
-            logger.info("Keyboard fetched with Asset Id ->{}", refId);
-            return keyboardOps.entityToRest();
-        } else {
-            throw new ComponentNotFoundException("Keyboard", "refId", refId);
-        }
-
-    }
-
-    @Override
-    public List<KeyboardRest> findAllByRefId(Long refId) {
+    public List<KeyboardRest> findAllByRefId(long refId) {
         List<Keyboard> fetchKeyboard = customRepository.findAllByColumnName(Keyboard.class, "refId", refId);
         if (fetchKeyboard.isEmpty()) {
             logger.error("Keyboard not found with refId -> {} ", refId);
@@ -117,18 +77,7 @@ public class KeyboardServiceImpl implements KeyboardService {
     }
 
     @Override
-    public boolean deleteByRefId(Long refId, Long id) {
-        boolean isDeleted = customRepository.deleteById(Keyboard.class, id, "id");
-        if (isDeleted) {
-            logger.info("MotherBoard deleted with Asset Id ->{}", refId);
-        } else {
-            logger.info("MotherBoard not deleted with Asset Id ->{}", refId);
-        }
-        return isDeleted;
-    }
-
-    @Override
-    public KeyboardRest update(Long refId, Long id, KeyboardRest keyboardRest) {
+    public KeyboardRest updateById(long refId, long id, KeyboardRest keyboardRest) {
         HashMap<String, Long> fields = new HashMap<>();
         fields.put("refId", refId);
         fields.put("id", id);
@@ -147,6 +96,21 @@ public class KeyboardServiceImpl implements KeyboardService {
         }
     }
 
+    @Override
+    public boolean deleteById(long refId, long id) {
+        boolean isDeleted = customRepository.deleteById(Keyboard.class, id, "id");
+        if (isDeleted) {
+            logger.info("MotherBoard deleted with Asset Id ->{}", refId);
+        } else {
+            logger.info("MotherBoard not deleted with Asset Id ->{}", refId);
+        }
+        return isDeleted;
+    }
+
+    private void setKeyboard(Keyboard keyboard, String[] data) {
+        keyboard.setName(data[1]);
+    }
+
 
     private void setCommands() {
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
@@ -161,9 +125,6 @@ public class KeyboardServiceImpl implements KeyboardService {
         Map<String, String[]> commandResults = LinuxCommandExecutorManager.get(Keyboard.class);
         String[] strings = commandResults.get(
                 "cat /proc/bus/input/devices | awk -F= '/keyboard/ && NF==2 {print $2}' | wc -l");
-        for (String string : strings) {
-            System.out.println(string);
-        }
         String pattern = "-?\\d+";
         Pattern intPattern = Pattern.compile(pattern);
 

@@ -45,7 +45,7 @@ public class OsServiceImpl implements OsService {
         List<String> parseResult = getParseResult();
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
 
-        // If optionalOs is present then do not add asset refId and update the os
+        // If optionalOs is present then do not add asset refId and updateByRefId the os
         if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
             os.setOsName(parseResult.get(0));
@@ -111,7 +111,7 @@ public class OsServiceImpl implements OsService {
 
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
 
-        // If OS is present then update data as per OsRest
+        // If OS is present then updateByRefId data as per OsRest
         if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
             OsOps osOps = new OsOps(os, osRest);

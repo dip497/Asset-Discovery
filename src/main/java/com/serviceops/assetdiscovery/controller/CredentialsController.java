@@ -27,7 +27,7 @@ public class CredentialsController {
     }
 
     @GetMapping(value = "/credentials/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CredentialsRest getCredential(@PathVariable Long id) {
+    public CredentialsRest getCredential(@PathVariable long id) {
         logger.debug("Finding credentials with id ->{}", id);
         return credentialsService.findById(id);
     }
@@ -39,7 +39,7 @@ public class CredentialsController {
     }
 
     @PutMapping(value = "/credentials/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateCredential(@PathVariable("id") Long id, @RequestBody CredentialsRest credentialsRest) {
+    public void updateCredential(@PathVariable("id") long id, @RequestBody CredentialsRest credentialsRest) {
         logger.debug("Updating Credentials with id -> {}", id);
         credentialsService.update(id, credentialsRest);
     }
@@ -51,7 +51,7 @@ public class CredentialsController {
     }
 
     @DeleteMapping("/credentials/{id}")
-    public void deleteCredentialsById(@PathVariable Long id) {
+    public void deleteCredentialsById(@PathVariable long id) {
         logger.debug("Deleting Credentials with id -> {}", id);
         credentialsService.deleteById(id);
     }

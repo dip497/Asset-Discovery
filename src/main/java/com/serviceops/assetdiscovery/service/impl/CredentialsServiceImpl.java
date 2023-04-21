@@ -1,8 +1,8 @@
 package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Credentials;
-import com.serviceops.assetdiscovery.exception.ResourceAlreadyExistsException;
 import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
+import com.serviceops.assetdiscovery.exception.ResourceAlreadyExistsException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.service.interfaces.CredentialsService;
@@ -17,8 +17,8 @@ import java.util.Optional;
 
 @Service
 public class CredentialsServiceImpl implements CredentialsService {
+    private static final Logger logger = LoggerFactory.getLogger(CredentialsServiceImpl.class);
     private final CustomRepository customRepository;
-    private final Logger logger = LoggerFactory.getLogger(CredentialsServiceImpl.class);
 
     public CredentialsServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -41,16 +41,7 @@ public class CredentialsServiceImpl implements CredentialsService {
     }
 
     @Override
-    public List<CredentialsRest> findAll() {
-        List<Credentials> credential = customRepository.findAll(Credentials.class);
-        logger.info("found all credential");
-        return credential.stream().map(c -> new CredentialsOps(c, new CredentialsRest()).entityToRest())
-                .toList();
-    }
-
-
-    @Override
-    public CredentialsRest findById(Long id) {
+    public CredentialsRest findById(long id) {
         Optional<Credentials> fetchCredentials = customRepository.findByColumn("id", id, Credentials.class);
         if (fetchCredentials.isPresent()) {
             logger.info("Credential found -> {}", id);
@@ -63,15 +54,15 @@ public class CredentialsServiceImpl implements CredentialsService {
     }
 
     @Override
-    public void deleteById(Long id) {
-
-        customRepository.deleteById(Credentials.class, id, "id");
-
-        logger.info("Credential deleted with id ->{}", id);
+    public List<CredentialsRest> findAll() {
+        List<Credentials> credential = customRepository.findAll(Credentials.class);
+        logger.info("found all credential");
+        return credential.stream().map(c -> new CredentialsOps(c, new CredentialsRest()).entityToRest())
+                .toList();
     }
 
     @Override
-    public void update(Long id, CredentialsRest credentialsRest) {
+    public void update(long id, CredentialsRest credentialsRest) {
         Optional<Credentials> fetchCredential = customRepository.findByColumn("id", id, Credentials.class);
         if (fetchCredential.isEmpty()) {
             throw new ComponentNotFoundException("Credentials", "id", id);
@@ -86,4 +77,11 @@ public class CredentialsServiceImpl implements CredentialsService {
 
     }
 
+    @Override
+    public void deleteById(long id) {
+
+        customRepository.deleteById(Credentials.class, id, "id");
+
+        logger.info("Credential deleted with id ->{}", id);
+    }
 }

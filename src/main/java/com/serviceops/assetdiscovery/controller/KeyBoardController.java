@@ -31,15 +31,15 @@ public class KeyBoardController {
     }
 
     @PutMapping(value = "/{refId}/keyboard/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public KeyboardRest updateKeyboard(@PathVariable("refId") long refId, @PathVariable("id") Long id,
+    public KeyboardRest updateKeyboard(@PathVariable("refId") long refId, @PathVariable("id") long id,
             @RequestBody KeyboardRest keyboardRest) {
         logger.debug("Updating Keyboard with Asset id -> {}", refId);
-        return keyboardService.update(refId, id, keyboardRest);
+        return keyboardService.updateById(refId, id, keyboardRest);
     }
 
     @DeleteMapping(value = "/{refId}/keyboard/{id}")
     public boolean deleteKeyboard(@PathVariable("refId") long refId, @PathVariable("id") long id) {
         logger.debug("Deleting Keyboard with  id -> {}", id);
-        return keyboardService.deleteByRefId(refId, id);
+        return keyboardService.deleteById(refId, id);
     }
 }

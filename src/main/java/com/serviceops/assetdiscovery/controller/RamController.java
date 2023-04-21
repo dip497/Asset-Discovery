@@ -33,7 +33,7 @@ public class RamController {
     public RamRest updateRam(@PathVariable("refId") long refId, @PathVariable("id") long id,
             @RequestBody RamRest ramRest) {
         logger.debug("Updating Ram with  id -> {}", id);
-        return ramService.update(refId, id, ramRest);
+        return ramService.updateById(refId, id, ramRest);
     }
 
     @DeleteMapping("/{refId}/ram/{id}")

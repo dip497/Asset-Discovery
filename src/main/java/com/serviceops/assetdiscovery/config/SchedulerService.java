@@ -21,7 +21,7 @@ public class SchedulerService {
 
     public static JobDetail buildJobDetail(final Class<? extends Job> jobClass, final SchedulerRest info) {
         final JobDataMap jobDataMap = new JobDataMap();
-        Long id = info.getNetworkScanRestId();
+        long id = info.getNetworkScanRestId();
         jobDataMap.put("id", id);
         return JobBuilder.newJob(jobClass).withIdentity(String.valueOf(info.getId())).setJobData(jobDataMap)
                 .build();
@@ -50,7 +50,7 @@ public class SchedulerService {
         return cronTriggerTriggerBuilder.build();
     }
 
-    private static int[] getHoursMinutes(Long milliseconds) {
+    private static int[] getHoursMinutes(long milliseconds) {
         int seconds = (int) (milliseconds / 1000);
         int hours = seconds / 3600;
         int remainingSeconds = seconds % 3600;
@@ -58,7 +58,7 @@ public class SchedulerService {
         return new int[] { hours, minutes };
     }
 
-    private static String convertToMinute(Long milliseconds) {
+    private static String convertToMinute(long milliseconds) {
         int minutes = (int) (milliseconds / 60000);
         return String.valueOf(minutes);
     }

@@ -24,11 +24,10 @@ import java.util.Optional;
 
 @Service
 public class NetworkScanServiceImpl implements NetworkScanService {
+    private static final Logger logger = LoggerFactory.getLogger(NetworkScanServiceImpl.class);
     private final CustomRepository customRepository;
     private final CredentialsService credentialsService;
     private final PersistToDB persistToDB;
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public NetworkScanServiceImpl(CustomRepository customRepository, CredentialsService credentialsService,
             PersistToDB persistToDB) {
@@ -38,24 +37,21 @@ public class NetworkScanServiceImpl implements NetworkScanService {
 
     }
 
-    private static String getNetworkAddress(String ipAddress) {
-        String[] octets = ipAddress.split("\\.");
-        if (octets.length != 4) {
-            return null;
-        }
-        return octets[0] + "." + octets[1] + ".";
-    }
-
     @Override
-    public NetworkScanRest findById(Long id) {
+    public void scan(long id) {
         Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
         if (fetchNetworkScan.isPresent()) {
             NetworkScan networkScan = fetchNetworkScan.get();
-            logger.info("NetworkScan found by id -> {}", id);
-            return new NetworkScanOps(networkScan, new NetworkScanRest()).entityToRest();
+            NetworkScanRest networkScanRest = new NetworkScanRest();
+            networkScanRest = new NetworkScanOps(networkScan, networkScanRest).entityToRest();
+            if (networkScan.getIpRangeType() == IpRangeType.ENTIRE_NETWORK) {
+                performScanOnCredentialEntireNetwork(networkScanRest);
+            } else {
+                performScanOnCredentialSpecificSetOfIp(networkScanRest);
+            }
         } else {
-            logger.error("NetworkScanJob not found by id -> {}", id);
-            throw new ComponentNotFoundException("NetworkScan", "id", id);
+            logger.error("Network scan not found with id ->{} ", id);
+            throw new ComponentNotFoundException("NetworkScanJob", "id", id);
         }
     }
 
@@ -76,6 +72,19 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     }
 
     @Override
+    public NetworkScanRest findById(long id) {
+        Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
+        if (fetchNetworkScan.isPresent()) {
+            NetworkScan networkScan = fetchNetworkScan.get();
+            logger.info("NetworkScan found by id -> {}", id);
+            return new NetworkScanOps(networkScan, new NetworkScanRest()).entityToRest();
+        } else {
+            logger.error("NetworkScanJob not found by id -> {}", id);
+            throw new ComponentNotFoundException("NetworkScan", "id", id);
+        }
+    }
+
+    @Override
     public List<NetworkScanRest> findAll() {
         List<NetworkScanRest> list = customRepository.findAll(NetworkScan.class).stream()
                 .map(n -> new NetworkScanOps(n, new NetworkScanRest()).entityToRest()).toList();
@@ -84,13 +93,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        customRepository.deleteById(NetworkScan.class, id, "id");
-        logger.info("network scan delete with id -> {}", id);
-    }
-
-    @Override
-    public void update(Long id, NetworkScanRest networkScanRest) {
+    public void updateById(long id, NetworkScanRest networkScanRest) {
         Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
         if (fetchNetworkScan.isEmpty()) {
             logger.error("networkScan not exist with id ->{}", id);
@@ -104,21 +107,9 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     }
 
     @Override
-    public void scan(Long id) {
-        Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
-        if (fetchNetworkScan.isPresent()) {
-            NetworkScan networkScan = fetchNetworkScan.get();
-            NetworkScanRest networkScanRest = new NetworkScanRest();
-            networkScanRest = new NetworkScanOps(networkScan, networkScanRest).entityToRest();
-            if (networkScan.getIpRangeType() == IpRangeType.ENTIRE_NETWORK) {
-                performScanOnCredentialEntireNetwork(networkScanRest);
-            } else {
-                performScanOnCredentialSpecificSetOfIp(networkScanRest);
-            }
-        } else {
-            logger.error("Network scan not found with id ->{} " , id);
-            throw new ComponentNotFoundException("NetworkScanJob", "id", id);
-        }
+    public void deleteById(long id) {
+        customRepository.deleteById(NetworkScan.class, id, "id");
+        logger.info("network scan delete with id -> {}", id);
     }
 
     private void performScanOnCredentialEntireNetwork(NetworkScanRest networkScanRest) {
@@ -164,7 +155,6 @@ public class NetworkScanServiceImpl implements NetworkScanService {
 
     }
 
-
     private boolean fetch(String ipAddress, String username, String password) {
         try {
 
@@ -194,5 +184,13 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         return false;
     }
 
+
+    private String getNetworkAddress(String ipAddress) {
+        String[] octets = ipAddress.split("\\.");
+        if (octets.length != 4) {
+            return null;
+        }
+        return octets[0] + "." + octets[1] + ".";
+    }
 
 }

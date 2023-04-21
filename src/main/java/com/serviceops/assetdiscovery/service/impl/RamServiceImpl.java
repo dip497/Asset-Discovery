@@ -64,19 +64,6 @@ public class RamServiceImpl implements RamService {
                 logger.debug("saved ram with Asset Id-> {}", id);
             }
         }
-    }
-
-    @Override
-    public RamRest findByRefId(long refId) {
-        Optional<Ram> ramOptional = customRepository.findByColumn("refId", refId, Ram.class);
-        if (ramOptional.isPresent()) {
-            RamRest ramRest = new RamRest();
-            RamOps ramOps = new RamOps(ramOptional.get(), ramRest);
-            logger.info("Ram fetched with Asset Id ->{}", refId);
-            return ramOps.entityToRest();
-        } else {
-            throw new ComponentNotFoundException("Ram", "refId", refId);
-        }
 
     }
 
@@ -92,7 +79,7 @@ public class RamServiceImpl implements RamService {
     }
 
     @Override
-    public RamRest update(long refId, long id, RamRest ramRest) {
+    public RamRest updateById(long refId, long id, RamRest ramRest) {
         HashMap<String, Long> fields = new HashMap<>();
         fields.put("refId", refId);
         fields.put("id", id);

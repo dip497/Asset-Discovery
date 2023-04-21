@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 public class Tokens {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    private int id;
     private String token;
     @Enumerated(EnumType.STRING)
     private TokenType tokenType;

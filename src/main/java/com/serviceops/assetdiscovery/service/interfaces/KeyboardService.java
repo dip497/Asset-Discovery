@@ -5,13 +5,11 @@ import com.serviceops.assetdiscovery.rest.KeyboardRest;
 import java.util.List;
 
 public interface KeyboardService {
-    void save(Long id);
+    void save(long id);
 
-    KeyboardRest findByRefId(Long refId);
+    List<KeyboardRest> findAllByRefId(long refId);
 
-    List<KeyboardRest> findAllByRefId(Long refId);
+    KeyboardRest updateById(long refId, long id, KeyboardRest keyboardRest);
 
-    boolean deleteByRefId(Long refId, Long id);
-
-    KeyboardRest update(Long refId, Long id, KeyboardRest keyboardRest);
+    boolean deleteById(long refId, long id);
 }

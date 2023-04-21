@@ -5,16 +5,16 @@ import com.serviceops.assetdiscovery.rest.NetworkScanRest;
 import java.util.List;
 
 public interface NetworkScanService {
-    NetworkScanRest findById(Long id);
+    void scan(long id);
 
     void save(NetworkScanRest networkScanRest);
 
+    NetworkScanRest findById(long id);
+
     List<NetworkScanRest> findAll();
 
-    void deleteById(Long id);
+    void updateById(long id, NetworkScanRest networkScanRest);
 
-    void update(Long id, NetworkScanRest networkScanRest);
-
-    void scan(Long id);
+    void deleteById(long id);
 
 }

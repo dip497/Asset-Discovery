@@ -7,11 +7,11 @@ import java.util.List;
 public interface CredentialsService {
     CredentialsRest save(CredentialsRest credentialsRest);
 
+    CredentialsRest findById(long id);
+
     List<CredentialsRest> findAll();
 
-    CredentialsRest findById(Long id);
+    void update(long id, CredentialsRest credentialsRest);
 
-    void deleteById(Long id);
-
-    void update(Long id, CredentialsRest credentialsRest);
+    void deleteById(long id);
 }

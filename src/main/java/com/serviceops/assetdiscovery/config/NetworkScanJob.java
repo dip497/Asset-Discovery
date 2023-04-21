@@ -19,7 +19,7 @@ public class NetworkScanJob implements Job {
 
     public void execute(JobExecutionContext context) {
         JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
-        Long id = (Long) jobDataMap.get("id");
+        long id = (long) jobDataMap.get("id");
         logger.info("Executing job for network scan id ->{}", id);
         networkScanService.scan(id);
     }

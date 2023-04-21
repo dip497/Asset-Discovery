@@ -43,7 +43,7 @@ public class AssetServiceImpl implements AssetService {
         Optional<Asset> optionalAsset =
                 customRepository.findByColumn("ipAddress", parseResult.get(2), Asset.class);
 
-        // If optionalAsset is present then do not add ip and update the asset
+        // If optionalAsset is present then do not add ip and updateByRefId the asset
         if (optionalAsset.isPresent()) {
             Asset updatedAsset = optionalAsset.get();
             setContent(parseResult, updatedAsset);

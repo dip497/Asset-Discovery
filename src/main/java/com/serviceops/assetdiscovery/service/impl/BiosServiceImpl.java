@@ -39,7 +39,7 @@ public class BiosServiceImpl implements BiosService {
         List<String> parseResult = getParseResult();
         Optional<Bios> optionalBios = customRepository.findByColumn("refId", assetRest.getId(), Bios.class);
 
-        // If optionalBios is present then do not add asset refId and update the bios
+        // If optionalBios is present then do not add asset refId and updateByRefId the bios
         if (optionalBios.isPresent()) {
             Bios bios = optionalBios.get();
             setContent(assetRest, parseResult, bios);
@@ -109,10 +109,10 @@ public class BiosServiceImpl implements BiosService {
     // Updating Asset by ID
     public void update(long refId, BiosRest biosRest) {
 
-        // If Bios is present then move further to update the Bios or else throw ComponentNotFoundException
+        // If Bios is present then move further to updateByRefId the Bios or else throw ComponentNotFoundException
         Optional<Bios> optionalBios = customRepository.findByColumn("refId", refId, Bios.class);
 
-        // If Bios is present then update data as per BiosRest
+        // If Bios is present then updateByRefId data as per BiosRest
         if (optionalBios.isPresent()) {
             Bios bios = optionalBios.get();
             BiosOps biosOps = new BiosOps(bios, biosRest);

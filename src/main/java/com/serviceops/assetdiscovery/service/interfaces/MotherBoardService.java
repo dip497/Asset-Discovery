@@ -9,8 +9,8 @@ public interface MotherBoardService {
 
     List<MotherBoardRest> findByRefId(long refId);
 
-    boolean deleteByRefId(long refId);
+    MotherBoardRest updateByRefId(long refId, MotherBoardRest motherBoardRest);
 
-    MotherBoardRest update(long refId, MotherBoardRest motherBoardRest);
+    boolean deleteByRefId(long refId);
 
 }

@@ -31,7 +31,7 @@ public class NetworkScanController {
     }
 
     @GetMapping("/networkScan/scan/{id}")
-    public void scan(@PathVariable Long id) {
+    public void scan(@PathVariable long id) {
         logger.debug("Scanning");
         networkScanService.scan(id);
     }
@@ -44,9 +44,9 @@ public class NetworkScanController {
     }
 
     @PutMapping(value = "/networkScan/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateNetworkScan(@PathVariable Long id, @RequestBody NetworkScanRest networkScanRest) {
+    public void updateNetworkScan(@PathVariable long id, @RequestBody NetworkScanRest networkScanRest) {
         logger.debug("updating network scan -> {}", networkScanRest.getId());
-        networkScanService.update(id, networkScanRest);
+        networkScanService.updateById(id, networkScanRest);
 
     }
 
@@ -57,13 +57,13 @@ public class NetworkScanController {
     }
 
     @GetMapping(value = "/networkScan/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public NetworkScanRest getNetworkScanById(@PathVariable Long id) {
+    public NetworkScanRest getNetworkScanById(@PathVariable long id) {
         logger.debug("fetching network scan by id ->{}", id);
         return networkScanService.findById(id);
     }
 
     @DeleteMapping("/networkScan/{id}")
-    public void deleteNetworkScanById(@PathVariable Long id) {
+    public void deleteNetworkScanById(@PathVariable long id) {
         logger.debug("deleting network scan by id ->{}", id);
         networkScanService.deleteById(id);
         schedulersService.deleteByNetworkScanId(id);

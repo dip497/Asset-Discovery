@@ -33,7 +33,7 @@ public class MotherBoardController {
     public MotherBoardRest updateMotherBoard(@PathVariable("refId") long refId,
             @RequestBody MotherBoardRest motherBoardRest) {
         logger.debug("Updating MotherBoard with Asset id -> {}", refId);
-        return motherBoardService.update(refId, motherBoardRest);
+        return motherBoardService.updateByRefId(refId, motherBoardRest);
 
     }
 
