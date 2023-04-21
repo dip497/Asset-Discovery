@@ -23,7 +23,7 @@ public class PersistToDB {
     private final PointingDeviceService pointingDeviceService;
     private final LogicalDiskService logicalDiskService;
     private final ProcessorService processorService;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(PersistToDB.class);
 
     public PersistToDB(AssetService assetService, MotherBoardService motherBoardService,
             PhysicalDiskService physicalDiskService, ComputerSystemService computerSystemService,

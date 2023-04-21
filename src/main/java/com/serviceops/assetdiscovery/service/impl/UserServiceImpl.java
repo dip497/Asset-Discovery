@@ -2,7 +2,6 @@ package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.Users;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
-import com.serviceops.assetdiscovery.rest.UsersRest;
 import com.serviceops.assetdiscovery.service.interfaces.UsersService;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +14,6 @@ public class UserServiceImpl implements UsersService {
 
     public UserServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
-    }
-
-
-    @Override
-    public UsersRest save(UsersRest usersRest) {
-        return null;
     }
 
     @Override

@@ -21,9 +21,9 @@ import java.util.List;
 
 @RestController
 public class NetworkScanController {
+    private static final Logger logger = LoggerFactory.getLogger(NetworkScanController.class);
     private final NetworkScanService networkScanService;
     private final SchedulersService schedulersService;
-    private final Logger logger = LoggerFactory.getLogger(NetworkScanController.class);
 
     public NetworkScanController(NetworkScanService networkScanService, SchedulersService schedulersService) {
         this.networkScanService = networkScanService;

@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 public class LinuxCommandExecutor implements AutoCloseable {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(LinuxCommandExecutor.class);
     private final String host;
     private final String username;
     private final int port;
