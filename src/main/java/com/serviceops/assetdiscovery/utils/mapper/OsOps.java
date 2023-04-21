@@ -6,17 +6,9 @@ import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class OsOps extends SingleBaseOps<OS, OSRest> {
 
-    private final OS os;
-    private final OSRest osRest;
-
-    public OsOps(OS os, OSRest osRest) {
-        super(os, osRest);
-        this.os = os;
-        this.osRest = osRest;
-    }
-
-    public OS restToEntity() {
-        super.restToEntity(osRest);
+    @Override
+    public OS restToEntity(OS os,OSRest osRest) {
+        super.restToEntity(os,osRest);
         os.setRefId(osRest.getRefId());
         os.setOsName(osRest.getOsName());
         os.setOsVersion(osRest.getOsVersion());
@@ -25,8 +17,9 @@ public class OsOps extends SingleBaseOps<OS, OSRest> {
         return os;
     }
 
-    public OSRest entityToRest() {
-        super.entityToRest(os);
+    @Override
+    public OSRest entityToRest(OS os,OSRest osRest) {
+        super.entityToRest(os,osRest);
         osRest.setRefId(os.getRefId());
         osRest.setOsName(os.getOsName());
         osRest.setOsVersion(os.getOsVersion());
