@@ -80,9 +80,9 @@ public class OsServiceImpl implements OsService {
         // If optionalOS is present then return the os Rest
         if (optionalOS.isPresent()) {
             OSRest osRest = new OSRest();
-            OsOps osOps = new OsOps(optionalOS.get(), osRest);
+            OsOps osOps = new OsOps();
             List<OSRest> osRests = new ArrayList<>();
-            osRests.add(osOps.entityToRest());
+            osRests.add(osOps.entityToRest(optionalOS.get(), osRest));
             logger.info("OS fetched with Asset Id ->{}", refId);
             return osRests;
         }
@@ -120,8 +120,8 @@ public class OsServiceImpl implements OsService {
         // If OS is present then updateByRefId data as per OsRest
         if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
-            OsOps osOps = new OsOps(os, osRest);
-            customRepository.save(osOps.restToEntity());
+            OsOps osOps = new OsOps();
+            customRepository.save(osOps.restToEntity(os, osRest));
             logger.info("OS Updated with Asset Id ->{}", osRest.getRefId());
             return osRest;
         }

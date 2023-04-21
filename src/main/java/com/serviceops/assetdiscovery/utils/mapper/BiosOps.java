@@ -6,17 +6,9 @@ import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class BiosOps extends SingleBaseOps<Bios, BiosRest> {
 
-    private final Bios bios;
-    private final BiosRest biosRest;
-
-    public BiosOps(Bios bios, BiosRest biosRest) {
-        super(bios, biosRest);
-        this.bios = bios;
-        this.biosRest = biosRest;
-    }
-
-    public Bios restToEntity() {
-        super.restToEntity(biosRest);
+    @Override
+    public Bios restToEntity(Bios bios,BiosRest biosRest) {
+        super.restToEntity(bios,biosRest);
         bios.setRefId(biosRest.getRefId());
         bios.setSmBiosVersion(biosRest.getSmBiosVersion());
         bios.setReleaseDate(biosRest.getReleaseDate());
@@ -26,8 +18,9 @@ public class BiosOps extends SingleBaseOps<Bios, BiosRest> {
         return bios;
     }
 
-    public BiosRest entityToRest() {
-        super.entityToRest(bios);
+    @Override
+    public BiosRest entityToRest(Bios bios,BiosRest biosRest) {
+        super.entityToRest(bios,biosRest);
         biosRest.setRefId(bios.getRefId());
         biosRest.setSmBiosVersion(bios.getSmBiosVersion());
         biosRest.setReleaseDate(bios.getReleaseDate());

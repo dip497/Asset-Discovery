@@ -6,17 +6,9 @@ import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class AssetOps extends SingleBaseOps<Asset, AssetRest> {
 
-    private final Asset asset;
-    private final AssetRest assetRest;
-
-    public AssetOps(Asset asset, AssetRest assetRest) {
-        super(asset, assetRest);
-        this.asset = asset;
-        this.assetRest = assetRest;
-    }
-
-    public Asset restToEntity() {
-        super.restToEntity(assetRest);
+    @Override
+    public Asset restToEntity(Asset asset,AssetRest assetRest) {
+        super.restToEntity(asset,assetRest);
         asset.setHostName(assetRest.getHostName());
         asset.setDomainName(assetRest.getDomainName());
         asset.setIpAddress(assetRest.getIpAddress());
@@ -28,8 +20,9 @@ public class AssetOps extends SingleBaseOps<Asset, AssetRest> {
         return asset;
     }
 
-    public AssetRest entityToRest() {
-        super.entityToRest(asset);
+    @Override
+    public AssetRest entityToRest(Asset asset,AssetRest assetRest) {
+        super.entityToRest(asset,assetRest);
         assetRest.setHostName(asset.getHostName());
         assetRest.setDomainName(asset.getDomainName());
         assetRest.setIpAddress(asset.getIpAddress());

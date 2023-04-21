@@ -71,9 +71,9 @@ public class AssetServiceImpl implements AssetService {
         // If optionalAsset is present then return the AssetRest
         if (optionalAsset.isPresent()) {
             AssetRest assetRest = new AssetRest();
-            AssetOps assetOps = new AssetOps(optionalAsset.get(), assetRest);
+            AssetOps assetOps = new AssetOps();
             logger.info("Asset found by id ->{}", id);
-            return assetOps.entityToRest();
+            return assetOps.entityToRest(optionalAsset.get(), assetRest);
         }
 
         // If optionalAsset is not present then throw ComponentNotFoundException
@@ -95,8 +95,8 @@ public class AssetServiceImpl implements AssetService {
         // Converting the Asset to AssetRest
         for (Asset asset : assets) {
             AssetRest rest = new AssetRest();
-            AssetOps assetOps = new AssetOps(asset, rest);
-            assetRests.add(assetOps.entityToRest());
+            AssetOps assetOps = new AssetOps();
+            assetRests.add(assetOps.entityToRest(asset, rest));
         }
 
         // Fetching the Total number of Assets
@@ -138,11 +138,11 @@ public class AssetServiceImpl implements AssetService {
 
             AssetRest assetRest = new AssetRest();
 
-            AssetOps assetOps = new AssetOps(asset, assetRest);
+            AssetOps assetOps = new AssetOps();
 
             logger.info("Updated Asset field -> {} for Asset id {}", fields, id);
 
-            return assetOps.entityToRest();
+            return assetOps.entityToRest(asset, assetRest);
 
         }
 
@@ -319,9 +319,9 @@ public class AssetServiceImpl implements AssetService {
         // If optionalAsset is present then return the AssetRest.
         if (optionalAsset.isPresent()) {
             AssetRest assetRest = new AssetRest();
-            AssetOps assetOps = new AssetOps(optionalAsset.get(), assetRest);
+            AssetOps assetOps = new AssetOps();
             logger.info("Asset found by IP ->{}", ipAddress);
-            return assetOps.entityToRest();
+            return assetOps.entityToRest(optionalAsset.get(), assetRest);
         }
 
         // if optionalAsset is not present then throw ComponentNotFoundException

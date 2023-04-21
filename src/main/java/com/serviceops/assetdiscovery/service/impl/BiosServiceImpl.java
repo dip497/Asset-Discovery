@@ -64,9 +64,9 @@ public class BiosServiceImpl implements BiosService {
         // If optionalBios is present then return the Bios Rest
         if (optionalBios.isPresent()) {
             BiosRest biosRest = new BiosRest();
-            BiosOps biosOps = new BiosOps(optionalBios.get(), biosRest);
+            BiosOps biosOps = new BiosOps();
             List<BiosRest> biosRests = new ArrayList<>();
-            biosRests.add(biosOps.entityToRest());
+            biosRests.add(biosOps.entityToRest(optionalBios.get(), biosRest));
             logger.info("Bios fetched with Asset Id ->{}", refId);
             return biosRests;
         }
@@ -103,8 +103,8 @@ public class BiosServiceImpl implements BiosService {
         // If Bios is present then updateByRefId data as per BiosRest
         if (optionalBios.isPresent()) {
             Bios bios = optionalBios.get();
-            BiosOps biosOps = new BiosOps(bios, biosRest);
-            customRepository.save(biosOps.restToEntity());
+            BiosOps biosOps = new BiosOps();
+            customRepository.save(biosOps.restToEntity(bios, biosRest));
             logger.info("Bios Updated with Asset Id ->{}", bios.getRefId());
             return biosRest;
         }
