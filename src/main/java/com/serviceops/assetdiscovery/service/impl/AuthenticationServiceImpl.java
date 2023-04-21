@@ -8,6 +8,7 @@ import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.AuthenticationRequest;
 import com.serviceops.assetdiscovery.rest.AuthenticationResponse;
 import com.serviceops.assetdiscovery.rest.RegisterRequest;
+import com.serviceops.assetdiscovery.service.interfaces.AuthenticationService;
 import com.serviceops.assetdiscovery.service.interfaces.UsersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +20,15 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AuthenticationService {
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
     private final CustomRepository customRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UsersService usersService;
 
-    public AuthenticationService(CustomRepository customRepository, PasswordEncoder passwordEncoder,
+    public AuthenticationServiceImpl(CustomRepository customRepository, PasswordEncoder passwordEncoder,
             JwtService jwtService, AuthenticationManager authenticationManager, UsersService usersService) {
         this.customRepository = customRepository;
         this.passwordEncoder = passwordEncoder;
@@ -36,6 +37,7 @@ public class AuthenticationService {
         this.usersService = usersService;
     }
 
+    @Override
     public AuthenticationResponse register(RegisterRequest request) {
 
         Users user = new Users(request.getName(), request.getEmail(),
@@ -52,6 +54,7 @@ public class AuthenticationService {
 
     }
 
+    @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
