@@ -1,5 +1,6 @@
 package com.serviceops.assetdiscovery.controller;
 
+import com.serviceops.assetdiscovery.entity.base.Base;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.service.interfaces.CredentialsService;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +41,8 @@ public class CredentialsController {
     }
 
     @PostMapping(value = "/credentials/testConnection",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean testConnection(@RequestBody Map<String,String> parameters){
+    public boolean testConnection(@RequestBody Map<String,String> parameters, Principal principal){
+        System.out.println(principal.getName());
         logger.debug("Testing connection");
         return credentialsService.testConnection(parameters);
     }

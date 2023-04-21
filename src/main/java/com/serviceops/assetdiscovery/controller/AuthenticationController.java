@@ -1,9 +1,8 @@
 package com.serviceops.assetdiscovery.controller;
 
-import com.serviceops.assetdiscovery.rest.AuthenticationRequest;
 import com.serviceops.assetdiscovery.rest.AuthenticationResponse;
-import com.serviceops.assetdiscovery.rest.RegisterRequest;
-import com.serviceops.assetdiscovery.service.interfaces.AuthenticationService;
+import com.serviceops.assetdiscovery.rest.UsersRest;
+import com.serviceops.assetdiscovery.service.interfaces.UsersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,20 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthenticationController {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
-    private final AuthenticationService authenticationService;
+    private final UsersService authenticationService;
 
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationController(UsersService authenticationService) {
         this.authenticationService = authenticationService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody UsersRest request) {
         logger.debug("register request for email -> {}", request.getEmail());
         return new ResponseEntity<>(authenticationService.register(request), HttpStatus.CREATED);
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody UsersRest request) {
         logger.debug("login request for email -> {}", request.getEmail());
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }

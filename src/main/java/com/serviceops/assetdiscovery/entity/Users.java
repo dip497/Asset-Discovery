@@ -55,6 +55,14 @@ public class Users extends SingleBase implements UserDetails {
         this.email = email;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -71,7 +79,7 @@ public class Users extends SingleBase implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return String.valueOf(this.getId());
     }
 
     @Override

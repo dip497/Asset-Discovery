@@ -40,7 +40,7 @@ public class SchedulerServiceImpl implements SchedulersService {
                     customRepository.findByColumn("networkScanId", networkScanId, Schedulers.class);
             if (fetchScheduler.isPresent()) {
                 logger.error("Scheduler already exists with networkScanId -> {} ", networkScanId);
-                throw new ResourceAlreadyExistsException("Scheduler", "networkScanId", networkScanId);
+                throw new ResourceAlreadyExistsException("Scheduler", "networkScanId", String.valueOf(networkScanId));
 
             } else {
                 Schedulers schedulers = new Schedulers();

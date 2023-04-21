@@ -14,21 +14,21 @@ public class UsersOps extends SingleBaseOps<Users, UsersRest> {
         this.usersRest = usersRest;
     }
 
-    @Override
-    public UsersRest entityToRest(Users users) {
+    public UsersRest entityToRest() {
         super.entityToRest(users);
         usersRest.setEmail(users.getEmail());
         usersRest.setPassword(users.getPassword());
         usersRest.setName(users.getName());
+        usersRest.setRole(users.getRole());
         return usersRest;
     }
 
-    @Override
-    public Users restToEntity(UsersRest usersRest) {
+    public Users restToEntity() {
         super.restToEntity(usersRest);
         users.setEmail(usersRest.getEmail());
         users.setName(usersRest.getName());
         users.setPassword(usersRest.getPassword());
+        users.setRole(usersRest.getRole());
         return users;
     }
 }

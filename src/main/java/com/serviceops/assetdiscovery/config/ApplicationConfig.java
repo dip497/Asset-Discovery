@@ -29,7 +29,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            Optional<Users> users = repository.findByColumn("email", username, Users.class);
+            Optional<Users> users = repository.findByColumn("id", Long.valueOf(username), Users.class);
             if (users.isEmpty()) {
                 logger.error("user not found with email -> {}", username);
                 throw new ResourceNotFoundException("user", "email", username);
