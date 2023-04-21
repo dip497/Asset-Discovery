@@ -29,15 +29,15 @@ public class BiosController {
         return biosService.findByRefId(refId);
     }
 
-    @PutMapping(value = "/{refId}/bios", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public BiosRest update(@PathVariable("refId") long refId, @RequestBody BiosRest biosRest) {
-        logger.debug("Updating Bios with Asset id -> {}", refId);
-        return biosService.update(refId, biosRest);
-    }
-
     @DeleteMapping("/{refId}/bios")
     public boolean delete(@PathVariable("refId") long refId) {
         logger.debug("Deleting Bios with Asset id -> {}", refId);
         return biosService.deleteByRefId(refId);
+    }
+
+    @PutMapping(value = "/{refId}/bios", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public BiosRest update(@PathVariable("refId") long refId, @RequestBody BiosRest biosRest) {
+        logger.debug("Updating Bios with Asset id -> {}", refId);
+        return biosService.updateByRefId(refId, biosRest);
     }
 }

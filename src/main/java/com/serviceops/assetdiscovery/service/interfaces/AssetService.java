@@ -10,10 +10,10 @@ public interface AssetService {
 
     AssetRest findById(long id);
 
-    AllAssetRest findPaginatedData(int pageNo, int pageSize, String sortBy, String sortDir);
+    AllAssetRest findPaginatedAssetData(int pageNo, int pageSize, String sortBy, String sortDir);
+
+    AssetRest updateById(long id, Map<String, Object> fields);
 
     boolean deleteById(long id);
-
-    AssetRest update(long id, Map<String, Object> fields);
 
 }

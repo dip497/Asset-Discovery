@@ -109,7 +109,7 @@ public class BiosServiceImpl implements BiosService {
     }
 
     // Updating Asset by ID
-    public BiosRest update(long refId, BiosRest biosRest) {
+    public BiosRest updateByRefId(long refId, BiosRest biosRest) {
 
         // If Bios is present then move further to updateByRefId the Bios or else throw ComponentNotFoundException
         Optional<Bios> optionalBios = customRepository.findByColumn("refId", refId, Bios.class);

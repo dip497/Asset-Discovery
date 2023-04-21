@@ -23,9 +23,7 @@ public class HardwarePropertiesController {
 
     @GetMapping(value = "/{refId}/hardwareProperties", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<HardwarePropertiesRest> findByRefId(@PathVariable("refId") long refId) {
-        List<HardwarePropertiesRest> hardwarePropertiesRests = new ArrayList<>();
         logger.debug("Fetching Hardware Properties with Asset Id ->{}", refId);
-        hardwarePropertiesRests.add(hardwarePropertiesService.findByRefId(refId));
-        return hardwarePropertiesRests;
+        return hardwarePropertiesService.findByRefId(refId);
     }
 }

@@ -29,16 +29,15 @@ public class OSController {
         return osService.findByRefId(refId);
     }
 
-    @PutMapping(value = "/{refId}/os", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@PathVariable("refId") long refId, @RequestBody OSRest osRest) {
-        logger.debug("Updating Bios with Asset id -> {}", refId);
-        osService.update(refId, osRest);
-
+    @DeleteMapping("/{refId}/os")
+    public boolean delete(@PathVariable("refId") long refId) {
+        logger.debug("Deleting Bios with Asset id -> {}", refId);
+        return osService.deleteByRefId(refId);
     }
 
-    @DeleteMapping("/{refId}/os")
-    public void delete(@PathVariable("refId") long refId) {
-        logger.debug("Deleting Bios with Asset id -> {}", refId);
-        osService.deleteByRefId(refId);
+    @PutMapping(value = "/{refId}/os", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public OSRest update(@PathVariable("refId") long refId, @RequestBody OSRest osRest) {
+        logger.debug("Updating Bios with Asset id -> {}", refId);
+        return osService.updateByRefId(refId, osRest);
     }
 }

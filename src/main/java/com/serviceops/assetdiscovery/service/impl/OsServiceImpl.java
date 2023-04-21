@@ -2,6 +2,7 @@ package com.serviceops.assetdiscovery.service.impl;
 
 import com.serviceops.assetdiscovery.entity.OS;
 import com.serviceops.assetdiscovery.entity.enums.Architecture;
+import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.OSRest;
 import com.serviceops.assetdiscovery.service.interfaces.OsService;
@@ -97,17 +98,24 @@ public class OsServiceImpl implements OsService {
 
     // Deleting the OS by Ref ID
     @Override
-    public void deleteByRefId(long refId) {
+    public boolean deleteByRefId(long refId) {
 
         // Deleting the Os at given refId
-        customRepository.deleteById(OS.class, refId, "refId");
+        boolean isDeleted = customRepository.deleteById(OS.class, refId, "refId");
 
-        logger.info("OS deleted with Asset Id ->{}", refId);
+        if(isDeleted) {
+            logger.info("OS deleted with Asset Id ->{}", refId);
+        }
+        else {
+            logger.info("OS could not be deleted with Asset Id ->{}", refId);
+        }
+
+        return isDeleted;
     }
 
     // Updating the data for OS
     @Override
-    public void update(long refId, OSRest osRest) {
+    public OSRest updateByRefId(long refId, OSRest osRest) {
 
         Optional<OS> optionalOS = customRepository.findByColumn("refId", refId, OS.class);
 
@@ -117,11 +125,13 @@ public class OsServiceImpl implements OsService {
             OsOps osOps = new OsOps(os, osRest);
             customRepository.save(osOps.restToEntity());
             logger.info("OS Updated with Asset Id ->{}", osRest.getRefId());
+            return osRest;
         }
 
         // If OS is not present then throw ComponentNotFoundException
         else {
             logger.error("OS not found for Asset with ID ->{}", refId);
+            throw new ComponentNotFoundException("OsRest","refId",refId);
         }
 
     }

@@ -62,44 +62,6 @@ public class AssetServiceImpl implements AssetService {
 
     }
 
-    // Setting the Content in the Asset Entity.
-    private void setContent(List<String> parseResult, Asset updatedAsset) {
-        try {
-            updatedAsset.setHostName(parseResult.get(0));
-            updatedAsset.setDomainName(parseResult.get(1));
-            updatedAsset.setIpAddress(parseResult.get(2));
-            updatedAsset.setMacAddress(parseResult.get(3));
-            updatedAsset.setSubNetMask(parseResult.get(4));
-            updatedAsset.setAssetType("LINUX " + parseResult.get(5).toUpperCase());
-            updatedAsset.setSerialNumber(parseResult.get(6));
-            updatedAsset.setLastLoggedUser(parseResult.get(7));
-            customRepository.save(updatedAsset);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            customRepository.save(updatedAsset);
-        }
-    }
-
-    // Finding Asset by IP
-    private AssetRest findByIpAddress(String ipAddress) {
-
-        Optional<Asset> optionalAsset = customRepository.findByColumn("ipAddress", ipAddress, Asset.class);
-
-        // If optionalAsset is present then return the AssetRest.
-        if (optionalAsset.isPresent()) {
-            AssetRest assetRest = new AssetRest();
-            AssetOps assetOps = new AssetOps(optionalAsset.get(), assetRest);
-            logger.info("Asset found by IP ->{}", ipAddress);
-            return assetOps.entityToRest();
-        }
-
-        // if optionalAsset is not present then throw ComponentNotFoundException
-        else {
-            logger.error("Asset not found by IP ->{}", ipAddress);
-            throw new ResourceNotFoundException("AssetRest", "ip", ipAddress);
-        }
-
-    }
-
     // Finding Asset by ID
     @Override
     public AssetRest findById(long id) {
@@ -124,7 +86,7 @@ public class AssetServiceImpl implements AssetService {
 
     // Finding Assets based on Paginated data.
     @Override
-    public AllAssetRest findPaginatedData(int pageNo, int pageSize, String sortBy, String sortDir) {
+    public AllAssetRest findPaginatedAssetData(int pageNo, int pageSize, String sortBy, String sortDir) {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         List<Asset> assets = customRepository.findPaginatedData(pageable, sortBy, sortDir, Asset.class);
@@ -154,38 +116,9 @@ public class AssetServiceImpl implements AssetService {
 
     }
 
-    // Finding total number of Assets
-    private int findTotalCount() {
-
-        // Fetching the total number of Assets
-        int count = customRepository.getCount(Asset.class);
-
-        logger.info("Total Assets found -> {}", count);
-
-        // Returning the count of assets
-        return count;
-    }
-
-    // Deleting Asset by Id
-    @Override
-    public boolean deleteById(long id) {
-
-        // Deleting the Asset at given ID
-        boolean isDeleted = customRepository.deleteById(Asset.class, id, "id");
-
-        if (isDeleted) {
-            logger.info("Asset deleted with id ->{}", id);
-        } else {
-            logger.info("Asset could not be deleted with id ->{}", id);
-        }
-
-        return isDeleted;
-
-    }
-
     // Updating a particular field for Asset
     @Override
-    public AssetRest update(long id, Map<String, Object> fields) {
+    public AssetRest updateById(long id, Map<String, Object> fields) {
 
         Optional<Asset> optionalAsset = customRepository.findByColumn("id", id, Asset.class);
 
@@ -218,6 +151,23 @@ public class AssetServiceImpl implements AssetService {
             logger.error("Asset not found by ID ->{}", id);
             throw new ComponentNotFoundException("AssetRest", "id", id);
         }
+
+    }
+
+    // Deleting Asset by Id
+    @Override
+    public boolean deleteById(long id) {
+
+        // Deleting the Asset at given ID
+        boolean isDeleted = customRepository.deleteById(Asset.class, id, "id");
+
+        if (isDeleted) {
+            logger.info("Asset deleted with id ->{}", id);
+        } else {
+            logger.info("Asset could not be deleted with id ->{}", id);
+        }
+
+        return isDeleted;
 
     }
 
@@ -359,6 +309,56 @@ public class AssetServiceImpl implements AssetService {
 
         return null;
 
+    }
+
+    // Finding Asset by IP
+    private AssetRest findByIpAddress(String ipAddress) {
+
+        Optional<Asset> optionalAsset = customRepository.findByColumn("ipAddress", ipAddress, Asset.class);
+
+        // If optionalAsset is present then return the AssetRest.
+        if (optionalAsset.isPresent()) {
+            AssetRest assetRest = new AssetRest();
+            AssetOps assetOps = new AssetOps(optionalAsset.get(), assetRest);
+            logger.info("Asset found by IP ->{}", ipAddress);
+            return assetOps.entityToRest();
+        }
+
+        // if optionalAsset is not present then throw ComponentNotFoundException
+        else {
+            logger.error("Asset not found by IP ->{}", ipAddress);
+            throw new ResourceNotFoundException("AssetRest", "ip", ipAddress);
+        }
+
+    }
+
+    // Finding total number of Assets
+    private int findTotalCount() {
+
+        // Fetching the total number of Assets
+        int count = customRepository.getCount(Asset.class);
+
+        logger.info("Total Assets found -> {}", count);
+
+        // Returning the count of assets
+        return count;
+    }
+
+    // Setting the Content in the Asset Entity.
+    private void setContent(List<String> parseResult, Asset updatedAsset) {
+        try {
+            updatedAsset.setHostName(parseResult.get(0));
+            updatedAsset.setDomainName(parseResult.get(1));
+            updatedAsset.setIpAddress(parseResult.get(2));
+            updatedAsset.setMacAddress(parseResult.get(3));
+            updatedAsset.setSubNetMask(parseResult.get(4));
+            updatedAsset.setAssetType("LINUX " + parseResult.get(5).toUpperCase());
+            updatedAsset.setSerialNumber(parseResult.get(6));
+            updatedAsset.setLastLoggedUser(parseResult.get(7));
+            customRepository.save(updatedAsset);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            customRepository.save(updatedAsset);
+        }
     }
 
 }

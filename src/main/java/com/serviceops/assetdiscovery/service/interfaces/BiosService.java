@@ -10,7 +10,7 @@ public interface BiosService {
 
     List<BiosRest> findByRefId(long refId);
 
-    boolean deleteByRefId(long refId);
+    BiosRest updateByRefId(long refId, BiosRest biosRest);
 
-    BiosRest update(long refId, BiosRest biosRest);
+    boolean deleteByRefId(long refId);
 }

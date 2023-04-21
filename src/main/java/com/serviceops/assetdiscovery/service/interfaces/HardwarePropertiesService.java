@@ -2,6 +2,8 @@ package com.serviceops.assetdiscovery.service.interfaces;
 
 import com.serviceops.assetdiscovery.rest.HardwarePropertiesRest;
 
+import java.util.List;
+
 public interface HardwarePropertiesService {
-    HardwarePropertiesRest findByRefId(long refId);
+    List<HardwarePropertiesRest> findByRefId(long refId);
 }

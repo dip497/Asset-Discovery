@@ -9,7 +9,8 @@ public interface OsService {
 
     List<OSRest> findByRefId(long refId);
 
-    void deleteByRefId(long refId);
+    OSRest updateByRefId(long refId, OSRest osRest);
 
-    void update(long refId, OSRest osRest);
+    boolean deleteByRefId(long refId);
+
 }
