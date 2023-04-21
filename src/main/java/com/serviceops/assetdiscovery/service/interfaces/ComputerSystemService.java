@@ -10,7 +10,7 @@ public interface ComputerSystemService {
 
     List<ComputerSystemRest> findByRefId(long id);
 
-    void updateByRefId(long refId, ComputerSystemRest computerSystemRest);
+    ComputerSystemRest updateByRefId(long refId, ComputerSystemRest computerSystemRest);
 
     boolean deleteByRefId(long id);
 

@@ -1,6 +1,7 @@
 package com.serviceops.assetdiscovery.controller;
 
 
+import com.serviceops.assetdiscovery.rest.LogicalDiskRest;
 import com.serviceops.assetdiscovery.rest.MonitorRest;
 import com.serviceops.assetdiscovery.service.interfaces.MonitorService;
 import org.slf4j.Logger;
@@ -35,13 +36,13 @@ public class MonitorController {
 
     }
 
-    @PutMapping(value = "/{refId}/monitor/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateMonitor(@PathVariable("refId") long refId, @PathVariable("id") long id,
+    @PutMapping(value = "/{refId}/monitor/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public MonitorRest updateMonitor(@PathVariable("refId") long refId, @PathVariable("id") long id,
             @RequestBody MonitorRest monitorRest) {
 
         logger.debug("Updating monitor with Asset id -> {}", refId);
 
-        monitorService.updateById(refId, id, monitorRest);
+        return monitorService.updateById(refId, id, monitorRest);
     }
 
     @DeleteMapping("/{refId}/monitor/{id}")

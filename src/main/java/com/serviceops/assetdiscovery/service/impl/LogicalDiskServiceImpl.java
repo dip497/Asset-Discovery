@@ -92,7 +92,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
     }
 
     @Override
-    public void updateById(long refId, long id, LogicalDiskRest logicalDiskRest) {
+    public LogicalDiskRest updateById(long refId, long id, LogicalDiskRest logicalDiskRest) {
         Map<String, Long> fields = new HashMap<>();
         fields.put("refId", refId);
         fields.put("id", id);
@@ -101,6 +101,7 @@ public class LogicalDiskServiceImpl implements LogicalDiskService {
             LogicalDiskOps logicalDiskOps = new LogicalDiskOps(logicalDisks.get(0), logicalDiskRest);
             customRepository.save(logicalDiskOps.restToEntity());
             logger.info("logicalDisk Updated with Asset Id ->{}", refId);
+            return logicalDiskRest;
         } else {
             logger.error("Logical Disks with id -> {} & Asset -> {} not exist", id, refId);
             throw new ComponentNotFoundException("LogicalDisks", "refId", refId);

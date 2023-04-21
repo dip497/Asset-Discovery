@@ -31,20 +31,20 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     }
 
     @Override
-    public void save(long id) {
+    public void save(long refId) {
         Optional<ComputerSystem> savedComputerSystem =
-                customRepository.findByColumn("id", id, ComputerSystem.class);
+                customRepository.findByColumn("refId", refId, ComputerSystem.class);
         List<String> parsedResults = getParseResults();
         if (savedComputerSystem.isPresent()) {
             ComputerSystem computerSystem = savedComputerSystem.get();
             setComputerSystem(computerSystem, parsedResults);
-            logger.info("Updated ComputerSystem with refId ->{}", id);
+            logger.info("Updated ComputerSystem with refId ->{}", refId);
             customRepository.save(computerSystem);
         } else {
             ComputerSystem computerSystem = new ComputerSystem();
-            computerSystem.setRefId(id);
+            computerSystem.setRefId(refId);
             setComputerSystem(computerSystem, parsedResults);
-            logger.info("Saved ComputerSystem with refId ->{}", id);
+            logger.info("Saved ComputerSystem with refId ->{}", refId);
             customRepository.save(computerSystem);
         }
     }
@@ -75,17 +75,18 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     }
 
     @Override
-    public void updateByRefId(long refId, ComputerSystemRest computerSystemRest) {
+    public ComputerSystemRest updateByRefId(long refId, ComputerSystemRest computerSystemRest) {
         Optional<ComputerSystem> optionalComputerSystem =
                 customRepository.findByColumn("refId", refId, ComputerSystem.class);
         if (!optionalComputerSystem.isPresent()) {
             logger.error("Computer System with Asset -> {} not found", refId);
-            throw new ComponentNotFoundException("ConputerSystem", "refId", refId);
+            throw new ComponentNotFoundException("ComputerSystem", "refId", refId);
         } else {
             ComputerSystem computerSystem = optionalComputerSystem.get();
             ComputerSystemOps computerSystemOps = new ComputerSystemOps(computerSystem, computerSystemRest);
-            logger.info("Updating computerSystemOps of AssetId -> {}", refId);
+            logger.info("Updating ComputerSystem of AssetId -> {}", refId);
             customRepository.save(computerSystemOps.restToEntity());
+            return computerSystemRest;
         }
     }
 

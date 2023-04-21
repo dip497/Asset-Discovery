@@ -35,13 +35,13 @@ public class ComputerSystemController {
         return computerSystemRests;
     }
 
-    @PutMapping(value = "/{refId}/computersystem", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateComputerSystem(@PathVariable("refId") long refId,
+    @PutMapping(value = "/{refId}/computersystem", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ComputerSystemRest updateComputerSystem(@PathVariable("refId") long refId,
             @RequestBody ComputerSystemRest computerSystemRest) {
 
         logger.info("Updating updateComputerSystem with Asset id -> {}", refId);
 
-        computerSystemService.updateByRefId(refId, computerSystemRest);
+        return computerSystemService.updateByRefId(refId, computerSystemRest);
     }
 
     @DeleteMapping(value = "/{refId}/computersystem")

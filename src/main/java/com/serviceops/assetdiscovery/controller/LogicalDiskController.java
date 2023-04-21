@@ -37,13 +37,13 @@ public class LogicalDiskController {
 
     }
 
-    @PutMapping(value = "/{refId}/logicaldisk/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateLogicalDisk(@PathVariable("refId") long refId, @PathVariable("id") long id,
+    @PutMapping(value = "/{refId}/logicaldisk/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public  LogicalDiskRest updateLogicalDisk(@PathVariable("refId") long refId, @PathVariable("id") long id,
             @RequestBody LogicalDiskRest logicalDiskRest) {
 
         logger.debug("updating LogicalDisks with Asset id -> {}", refId);
 
-        logicalDiskService.updateById(refId, id, logicalDiskRest);
+        return logicalDiskService.updateById(refId, id, logicalDiskRest);
     }
 
     @DeleteMapping("/{refId}/logicaldisk/{id}")

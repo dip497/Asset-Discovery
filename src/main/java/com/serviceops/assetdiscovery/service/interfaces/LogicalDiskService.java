@@ -9,7 +9,7 @@ public interface LogicalDiskService {
 
     List<LogicalDiskRest> findAllByRefId(long refId);
 
-    void updateById(long refId, long id, LogicalDiskRest logicalDiskRest);
+    LogicalDiskRest updateById(long refId, long id, LogicalDiskRest logicalDiskRest);
 
     boolean deleteById(long id, long aLong);
 
