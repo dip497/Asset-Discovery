@@ -7,9 +7,9 @@ import java.util.List;
 public interface NetworkAdapterService {
     void save(long refId);
 
-    boolean deleteById(long refId, long id);
+    List<NetworkAdapterRest> findAllByRefId(Long refId);
 
     NetworkAdapterRest updateById(NetworkAdapterRest networkAdapterRest, long refId,long id);
 
-    List<NetworkAdapterRest> findAllByRefId(Long refId);
+    boolean deleteById(long refId, long id);
 }

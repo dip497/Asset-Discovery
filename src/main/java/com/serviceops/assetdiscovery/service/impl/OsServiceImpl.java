@@ -54,7 +54,7 @@ public class OsServiceImpl implements OsService {
             os.setOsVersion(parseResult.get(1));
             os.setInstalledDate(parseDate(parseResult.get(3)));
             customRepository.save(os);
-            logger.info("Updated os with Asset Id ->{}", refId);
+            logger.info("Updated OS with Asset Id ->{}", refId);
         }
 
         // If optionalOs is not present then set asset refId and save as new os
@@ -67,7 +67,7 @@ public class OsServiceImpl implements OsService {
             os.setOsVersion(parseResult.get(1));
             os.setInstalledDate(parseDate(parseResult.get(3)));
             customRepository.save(os);
-            logger.info("Saved bios with Asset Id ->{}", refId);
+            logger.info("Saved OS with Asset Id ->{}", refId);
         }
     }
 
@@ -89,7 +89,7 @@ public class OsServiceImpl implements OsService {
 
         // If optionalOS is not present then throw ComponentNotFoundException
         else {
-            logger.error("OS not found by IP ->{}", refId);
+            logger.error("OS not found by ID ->{}", refId);
             return new ArrayList<>();
         }
 
