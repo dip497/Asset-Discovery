@@ -4,32 +4,27 @@ import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
 
 public class SingleBaseOps<T extends SingleBase, S extends SingleBaseRest> extends BaseOps<T, S> {
-    T singleBase;
-    S singleBaseRest;
 
-    public SingleBaseOps(T singleBase, S singleBaseRest) {
-        super(singleBase, singleBaseRest);
-        this.singleBase = singleBase;
-        this.singleBaseRest = singleBaseRest;
+    protected SingleBaseOps() {
     }
 
     @Override
-    public S entityToRest(T singleBase) {
-        super.entityToRest(singleBase);
-        singleBaseRest.setCreatedById(singleBase.getCreatedById());
-        singleBaseRest.setCreatedTime(singleBase.getCreatedTime());
-        singleBaseRest.setUpdatedTime(singleBase.getUpdatedTime());
-        singleBaseRest.setUpdateById(singleBase.getUpdatedById());
-        return singleBaseRest;
+    public S entityToRest(T entity, S rest) {
+        super.entityToRest(entity, rest);
+        rest.setCreatedById(entity.getCreatedById());
+        rest.setCreatedTime(entity.getCreatedTime());
+        rest.setUpdatedTime(entity.getUpdatedTime());
+        rest.setUpdateById(entity.getUpdatedById());
+        return rest;
     }
 
     @Override
-    public T restToEntity(S singleBaseRest) {
-        super.restToEntity(singleBaseRest);
-        singleBase.setCreatedById(singleBaseRest.getCreatedById());
-        singleBase.setCreatedTime(singleBaseRest.getCreatedTime());
-        singleBase.setUpdatedById(singleBaseRest.getUpdateById());
-        singleBase.setUpdatedTime(singleBaseRest.getUpdatedTime());
-        return singleBase;
+    public T restToEntity(T entity, S rest) {
+        super.restToEntity(entity, rest);
+        entity.setCreatedById(rest.getCreatedById());
+        entity.setCreatedTime(rest.getCreatedTime());
+        entity.setUpdatedById(rest.getUpdateById());
+        entity.setUpdatedTime(rest.getUpdatedTime());
+        return entity;
     }
 }

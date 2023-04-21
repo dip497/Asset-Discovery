@@ -41,7 +41,7 @@ public class UserServiceImpl implements UsersService {
             Users user = new Users();
             usersRest.setPassword(passwordEncoder.encode(usersRest.getPassword()));
             usersRest.setRole(Role.USER);
-            user = new UsersOps(user, usersRest).restToEntity();
+            user = new UsersOps().restToEntity(user, usersRest);
             user = customRepository.save(user);
             String jwtToken = jwtService.generateToken(user);
             logger.info("Successfully registered user with email -> {}", user.getEmail());

@@ -5,17 +5,10 @@ import com.serviceops.assetdiscovery.rest.RamRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class RamOps extends SingleBaseOps<Ram, RamRest> {
-    private final Ram ram;
-    private final RamRest ramRest;
 
-    public RamOps(Ram ram, RamRest ramRest) {
-        super(ram, ramRest);
-        this.ram = ram;
-        this.ramRest = ramRest;
-    }
-
-    public Ram restToEntity() {
-        super.restToEntity(ramRest);
+    @Override
+    public Ram restToEntity(Ram ram, RamRest ramRest) {
+        super.restToEntity(ram,ramRest);
         ram.setRefId(ramRest.getRefId());
         ram.setManufacturer(ramRest.getManufacturer());
         ram.setSerialNumber(ramRest.getSerialNumber());
@@ -27,9 +20,9 @@ public class RamOps extends SingleBaseOps<Ram, RamRest> {
         return ram;
 
     }
-
-    public RamRest entityToRest() {
-        super.entityToRest(ram);
+    @Override
+    public RamRest entityToRest(Ram ram, RamRest ramRest) {
+        super.entityToRest(ram,ramRest);
         ramRest.setRefId(ram.getRefId());
         ramRest.setManufacturer(ram.getManufacturer());
         ramRest.setSerialNumber(ram.getSerialNumber());

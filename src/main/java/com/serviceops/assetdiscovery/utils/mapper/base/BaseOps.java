@@ -4,21 +4,18 @@ import com.serviceops.assetdiscovery.entity.base.Base;
 import com.serviceops.assetdiscovery.rest.base.BaseRest;
 
 public class BaseOps<T extends Base, S extends BaseRest> {
-    T base;
-    S baseRest;
 
-    public BaseOps(T base, S baseRest) {
-        this.base = base;
-        this.baseRest = baseRest;
+    protected BaseOps() {
+
     }
 
-    public S entityToRest(T base) {
-        baseRest.setId(base.getId());
-        return baseRest;
+    public S entityToRest(T entity, S rest) {
+        rest.setId(entity.getId());
+        return rest;
     }
 
-    public T restToEntity(S baseRest) {
-        base.setId(baseRest.getId());
-        return base;
+    public T restToEntity(T entity, S rest) {
+        entity.setId(rest.getId());
+        return entity;
     }
 }

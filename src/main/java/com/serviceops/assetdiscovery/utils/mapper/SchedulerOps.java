@@ -5,17 +5,10 @@ import com.serviceops.assetdiscovery.rest.SchedulerRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class SchedulerOps extends SingleBaseOps<Schedulers, SchedulerRest> {
-    private final Schedulers schedulers;
-    private final SchedulerRest schedulerRest;
 
-    public SchedulerOps(Schedulers schedulers, SchedulerRest schedulerRest) {
-        super(schedulers, schedulerRest);
-        this.schedulers = schedulers;
-        this.schedulerRest = schedulerRest;
-    }
-
-    public SchedulerRest entityToRest() {
-        super.entityToRest(schedulers);
+    @Override
+    public SchedulerRest entityToRest(Schedulers schedulers, SchedulerRest schedulerRest) {
+        super.entityToRest(schedulers, schedulerRest);
         schedulerRest.setNetworkScanRestId(schedulers.getNetworkScanId());
         schedulerRest.setScanType(schedulers.getScanType());
         schedulerRest.setTime(schedulers.getTime());
@@ -26,12 +19,11 @@ public class SchedulerOps extends SingleBaseOps<Schedulers, SchedulerRest> {
         schedulerRest.setStartTime(schedulers.getStartTime());
         schedulerRest.setWeek(schedulers.getWeek());
         return schedulerRest;
-
-
     }
 
-    public Schedulers restToEntity() {
-        super.restToEntity(schedulerRest);
+    @Override
+    public Schedulers restToEntity(Schedulers schedulers, SchedulerRest schedulerRest) {
+        super.restToEntity(schedulers, schedulerRest);
         schedulers.setNetworkScanId(schedulerRest.getNetworkScanRestId());
         schedulers.setScanType(schedulerRest.getScanType());
         schedulers.setTime(schedulerRest.getTime());

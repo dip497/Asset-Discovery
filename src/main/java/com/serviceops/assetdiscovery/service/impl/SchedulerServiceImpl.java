@@ -22,10 +22,12 @@ public class SchedulerServiceImpl implements SchedulersService {
     private static final Logger logger = LoggerFactory.getLogger(SchedulerServiceImpl.class);
     private final CustomRepository customRepository;
     private final SchedulerService schedulerService;
+    private SchedulerOps schedulerOps;
 
     public SchedulerServiceImpl(CustomRepository customRepository, SchedulerService schedulerService) {
         this.customRepository = customRepository;
         this.schedulerService = schedulerService;
+        schedulerOps = new SchedulerOps();
     }
 
     @Override
@@ -45,7 +47,7 @@ public class SchedulerServiceImpl implements SchedulersService {
             } else {
                 Schedulers schedulers = new Schedulers();
                 schedulerRest.setNetworkScanRestId(networkScanId);
-                schedulers = new SchedulerOps(schedulers, schedulerRest).restToEntity();
+                schedulers = schedulerOps.restToEntity(schedulers,schedulerRest);
                 customRepository.save(schedulers);
                 logger.info("Created scheduler with id ->{}", schedulers.getId());
                 try {
@@ -70,7 +72,7 @@ public class SchedulerServiceImpl implements SchedulersService {
             throw new ComponentNotFoundException("Scheduler", "networkScanId", networkScanId);
         } else {
             Schedulers schedulers = fetchSchedulers.get();
-            schedulers = new SchedulerOps(schedulers, schedulerRest).restToEntity();
+            schedulers = schedulerOps.restToEntity(schedulers, schedulerRest);
             customRepository.save(schedulers);
             schedulerRest.setId(schedulers.getId());
             schedulerService.updateTrigger(schedulerRest);
@@ -84,7 +86,7 @@ public class SchedulerServiceImpl implements SchedulersService {
                 customRepository.findByColumn("networkScanId", networkScanId, Schedulers.class);
         if (fetchScheduler.isPresent()) {
             SchedulerRest schedulerRest = new SchedulerRest();
-            schedulerRest = new SchedulerOps(fetchScheduler.get(), schedulerRest).entityToRest();
+            schedulerRest = schedulerOps.entityToRest(fetchScheduler.get(), schedulerRest);
             logger.info("found scheduler with networkScanId -> {}", schedulerRest.getNetworkScanRestId());
             return schedulerRest;
         } else {
@@ -96,7 +98,7 @@ public class SchedulerServiceImpl implements SchedulersService {
     @Override
     public List<SchedulerRest> findAll() {
         List<Schedulers> schedulersList = customRepository.findAll(Schedulers.class);
-        return schedulersList.stream().map(e -> new SchedulerOps(e, new SchedulerRest()).entityToRest())
+        return schedulersList.stream().map(e -> schedulerOps.entityToRest(e,new SchedulerRest()))
                 .toList();
     }
 
