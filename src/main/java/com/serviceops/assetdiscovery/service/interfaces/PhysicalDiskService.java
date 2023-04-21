@@ -8,9 +8,9 @@ public interface PhysicalDiskService {
 
     void save(long refId);
 
-    boolean deleteByRefId(long refId);
+    List<PhysicalDiskRest> findByRefId(long refId);
 
     PhysicalDiskRest updateByRefId(long refId, PhysicalDiskRest physicalDiskRest);
 
-    List<PhysicalDiskRest> findByRefId(long refId);
+    boolean deleteByRefId(long refId);
 }

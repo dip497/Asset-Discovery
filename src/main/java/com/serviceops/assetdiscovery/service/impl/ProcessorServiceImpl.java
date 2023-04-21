@@ -16,11 +16,68 @@ import java.util.*;
 @Service
 public class ProcessorServiceImpl implements ProcessorService {
     private final CustomRepository customRepository;
-    private final Logger logger = LoggerFactory.getLogger(ProcessorServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProcessorServiceImpl.class);
 
     public ProcessorServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
         setCommands();
+    }
+
+    @Override
+    public void save(long id) {
+
+        Optional<Processor> fetchProcessor = customRepository.findByColumn("refId", id, Processor.class);
+        if (fetchProcessor.isPresent()) {
+            Processor processor = fetchProcessor.get();
+            logger.info("Processor updated with id -->{}", id);
+            setData(processor);
+        } else {
+            Processor processor = new Processor();
+            processor.setRefId(id);
+            logger.info("Processor saved with id: --> {}", id);
+            setData(processor);
+        }
+    }
+
+    @Override
+    public List<ProcessorRest> findByRefId(long id) {
+        Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
+        List<ProcessorRest> processors = new ArrayList<>();
+        if (optionalProcessor.isPresent()) {
+            ProcessorRest processorRest = new ProcessorRest();
+            ProcessorOps processorOps = new ProcessorOps(optionalProcessor.get(), processorRest);
+            processors.add(processorOps.entityToRest());
+            logger.info("Processor found with id -->{}", id);
+
+        } else {
+            logger.error("Processor not found with id -->{}", id);
+            processors.add(new ProcessorRest());
+        }
+        return processors;
+    }
+
+    @Override
+    public ProcessorRest updateByRefId(long id, ProcessorRest processorRest) {
+
+        Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
+
+        if (optionalProcessor.isPresent()) {
+            Processor processor = optionalProcessor.get();
+            ProcessorOps processorOps = new ProcessorOps(processor, processorRest);
+            customRepository.save(processorOps.restToEntity());
+            logger.info("Processor updated with id -->{}", id);
+            return processorOps.entityToRest();
+        } else {
+            logger.error("Processor not found with id -->{}", id);
+            throw new ComponentNotFoundException("Processor", "refId", id);
+        }
+
+    }
+
+    @Override
+    public void deleteById(long id) {
+        logger.info("Processor deleted with id -->{}", id);
+        customRepository.deleteById(Processor.class, id, "id");
     }
 
     private void setCommands() {
@@ -60,40 +117,6 @@ public class ProcessorServiceImpl implements ProcessorService {
         return list;
     }
 
-    @Override
-    public void save(long id) {
-
-        Optional<Processor> fetchProcessor = customRepository.findByColumn("refId", id, Processor.class);
-        if (fetchProcessor.isPresent()) {
-            Processor processor = fetchProcessor.get();
-            logger.info("Processor updated with id -->{}", id);
-            setData(processor);
-        } else {
-            Processor processor = new Processor();
-            processor.setRefId(id);
-            logger.info("Processor saved with id: --> {}", id);
-            setData(processor);
-        }
-    }
-
-    private void setData(Processor processor) {
-        try {
-            processor.setL2CacheSize(convertToBaseUnit(getParseResult().get(0)));
-            processor.setL3CacheSize(convertToBaseUnit(getParseResult().get(1)));
-            processor.setManufacturer(getParseResult().get(2));
-            processor.setFamily(convertToBaseUnit(getParseResult().get(3)));
-            processor.setWidth(getParseResult().get(4));
-            processor.setCpuSpeed(convertToBaseUnit(getParseResult().get(5)));
-            processor.setCoreCount(convertToBaseUnit(getParseResult().get(6)));
-            processor.setL1CacheSize(!getParseResult().get(8).isEmpty() ? convertToBaseUnit(getParseResult().get(8)) : convertToBaseUnit(getParseResult().get(9)));
-            processor.setProcessorName(getParseResult().get(10).substring(getParseResult().get(10).indexOf(": ") + 2).trim());
-            customRepository.save(processor);
-        } catch (IndexOutOfBoundsException e) {
-            logger.error("index out of bound exception in Processor with id -->{}", processor.getId());
-            customRepository.save(processor);
-        }
-    }
-
     private long convertToBaseUnit(String patialData) {
         long data;
         patialData = patialData.toLowerCase();
@@ -117,44 +140,21 @@ public class ProcessorServiceImpl implements ProcessorService {
         return data;
     }
 
-    @Override
-    public ProcessorRest updateByRefId(long id, ProcessorRest processorRest) {
-
-        Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
-
-        if (optionalProcessor.isPresent()) {
-            Processor processor = optionalProcessor.get();
-            ProcessorOps processorOps = new ProcessorOps(processor, processorRest);
-            customRepository.save(processorOps.restToEntity());
-            logger.info("Processor updated with id -->{}", id);
-            return processorOps.entityToRest();
-        } else {
-            logger.error("Processor not found with id -->{}", id);
-            throw new ComponentNotFoundException("Processor", "refId", id);
+    private void setData(Processor processor) {
+        try {
+            processor.setL2CacheSize(convertToBaseUnit(getParseResult().get(0)));
+            processor.setL3CacheSize(convertToBaseUnit(getParseResult().get(1)));
+            processor.setManufacturer(getParseResult().get(2));
+            processor.setFamily(convertToBaseUnit(getParseResult().get(3)));
+            processor.setWidth(getParseResult().get(4));
+            processor.setCpuSpeed(convertToBaseUnit(getParseResult().get(5)));
+            processor.setCoreCount(convertToBaseUnit(getParseResult().get(6)));
+            processor.setL1CacheSize(!getParseResult().get(8).isEmpty() ? convertToBaseUnit(getParseResult().get(8)) : convertToBaseUnit(getParseResult().get(9)));
+            processor.setProcessorName(getParseResult().get(10).substring(getParseResult().get(10).indexOf(": ") + 2).trim());
+            customRepository.save(processor);
+        } catch (IndexOutOfBoundsException e) {
+            logger.error("index out of bound exception in Processor with id -->{}", processor.getId());
+            customRepository.save(processor);
         }
-
-    }
-
-    @Override
-    public void deleteById(long id) {
-        logger.info("Processor deleted with id -->{}", id);
-        customRepository.deleteById(Processor.class, id, "id");
-    }
-
-    @Override
-    public List<ProcessorRest> findByRefId(long id) {
-        Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
-        List<ProcessorRest> processors = new ArrayList<>();
-        if (optionalProcessor.isPresent()) {
-            ProcessorRest processorRest = new ProcessorRest();
-            ProcessorOps processorOps = new ProcessorOps(optionalProcessor.get(), processorRest);
-            processors.add(processorOps.entityToRest());
-            logger.info("Processor found with id -->{}", id);
-
-        } else {
-            logger.error("Processor not found with id -->{}", id);
-            processors.add(new ProcessorRest());
-        }
-        return processors;
     }
 }

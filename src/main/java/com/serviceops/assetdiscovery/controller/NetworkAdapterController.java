@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 public class NetworkAdapterController {
-    private final static Logger logger = LoggerFactory.getLogger(NetworkAdapterController.class);
+    private static final Logger logger = LoggerFactory.getLogger(NetworkAdapterController.class);
     private final NetworkAdapterService networkAdapterService;
 
     public NetworkAdapterController(NetworkAdapterService networkAdapterService) {
