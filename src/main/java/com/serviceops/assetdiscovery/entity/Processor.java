@@ -1,12 +1,10 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
 
-import java.util.Objects;
-
 @Entity
-public class Processor extends AssetBase {
+public class Processor extends SingleBase {
     private long refId;
     private String manufacturer;
     private String processorName;
@@ -19,22 +17,21 @@ public class Processor extends AssetBase {
     private long l3CacheSize;
     private long family;
 
-    @Override
+
     public long getRefId() {
         return refId;
     }
 
-    @Override
+
     public void setRefId(long refId) {
         this.refId = refId;
     }
 
-    @Override
+
     public String getManufacturer() {
         return manufacturer;
     }
 
-    @Override
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }

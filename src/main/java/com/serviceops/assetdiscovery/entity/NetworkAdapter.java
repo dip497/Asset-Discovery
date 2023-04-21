@@ -1,10 +1,10 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
 
 @Entity
-public class NetworkAdapter extends AssetBase {
+public class NetworkAdapter extends SingleBase {
     private long refId;
     private String manufacturer;
     private String macAddress;
@@ -12,12 +12,11 @@ public class NetworkAdapter extends AssetBase {
     private String description;
     private String ipSubnet;
 
-    @Override
     public String getManufacturer() {
         return manufacturer;
     }
 
-    @Override
+
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
@@ -53,13 +52,9 @@ public class NetworkAdapter extends AssetBase {
     public void setIpSubnet(String ipSubnet) {
         this.ipSubnet = ipSubnet;
     }
-
-    @Override
     public long getRefId() {
         return refId;
     }
-
-    @Override
     public void setRefId(long refId) {
         this.refId = refId;
     }

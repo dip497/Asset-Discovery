@@ -1,12 +1,11 @@
 package com.serviceops.assetdiscovery.entity;
 
-import com.serviceops.assetdiscovery.entity.base.AssetBase;
+import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import jakarta.persistence.Entity;
 
-import java.util.Objects;
 
 @Entity
-public class PhysicalDisk extends AssetBase {
+public class PhysicalDisk extends SingleBase {
     private long refId;
     private String manufacturer;
     private String name;
@@ -16,23 +15,28 @@ public class PhysicalDisk extends AssetBase {
     private String mediaType;
     private String model;
     private String interfaceType;
+    private String serialNumber;
 
-    @Override
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
     public long getRefId() {
         return refId;
     }
 
-    @Override
     public void setRefId(long refId) {
         this.refId = refId;
     }
 
-    @Override
     public String getManufacturer() {
         return manufacturer;
     }
 
-    @Override
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }

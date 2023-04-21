@@ -24,12 +24,14 @@ public class PhysicalDiskOps extends SingleBaseOps<PhysicalDisk, PhysicalDiskRes
         physicalDisk.setPartition(physicalDiskRest.getPartition());
         physicalDisk.setMediaType(physicalDiskRest.getMediaType());
         physicalDisk.setInterfaceType(physicalDiskRest.getInterfaceType());
+        physicalDisk.setSerialNumber(physicalDiskRest.getSerialNumber());
 
         return physicalDisk;
     }
 
     public PhysicalDiskRest entityToRest() {
         super.entityToRest(physicalDisk);
+        physicalDiskRest.setSerialNumber(physicalDisk.getSerialNumber());
         physicalDiskRest.setManufacturer(physicalDisk.getManufacturer());
         physicalDiskRest.setRefId(physicalDisk.getRefId());
         physicalDiskRest.setDescription(physicalDisk.getDescription());

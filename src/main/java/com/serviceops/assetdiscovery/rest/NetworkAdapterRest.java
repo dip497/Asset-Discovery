@@ -1,7 +1,7 @@
 package com.serviceops.assetdiscovery.rest;
 
 import com.serviceops.assetdiscovery.entity.NetworkAdapter;
-import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
+import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
 import jakarta.validation.constraints.Pattern;
 
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * A Rest for the {@link NetworkAdapter} entity
  */
-public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
+public class NetworkAdapterRest extends SingleBaseRest implements Serializable {
     private long refId;
     private String manufacturer;
     private String description;
@@ -19,22 +19,18 @@ public class NetworkAdapterRest extends AssetBaseRest implements Serializable {
     private String ipAddress;
     private String ipSubnet;
 
-    @Override
     public long getRefId() {
         return refId;
     }
 
-    @Override
     public void setRefId(long refId) {
         this.refId = refId;
     }
 
-    @Override
     public String getManufacturer() {
         return manufacturer;
     }
 
-    @Override
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
