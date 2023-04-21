@@ -22,9 +22,11 @@ import java.util.Optional;
 public class MotherBoardServiceImpl implements MotherBoardService {
     private static final Logger logger = LoggerFactory.getLogger(MotherBoardServiceImpl.class);
     private final CustomRepository customRepository;
+    private final MotherBoardOps motherBoardOps;
 
     public MotherBoardServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        motherBoardOps = new MotherBoardOps();
         setCommands();
     }
 
@@ -61,10 +63,9 @@ public class MotherBoardServiceImpl implements MotherBoardService {
 
         if (motherBoardOptional.isPresent()) {
             MotherBoardRest motherBoardRest = new MotherBoardRest();
-            MotherBoardOps motherBoardOps = new MotherBoardOps(motherBoardOptional.get(), motherBoardRest);
             logger.info("MotherBoard fetched with Asset Id -> {}", refId);
             List<MotherBoardRest> motherBoardRestList = new ArrayList<>();
-            motherBoardRestList.add(motherBoardOps.entityToRest());
+            motherBoardRestList.add(motherBoardOps.entityToRest(motherBoardOptional.get(), motherBoardRest));
 
             return motherBoardRestList;
         } else {
@@ -80,10 +81,9 @@ public class MotherBoardServiceImpl implements MotherBoardService {
                 customRepository.findByColumn("refId", refId, MotherBoard.class);
         if (fetchMotherboard.isPresent()) {
             MotherBoard motherBoard = fetchMotherboard.get();
-            MotherBoardOps motherBoardOps = new MotherBoardOps(motherBoard, motherBoardRest);
-            customRepository.save(motherBoardOps.restToEntity());
+            customRepository.save(motherBoardOps.restToEntity(motherBoard, motherBoardRest));
             logger.info("MotherBoard Updated with Asset Id ->{}", motherBoard.getRefId());
-            return motherBoardOps.entityToRest();
+            return motherBoardOps.entityToRest(motherBoard, motherBoardRest);
         } else {
             logger.error("Motherboard not found with Asset Id -> {}", refId);
             throw new ComponentNotFoundException("MotherBoard", "refId", refId);

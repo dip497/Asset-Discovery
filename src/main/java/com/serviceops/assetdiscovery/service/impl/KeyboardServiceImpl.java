@@ -22,9 +22,11 @@ import java.util.regex.Pattern;
 public class KeyboardServiceImpl implements KeyboardService {
     private static final Logger logger = LoggerFactory.getLogger(KeyboardServiceImpl.class);
     private final CustomRepository customRepository;
+    private final KeyboardOps keyboardOps;
 
     public KeyboardServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        keyboardOps = new KeyboardOps();
         setCommands();
     }
 
@@ -72,7 +74,7 @@ public class KeyboardServiceImpl implements KeyboardService {
             return List.of();
         }
         logger.info("fetched list of keyboard for refId ->{}", refId);
-        return fetchKeyboard.stream().map(e -> new KeyboardOps(e, new KeyboardRest()).entityToRest())
+        return fetchKeyboard.stream().map(e -> keyboardOps.entityToRest(e, new KeyboardRest()))
                 .toList();
     }
 
@@ -87,12 +89,9 @@ public class KeyboardServiceImpl implements KeyboardService {
             throw new ComponentNotFoundException("Keyboard", "refId", refId);
         } else {
             Keyboard keyboard = keyboardList.get(0);
-            KeyboardOps keyboardOps = new KeyboardOps(keyboard, keyboardRest);
-            customRepository.save(keyboardOps.restToEntity());
-            customRepository.save(keyboardOps.restToEntity());
-            customRepository.save(keyboardOps.restToEntity());
+            customRepository.save(keyboardOps.restToEntity(keyboard, keyboardRest));
             logger.info("Keyboard Updated with Asset Id ->{}", keyboard.getRefId());
-            return keyboardOps.entityToRest();
+            return keyboardOps.entityToRest(keyboard, keyboardRest);
         }
     }
 

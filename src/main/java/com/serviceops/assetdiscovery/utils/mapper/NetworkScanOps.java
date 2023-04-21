@@ -8,17 +8,10 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class NetworkScanOps extends SingleBaseOps<NetworkScan, NetworkScanRest> {
-    private final NetworkScan networkScan;
-    private final NetworkScanRest networkScanRest;
 
-    public NetworkScanOps(NetworkScan networkScan, NetworkScanRest networkScanRest) {
-        super(networkScan, networkScanRest);
-        this.networkScan = networkScan;
-        this.networkScanRest = networkScanRest;
-    }
-
-    public NetworkScanRest entityToRest() {
-        super.entityToRest(networkScan);
+    @Override
+    public NetworkScanRest entityToRest(NetworkScan networkScan, NetworkScanRest networkScanRest) {
+        super.entityToRest(networkScan, networkScanRest);
         networkScanRest.setName(networkScan.getName());
         networkScanRest.setLastScan(networkScan.getLastScan());
         networkScanRest.setNextScan(networkScan.getNextScan());
@@ -36,8 +29,9 @@ public class NetworkScanOps extends SingleBaseOps<NetworkScan, NetworkScanRest> 
         return networkScanRest;
     }
 
-    public NetworkScan restToEntity() {
-        super.restToEntity(networkScanRest);
+    @Override
+    public NetworkScan restToEntity(NetworkScan networkScan, NetworkScanRest networkScanRest) {
+        super.restToEntity(networkScan, networkScanRest);
         networkScan.setName(networkScanRest.getName());
         networkScan.setLastScan(networkScanRest.getLastScan());
         networkScan.setNextScan(networkScanRest.getNextScan());

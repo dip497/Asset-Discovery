@@ -5,17 +5,10 @@ import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class CredentialsOps extends SingleBaseOps<Credentials, CredentialsRest> {
-    private final Credentials credentials;
-    private final CredentialsRest credentialsRest;
 
-    public CredentialsOps(Credentials credentials, CredentialsRest credentialsRest) {
-        super(credentials, credentialsRest);
-        this.credentials = credentials;
-        this.credentialsRest = credentialsRest;
-    }
-
-    public CredentialsRest entityToRest() {
-        super.entityToRest(credentials);
+    @Override
+    public CredentialsRest entityToRest(Credentials credentials, CredentialsRest credentialsRest) {
+        super.entityToRest(credentials, credentialsRest);
         credentialsRest.setUsername(credentials.getUsername());
         credentialsRest.setPassword(credentials.getPassword());
         credentialsRest.setDescription(credentials.getDescription());
@@ -23,8 +16,9 @@ public class CredentialsOps extends SingleBaseOps<Credentials, CredentialsRest> 
         return credentialsRest;
     }
 
-    public Credentials restToEntity() {
-        super.restToEntity(credentialsRest);
+    @Override
+    public Credentials restToEntity(Credentials credentials, CredentialsRest credentialsRest) {
+        super.restToEntity(credentials, credentialsRest);
         credentials.setUsername(credentialsRest.getUsername());
         credentials.setPassword(credentialsRest.getPassword());
         credentials.setDescription(credentialsRest.getDescription());

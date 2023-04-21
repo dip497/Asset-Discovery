@@ -30,12 +30,14 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     private final CustomRepository customRepository;
     private final CredentialsService credentialsService;
     private final PersistToDB persistToDB;
+    private final NetworkScanOps networkScanOps;
 
     public NetworkScanServiceImpl(CustomRepository customRepository, CredentialsService credentialsService,
             PersistToDB persistToDB) {
         this.customRepository = customRepository;
         this.credentialsService = credentialsService;
         this.persistToDB = persistToDB;
+        networkScanOps = new NetworkScanOps();
 
     }
 
@@ -45,7 +47,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         if (fetchNetworkScan.isPresent()) {
             NetworkScan networkScan = fetchNetworkScan.get();
             NetworkScanRest networkScanRest = new NetworkScanRest();
-            networkScanRest = new NetworkScanOps(networkScan, networkScanRest).entityToRest();
+            networkScanRest = networkScanOps.entityToRest(networkScan, networkScanRest);
             if (networkScan.getIpRangeType() == IpRangeType.ENTIRE_NETWORK) {
                 performScanOnCredentialEntireNetwork(networkScanRest);
             } else {
@@ -63,10 +65,11 @@ public class NetworkScanServiceImpl implements NetworkScanService {
                 customRepository.findByColumn("id", networkScanRest.getId(), NetworkScan.class);
         if (networkScan.isPresent()) {
             logger.info("NetworkScan already exists by id -> {}", networkScan.get().getId());
-            throw new ResourceAlreadyExistsException("NetworkScan","id",String.valueOf(networkScanRest.getId()));
+            throw new ResourceAlreadyExistsException("NetworkScan", "id",
+                    String.valueOf(networkScanRest.getId()));
         } else {
             networkScanRest.setEnabled(true);
-            customRepository.save(new NetworkScanOps(new NetworkScan(), networkScanRest).restToEntity());
+            customRepository.save(networkScanOps.restToEntity(new NetworkScan(), networkScanRest));
             logger.info("NetworkScan saved by id -> {}", networkScanRest.getId());
 
         }
@@ -79,7 +82,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         if (fetchNetworkScan.isPresent()) {
             NetworkScan networkScan = fetchNetworkScan.get();
             logger.info("NetworkScan found by id -> {}", id);
-            return new NetworkScanOps(networkScan, new NetworkScanRest()).entityToRest();
+            return networkScanOps.entityToRest(networkScan, new NetworkScanRest());
         } else {
             logger.error("NetworkScanJob not found by id -> {}", id);
             throw new ComponentNotFoundException("NetworkScan", "id", id);
@@ -89,7 +92,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     @Override
     public List<NetworkScanRest> findAll() {
         List<NetworkScanRest> list = customRepository.findAll(NetworkScan.class).stream()
-                .map(n -> new NetworkScanOps(n, new NetworkScanRest()).entityToRest()).toList();
+                .map(n -> networkScanOps.entityToRest(n, new NetworkScanRest())).toList();
         logger.info("network scan find all fetched");
         return list;
     }
@@ -102,8 +105,9 @@ public class NetworkScanServiceImpl implements NetworkScanService {
             throw new ComponentNotFoundException("NetworkScanJob", "id", id);
         } else {
             NetworkScan networkScan = fetchNetworkScan.get();
-            networkScanRest.setUpdateById(Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName()));
-            networkScan = new NetworkScanOps(networkScan, networkScanRest).restToEntity();
+            networkScanRest.setUpdateById(
+                    Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName()));
+            networkScan = networkScanOps.restToEntity(networkScan, networkScanRest);
             customRepository.save(networkScan);
             logger.info("network scan updated -> {}", networkScan.getId());
         }

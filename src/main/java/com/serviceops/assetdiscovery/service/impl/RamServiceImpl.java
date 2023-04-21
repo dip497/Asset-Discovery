@@ -23,9 +23,11 @@ import java.util.regex.Pattern;
 public class RamServiceImpl implements RamService {
     private static final Logger logger = LoggerFactory.getLogger(RamServiceImpl.class);
     private final CustomRepository customRepository;
+    private final RamOps ramOps;
 
     public RamServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        ramOps = new RamOps();
         setCommands();
     }
 
@@ -74,7 +76,7 @@ public class RamServiceImpl implements RamService {
             return List.of();
         }
         logger.info("fetched list of ram for refId ->{}", refId);
-        return fetchRams.stream().map(e -> new RamOps(e, new RamRest()).entityToRest()).toList();
+        return fetchRams.stream().map(e -> ramOps.entityToRest(e, new RamRest())).toList();
     }
 
     @Override
@@ -88,10 +90,9 @@ public class RamServiceImpl implements RamService {
             throw new ComponentNotFoundException("Ram", "refId", refId);
         } else {
             Ram ram = ramList.get(0);
-            RamOps ramOps = new RamOps(ram, ramRest);
-            customRepository.save(ramOps.restToEntity());
+            customRepository.save(ramOps.restToEntity(ram,ramRest));
             logger.info("Ram Updated with Asset Id ->{}", ram.getRefId());
-            return ramOps.entityToRest();
+            return ramOps.entityToRest(ram,ramRest);
         }
     }
 

@@ -22,7 +22,7 @@ public class SchedulerServiceImpl implements SchedulersService {
     private static final Logger logger = LoggerFactory.getLogger(SchedulerServiceImpl.class);
     private final CustomRepository customRepository;
     private final SchedulerService schedulerService;
-    private SchedulerOps schedulerOps;
+    private final SchedulerOps schedulerOps;
 
     public SchedulerServiceImpl(CustomRepository customRepository, SchedulerService schedulerService) {
         this.customRepository = customRepository;

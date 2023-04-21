@@ -21,9 +21,11 @@ import java.util.Optional;
 public class CredentialsServiceImpl implements CredentialsService {
     private static final Logger logger = LoggerFactory.getLogger(CredentialsServiceImpl.class);
     private final CustomRepository customRepository;
+    private final CredentialsOps credentialsOps;
 
     public CredentialsServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        credentialsOps = new CredentialsOps();
     }
 
     @Override
@@ -41,10 +43,9 @@ public class CredentialsServiceImpl implements CredentialsService {
         } else {
             Credentials credential = new Credentials();
             credentialsRest.setPassword(PasswordEncoderSSH.encryptPassword(credentialsRest.getPassword()));
-            CredentialsOps credentialsOps = new CredentialsOps(credential, credentialsRest);
-            customRepository.save(credentialsOps.restToEntity());
+            customRepository.save(credentialsOps.restToEntity(credential, credentialsRest));
             logger.debug("saved credentials of username -> {} ", credentialsRest.getUsername());
-            return new CredentialsOps(credential, credentialsRest).entityToRest();
+            return credentialsOps.entityToRest(credential, credentialsRest);
         }
     }
 
@@ -53,7 +54,7 @@ public class CredentialsServiceImpl implements CredentialsService {
         Optional<Credentials> fetchCredentials = customRepository.findByColumn("id", id, Credentials.class);
         if (fetchCredentials.isPresent()) {
             logger.info("Credential found -> {}", id);
-            return new CredentialsOps(fetchCredentials.get(), new CredentialsRest()).entityToRest();
+            return credentialsOps.entityToRest(fetchCredentials.get(), new CredentialsRest());
 
         } else {
             throw new ComponentNotFoundException("Credentials", "id", id);
@@ -65,8 +66,7 @@ public class CredentialsServiceImpl implements CredentialsService {
     public List<CredentialsRest> findAll() {
         List<Credentials> credential = customRepository.findAll(Credentials.class);
         logger.info("found all credential");
-        return credential.stream().map(c -> new CredentialsOps(c, new CredentialsRest()).entityToRest())
-                .toList();
+        return credential.stream().map(c -> credentialsOps.entityToRest(c, new CredentialsRest())).toList();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class CredentialsServiceImpl implements CredentialsService {
         } else {
             Credentials credential = fetchCredential.get();
             credentialsRest.setPassword(PasswordEncoderSSH.encryptPassword(credentialsRest.getPassword()));
-            credential = new CredentialsOps(credential, credentialsRest).restToEntity();
+            credential = credentialsOps.restToEntity(credential, credentialsRest);
             customRepository.save(credential);
 
             logger.info("Updated credentials with id -> {}", credentialsRest.getId());

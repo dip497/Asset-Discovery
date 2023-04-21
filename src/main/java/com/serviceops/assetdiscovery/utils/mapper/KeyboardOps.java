@@ -5,24 +5,18 @@ import com.serviceops.assetdiscovery.rest.KeyboardRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class KeyboardOps extends SingleBaseOps<Keyboard, KeyboardRest> {
-    private final Keyboard keyboard;
-    private final KeyboardRest keyboardRest;
 
-    public KeyboardOps(Keyboard keyboard, KeyboardRest keyboardRest) {
-        super(keyboard, keyboardRest);
-        this.keyboard = keyboard;
-        this.keyboardRest = keyboardRest;
-    }
-
-    public Keyboard restToEntity() {
-        super.restToEntity(keyboardRest);
+    @Override
+    public Keyboard restToEntity(Keyboard keyboard, KeyboardRest keyboardRest) {
+        super.restToEntity(keyboard, keyboardRest);
         keyboard.setRefId(keyboardRest.getRefId());
         keyboard.setName(keyboardRest.getName());
         return keyboard;
     }
 
-    public KeyboardRest entityToRest() {
-        super.entityToRest(keyboard);
+    @Override
+    public KeyboardRest entityToRest(Keyboard keyboard, KeyboardRest keyboardRest) {
+        super.entityToRest(keyboard, keyboardRest);
         keyboardRest.setRefId(keyboard.getRefId());
         keyboardRest.setName(keyboard.getName());
         return keyboardRest;

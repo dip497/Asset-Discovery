@@ -5,6 +5,7 @@ import com.serviceops.assetdiscovery.rest.UsersRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class UsersOps extends SingleBaseOps<Users, UsersRest> {
+
     @Override
     public UsersRest entityToRest(Users entity, UsersRest rest) {
         super.entityToRest(entity,rest);

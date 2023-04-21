@@ -5,18 +5,10 @@ import com.serviceops.assetdiscovery.rest.MotherBoardRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class MotherBoardOps extends SingleBaseOps<MotherBoard, MotherBoardRest> {
-    private final MotherBoard motherBoard;
-    private final MotherBoardRest motherBoardRest;
 
-    public MotherBoardOps(MotherBoard motherBoard, MotherBoardRest motherBoardRest) {
-        super(motherBoard, motherBoardRest);
-        this.motherBoard = motherBoard;
-        this.motherBoardRest = motherBoardRest;
-    }
-
-
-    public MotherBoard restToEntity() {
-        super.restToEntity(motherBoardRest);
+    @Override
+    public MotherBoard restToEntity(MotherBoard motherBoard, MotherBoardRest motherBoardRest) {
+        super.restToEntity(motherBoard, motherBoardRest);
         motherBoard.setRefId(motherBoardRest.getRefId());
         motherBoard.setManufacturer(motherBoardRest.getManufacturer());
         motherBoard.setSerialNumber(motherBoardRest.getSerialNumber());
@@ -25,8 +17,9 @@ public class MotherBoardOps extends SingleBaseOps<MotherBoard, MotherBoardRest> 
 
     }
 
-    public MotherBoardRest entityToRest() {
-        super.entityToRest(motherBoard);
+    @Override
+    public MotherBoardRest entityToRest(MotherBoard motherBoard, MotherBoardRest motherBoardRest) {
+        super.entityToRest(motherBoard, motherBoardRest);
         motherBoardRest.setRefId(motherBoard.getRefId());
         motherBoardRest.setManufacturer(motherBoard.getManufacturer());
         motherBoardRest.setSerialNumber(motherBoard.getSerialNumber());
