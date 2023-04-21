@@ -20,16 +20,10 @@ import java.util.List;
 @RestController
 public class CredentialsController {
     private final CredentialsService credentialsService;
-    private final Logger logger = LoggerFactory.getLogger(CredentialsController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CredentialsController.class);
 
     public CredentialsController(CredentialsService credentialsService) {
         this.credentialsService = credentialsService;
-    }
-
-    @PostMapping(value = "/credentials", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CredentialsRest> addCredentials(@RequestBody CredentialsRest credentialsRest) {
-        logger.debug("Creating Credentials with username -> {}", credentialsRest.getUsername());
-        return new ResponseEntity<>(credentialsService.save(credentialsRest), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/credentials/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,16 +38,22 @@ public class CredentialsController {
         return credentialsService.findAll();
     }
 
-    @DeleteMapping("/credentials/{id}")
-    public void deleteCredentialsById(@PathVariable Long id) {
-        logger.debug("Deleting Credentials with id -> {}", id);
-        credentialsService.deleteById(id);
-    }
-
     @PutMapping(value = "/credentials/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateCredential(@PathVariable("id") Long id, @RequestBody CredentialsRest credentialsRest) {
         logger.debug("Updating Credentials with id -> {}", id);
         credentialsService.update(id, credentialsRest);
+    }
+
+    @PostMapping(value = "/credentials", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CredentialsRest> addCredentials(@RequestBody CredentialsRest credentialsRest) {
+        logger.debug("Creating Credentials with username -> {}", credentialsRest.getUsername());
+        return new ResponseEntity<>(credentialsService.save(credentialsRest), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/credentials/{id}")
+    public void deleteCredentialsById(@PathVariable Long id) {
+        logger.debug("Deleting Credentials with id -> {}", id);
+        credentialsService.deleteById(id);
     }
 
 }

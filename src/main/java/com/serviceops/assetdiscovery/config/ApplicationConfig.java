@@ -1,7 +1,6 @@
 package com.serviceops.assetdiscovery.config;
 
 import com.serviceops.assetdiscovery.entity.Users;
-import com.serviceops.assetdiscovery.exception.ComponentNotFoundException;
 import com.serviceops.assetdiscovery.exception.ResourceNotFoundException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import org.slf4j.Logger;

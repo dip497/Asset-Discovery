@@ -95,16 +95,6 @@ public class RamServiceImpl implements RamService {
     }
 
     @Override
-    public void deleteById(long refId, long id) {
-        boolean isDeleted = customRepository.deleteById(Ram.class, id, "id");
-        if (isDeleted) {
-            logger.info("MotherBoard deleted with Asset Id ->{}", refId);
-        } else {
-            logger.info("MotherBoard not deleted with Asset Id ->{}", refId);
-        }
-    }
-
-    @Override
     public RamRest update(long refId, long id, RamRest ramRest) {
         HashMap<String, Long> fields = new HashMap<>();
         fields.put("refId", refId);
@@ -120,6 +110,17 @@ public class RamServiceImpl implements RamService {
             logger.info("Ram Updated with Asset Id ->{}", ram.getRefId());
             return ramOps.entityToRest();
         }
+    }
+
+    @Override
+    public boolean deleteById(long refId, long id) {
+        boolean isDeleted = customRepository.deleteById(Ram.class, id, "id");
+        if (isDeleted) {
+            logger.info("MotherBoard deleted with Asset Id ->{}", refId);
+        } else {
+            logger.info("MotherBoard not deleted with Asset Id ->{}", refId);
+        }
+        return isDeleted;
     }
 
     private void setRam(Ram ram, String[] data) {

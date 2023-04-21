@@ -16,8 +16,8 @@ import java.util.List;
 
 @RestController
 public class RamController {
+    private static final Logger logger = LoggerFactory.getLogger(RamController.class);
     private final RamService ramService;
-    private final Logger logger = LoggerFactory.getLogger(RamController.class);
 
     public RamController(RamService motherBoardService) {
         this.ramService = motherBoardService;
@@ -29,16 +29,16 @@ public class RamController {
         return ramService.findAllByRefId(refId);
     }
 
-    @DeleteMapping("/{refId}/ram/{id}")
-    public void deleteRam(@PathVariable("refId") Long refId, @PathVariable("id") Long id) {
-        logger.debug("Deleting Ram with  id -> {}", id);
-        ramService.deleteById(refId, id);
-    }
-
     @PutMapping(value = "/{refId}/ram/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public RamRest updateRam(@PathVariable("refId") Long refId, @PathVariable("id") Long id,
             @RequestBody RamRest ramRest) {
         logger.debug("Updating Ram with  id -> {}", id);
         return ramService.update(refId, id, ramRest);
+    }
+
+    @DeleteMapping("/{refId}/ram/{id}")
+    public boolean deleteRam(@PathVariable("refId") Long refId, @PathVariable("id") Long id) {
+        logger.debug("Deleting Ram with  id -> {}", id);
+        return ramService.deleteById(refId, id);
     }
 }

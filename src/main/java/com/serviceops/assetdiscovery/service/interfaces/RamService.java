@@ -11,7 +11,7 @@ public interface RamService {
 
     List<RamRest> findAllByRefId(long refId);
 
-    void deleteById(long refId, long id);
-
     RamRest update(long refId, long id, RamRest ramRest);
+
+    boolean deleteById(long refId, long id);
 }

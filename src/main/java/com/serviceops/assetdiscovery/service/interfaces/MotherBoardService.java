@@ -9,7 +9,7 @@ public interface MotherBoardService {
 
     List<MotherBoardRest> findByRefId(Long refId);
 
-    void deleteByRefId(Long refId);
+    boolean deleteByRefId(Long refId);
 
     MotherBoardRest update(Long refId, MotherBoardRest motherBoardRest);
 

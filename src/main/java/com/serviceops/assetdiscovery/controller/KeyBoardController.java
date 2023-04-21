@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 public class KeyBoardController {
     private final KeyboardService keyboardService;
-    private final Logger logger = LoggerFactory.getLogger(KeyBoardController.class);
+    private static final Logger logger = LoggerFactory.getLogger(KeyBoardController.class);
 
     public KeyBoardController(KeyboardService keyboardService) {
         this.keyboardService = keyboardService;
@@ -30,16 +30,16 @@ public class KeyBoardController {
         return keyboardService.findAllByRefId(refId);
     }
 
-    @DeleteMapping(value = "/{refId}/keyboard/{id}")
-    public void deleteKeyBoard(@PathVariable("refId") Long refId, @PathVariable("id") long id) {
-        logger.debug("Deleting Keyboard with  id -> {}", id);
-        keyboardService.deleteByRefId(refId, id);
-    }
-
     @PutMapping(value = "/{refId}/keyboard/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public KeyboardRest updateKeyboard(@PathVariable("refId") Long refId, @PathVariable("id") Long id,
             @RequestBody KeyboardRest keyboardRest) {
         logger.debug("Updating Keyboard with Asset id -> {}", refId);
         return keyboardService.update(refId, id, keyboardRest);
+    }
+
+    @DeleteMapping(value = "/{refId}/keyboard/{id}")
+    public boolean deleteKeyBoard(@PathVariable("refId") Long refId, @PathVariable("id") long id) {
+        logger.debug("Deleting Keyboard with  id -> {}", id);
+        return keyboardService.deleteByRefId(refId, id);
     }
 }

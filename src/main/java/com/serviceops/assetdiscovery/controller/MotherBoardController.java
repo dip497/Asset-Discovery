@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 public class MotherBoardController {
     private final MotherBoardService motherBoardService;
-    private final Logger logger = LoggerFactory.getLogger(MotherBoardController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MotherBoardController.class);
 
     public MotherBoardController(MotherBoardService motherBoardService) {
         this.motherBoardService = motherBoardService;
@@ -29,18 +29,18 @@ public class MotherBoardController {
         return motherBoardService.findByRefId(refId);
     }
 
-    @DeleteMapping("/{refId}/motherBoard")
-    public void deleteMotherBoard(@PathVariable("refId") Long refId) {
-        logger.debug("Deleting MotherBoard with Asset id -> {}", refId);
-        motherBoardService.deleteByRefId(refId);
-
-    }
-
     @PutMapping(value = "/{refId}/motherBoard", consumes = MediaType.APPLICATION_JSON_VALUE)
     public MotherBoardRest updateMotherBoard(@PathVariable("refId") Long refId,
             @RequestBody MotherBoardRest motherBoardRest) {
         logger.debug("Updating MotherBoard with Asset id -> {}", refId);
         return motherBoardService.update(refId, motherBoardRest);
+
+    }
+
+    @DeleteMapping("/{refId}/motherBoard")
+    public boolean deleteMotherBoard(@PathVariable("refId") Long refId) {
+        logger.debug("Deleting MotherBoard with Asset id -> {}", refId);
+        return motherBoardService.deleteByRefId(refId);
 
     }
 }

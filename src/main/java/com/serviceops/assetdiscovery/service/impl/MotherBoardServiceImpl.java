@@ -92,13 +92,14 @@ public class MotherBoardServiceImpl implements MotherBoardService {
     }
 
     @Override
-    public void deleteByRefId(Long refId) {
+    public boolean deleteByRefId(Long refId) {
         boolean isDeleted = customRepository.deleteById(MotherBoard.class, refId, "refId");
         if (isDeleted) {
             logger.info("MotherBoard deleted with Asset Id ->{}", refId);
         } else {
             logger.info("MotherBoard not deleted with Asset Id ->{}", refId);
         }
+        return isDeleted;
     }
 
     private void setCommands() {
