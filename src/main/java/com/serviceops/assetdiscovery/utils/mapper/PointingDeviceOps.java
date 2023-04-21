@@ -6,17 +6,10 @@ import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 
 public class PointingDeviceOps extends SingleBaseOps<PointingDevice, PointingDeviceRest> {
-    private final PointingDevice pointingDevice;
-    private final PointingDeviceRest pointingDeviceRest;
 
-    public PointingDeviceOps(PointingDevice pointingDevice, PointingDeviceRest pointingDeviceRest) {
-        super(pointingDevice, pointingDeviceRest);
-        this.pointingDevice = pointingDevice;
-        this.pointingDeviceRest = pointingDeviceRest;
-    }
-
-    public PointingDevice restToEntity() {
-        super.restToEntity(pointingDeviceRest);
+    @Override
+    public PointingDevice restToEntity(PointingDevice pointingDevice, PointingDeviceRest pointingDeviceRest) {
+        super.restToEntity(pointingDevice, pointingDeviceRest);
         pointingDevice.setRefId(pointingDeviceRest.getRefId());
         pointingDevice.setManufacturer(pointingDeviceRest.getManufacturer());
         pointingDevice.setNumberOfButtons(pointingDeviceRest.getNumberOfButtons());
@@ -25,8 +18,9 @@ public class PointingDeviceOps extends SingleBaseOps<PointingDevice, PointingDev
         return pointingDevice;
     }
 
-    public PointingDeviceRest entityToRest() {
-        super.entityToRest(pointingDevice);
+    @Override
+    public PointingDeviceRest entityToRest(PointingDevice pointingDevice, PointingDeviceRest pointingDeviceRest) {
+        super.entityToRest(pointingDevice, pointingDeviceRest);
         pointingDeviceRest.setManufacturer(pointingDevice.getManufacturer());
         pointingDeviceRest.setRefId(pointingDevice.getRefId());
         pointingDeviceRest.setNumberOfButtons(pointingDevice.getNumberOfButtons());

@@ -5,17 +5,10 @@ import com.serviceops.assetdiscovery.rest.PhysicalDiskRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class PhysicalDiskOps extends SingleBaseOps<PhysicalDisk, PhysicalDiskRest> {
-    private final PhysicalDisk physicalDisk;
-    private final PhysicalDiskRest physicalDiskRest;
 
-    public PhysicalDiskOps(PhysicalDisk physicalDisk, PhysicalDiskRest physicalDiskRest) {
-        super(physicalDisk, physicalDiskRest);
-        this.physicalDisk = physicalDisk;
-        this.physicalDiskRest = physicalDiskRest;
-    }
-
-    public PhysicalDisk restToEntity() {
-        super.restToEntity(physicalDiskRest);
+    @Override
+    public PhysicalDisk restToEntity(PhysicalDisk physicalDisk, PhysicalDiskRest physicalDiskRest) {
+        super.restToEntity(physicalDisk, physicalDiskRest);
         physicalDisk.setRefId(physicalDiskRest.getRefId());
         physicalDisk.setManufacturer(physicalDiskRest.getManufacturer());
         physicalDisk.setDescription(physicalDiskRest.getDescription());
@@ -29,8 +22,9 @@ public class PhysicalDiskOps extends SingleBaseOps<PhysicalDisk, PhysicalDiskRes
         return physicalDisk;
     }
 
-    public PhysicalDiskRest entityToRest() {
-        super.entityToRest(physicalDisk);
+    @Override
+    public PhysicalDiskRest entityToRest(PhysicalDisk physicalDisk, PhysicalDiskRest physicalDiskRest) {
+        super.entityToRest(physicalDisk, physicalDiskRest);
         physicalDiskRest.setSerialNumber(physicalDisk.getSerialNumber());
         physicalDiskRest.setManufacturer(physicalDisk.getManufacturer());
         physicalDiskRest.setRefId(physicalDisk.getRefId());

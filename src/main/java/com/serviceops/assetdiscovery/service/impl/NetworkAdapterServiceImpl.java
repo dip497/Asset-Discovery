@@ -17,18 +17,38 @@ import java.util.regex.Pattern;
 
 @Service
 public class NetworkAdapterServiceImpl implements NetworkAdapterService {
-    private final CustomRepository customRepository;
     private static final Logger logger = LoggerFactory.getLogger(NetworkAdapterServiceImpl.class);
+    private final CustomRepository customRepository;
 
     public NetworkAdapterServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
         setCommands();
     }
 
+    public static void setCommands() {
+        LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
+
+        commands.put("sudo lshw -C network | grep description | wc -l", new String[]{});
+        // command for parsing information about description of the network card.
+        commands.put("sudo lshw -C network | grep description", new String[]{});
+
+        // command for parsing information about vendor of the network card.
+        commands.put("sudo lshw -C network | grep vendor", new String[]{});
+        // command for parsing information about MAC address of the network card.
+        commands.put("sudo lshw -C network | grep serial", new String[]{});
+        // command for parsing information about IP address of the network card.
+        commands.put("sudo ip address show | awk '/inet / {print $2}'", new String[]{});
+//        commands.put("sudo lshw -C network | grep ip", new String[]{});
+        // command for parsing information about IP subnet mask of the network card.
+        commands.put("sudo ifconfig | grep netmask  | awk '{print $4}' | cut -f1 -d'/'", new String[]{});
+
+        LinuxCommandExecutorManager.add(NetworkAdapter.class, commands);
+    }
+
     @Override
     public void save(long refId) {
         String[][] parseResult = getParseResult();
-        List<NetworkAdapter> networkAdapters = customRepository.findAllByColumn( "refId", refId,NetworkAdapter.class);
+        List<NetworkAdapter> networkAdapters = customRepository.findAllByColumn("refId", refId, NetworkAdapter.class);
         if (!networkAdapters.isEmpty()) {
             if (networkAdapters.size() == parseResult.length) {
                 for (NetworkAdapter networkAdapter : networkAdapters) {
@@ -55,13 +75,13 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
     }
 
     @Override
-    public List<NetworkAdapterRest> findAllByRefId(Long refId) {
-        List<NetworkAdapter> networkAdapterList = customRepository.findAllByColumn( "refId", refId,NetworkAdapter.class);
+    public List<NetworkAdapterRest> findAllByRefId(long refId) {
+        List<NetworkAdapter> networkAdapterList = customRepository.findAllByColumn("refId", refId, NetworkAdapter.class);
         List<NetworkAdapterRest> networkAdapterRestList = new ArrayList<>();
         if (!networkAdapterList.isEmpty()) {
             for (NetworkAdapter networkAdapter : networkAdapterList) {
-                NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps(networkAdapter, new NetworkAdapterRest());
-                networkAdapterRestList.add(networkAdapterOps.entityToRest());
+                NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps();
+                networkAdapterRestList.add(networkAdapterOps.entityToRest(networkAdapter, new NetworkAdapterRest()));
                 logger.info("Fetched Network adapter with id: --> {}", refId);
             }
         }
@@ -81,10 +101,10 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
             logger.info("Could not found NetworkAdapter with id --> {} and refId -> {} ", id, refId);
             throw new ComponentNotFoundException("Network adapter", "id", id);
         } else {
-            NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps(networkAdapters.get(0), networkAdapterRest);
-            customRepository.save(networkAdapterOps.restToEntity());
+            NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps();
+            customRepository.save(networkAdapterOps.restToEntity(networkAdapters.get(0), networkAdapterRest));
             logger.info("NetworkAdapter Updated with Asset Id ->{}", networkAdapterRest.getRefId());
-            return networkAdapterOps.entityToRest();
+            return networkAdapterOps.entityToRest(networkAdapters.get(0), networkAdapterRest);
         }
     }
 
@@ -97,26 +117,6 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
             logger.info("Fail to delete Network Adapter with refId--> {} and id->{}", refId, id);
         }
         return isDeleted;
-    }
-
-    public static void setCommands() {
-        LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
-
-        commands.put("sudo lshw -C network | grep description | wc -l", new String[]{});
-        // command for parsing information about description of the network card.
-        commands.put("sudo lshw -C network | grep description", new String[]{});
-
-        // command for parsing information about vendor of the network card.
-        commands.put("sudo lshw -C network | grep vendor", new String[]{});
-        // command for parsing information about MAC address of the network card.
-        commands.put("sudo lshw -C network | grep serial", new String[]{});
-        // command for parsing information about IP address of the network card.
-        commands.put("sudo ip address show | awk '/inet / {print $2}'", new String[]{});
-//        commands.put("sudo lshw -C network | grep ip", new String[]{});
-        // command for parsing information about IP subnet mask of the network card.
-        commands.put("sudo ifconfig | grep netmask  | awk '{print $4}' | cut -f1 -d'/'", new String[]{});
-
-        LinuxCommandExecutorManager.add(NetworkAdapter.class, commands);
     }
 
     private String[][] getParseResult() {

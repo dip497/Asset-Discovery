@@ -17,12 +17,23 @@ import java.util.*;
 @Service
 public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
-    private final CustomRepository customRepository;
     private static final Logger logger = LoggerFactory.getLogger(PhysicalDiskServiceImpl.class);
+    private final CustomRepository customRepository;
 
     public PhysicalDiskServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
         setCommands();
+    }
+
+    private static List<String> getParseResult() {
+        Map<String, String[]> stringMap = LinuxCommandExecutorManager.get(PhysicalDisk.class);
+        List<String> list = new ArrayList<>();
+        for (Map.Entry<String, String[]> result : stringMap.entrySet()) {
+            String[] values = result.getValue();
+            Collections.addAll(list, values);
+
+        }
+        return list;
     }
 
     @Override
@@ -47,8 +58,8 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         List<PhysicalDiskRest> physicalDiskRests = new ArrayList<>();
         if (optionalPhysicalDisk.isPresent()) {
             PhysicalDiskRest physicalDiskRest = new PhysicalDiskRest();
-            PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps(optionalPhysicalDisk.get(), physicalDiskRest);
-            physicalDiskRests.add(physicalDiskOps.entityToRest());
+            PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps();
+            physicalDiskRests.add(physicalDiskOps.entityToRest(optionalPhysicalDisk.get(), physicalDiskRest));
             logger.info("Fetched PhysicalDisk with Id : --> {}", refId);
         } else {
             logger.error("Physical disk not found with id; --> {}", refId);
@@ -62,11 +73,11 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
         if (optionalPhysicalDisk.isPresent()) {
             PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
-            PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps(physicalDisk, physicalDiskRest);
-            customRepository.save(physicalDiskOps.restToEntity());
+            PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps();
+            customRepository.save(physicalDiskOps.restToEntity(physicalDisk, physicalDiskRest));
             logger.info("Updating PhysicalDisk with Id : --> {}", refId);
 
-            return physicalDiskOps.entityToRest();
+            return physicalDiskOps.entityToRest(physicalDisk, physicalDiskRest);
 
         } else {
             logger.error("Physical disk not found with id; --> {}", refId);
@@ -102,17 +113,6 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         LinuxCommandExecutorManager.add(PhysicalDisk.class, commands);
     }
 
-    private static List<String> getParseResult() {
-        Map<String, String[]> stringMap = LinuxCommandExecutorManager.get(PhysicalDisk.class);
-        List<String> list = new ArrayList<>();
-        for (Map.Entry<String, String[]> result : stringMap.entrySet()) {
-            String[] values = result.getValue();
-            Collections.addAll(list, values);
-
-        }
-        return list;
-    }
-
     private long convertToBaseUnit(String partialData) {
         long data;
         partialData = partialData.toLowerCase();
@@ -143,7 +143,7 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
     private void setData(PhysicalDisk physicalDisk, long refId) {
         try {
-            physicalDisk.setPartition(customRepository.findAllByColumn("refId", refId,LogicalDisk.class).size());
+            physicalDisk.setPartition(customRepository.findAllByColumn("refId", refId, LogicalDisk.class).size());
             physicalDisk.setSize(convertToBaseUnit(getParseResult().get(0)));
             physicalDisk.setName(getParseResult().get(1).equals("bash: blkid: command not found") ? null : getParseResult().get(1));
             physicalDisk.setSerialNumber(formatData(getParseResult().get(2), "serial: "));

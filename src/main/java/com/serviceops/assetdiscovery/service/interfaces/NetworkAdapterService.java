@@ -7,7 +7,7 @@ import java.util.List;
 public interface NetworkAdapterService {
     void save(long refId);
 
-    List<NetworkAdapterRest> findAllByRefId(Long refId);
+    List<NetworkAdapterRest> findAllByRefId(long refId);
 
     NetworkAdapterRest updateById(NetworkAdapterRest networkAdapterRest, long refId,long id);
 

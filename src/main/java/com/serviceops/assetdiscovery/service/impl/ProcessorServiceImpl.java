@@ -15,8 +15,8 @@ import java.util.*;
 
 @Service
 public class ProcessorServiceImpl implements ProcessorService {
-    private final CustomRepository customRepository;
     private static final Logger logger = LoggerFactory.getLogger(ProcessorServiceImpl.class);
+    private final CustomRepository customRepository;
 
     public ProcessorServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -45,8 +45,8 @@ public class ProcessorServiceImpl implements ProcessorService {
         List<ProcessorRest> processors = new ArrayList<>();
         if (optionalProcessor.isPresent()) {
             ProcessorRest processorRest = new ProcessorRest();
-            ProcessorOps processorOps = new ProcessorOps(optionalProcessor.get(), processorRest);
-            processors.add(processorOps.entityToRest());
+            ProcessorOps processorOps = new ProcessorOps();
+            processors.add(processorOps.entityToRest(optionalProcessor.get(), processorRest));
             logger.info("Processor found with id -->{}", id);
 
         } else {
@@ -63,10 +63,10 @@ public class ProcessorServiceImpl implements ProcessorService {
 
         if (optionalProcessor.isPresent()) {
             Processor processor = optionalProcessor.get();
-            ProcessorOps processorOps = new ProcessorOps(processor, processorRest);
-            customRepository.save(processorOps.restToEntity());
+            ProcessorOps processorOps = new ProcessorOps();
+            customRepository.save(processorOps.restToEntity(processor, processorRest));
             logger.info("Processor updated with id -->{}", id);
-            return processorOps.entityToRest();
+            return processorOps.entityToRest(processor, processorRest);
         } else {
             logger.error("Processor not found with id -->{}", id);
             throw new ComponentNotFoundException("Processor", "refId", id);
@@ -75,9 +75,9 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
 
     @Override
-    public void deleteById(long id) {
+    public boolean deleteById(long id) {
         logger.info("Processor deleted with id -->{}", id);
-        customRepository.deleteById(Processor.class, id, "id");
+        return customRepository.deleteById(Processor.class, id, "id");
     }
 
     private void setCommands() {

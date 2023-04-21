@@ -5,18 +5,10 @@ import com.serviceops.assetdiscovery.rest.NetworkAdapterRest;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class NetworkAdapterOps extends SingleBaseOps<NetworkAdapter, NetworkAdapterRest> {
-    private final NetworkAdapter networkAdapter;
-    private final NetworkAdapterRest networkAdapterRest;
 
-    public NetworkAdapterOps(NetworkAdapter networkAdapter, NetworkAdapterRest networkAdapterRest) {
-        super(networkAdapter,networkAdapterRest);
-        this.networkAdapter = networkAdapter;
-        this.networkAdapterRest = networkAdapterRest;
-    }
-
-
-    public NetworkAdapter restToEntity() {
-        super.restToEntity(networkAdapterRest);
+    @Override
+    public NetworkAdapter restToEntity(NetworkAdapter networkAdapter, NetworkAdapterRest networkAdapterRest) {
+        super.restToEntity(networkAdapter, networkAdapterRest);
         networkAdapter.setRefId(networkAdapterRest.getRefId());
         networkAdapter.setDescription(networkAdapterRest.getDescription());
         networkAdapter.setManufacturer(networkAdapterRest.getManufacturer());
@@ -27,8 +19,9 @@ public class NetworkAdapterOps extends SingleBaseOps<NetworkAdapter, NetworkAdap
         return networkAdapter;
     }
 
-    public NetworkAdapterRest entityToRest() {
-        super.entityToRest(networkAdapter);
+    @Override
+    public NetworkAdapterRest entityToRest(NetworkAdapter networkAdapter, NetworkAdapterRest networkAdapterRest) {
+        super.entityToRest(networkAdapter, networkAdapterRest);
         networkAdapterRest.setRefId(networkAdapter.getRefId());
         networkAdapterRest.setDescription(networkAdapter.getDescription());
         networkAdapterRest.setManufacturer(networkAdapter.getManufacturer());

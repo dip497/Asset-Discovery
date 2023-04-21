@@ -11,5 +11,5 @@ public interface ProcessorService {
 
     ProcessorRest updateByRefId(long refId, ProcessorRest processorRest);
 
-    void deleteById(long refId);
+    boolean deleteById(long refId);
 }

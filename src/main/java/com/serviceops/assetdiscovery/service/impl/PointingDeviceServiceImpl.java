@@ -26,10 +26,25 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
         setCommands();
     }
 
+    private static void setCommands() {
+        LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
+        //command for getting number of pointing device by counting number of buttons
+        commands.put("sudo dmidecode -t 21 | grep -i Buttons: | wc -l", new String[]{});
+        // Command for getting information about pointing device button.
+        commands.put("sudo dmidecode -t 21 | grep -i Buttons: ", new String[]{});
+        // Command for getting information about pointing device Type.
+        commands.put("sudo dmidecode -t 21 | grep -i Type: ", new String[]{});
+        // Command for getting information about pointing device interface.
+        commands.put("sudo dmidecode -t 21 | grep -i Interface: ", new String[]{});
+        // Command for vendor information.
+        commands.put("sudo lshw -C input | grep vendor:", new String[]{});
+        LinuxCommandExecutorManager.add(PointingDevice.class, commands);
+    }
+
     @Override
     public void save(long refId) {
         String[][] parsedResult = getParsedResults();
-        List<PointingDevice> pointingDevices = customRepository.findAllByColumn( "refId", refId,PointingDevice.class);
+        List<PointingDevice> pointingDevices = customRepository.findAllByColumn("refId", refId, PointingDevice.class);
 
         if (!pointingDevices.isEmpty()) {
             if (pointingDevices.size() == parsedResult.length) {
@@ -57,12 +72,12 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
 
     @Override
     public List<PointingDeviceRest> findAllByRefId(long refId) {
-        List<PointingDevice> pointingDevices = customRepository.findAllByColumn( "refId", refId,PointingDevice.class);
+        List<PointingDevice> pointingDevices = customRepository.findAllByColumn("refId", refId, PointingDevice.class);
         if (!pointingDevices.isEmpty()) {
             List<PointingDeviceRest> pointingDeviceRestList = new ArrayList<>();
             for (PointingDevice pointingDevice : pointingDevices) {
-                PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, new PointingDeviceRest());
-                pointingDeviceRestList.add(pointingDeviceOps.entityToRest());
+                PointingDeviceOps pointingDeviceOps = new PointingDeviceOps();
+                pointingDeviceRestList.add(pointingDeviceOps.entityToRest(pointingDevice, new PointingDeviceRest()));
                 logger.info("Fetched pointing device with id: --> {}", refId);
             }
             return pointingDeviceRestList;
@@ -79,10 +94,10 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
         List<PointingDevice> pointingDeices = customRepository.findByColumns(fields, PointingDevice.class);
 
         if (!pointingDeices.isEmpty()) {
-            PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDeices.get(0), pointingDeviceRest);
+            PointingDeviceOps pointingDeviceOps = new PointingDeviceOps();
             logger.info("Updated PointingDevice with id --> {}", pointingDeviceRest.getId());
-            customRepository.save(pointingDeviceOps.restToEntity(pointingDeviceRest));
-            return pointingDeviceOps.entityToRest();
+            customRepository.save(pointingDeviceOps.restToEntity(pointingDeices.get(0), pointingDeviceRest));
+            return pointingDeviceOps.entityToRest(pointingDeices.get(0), pointingDeviceRest);
         } else {
             logger.info("Could not found pointing device with id: --> {}", refId);
             throw new ComponentNotFoundException("Pointing device", "refId", refId);
@@ -91,28 +106,13 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
 
     @Override
     public boolean deleteById(long refId, long id) {
-        boolean isDeleted =  customRepository.deleteById(PointingDevice.class, id, "id");
+        boolean isDeleted = customRepository.deleteById(PointingDevice.class, id, "id");
         if (isDeleted) {
             logger.info("Deleted pointing device with refId --> {} and id --> {}", refId, id);
         } else {
             logger.info("Could not found pointing device with refId -->{} and id --> {}", refId, id);
         }
         return isDeleted;
-    }
-
-    private static void setCommands() {
-        LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
-        //command for getting number of pointing device by counting number of buttons
-        commands.put("sudo dmidecode -t 21 | grep -i Buttons: | wc -l", new String[]{});
-        // Command for getting information about pointing device button.
-        commands.put("sudo dmidecode -t 21 | grep -i Buttons: ", new String[]{});
-        // Command for getting information about pointing device Type.
-        commands.put("sudo dmidecode -t 21 | grep -i Type: ", new String[]{});
-        // Command for getting information about pointing device interface.
-        commands.put("sudo dmidecode -t 21 | grep -i Interface: ", new String[]{});
-        // Command for vendor information.
-        commands.put("sudo lshw -C input | grep vendor:", new String[]{});
-        LinuxCommandExecutorManager.add(PointingDevice.class, commands);
     }
 
     private String[][] getParsedResults() {
