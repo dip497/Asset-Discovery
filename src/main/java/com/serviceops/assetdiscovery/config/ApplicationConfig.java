@@ -33,8 +33,7 @@ public class ApplicationConfig {
             Optional<Users> users = repository.findByColumn("email", username, Users.class);
             if (users.isEmpty()) {
                 logger.error("user not found with email -> {}", username);
-                return new Users();
-//                throw new ResourceNotFoundException("user", "email", username);
+                throw new ResourceNotFoundException("user", "email", username);
             } else {
                 return users.get();
             }
