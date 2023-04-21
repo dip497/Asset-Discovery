@@ -21,8 +21,8 @@ import java.util.regex.Pattern;
 
 @Service
 public class KeyboardServiceImpl implements KeyboardService {
+    private static final Logger logger = LoggerFactory.getLogger(KeyboardServiceImpl.class);
     private final CustomRepository customRepository;
-    private final Logger logger = LoggerFactory.getLogger(KeyboardServiceImpl.class);
 
     public KeyboardServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;

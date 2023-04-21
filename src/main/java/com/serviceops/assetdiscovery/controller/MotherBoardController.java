@@ -16,8 +16,8 @@ import java.util.List;
 
 @RestController
 public class MotherBoardController {
-    private final MotherBoardService motherBoardService;
     private static final Logger logger = LoggerFactory.getLogger(MotherBoardController.class);
+    private final MotherBoardService motherBoardService;
 
     public MotherBoardController(MotherBoardService motherBoardService) {
         this.motherBoardService = motherBoardService;

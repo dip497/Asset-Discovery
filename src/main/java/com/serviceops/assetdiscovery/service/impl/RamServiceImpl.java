@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 
 @Service
 public class RamServiceImpl implements RamService {
+    private static final Logger logger = LoggerFactory.getLogger(RamServiceImpl.class);
     private final CustomRepository customRepository;
-    private final Logger logger = LoggerFactory.getLogger(RamServiceImpl.class);
 
     public RamServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;

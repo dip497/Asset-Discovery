@@ -17,8 +17,8 @@ import java.util.List;
 
 @RestController
 public class KeyBoardController {
-    private final KeyboardService keyboardService;
     private static final Logger logger = LoggerFactory.getLogger(KeyBoardController.class);
+    private final KeyboardService keyboardService;
 
     public KeyBoardController(KeyboardService keyboardService) {
         this.keyboardService = keyboardService;

@@ -15,7 +15,6 @@ public class SchedulerService {
     private static final Logger logger = LoggerFactory.getLogger(SchedulerService.class);
     private final Scheduler scheduler;
 
-
     public SchedulerService(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
@@ -24,13 +23,11 @@ public class SchedulerService {
         final JobDataMap jobDataMap = new JobDataMap();
         Long id = info.getNetworkScanRestId();
         jobDataMap.put("id", id);
-
         return JobBuilder.newJob(jobClass).withIdentity(String.valueOf(info.getId())).setJobData(jobDataMap)
                 .build();
     }
 
     public static Trigger buildTrigger(final SchedulerRest info) {
-
 
         TriggerBuilder<Trigger> cronTriggerTriggerBuilder =
                 TriggerBuilder.newTrigger().withIdentity(String.valueOf(info.getId()))
@@ -75,15 +72,6 @@ public class SchedulerService {
         }
     }
 
-    @PreDestroy
-    public void preDestroy() {
-        try {
-            scheduler.shutdown();
-        } catch (SchedulerException e) {
-            logger.error(e.getMessage(), e);
-        }
-    }
-
     public void scheduleJob(SchedulerRest schedulerRest) throws SchedulerException {
 
         JobDetail jobDetail = buildJobDetail(NetworkScanJob.class, schedulerRest);
@@ -92,7 +80,6 @@ public class SchedulerService {
         logger.info("trigger created for schedulers id ->{}", schedulerRest.getId());
         scheduler.scheduleJob(jobDetail, trigger);
         logger.info("scheduler created for schedulers id ->{}", schedulerRest.getId());
-
 
     }
 
@@ -117,6 +104,15 @@ public class SchedulerService {
             logger.info("trigger deleted with id -> {}", id);
         } catch (SchedulerException e) {
             logger.error("fail to delete trigger with id -> {}", id);
+        }
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        try {
+            scheduler.shutdown();
+        } catch (SchedulerException e) {
+            logger.error(e.getMessage(), e);
         }
     }
 

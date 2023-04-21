@@ -20,8 +20,8 @@ import java.util.Optional;
 
 @Service
 public class MotherBoardServiceImpl implements MotherBoardService {
+    private static final Logger logger = LoggerFactory.getLogger(MotherBoardServiceImpl.class);
     private final CustomRepository customRepository;
-    private final Logger logger = LoggerFactory.getLogger(MotherBoardServiceImpl.class);
 
     public MotherBoardServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
