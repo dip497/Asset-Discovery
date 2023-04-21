@@ -78,16 +78,15 @@ public class MotherBoardServiceImpl implements MotherBoardService {
     public MotherBoardRest updateByRefId(long refId, MotherBoardRest motherBoardRest) {
         Optional<MotherBoard> fetchMotherboard =
                 customRepository.findByColumn("refId", refId, MotherBoard.class);
-        if (fetchMotherboard.isEmpty()) {
-            logger.error("Motherboard not found with Asset Id -> {}", refId);
-            throw new ComponentNotFoundException("MotherBoard", "refId", refId);
-        } else {
-
+        if (fetchMotherboard.isPresent()) {
             MotherBoard motherBoard = fetchMotherboard.get();
             MotherBoardOps motherBoardOps = new MotherBoardOps(motherBoard, motherBoardRest);
             customRepository.save(motherBoardOps.restToEntity());
             logger.info("MotherBoard Updated with Asset Id ->{}", motherBoard.getRefId());
             return motherBoardOps.entityToRest();
+        } else {
+            logger.error("Motherboard not found with Asset Id -> {}", refId);
+            throw new ComponentNotFoundException("MotherBoard", "refId", refId);
         }
     }
 

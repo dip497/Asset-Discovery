@@ -61,11 +61,11 @@ public class NetworkScanServiceImpl implements NetworkScanService {
                 customRepository.findByColumn("id", networkScanRest.getId(), NetworkScan.class);
         if (networkScan.isPresent()) {
             customRepository.save(new NetworkScanOps(networkScan.get(), networkScanRest).restToEntity());
-            logger.info("NetworkScanJob updated by id -> {}", networkScan.get().getId());
+            logger.info("NetworkScan updated by id -> {}", networkScan.get().getId());
         } else {
             networkScanRest.setEnabled(true);
             customRepository.save(new NetworkScanOps(new NetworkScan(), networkScanRest).restToEntity());
-            logger.info("NetworkScanJob saved by id -> {}", networkScanRest.getId());
+            logger.info("NetworkScan saved by id -> {}", networkScanRest.getId());
 
         }
 
@@ -148,6 +148,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
                 logger.debug("trying to connect using ->{}", credential.getUsername());
                 if (fetch(ip, credential.getUsername(), credential.getPassword())) {
                     logger.debug("fetch completed using ->{}", credential.getUsername());
+                    persistToDB.saveToDB();
                     break;
                 }
             }
@@ -160,7 +161,6 @@ public class NetworkScanServiceImpl implements NetworkScanService {
 
             logger.debug("Scanning -> {} ", ipAddress);
             new LinuxCommandExecutorManager(ipAddress, username, password, 22).fetch();
-            persistToDB.saveToDB();
             return true;
         } catch (AssetDiscoveryApiException e) {
             logger.error("Network Scanner Error for host-> {}", ipAddress);

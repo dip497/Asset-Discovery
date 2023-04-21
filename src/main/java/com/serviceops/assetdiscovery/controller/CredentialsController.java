@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CredentialsController {
@@ -24,6 +25,11 @@ public class CredentialsController {
 
     public CredentialsController(CredentialsService credentialsService) {
         this.credentialsService = credentialsService;
+    }
+    @GetMapping(value = "/credentials/testConnection",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public boolean testConnection(Map<String,String> parameters){
+        logger.debug("Testing connection");
+        return credentialsService.testConnection(parameters);
     }
 
     @GetMapping(value = "/credentials/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
