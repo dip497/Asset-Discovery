@@ -18,6 +18,7 @@ public enum Week {
         return code;
     }
 
+    @Override
     public String toString() {
         //only override toString, if the returned value has a meaning for the
         //human viewing this value

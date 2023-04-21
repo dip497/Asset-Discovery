@@ -23,7 +23,8 @@ public class LinuxCommandExecutor implements AutoCloseable {
     private Channel channel;
 
 
-    public LinuxCommandExecutor(String host, String username, String password, int port) {
+    public LinuxCommandExecutor(String host, String username, String password, int port)
+            throws JSchException {
         this.host = host;
         this.username = username;
         this.password = password;
@@ -31,7 +32,7 @@ public class LinuxCommandExecutor implements AutoCloseable {
         connect();
     }
 
-    private void connect() {
+    private void connect() throws JSchException {
         JSch jsch = new JSch();
         try {
             session = jsch.getSession(username, host, port);
@@ -41,6 +42,7 @@ public class LinuxCommandExecutor implements AutoCloseable {
             logger.info("Connected to -> {}", host);
         } catch (JSchException e) {
             logger.error("Failed to connect to -> {}", host);
+            throw new JSchException();
         }
     }
 

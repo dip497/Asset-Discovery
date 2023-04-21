@@ -6,7 +6,7 @@ import com.serviceops.assetdiscovery.exception.ResourceAlreadyExistsException;
 import com.serviceops.assetdiscovery.repository.CustomRepository;
 import com.serviceops.assetdiscovery.rest.CredentialsRest;
 import com.serviceops.assetdiscovery.service.interfaces.CredentialsService;
-import com.serviceops.assetdiscovery.utils.LinuxCommandExecutor;
+import com.serviceops.assetdiscovery.utils.LinuxCommandExecutorManager;
 import com.serviceops.assetdiscovery.utils.PasswordEncoderSSH;
 import com.serviceops.assetdiscovery.utils.mapper.CredentialsOps;
 import org.slf4j.Logger;
@@ -28,12 +28,8 @@ public class CredentialsServiceImpl implements CredentialsService {
 
     @Override
     public boolean testConnection(Map<String, String> parameters) {
-        try (LinuxCommandExecutor linuxCommandExecutor = new LinuxCommandExecutor(parameters.get("username"),PasswordEncoderSSH.encryptPassword(parameters.get("password")), parameters.get("ipAddress"), 22)) {
-            return true;
-        } catch (Exception e) {
-            logger.error("fail to connect -> {}", parameters.get("username"));
-            return false;
-        }
+        return LinuxCommandExecutorManager.testConnection(parameters.get("ipAddress"),
+                parameters.get("username"), parameters.get("password"), 22);
     }
 
     @Override

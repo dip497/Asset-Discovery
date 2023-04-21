@@ -32,12 +32,12 @@ public class LinuxCommandExecutorManager {
 
     public static boolean testConnection(String hostname, String username, String password, int port) {
         try (LinuxCommandExecutor linuxCommandExecutor = new LinuxCommandExecutor(hostname, username,
-                password, port)) {
+                PasswordEncoderSSH.encryptPassword(password), port)) {
             return true;
         } catch (Exception e) {
-            logger.error("Auth fail -> {}", e.getMessage());
+            logger.error("Auth fail -> {}", hostname);
+            return false;
         }
-        return false;
     }
 
     public static <T extends SingleBase> void add(Class<T> key, LinkedHashMap<String, String[]> hashMap) {

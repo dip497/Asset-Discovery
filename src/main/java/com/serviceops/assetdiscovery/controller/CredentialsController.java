@@ -26,12 +26,6 @@ public class CredentialsController {
     public CredentialsController(CredentialsService credentialsService) {
         this.credentialsService = credentialsService;
     }
-    @GetMapping(value = "/credentials/testConnection",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean testConnection(Map<String,String> parameters){
-        logger.debug("Testing connection");
-        return credentialsService.testConnection(parameters);
-    }
-
     @GetMapping(value = "/credentials/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CredentialsRest getCredential(@PathVariable long id) {
         logger.debug("Finding credentials with id ->{}", id);
@@ -42,6 +36,12 @@ public class CredentialsController {
     public List<CredentialsRest> getAllCredentials() {
         logger.debug("Finding all credentials");
         return credentialsService.findAll();
+    }
+
+    @PostMapping(value = "/credentials/testConnection",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public boolean testConnection(@RequestBody Map<String,String> parameters){
+        logger.debug("Testing connection");
+        return credentialsService.testConnection(parameters);
     }
 
     @PutMapping(value = "/credentials/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
