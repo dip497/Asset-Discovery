@@ -86,7 +86,7 @@ public class ProcessorServiceImpl implements ProcessorService {
         commands.put("lscpu | grep 'L2 cache:' | awk '{print $(NF-1), $NF}'", new String[]{});
 //        commands.put("lscpu | grep 'L2 cache:' | awk '{print $(NF-1), $NF}'", new String[]{});
         // command for parsing information about the L3 cache.
-        commands.put("lscpu | grep 'L3 cache' | awk '{print $(NF-1), $NF}'", new String[]{}); //TODO L1 cache
+        commands.put("lscpu | grep 'L3 cache' | awk '{print $(NF-1), $NF}'", new String[]{});
         // command for parsing information about the manufacturer.
         commands.put("lscpu | grep 'Vendor ID:' | awk '{print $NF}'", new String[]{});
         // command for parsing information about the cpu family.
@@ -117,24 +117,24 @@ public class ProcessorServiceImpl implements ProcessorService {
         return list;
     }
 
-    private long convertToBaseUnit(String patialData) {
+    private long convertToBaseUnit(String partialData) {
         long data;
-        patialData = patialData.toLowerCase();
-        if (patialData.contains("mib") || patialData.contains("mb")) {
-            patialData = patialData.replaceAll("[^0-9]", "").trim();
-            patialData = patialData.replaceAll(" + ", "");
-            data = Long.parseLong(patialData) * 1024 * 1024;
+        partialData = partialData.toLowerCase();
+        if (partialData.contains("mib") || partialData.contains("mb")) {
+            partialData = partialData.replaceAll("[^0-9]", "").trim();
+            partialData = partialData.replaceAll(" + ", "");
+            data = Long.parseLong(partialData) * 1024 * 1024;
 
-        } else if (patialData.contains("k") || patialData.contains("kib")) {
-            patialData = patialData.replaceAll("[^0-9]", "").trim();
-            patialData = patialData.replaceAll(" + ", "");
-            data = Long.parseLong(patialData) * 1024;
-        } else if (patialData.contains("mhz")) {
-            patialData = patialData.substring(0, patialData.indexOf("."));
-            patialData = patialData.replaceAll("[^0-9]", "").trim();
-            data = (long) Double.parseDouble(patialData) * 1000 * 1000;
+        } else if (partialData.contains("k") || partialData.contains("kib")) {
+            partialData = partialData.replaceAll("[^0-9]", "").trim();
+            partialData = partialData.replaceAll(" + ", "");
+            data = Long.parseLong(partialData) * 1024;
+        } else if (partialData.contains("mhz")) {
+            partialData = partialData.substring(0, partialData.indexOf("."));
+            partialData = partialData.replaceAll("[^0-9]", "").trim();
+            data = (long) Double.parseDouble(partialData) * 1000 * 1000;
         } else {
-            return Long.parseLong(patialData);
+            return Long.parseLong(partialData);
         }
 
         return data;

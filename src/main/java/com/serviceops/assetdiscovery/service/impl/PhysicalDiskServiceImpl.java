@@ -113,20 +113,20 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         return list;
     }
 
-    private long convertToBaseUnit(String Data) {
+    private long convertToBaseUnit(String partialData) {
         long data;
-        Data = Data.toLowerCase();
-        if (Data.contains("mib") || Data.contains("mb")) {
-            Data = Data.replaceAll("[^0-9]", "").trim();
-            Data = Data.replaceAll(" + ", "");
-            data = Long.parseLong(Data) * 1024 * 1024;
+        partialData = partialData.toLowerCase();
+        if (partialData.contains("mib") || partialData.contains("mb")) {
+            partialData = partialData.replaceAll("[^0-9]", "").trim();
+            partialData = partialData.replaceAll(" + ", "");
+            data = Long.parseLong(partialData) * 1024 * 1024;
 
-        } else if (Data.contains("g") || Data.contains("gb")) {
-            Data = Data.replaceAll("[^0-9]", "").trim();
-            Data = Data.replaceAll(" + ", "");
-            data = Long.parseLong(Data) * 1024 * 1024 * 1024;
+        } else if (partialData.contains("g") || partialData.contains("gb")) {
+            partialData = partialData.replaceAll("[^0-9]", "").trim();
+            partialData = partialData.replaceAll(" + ", "");
+            data = Long.parseLong(partialData) * 1024 * 1024 * 1024;
         } else {
-            return Long.parseLong(Data);
+            return Long.parseLong(partialData);
         }
 
         return data;
