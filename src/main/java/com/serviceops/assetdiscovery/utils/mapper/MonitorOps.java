@@ -20,18 +20,14 @@ public class MonitorOps extends SingleBaseOps<Monitor,MonitorRest> {
         monitorRest.setRefId(monitor.getRefId());
         monitorRest.setManufacturer(monitor.getManufacturer());
         monitorRest.setDescription(monitor.getDescription());
-        monitorRest.setScreenWidth(monitor.getScreenWidth());
-        monitorRest.setScreenHeight(monitor.getScreenHeight());
         return monitorRest;
     }
 
     public Monitor restToEntity() {
         super.restToEntity(monitorRest);
         monitor.setRefId(monitorRest.getRefId());
-        monitorRest.setManufacturer(monitor.getManufacturer());
+        monitor.setManufacturer(monitorRest.getManufacturer());
         monitor.setDescription(monitorRest.getDescription());
-        monitor.setScreenWidth(monitorRest.getScreenWidth());
-        monitor.setScreenHeight(monitorRest.getScreenHeight());
         return monitor;
     }
 }

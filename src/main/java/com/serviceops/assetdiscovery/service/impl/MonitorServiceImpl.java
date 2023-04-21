@@ -35,7 +35,7 @@ public class MonitorServiceImpl implements MonitorService {
     public void save(long refId) {
         String[][] parsedResults = parseResults();
         if (parsedResults.length != 0) {
-            List<Monitor> monitors = customRepository.findAllByColumn("refId", refId,Monitor.class);
+            List<Monitor> monitors = customRepository.findAllByColumn("refId", refId, Monitor.class);
             if (!monitors.isEmpty()) {
                 if (monitors.size() == parsedResults.length) {
                     for (int i = 0; i < monitors.size(); i++) {
@@ -71,7 +71,7 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public List<MonitorRest> findAllByRefId(long id) {
-        List<Monitor> monitorsList = customRepository.findAllByColumn("refId", id,Monitor.class);
+        List<Monitor> monitorsList = customRepository.findAllByColumn("refId", id, Monitor.class);
         if (!monitorsList.isEmpty()) {
             List<MonitorRest> monitorRestList = new ArrayList<>();
             for (Monitor monitor : monitorsList) {
@@ -119,8 +119,6 @@ public class MonitorServiceImpl implements MonitorService {
         //setting up monitors' data
         monitor.setDescription(data[1]);
         monitor.setManufacturer(data[2]);
-        monitor.setScreenHeight(data[3]);
-        monitor.setScreenWidth(data[4]);
     }
 
     private void setCommands() {
@@ -136,14 +134,6 @@ public class MonitorServiceImpl implements MonitorService {
         //command for getting manufacturer of monitor
         commands.put("sudo lshw -c display | grep vendor", new String[] {});
         //commands.put("sudo lshw -c display | grep vendor | sed 's/^.*vendor: *//' | sed 's/ *$//'",new String[]{});
-
-        //command for getting screen height of monitor
-        commands.put("sudo xdpyinfo |grep dimensions | grep -oP '\\(\\K[0-9]+'", new String[] {});
-
-        //command for getting screen width of monitor
-        commands.put(
-                "sudo xdpyinfo | grep dimensions | grep -oP '\\(\\K[^)]+' | cut -d'x' -f2 | grep -oE '[0-9]+'",
-                new String[] {});
 
         // Adding all the commands to the Main HasMap where the class Asset is the key for all the commands
         LinuxCommandExecutorManager.add(Monitor.class, commands);
@@ -193,18 +183,6 @@ public class MonitorServiceImpl implements MonitorService {
                         parsedResult[i][j] =
                                 results.substring(results.indexOf("vendor:") + "vendor:".length());
                         break;
-                    }
-                    if (results.contains("unable to open")) {
-                        parsedResult[i][j] = "Unknown";
-                        break;
-                    } else {
-                        parsedResult[i][j] = result[i];
-                    }
-                    if (results.contains("unable to open")) {
-                        parsedResult[i][j] = "Unknown";
-                        break;
-                    } else {
-                        parsedResult[i][j] = result[i];
                     }
                 }
                 j++;

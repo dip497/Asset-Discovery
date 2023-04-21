@@ -10,8 +10,7 @@ public class UnitConverter {
 
     public static long convertToBytes(String data) {
         if (data != null) {
-            String pattern = "^\\d*\\.?\\d*";
-            Pattern p = Pattern.compile(pattern);
+            Pattern p = Pattern.compile("\\d+(\\.\\d+)?");
             Matcher m = p.matcher(data);
             if (m.find() && !m.group().trim().isEmpty()) {
                 if (data.contains("M")) {
