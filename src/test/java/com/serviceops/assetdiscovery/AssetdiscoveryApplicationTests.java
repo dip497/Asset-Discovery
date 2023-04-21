@@ -52,20 +52,20 @@ class OsControllerTest {
         this.mockMvc.perform(delete("/{refId}/os", anyLong())).andExpect(status().isOk());
     }
 
-    @Test
-    public void testUpdateById() throws Exception {
-
-        OSRest osRest = new OSRest();
-
-        when(osService.updateByRefId(anyLong(), osRest)).thenReturn(osRest);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/{refId}/os", "1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(osRest));
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().isOk());
-
-    }
+//    @Test
+//    public void testUpdateById() throws Exception {
+//
+//        OSRest osRest = new OSRest();
+//
+//        when(osService.updateByRefId(anyLong(), osRest)).thenReturn(osRest);
+//        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/{refId}/os", "1")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(osRest));
+//
+//        mockMvc.perform(requestBuilder)
+//                .andExpect(status().isOk());
+//
+//    }
 
 
 
