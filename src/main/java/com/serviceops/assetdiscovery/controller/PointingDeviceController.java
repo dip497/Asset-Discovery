@@ -11,28 +11,28 @@ import java.util.List;
 
 @RestController
 public class PointingDeviceController {
+    private static final Logger logger = LoggerFactory.getLogger(PointingDeviceController.class);
     private final PointingDeviceService pointingDeviceService;
-    private final Logger logger = LoggerFactory.getLogger(PointingDeviceController.class);
 
     public PointingDeviceController(PointingDeviceService pointingDeviceService) {
         this.pointingDeviceService = pointingDeviceService;
     }
 
     @GetMapping(value = "/{refId}/pointingDevices", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<PointingDeviceRest> getPointingDeviceList(@PathVariable("refId") Long refId) {
+    public List<PointingDeviceRest> getPointingDeviceList(@PathVariable("refId") long refId) {
         logger.debug("getPointing DeviceList with Asset id: -->{}", refId);
-        return pointingDeviceService.getPointingDevices(refId);
+        return pointingDeviceService.findAllByRefId(refId);
     }
 
-    @DeleteMapping(value = "/{refId}/pointingDevices")
-    public void deletePointingDevice(@PathVariable("refId") Long refId) {
-        logger.debug("PointingDevice deleting with id --> {}", refId);
-        pointingDeviceService.deleteById(refId);
+    @PutMapping(value = "/{refId}/pointingDevices/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public PointingDeviceRest updatePointingDevice(@PathVariable("refId") long refId, @PathVariable("id") long id, @RequestBody PointingDeviceRest pointingDeviceRest) {
+        logger.debug("PointingDevice updating with refId --> {} and id --> {}", refId, id);
+        return pointingDeviceService.updateById(refId, id, pointingDeviceRest);
     }
 
-    @PutMapping(value = "/{refId}/pointingDevices", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public PointingDeviceRest updatePointingDevice(@PathVariable("refId") String refId, @RequestBody PointingDeviceRest pointingDeviceRest) {
-        logger.debug("PointingDevice updating with id --> {}", refId);
-        return pointingDeviceService.update(Long.parseLong(refId), pointingDeviceRest);
+    @DeleteMapping(value = "/{refId}/pointingDevices/{id}")
+    public boolean deletePointingDevice(@PathVariable("refId") long refId, @PathVariable("id") long id) {
+        logger.debug("PointingDevice deleting with refId --> {} and id --> {}", refId, id);
+        return pointingDeviceService.deleteById(refId, id);
     }
 }

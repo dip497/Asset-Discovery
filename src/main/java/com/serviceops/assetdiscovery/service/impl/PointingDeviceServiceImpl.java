@@ -76,22 +76,22 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
                     switch (count) {
                         case 1:
                             if (results.contains("Buttons:")) {
-                                parsedResult[i][j] = formatData(results,"Buttons:");
+                                parsedResult[i][j] = formatData(results, "Buttons:");
                                 break;
                             }
                         case 2:
                             if (results.contains("Type")) {
-                                parsedResult[i][j] = formatData(results,"Type:");
+                                parsedResult[i][j] = formatData(results, "Type:");
                                 break;
                             }
                         case 3:
                             if (results.contains("Interface")) {
-                                parsedResult[i][j] = formatData(results,"Interface:");
+                                parsedResult[i][j] = formatData(results, "Interface:");
                                 break;
                             }
                         case 4:
                             if (results.contains("vendor")) {
-                                parsedResult[i][j] = formatData(results,"vendor:");
+                                parsedResult[i][j] = formatData(results, "vendor:");
                                 break;
                             }
                     }
@@ -103,14 +103,14 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
         }
     }
 
-    private String formatData(String data, String keyWord){
+    private String formatData(String data, String keyWord) {
         return data.substring(data.indexOf(keyWord) + keyWord.length()).trim();
     }
 
     @Override
     public void save(long refId) {
         String[][] parsedResult = getParsedResults();
-        List<PointingDevice> pointingDevices = customRepository.findAllByColumnName(PointingDevice.class, "refId", refId);
+        List<PointingDevice> pointingDevices = customRepository.findAllByColumn( "refId", refId,PointingDevice.class);
 
         if (!pointingDevices.isEmpty()) {
             if (pointingDevices.size() == parsedResult.length) {
@@ -137,14 +137,18 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
     }
 
     @Override
-    public PointingDeviceRest update(long refId, PointingDeviceRest pointingDeviceRest) {
-        Optional<PointingDevice> optionalPointingDevice = customRepository.findByColumn("refid", refId, PointingDevice.class);
-        if (optionalPointingDevice.isPresent()) {
-            PointingDevice pointingDevice = optionalPointingDevice.get();
-            PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, pointingDeviceRest);
+    public PointingDeviceRest updateById(long refId, long id, PointingDeviceRest pointingDeviceRest) {
+        Map<String, Long> fields = new HashMap<>();
+        fields.put("id", id);
+        fields.put("refId", refId);
+
+        List<PointingDevice> pointingDeices = customRepository.findByColumns(fields, PointingDevice.class);
+
+        if (!pointingDeices.isEmpty()) {
+            PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDeices.get(0), pointingDeviceRest);
             logger.info("Updated PointingDevice with id --> {}", pointingDeviceRest.getId());
             customRepository.save(pointingDeviceOps.restToEntity(pointingDeviceRest));
-            return pointingDeviceRest;
+            return pointingDeviceOps.entityToRest();
         } else {
             logger.info("Could not found pointing device with id: --> {}", refId);
             throw new ComponentNotFoundException("Pointing device", "refId", refId);
@@ -152,25 +156,25 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
     }
 
     @Override
-    public void deleteById(long refId) {
-        logger.info("Deleted pointing device with id --> {}", refId);
-        customRepository.deleteById(PointingDevice.class, refId, "id");
+    public boolean deleteById(long refId, long id) {
+        boolean isDeleted =  customRepository.deleteById(PointingDevice.class, id, "id");
+        if (isDeleted) {
+            logger.info("Deleted pointing device with refId --> {} and id --> {}", refId, id);
+        } else {
+            logger.info("Could not found pointing device with refId -->{} and id --> {}", refId, id);
+        }
+        return isDeleted;
     }
 
     @Override
-    public List<PointingDeviceRest> getPointingDevices(long refId) {
-        List<PointingDevice> pointingDevices = customRepository.findAllByColumnName(PointingDevice.class, "refId", refId);
+    public List<PointingDeviceRest> findAllByRefId(long refId) {
+        List<PointingDevice> pointingDevices = customRepository.findAllByColumn( "refId", refId,PointingDevice.class);
         if (!pointingDevices.isEmpty()) {
             List<PointingDeviceRest> pointingDeviceRestList = new ArrayList<>();
-            if (!pointingDevices.isEmpty()) {
-                for (PointingDevice pointingDevice : pointingDevices) {
-                    PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, new PointingDeviceRest());
-                    pointingDeviceRestList.add(pointingDeviceOps.entityToRest());
-                    logger.info("Fetched pointing device with id: --> {}", refId);
-                }
-            } else {
-                logger.info("Could not found pointing device with id: --> {}", refId);
-                pointingDeviceRestList.add(new PointingDeviceRest());
+            for (PointingDevice pointingDevice : pointingDevices) {
+                PointingDeviceOps pointingDeviceOps = new PointingDeviceOps(pointingDevice, new PointingDeviceRest());
+                pointingDeviceRestList.add(pointingDeviceOps.entityToRest());
+                logger.info("Fetched pointing device with id: --> {}", refId);
             }
             return pointingDeviceRestList;
         }

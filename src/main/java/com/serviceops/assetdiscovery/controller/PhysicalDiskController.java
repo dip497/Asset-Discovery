@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 public class PhysicalDiskController {
     private final PhysicalDiskService physicalDiskService;
-    private final Logger logger = LoggerFactory.getLogger(PhysicalDiskController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PhysicalDiskController.class);
 
     public PhysicalDiskController(PhysicalDiskService physicalDiskService) {
         this.physicalDiskService = physicalDiskService;
@@ -24,15 +24,15 @@ public class PhysicalDiskController {
         return physicalDiskService.findByRefId(refId);
     }
 
-    @DeleteMapping("/{refId}/physicalDisk")
-    public void delete(@PathVariable("refId") long refId) {
-        logger.debug("Deleting physical disk with id: --> {}", refId);
-        physicalDiskService.delete(refId);
-    }
-
     @PutMapping(value = "/{refId}/physicalDisk", consumes = MediaType.APPLICATION_JSON_VALUE)
     public PhysicalDiskRest update(@PathVariable("refId") long refId, @RequestBody PhysicalDiskRest physicalDiskRest) {
         logger.debug("Updating physical disk with id: --> {}", refId);
-        return physicalDiskService.update(refId, physicalDiskRest);
+        return physicalDiskService.updateByRefId(refId, physicalDiskRest);
+    }
+
+    @DeleteMapping("/{refId}/physicalDisk")
+    public boolean delete(@PathVariable("refId") long refId) {
+        logger.debug("Deleting physical disk with id: --> {}", refId);
+        return physicalDiskService.deleteByRefId(refId);
     }
 }

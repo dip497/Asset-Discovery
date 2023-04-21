@@ -1,6 +1,5 @@
 package com.serviceops.assetdiscovery.service.interfaces;
 
-import com.serviceops.assetdiscovery.entity.NetworkAdapter;
 import com.serviceops.assetdiscovery.rest.NetworkAdapterRest;
 
 import java.util.List;
@@ -8,9 +7,9 @@ import java.util.List;
 public interface NetworkAdapterService {
     void save(long refId);
 
-    void delete(long refId, long id);
+    boolean deleteById(long refId, long id);
 
-    NetworkAdapterRest update(NetworkAdapterRest networkAdapterRest, long id, long refId);
+    NetworkAdapterRest updateById(NetworkAdapterRest networkAdapterRest, long refId,long id);
 
-    List<NetworkAdapterRest> findByRefId(Long refId);
+    List<NetworkAdapterRest> findAllByRefId(Long refId);
 }

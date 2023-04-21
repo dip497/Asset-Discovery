@@ -1,6 +1,5 @@
 package com.serviceops.assetdiscovery.controller;
 
-import com.serviceops.assetdiscovery.entity.Processor;
 import com.serviceops.assetdiscovery.rest.ProcessorRest;
 import com.serviceops.assetdiscovery.service.interfaces.ProcessorService;
 import org.slf4j.Logger;
@@ -13,7 +12,7 @@ import java.util.List;
 @RestController
 public class ProcessorController {
     private final ProcessorService processorService;
-    private final Logger logger = LoggerFactory.getLogger(ProcessorController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProcessorController.class);
 
     public ProcessorController(ProcessorService processorService) {
         this.processorService = processorService;
@@ -25,15 +24,15 @@ public class ProcessorController {
         return processorService.findByRefId(refId);
     }
 
+    @PutMapping(value = "/{refId}/processor", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ProcessorRest updateProcessor(@PathVariable("refId") Long refId, @RequestBody ProcessorRest processorRest) {
+        logger.debug("updating processor with id: -->{}", refId);
+        return processorService.updateByRefId(refId, processorRest);
+    }
+
     @DeleteMapping("/{refId}/processor")
     public void deleteProcessorById(@PathVariable("refId") Long refId) {
         logger.debug("deleting processor with id: -->{}", refId);
         processorService.deleteById(refId);
-    }
-
-    @PutMapping(value = "/{refId}/processor", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ProcessorRest updateProcessor(@PathVariable("refId") Long refId, @RequestBody ProcessorRest processorRest) {
-        logger.debug("updating processor with id: -->{}", refId);
-        return processorService.update(refId, processorRest);
     }
 }

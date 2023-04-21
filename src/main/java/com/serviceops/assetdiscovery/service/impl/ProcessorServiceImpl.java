@@ -94,31 +94,31 @@ public class ProcessorServiceImpl implements ProcessorService {
         }
     }
 
-    private long convertToBaseUnit(String Data) {
+    private long convertToBaseUnit(String patialData) {
         long data;
-        Data = Data.toLowerCase();
-        if (Data.contains("mib") || Data.contains("mb")) {
-            Data = Data.replaceAll("[^0-9]", "").trim();
-            Data = Data.replaceAll(" + ", "");
-            data = Long.parseLong(Data) * 1024 * 1024;
+        patialData = patialData.toLowerCase();
+        if (patialData.contains("mib") || patialData.contains("mb")) {
+            patialData = patialData.replaceAll("[^0-9]", "").trim();
+            patialData = patialData.replaceAll(" + ", "");
+            data = Long.parseLong(patialData) * 1024 * 1024;
 
-        } else if (Data.contains("k") || Data.contains("kib")) {
-            Data = Data.replaceAll("[^0-9]", "").trim();
-            Data = Data.replaceAll(" + ", "");
-            data = Long.parseLong(Data) * 1024;
-        } else if (Data.contains("mhz")) {
-            Data = Data.substring(0, Data.indexOf("."));
-            Data = Data.replaceAll("[^0-9]", "").trim();
-            data = (long) Double.parseDouble(Data) * 1000 * 1000;
+        } else if (patialData.contains("k") || patialData.contains("kib")) {
+            patialData = patialData.replaceAll("[^0-9]", "").trim();
+            patialData = patialData.replaceAll(" + ", "");
+            data = Long.parseLong(patialData) * 1024;
+        } else if (patialData.contains("mhz")) {
+            patialData = patialData.substring(0, patialData.indexOf("."));
+            patialData = patialData.replaceAll("[^0-9]", "").trim();
+            data = (long) Double.parseDouble(patialData) * 1000 * 1000;
         } else {
-            return Long.parseLong(Data);
+            return Long.parseLong(patialData);
         }
 
         return data;
     }
 
     @Override
-    public ProcessorRest update(long id, ProcessorRest processorRest) {
+    public ProcessorRest updateByRefId(long id, ProcessorRest processorRest) {
 
         Optional<Processor> optionalProcessor = customRepository.findByColumn("refId", id, Processor.class);
 
@@ -127,7 +127,7 @@ public class ProcessorServiceImpl implements ProcessorService {
             ProcessorOps processorOps = new ProcessorOps(processor, processorRest);
             customRepository.save(processorOps.restToEntity());
             logger.info("Processor updated with id -->{}", id);
-            return processorRest;
+            return processorOps.entityToRest();
         } else {
             logger.error("Processor not found with id -->{}", id);
             throw new ComponentNotFoundException("Processor", "refId", id);

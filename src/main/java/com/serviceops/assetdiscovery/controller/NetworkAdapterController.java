@@ -11,8 +11,8 @@ import java.util.List;
 
 @RestController
 public class NetworkAdapterController {
+    private final static Logger logger = LoggerFactory.getLogger(NetworkAdapterController.class);
     private final NetworkAdapterService networkAdapterService;
-    private final Logger logger = LoggerFactory.getLogger(NetworkAdapterController.class);
 
     public NetworkAdapterController(NetworkAdapterService networkAdapterService) {
         this.networkAdapterService = networkAdapterService;
@@ -20,20 +20,20 @@ public class NetworkAdapterController {
 
     @GetMapping(value = "/{refId}/networkAdapter", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<NetworkAdapterRest> getNetworkAdapterList(@PathVariable("refId") long refId) {
-        List<NetworkAdapterRest> networkAdapterRestList = networkAdapterService.findByRefId(refId);
+        List<NetworkAdapterRest> networkAdapterRestList = networkAdapterService.findAllByRefId(refId);
         logger.debug("Finding NetworkAdapter with id --> {}", refId);
         return networkAdapterRestList;
-    }
-
-    @DeleteMapping(value = "/{refId}/networkAdapter/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public void deleteNetworkAdapter(@PathVariable("refId") long refId, @PathVariable("id") long id) {
-        logger.debug("Deleting NetworkAdapter with Asset id -> {}", refId);
-        networkAdapterService.delete(refId, id);
     }
 
     @PutMapping(value = "/{refId}/networkAdapter/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public NetworkAdapterRest updateNetworkAdapter(@PathVariable("refId") long refId, @RequestBody NetworkAdapterRest networkAdapterRest, @PathVariable long id) {
         logger.debug("Updating NetworkAdapter with Asset id -> {}", refId);
-        return networkAdapterService.update(networkAdapterRest, refId, id);
+        return networkAdapterService.updateById(networkAdapterRest, refId, id);
+    }
+
+    @DeleteMapping(value = "/{refId}/networkAdapter/{id}")
+    public boolean deleteNetworkAdapter(@PathVariable("refId") long refId, @PathVariable("id") long id) {
+        logger.debug("Deleting NetworkAdapter with Asset id--> {} and id --> {}", refId, id);
+        return networkAdapterService.deleteById(refId, id);
     }
 }

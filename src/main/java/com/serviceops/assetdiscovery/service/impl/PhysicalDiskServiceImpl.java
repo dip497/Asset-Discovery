@@ -78,26 +78,24 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
     }
 
     @Override
-    public PhysicalDisk save(long refId) {
+    public void save(long refId) {
 
         Optional<PhysicalDisk> fetchPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
         if (fetchPhysicalDisk.isPresent()) {
             PhysicalDisk physicalDisk = fetchPhysicalDisk.get();
             logger.info("Updating PhysicalDisk with Id : --> {}", physicalDisk.getId());
             setData(physicalDisk, refId);
-            return physicalDisk;
         } else {
             PhysicalDisk physicalDisk = new PhysicalDisk();
             physicalDisk.setRefId(refId);
-            logger.info("Creating PhysicalDisk with Id : --> {}", refId);
+            logger.info("Saved PhysicalDisk with Id : --> {}", refId);
             setData(physicalDisk, refId);
-            return physicalDisk;
         }
     }
 
     private void setData(PhysicalDisk physicalDisk, long refId) {
         try {
-            physicalDisk.setPartition(customRepository.findAllByColumnName(LogicalDisk.class, "refId", refId).size());
+            physicalDisk.setPartition(customRepository.findAllByColumn("refId", refId,LogicalDisk.class).size());
             physicalDisk.setSize(convertToBaseUnit(getParseResult().get(0)));
             physicalDisk.setName(getParseResult().get(1).equals("bash: blkid: command not found") ? null : getParseResult().get(1));
             physicalDisk.setSerialNumber(formatData(getParseResult().get(2), "serial: "));
@@ -124,13 +122,13 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
     }
 
     @Override
-    public void delete(long refId) {
+    public boolean deleteByRefId(long refId) {
         logger.info("Deleted PhysicalDisk with Id : --> {}", refId);
-        customRepository.deleteById(PhysicalDisk.class, refId, "refId");
+        return customRepository.deleteById(PhysicalDisk.class, refId, "refId");
     }
 
     @Override
-    public PhysicalDiskRest update(long refId, PhysicalDiskRest physicalDiskRest) {
+    public PhysicalDiskRest updateByRefId(long refId, PhysicalDiskRest physicalDiskRest) {
         Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
         if (optionalPhysicalDisk.isPresent()) {
             PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
@@ -138,7 +136,7 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
             customRepository.save(physicalDiskOps.restToEntity());
             logger.info("Updating PhysicalDisk with Id : --> {}", refId);
 
-            return physicalDiskRest;
+            return physicalDiskOps.entityToRest();
 
         } else {
             logger.error("Physical disk not found with id; --> {}", refId);

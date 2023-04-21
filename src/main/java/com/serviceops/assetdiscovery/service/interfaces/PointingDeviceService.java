@@ -8,9 +8,9 @@ import java.util.List;
 public interface PointingDeviceService {
     void save(long id);
 
-    PointingDeviceRest update(long id, PointingDeviceRest pointingDeviceRest);
+    PointingDeviceRest updateById(long refId, long id, PointingDeviceRest pointingDeviceRest);
 
-    void deleteById(long id);
+    boolean deleteById(long refId , long id);
 
-    List<PointingDeviceRest> getPointingDevices(long id);
+    List<PointingDeviceRest> findAllByRefId(long id);
 }
