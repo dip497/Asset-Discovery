@@ -1,6 +1,5 @@
 package com.serviceops.assetdiscovery.rest;
 
-import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
 
 import java.io.Serializable;

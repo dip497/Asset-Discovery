@@ -1,10 +1,8 @@
 package com.serviceops.assetdiscovery.rest;
 
-import com.serviceops.assetdiscovery.rest.base.AssetBaseRest;
 import com.serviceops.assetdiscovery.rest.base.SingleBaseRest;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Rest for the {@link com.serviceops.assetdiscovery.entity.LogicalDisk} entity

@@ -2,7 +2,6 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.OS;
 import com.serviceops.assetdiscovery.rest.OSRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class OsOps extends SingleBaseOps<OS, OSRest> {

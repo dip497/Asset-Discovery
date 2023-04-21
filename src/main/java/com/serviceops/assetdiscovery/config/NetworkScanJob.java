@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class NetworkScanJob implements Job {
 
     private static final Logger logger = LoggerFactory.getLogger(NetworkScanJob.class);
+
     @Autowired
     private NetworkScanService networkScanService;
 

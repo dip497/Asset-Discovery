@@ -2,7 +2,6 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Keyboard;
 import com.serviceops.assetdiscovery.rest.KeyboardRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class KeyboardOps extends SingleBaseOps<Keyboard, KeyboardRest> {

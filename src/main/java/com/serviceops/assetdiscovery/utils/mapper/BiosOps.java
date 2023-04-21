@@ -2,7 +2,6 @@ package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Bios;
 import com.serviceops.assetdiscovery.rest.BiosRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class BiosOps extends SingleBaseOps<Bios, BiosRest> {

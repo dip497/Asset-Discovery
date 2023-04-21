@@ -1,9 +1,7 @@
 package com.serviceops.assetdiscovery.utils.mapper;
 
 import com.serviceops.assetdiscovery.entity.Monitor;
-import com.serviceops.assetdiscovery.entity.base.SingleBase;
 import com.serviceops.assetdiscovery.rest.MonitorRest;
-import com.serviceops.assetdiscovery.utils.mapper.base.AssetBaseOps;
 import com.serviceops.assetdiscovery.utils.mapper.base.SingleBaseOps;
 
 public class MonitorOps extends SingleBaseOps<Monitor,MonitorRest> {
