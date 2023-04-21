@@ -27,7 +27,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         this.customRepository = customRepository;
     }
 
-    // Fetching the OS
+    // Preparing the ComputerPropertiesRest
     @Override
     public List<ComputerPropertiesRest> findByRefId(long refId) {
 
@@ -43,16 +43,19 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         List<ComputerPropertiesRest> computerPropertiesRests = new ArrayList<>();
         ComputerPropertiesRest computerPropertiesRest = new ComputerPropertiesRest();
 
+        // Adding the Last LoggedIn user
         if (optionalAsset.isPresent()) {
             Asset asset = optionalAsset.get();
             computerPropertiesRest.setLastLoggedInUser(asset.getLastLoggedUser());
         }
 
+        // Adding the BootUp Status
         if (optionalComputerSystem.isPresent()) {
             ComputerSystem computerSystem = optionalComputerSystem.get();
             computerPropertiesRest.setBootUpState(computerSystem.getBootUpState());
         }
 
+        // Adding the name, version and architecture of OS
         if (optionalOS.isPresent()) {
             OS os = optionalOS.get();
             computerPropertiesRest.setOsName(os.getOsName());
@@ -60,11 +63,13 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
             computerPropertiesRest.setArchitecture(os.getArchitecture());
         }
 
+        // Adding Physical Disk size
         if (optionalPhysicalDisk.isPresent()) {
             PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
             computerPropertiesRest.setDiskSize(physicalDisk.getSize());
         }
 
+        // Adding Core details and Cpu speed
         if (optionalProcessor.isPresent()) {
             Processor processor = optionalProcessor.get();
             computerPropertiesRest.setCpuSpeed(processor.getCpuSpeed());
@@ -72,6 +77,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
             computerPropertiesRest.setNumberOfLogicalProcessors(2 * processor.getCoreCount());
         }
 
+        // Adding the Ram size
         if (!(rams.isEmpty())) {
             long size = 0L;
             for (Ram ram : rams) {
