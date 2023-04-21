@@ -6,14 +6,12 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaDelete;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.CriteriaUpdate;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -46,19 +44,20 @@ public class CustomRepository {
         }
     }
 
-    public <F, T> List<T> findByColumns(Map<String,F> data, Class<T> clazz) {
+    public <F, T> List<T> findByColumns(Map<String, F> data, Class<T> clazz) {
         CriteriaQuery<T> cq = criteriaBuilder.createQuery(clazz);
         Root<T> root = cq.from(clazz);
         Predicate[] predicates = new Predicate[data.size()];
-        int count=0;
+        int count = 0;
 
-        for (String key : data.keySet()) {
-            predicates[count] = criteriaBuilder.equal(root.get(key), data.get(key));
+        for (Map.Entry<String, F> entry : data.entrySet()) {
+            predicates[count] = criteriaBuilder.equal(root.get(entry.getKey()), entry.getValue());
             count++;
         }
 
         cq.select(root).where(predicates);
         return em.createQuery(cq).getResultList();
+
     }
 
     public <T> List<T> findAll(final Class<T> clazz) {
@@ -68,7 +67,7 @@ public class CustomRepository {
         return em.createQuery(query).getResultList();
     }
 
-    public <F, T> List<T> findAllByColumn(final String column, F value,final Class<T> clazz) {
+    public <F, T> List<T> findAllByColumn(final String column, F value, final Class<T> clazz) {
         CriteriaQuery<T> query = criteriaBuilder.createQuery(clazz);
         Root<T> from = query.from(clazz);
         query.select(from).where(criteriaBuilder.equal(from.get(column), value));
@@ -78,7 +77,7 @@ public class CustomRepository {
     @Transactional
     public <T> T save(T t) {
         if (em.contains(t)) {
-           return em.merge(t);
+            return em.merge(t);
         } else {
             em.persist(t);
             return t;

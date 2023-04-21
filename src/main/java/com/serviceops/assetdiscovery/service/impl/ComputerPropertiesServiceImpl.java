@@ -27,6 +27,7 @@ public class ComputerPropertiesServiceImpl implements ComputerPropertiesService 
         this.customRepository = customRepository;
     }
 
+    // Fetching the OS
     @Override
     public List<ComputerPropertiesRest> findByRefId(long refId) {
 
