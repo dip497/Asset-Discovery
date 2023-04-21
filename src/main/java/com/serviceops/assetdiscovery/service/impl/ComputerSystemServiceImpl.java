@@ -22,9 +22,8 @@ import java.util.Optional;
 @Service
 public class ComputerSystemServiceImpl implements ComputerSystemService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ComputerSystemServiceImpl.class);
     private final CustomRepository customRepository;
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public ComputerSystemServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
@@ -38,20 +37,20 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
         List<String> parsedResults = getParseResults();
         if (savedComputerSystem.isPresent()) {
             ComputerSystem computerSystem = savedComputerSystem.get();
-            setDetails(computerSystem, parsedResults);
+            setComputerSystem(computerSystem, parsedResults);
             logger.info("Updated ComputerSystem with refId ->{}", id);
             customRepository.save(computerSystem);
         } else {
             ComputerSystem computerSystem = new ComputerSystem();
             computerSystem.setRefId(id);
-            setDetails(computerSystem, parsedResults);
+            setComputerSystem(computerSystem, parsedResults);
             logger.info("Saved ComputerSystem with refId ->{}", id);
             customRepository.save(computerSystem);
         }
     }
 
     @Override
-    public List<ComputerSystemRest> get(long refId) {
+    public List<ComputerSystemRest> findAllByRefId(long refId) {
         Optional<ComputerSystem> optionalComputerSystem =
                 customRepository.findByColumn("refId", refId, ComputerSystem.class);
         if (optionalComputerSystem.isPresent()) {
@@ -76,7 +75,7 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     }
 
     @Override
-    public void update(long refId, ComputerSystemRest computerSystemRest) {
+    public void updateById(long refId, ComputerSystemRest computerSystemRest) {
         Optional<ComputerSystem> optionalComputerSystem =
                 customRepository.findByColumn("refId", refId, ComputerSystem.class);
         if (!optionalComputerSystem.isPresent()) {
@@ -91,18 +90,17 @@ public class ComputerSystemServiceImpl implements ComputerSystemService {
     }
 
     @Override
-    public void deleteById(long refId) {
-        if (customRepository.findByColumn("refId", refId, ComputerSystem.class).isPresent()) {
-            logger.info("Deleting Computer Sytem with refId -> {}", refId);
-            customRepository.deleteById(ComputerSystem.class, refId, "refId");
-        } else {
-            logger.error("Computer System with Asset -> {} not found", refId);
-            throw new ComponentNotFoundException("ComputerSystem", "refId", refId);
+    public boolean deleteById(long refId) {
+        boolean isDeleted = customRepository.deleteById(ComputerSystem.class,refId,"id");
+        if(isDeleted){
+            logger.info("ComputerSystem deleted with Asset Id -> {}",refId);
+        }else {
+            logger.info("ComputerSystem not deleted with Asset Id -> {}",refId);
         }
-
+        return isDeleted;
     }
 
-    private void setDetails(ComputerSystem computerSystem, List<String> data) {
+    private void setComputerSystem(ComputerSystem computerSystem, List<String> data) {
         //setting sata of computerSystem
         computerSystem.setUserName(data.get(0));
         computerSystem.setModelName(data.get(1));

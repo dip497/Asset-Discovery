@@ -28,7 +28,7 @@ public class ComputerSystemController {
     public List<ComputerSystemRest> getComputerSystem(@PathVariable("refId") long refId) {
 
 
-        List<ComputerSystemRest> computerSystemRests = computerSystemService.get(refId);
+        List<ComputerSystemRest> computerSystemRests = computerSystemService.findAllByRefId(refId);
 
         logger.info("Fetching ComputerSystem with Asset id -> {}", refId);
 
@@ -49,7 +49,7 @@ public class ComputerSystemController {
 
         logger.info("Updating updateComputerSystem with Asset id -> {}", refId);
 
-        computerSystemService.update(refId, computerSystemRest);
+        computerSystemService.updateById(refId, computerSystemRest);
     }
 
 }

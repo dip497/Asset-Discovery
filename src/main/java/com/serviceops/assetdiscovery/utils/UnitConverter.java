@@ -1,5 +1,10 @@
 package com.serviceops.assetdiscovery.utils;
 
+import org.springframework.security.core.parameters.P;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class UnitConverter {
     private UnitConverter() {
 
@@ -7,14 +12,16 @@ public class UnitConverter {
 
     public static long convertToBytes(String data) {
         if (data != null) {
-            String toConvert = data.replaceAll("^[0-9]+(\\.[0-9]+)?$", "");
-            if (!toConvert.trim().isEmpty()) {
+            String pattern = "^\\d*\\.?\\d*";
+            Pattern p = Pattern.compile(pattern);
+            Matcher m = p.matcher(data);
+            if (m.find() && !m.group().trim().isEmpty()) {
                 if (data.contains("M")) {
-                    return (long)Double.parseDouble(toConvert) * 1048576;
+                    return (long)Double.parseDouble(m.group()) * 1048576;
                 } else if (data.contains("G")) {
-                    return (long)Double.parseDouble(toConvert) * 1073741824;
+                    return (long)Double.parseDouble(m.group()) * 1073741824;
                 } else if (data.contains("bi")) {
-                    return (long)Double.parseDouble(toConvert) / 8;
+                    return (long)Double.parseDouble(m.group()) / 8;
                 }
             }
         }

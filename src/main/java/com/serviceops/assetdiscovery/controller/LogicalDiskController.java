@@ -31,18 +31,18 @@ public class LogicalDiskController {
 
         logger.info("Fetching LogicalDisks with Asset id -> {}", refId);
 
-        List<LogicalDiskRest> logicalDiskRests = logicalDiskService.getAllLogicalDisks(refId);
+        List<LogicalDiskRest> logicalDiskRests = logicalDiskService.findAllByRefId(refId);
 
         return logicalDiskRests;
 
     }
 
     @DeleteMapping("/{refId}/logicaldisk/{id}")
-    public void deleteById(@PathVariable("refId") long refId, @PathVariable("id") long id) {
+    public boolean deleteById(@PathVariable("refId") long refId, @PathVariable("id") long id) {
 
         logger.info("deleting LogicalDisks with Asset id -> {}", refId);
 
-        logicalDiskService.deleteById(refId, id);
+        return logicalDiskService.deleteById(refId, id);
 
     }
 
@@ -52,7 +52,7 @@ public class LogicalDiskController {
 
         logger.debug("updating LogicalDisks with Asset id -> {}", refId);
 
-        logicalDiskService.update(refId, id, logicalDiskRest);
+        logicalDiskService.updateById(refId, id, logicalDiskRest);
     }
 
 }
