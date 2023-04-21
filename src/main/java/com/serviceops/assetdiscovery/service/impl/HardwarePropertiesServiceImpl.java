@@ -31,7 +31,10 @@ public class HardwarePropertiesServiceImpl implements HardwarePropertiesService 
         // If Asset is present then set the Required values in Hardware Properties
         if (optionalAsset.isPresent()) {
             Asset asset = optionalAsset.get();
+
+            // Adding the serial number
             hardwarePropertiesRest.setSerialNumber(asset.getSerialNumber());
+
             logger.info("Hardware Properties fetched with Asset Id ->{}", refId);
         } else {
             logger.error("No asset found with id ->{}", refId);

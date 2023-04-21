@@ -113,7 +113,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     }
 
     private void performScanOnCredentialEntireNetwork(NetworkScanRest networkScanRest) {
-        String NETWORK_ADDRESS = getNetworkAddress(networkScanRest.getIpRangeStart());
+        String networkAddress = getNetworkAddress(networkScanRest.getIpRangeStart());
         List<Long> credentialsIds = networkScanRest.getCredentialId();
         List<CredentialsRest> credentialsList =
                 credentialsIds.stream().map(credentialsService::findById).toList();
@@ -121,7 +121,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
         int fourthOctet = Integer.parseInt(networkScanRest.getIpRangeStart().split("\\.")[3]);
         for (int i = thirdOctet; i <= 255; i++) {
             for (int j = fourthOctet; j <= 255; j++) {
-                String ipAddress = NETWORK_ADDRESS + i + "." + j;
+                String ipAddress = networkAddress + i + "." + j;
                 if (pingIp(ipAddress)) {
                     for (CredentialsRest credential : credentialsList) {
                         logger.debug("trying to connect using ->{}", credential.getUsername());
@@ -139,11 +139,11 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     }
 
     private void performScanOnCredentialSpecificSetOfIp(NetworkScanRest networkScanRest) {
-        List<String> IP_ADDRESS_LIST = networkScanRest.getIpList();
+        List<String> ipAddressList = networkScanRest.getIpList();
         List<Long> credentialsIds = networkScanRest.getCredentialId();
         List<CredentialsRest> credentialsList =
                 credentialsIds.stream().map(credentialsService::findById).toList();
-        for (String ip : IP_ADDRESS_LIST) {
+        for (String ip : ipAddressList) {
             for (CredentialsRest credential : credentialsList) {
                 logger.debug("trying to connect using ->{}", credential.getUsername());
                 if (fetch(ip, credential.getUsername(), credential.getPassword())) {

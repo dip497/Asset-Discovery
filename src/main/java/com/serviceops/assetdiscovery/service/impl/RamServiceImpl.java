@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +32,7 @@ public class RamServiceImpl implements RamService {
     @Override
     public void save(long id) {
         String[][] strings = parseResults();
-        List<Ram> rams = customRepository.findAllByColumn("refId", id,Ram.class);
+        List<Ram> rams = customRepository.findAllByColumn("refId", id, Ram.class);
         if (!rams.isEmpty()) {
             if (strings[0][0].equals(String.valueOf(rams.size()))) {
                 for (int i = 0; i < rams.size(); i++) {
@@ -69,7 +68,7 @@ public class RamServiceImpl implements RamService {
 
     @Override
     public List<RamRest> findAllByRefId(long refId) {
-        List<Ram> fetchRams = customRepository.findAllByColumn("refId", refId,Ram.class);
+        List<Ram> fetchRams = customRepository.findAllByColumn("refId", refId, Ram.class);
         if (fetchRams.isEmpty()) {
             logger.error("Ram not found with refId -> {} ", refId);
             return List.of();
@@ -118,7 +117,7 @@ public class RamServiceImpl implements RamService {
     }
 
     private void setCommands() {
-        String RAM_COUNT =
+        String ramCount =
                 "head -n $(sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Size: [1-9]/ {count++} END{print count}') | head -n $(sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Size: [1-9]/ {count++} END{print count}')";
 
         LinkedHashMap<String, String[]> commands = new LinkedHashMap<>();
@@ -127,25 +126,25 @@ public class RamServiceImpl implements RamService {
                 new String[] {});
         commands.put(
                 "sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Size: /{for(i=2;i<=NF;i++) printf \"%s \", $i; printf \"\\n\"}' |"
-                        + RAM_COUNT, new String[] {});
+                        + ramCount, new String[] {});
         commands.put(
                 "sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Data Width: /{for(i=3;i<=NF;i++) printf \"%s \", $i; printf \"\\n\"}' | "
-                        + RAM_COUNT, new String[] {});
+                        + ramCount, new String[] {});
         commands.put(
                 "sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Serial Number: /{for(i=3;i<=NF;i++) printf \"%s \", $i; printf \"\\n\"}' | "
-                        + RAM_COUNT, new String[] {});
+                        + ramCount, new String[] {});
         commands.put(
                 "sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Bank Locator: /{for(i=3;i<=NF;i++) printf \"%s \", $i; printf \"\\n\"}' |  "
-                        + RAM_COUNT, new String[] {});
+                        + ramCount, new String[] {});
         commands.put(
                 "sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Configured Clock|Memory Speed: /{for(i=4;i<=NF;i++)  printf \"%s \", $i; printf \"\\n\"}'  | "
-                        + RAM_COUNT, new String[] {});
+                        + ramCount, new String[] {});
         commands.put(
                 "sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Manufacturer: /{for(i=2;i<=NF;i++) printf \"%s \", $i; printf \"\\n\"}' | "
-                        + RAM_COUNT, new String[] {});
+                        + ramCount, new String[] {});
         commands.put(
                 "sudo dmidecode -t 17 | awk '/Memory Device/{flag=1; next} /Handle /{flag=0} flag && /Type: /{for(i=2;i<=NF;i++) printf \"%s \", $i; printf \"\\n\"}' |"
-                        + RAM_COUNT, new String[] {});
+                        + ramCount, new String[] {});
         LinuxCommandExecutorManager.add(Ram.class, commands);
     }
 

@@ -92,9 +92,9 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
     public boolean deleteById(long refId, long id) {
         boolean isDeleted = customRepository.deleteById(NetworkAdapter.class, id, "id");
         if (isDeleted) {
-            logger.info("Deleting Network Adapter with refId--> {} and id->{}", refId, id);
+            logger.info("Deleted Network Adapter with refId--> {} and id->{}", refId, id);
         } else {
-            logger.info("Deleting Network Adapter with refId--> {} and id->{}", refId, id);
+            logger.info("Fail to delete Network Adapter with refId--> {} and id->{}", refId, id);
         }
         return isDeleted;
     }
