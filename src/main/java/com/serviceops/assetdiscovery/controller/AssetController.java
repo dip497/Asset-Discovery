@@ -27,7 +27,7 @@ public class AssetController {
     }
 
     @GetMapping(value = "/asset", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AllAssetRest getAll(
+    public AllAssetRest findAll(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
@@ -37,20 +37,20 @@ public class AssetController {
     }
 
     @GetMapping(value = "/asset/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetRest getById(@PathVariable("id") long id) {
+    public AssetRest findById(@PathVariable("id") long id) {
         logger.debug("Fetching Asset with id -> {}", id);
         return assetService.findById(id);
-    }
-
-    @DeleteMapping(value = "/asset/{id}")
-    public boolean delete(@PathVariable long id) {
-        logger.debug("Deleting Asset with id -> {}", id);
-        return assetService.deleteById(id);
     }
 
     @PatchMapping(value = "/asset/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public AssetRest update(@PathVariable long id, @RequestBody Map<String, Object> fields) {
         logger.debug("Updating Asset field -> {} for Asset id {}", fields, id);
         return assetService.updateById(id, fields);
+    }
+
+    @DeleteMapping(value = "/asset/{id}")
+    public boolean delete(@PathVariable long id) {
+        logger.debug("Deleting Asset with id -> {}", id);
+        return assetService.deleteById(id);
     }
 }

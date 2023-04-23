@@ -41,24 +41,28 @@ public class AssetServiceImpl implements AssetService {
     public AssetRest save() {
 
         List<String> parseResult = getParseResult();
+
+        Asset asset;
+
         Optional<Asset> optionalAsset =
-                customRepository.findByColumn("ipAddress", parseResult.get(2), Asset.class);
+                customRepository.findByColumn("hostId", parseResult.get(8), Asset.class);
+
 
         // If optionalAsset is present then do not add ip and updateByRefId the asset
         if (optionalAsset.isPresent()) {
-            Asset updatedAsset = optionalAsset.get();
-            setContent(parseResult, updatedAsset);
+            asset = optionalAsset.get();
+            setContent(parseResult, asset);
             logger.info("Updated asset with IP ->{}", parseResult.get(2));
-            return findByIpAddress(updatedAsset.getIpAddress());
         }
 
         // If optionalAsset is not present then set ip address of asset and save as new asset
         else {
-            Asset asset = new Asset();
+            asset = new Asset();
             setContent(parseResult, asset);
             logger.info("Saved asset with IP ->{}", parseResult.get(2));
-            return findByIpAddress(asset.getIpAddress());
         }
+
+        return findByIpAddress(asset.getIpAddress());
 
     }
 
@@ -193,7 +197,10 @@ public class AssetServiceImpl implements AssetService {
         commands.put("sudo dmidecode -s system-serial-number", new String[] {});
 
         // Command for getting the last logged-in user
-        commands.put("w | tail -1 | awk '{print $1}'\n", new String[] {});
+        commands.put("w | tail -1 | awk '{print $1}'", new String[] {});
+
+        // Command for getting the host id of a system
+        commands.put("sudo hostid", new String[] {});
 
         // Adding all the commands to the Main HasMap where the class Asset is the key for all the commands
         LinuxCommandExecutorManager.add(Asset.class, commands);
@@ -345,19 +352,20 @@ public class AssetServiceImpl implements AssetService {
     }
 
     // Setting the Content in the Asset Entity.
-    private void setContent(List<String> parseResult, Asset updatedAsset) {
+    private void setContent(List<String> parseResult, Asset asset) {
         try {
-            updatedAsset.setHostName(parseResult.get(0));
-            updatedAsset.setDomainName(parseResult.get(1));
-            updatedAsset.setIpAddress(parseResult.get(2));
-            updatedAsset.setMacAddress(parseResult.get(3));
-            updatedAsset.setSubNetMask(parseResult.get(4));
-            updatedAsset.setAssetType("LINUX " + parseResult.get(5).toUpperCase());
-            updatedAsset.setSerialNumber(parseResult.get(6));
-            updatedAsset.setLastLoggedUser(parseResult.get(7));
-            customRepository.save(updatedAsset);
+            asset.setHostName(parseResult.get(0));
+            asset.setDomainName(parseResult.get(1));
+            asset.setIpAddress(parseResult.get(2));
+            asset.setMacAddress(parseResult.get(3));
+            asset.setSubNetMask(parseResult.get(4));
+            asset.setAssetType("LINUX " + parseResult.get(5).toUpperCase());
+            asset.setSerialNumber(parseResult.get(6));
+            asset.setLastLoggedUser(parseResult.get(7));
+            asset.setHostId(parseResult.get(8));
+            customRepository.save(asset);
         } catch (ArrayIndexOutOfBoundsException e) {
-            customRepository.save(updatedAsset);
+            customRepository.save(asset);
         }
     }
 

@@ -17,6 +17,7 @@ public class AssetOps extends AuditBaseOps<Asset, AssetRest> {
         asset.setMacAddress(assetRest.getMacAddress());
         asset.setSubNetMask(assetRest.getSubNetMask());
         asset.setLastLoggedUser(assetRest.getLastLoggedUser());
+        asset.setHostId(assetRest.getHostId());
         return asset;
     }
 
@@ -31,6 +32,7 @@ public class AssetOps extends AuditBaseOps<Asset, AssetRest> {
         assetRest.setMacAddress(asset.getMacAddress());
         assetRest.setSubNetMask(asset.getSubNetMask());
         assetRest.setLastLoggedUser(asset.getLastLoggedUser());
+        assetRest.setHostId(asset.getHostId());
         return assetRest;
     }
 

@@ -16,6 +16,15 @@ public class AssetRest extends AuditBaseRest implements Serializable {
     private String macAddress;
     private String subNetMask;
     private String lastLoggedUser;
+    private String hostId;
+
+    public String getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(String hostId) {
+        this.hostId = hostId;
+    }
 
     public String getLastLoggedUser() {
         return lastLoggedUser;

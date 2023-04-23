@@ -8,7 +8,16 @@ import java.io.Serializable;
  * A Rest for the entity
  */
 public class HardwarePropertiesRest extends AuditBaseRest implements Serializable {
+    private long refId;
     private String serialNumber;
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
 
     public String getSerialNumber() {
         return serialNumber;
