@@ -41,13 +41,13 @@ class OsControllerTest {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    public void testFindById() throws Exception {
+    void testFindById() throws Exception {
         when(osService.findByRefId(anyLong())).thenReturn(new ArrayList<>());
         this.mockMvc.perform(get("/{refId}/os", anyLong())).andExpect(status().isOk());
     }
 
     @Test
-    public void testDeleteById() throws Exception {
+    void testDeleteById() throws Exception {
         when(osService.deleteByRefId(anyLong())).thenReturn(true);
         this.mockMvc.perform(delete("/{refId}/os", anyLong())).andExpect(status().isOk());
     }

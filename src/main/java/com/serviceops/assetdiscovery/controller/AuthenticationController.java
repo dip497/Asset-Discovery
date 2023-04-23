@@ -6,6 +6,7 @@ import com.serviceops.assetdiscovery.service.interfaces.UsersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,13 +21,13 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponse> register(@RequestBody UsersRest request) {
         logger.debug("register request for email -> {}", request.getEmail());
         return new ResponseEntity<>(authenticationService.register(request), HttpStatus.CREATED);
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping(value = "/authenticate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody UsersRest request) {
         logger.debug("login request for email -> {}", request.getEmail());
         return ResponseEntity.ok(authenticationService.authenticate(request));

@@ -66,13 +66,4 @@ public class UserServiceImpl implements UsersService {
             throw new ResourceNotFoundException("User", "email", usersRest.getEmail());
         }
     }
-
-    @Override
-    public boolean checkForUserInDB(String email) {
-
-        Optional<Users> users = customRepository.findByColumn("email", email, Users.class);
-
-        return users.isPresent();
-
-    }
 }

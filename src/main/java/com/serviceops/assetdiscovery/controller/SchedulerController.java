@@ -23,24 +23,24 @@ public class SchedulerController {
         this.schedulersService = schedulersService;
     }
 
-    @PostMapping(value = "/networkScan/{networkScanId}/addScheduler", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addScheduler(@PathVariable long networkScanId, @RequestBody SchedulerRest schedulerRest) {
-        logger.debug("saving scheduler for networkscan with id -> {}", networkScanId);
-        schedulersService.save(networkScanId, schedulerRest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @PutMapping(value = "/networkScan/{networkScanId}/addScheduler/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addScheduler(@PathVariable long networkScanId, @PathVariable long id,
-            @RequestBody SchedulerRest schedulerRest) {
-        logger.debug("saving scheduler for networkscan with id -> {}", networkScanId);
-        schedulersService.update(networkScanId, id, schedulerRest);
-    }
-
     @GetMapping(value = "/networkScan/{networkScanId}/addScheduler", produces = MediaType.APPLICATION_JSON_VALUE)
     public SchedulerRest getScheduler(@PathVariable long networkScanId) {
         logger.debug("fetching scheduler for networkscan with id -> {}", networkScanId);
         return schedulersService.findByNetworkScanId(networkScanId);
+    }
+
+    @PostMapping(value = "/networkScan/{networkScanId}/addScheduler", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SchedulerRest> addScheduler(@PathVariable long networkScanId,
+            @RequestBody SchedulerRest schedulerRest) {
+        logger.debug("saving scheduler for networkscan with id -> {}", networkScanId);
+        return new ResponseEntity<>(schedulersService.save(networkScanId, schedulerRest), HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/networkScan/{networkScanId}/addScheduler", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public SchedulerRest updateScheduler(@PathVariable long networkScanId,
+            @RequestBody SchedulerRest schedulerRest) {
+        logger.debug("updating scheduler for networkscan with id -> {}", networkScanId);
+        return schedulersService.update(networkScanId, schedulerRest);
     }
 
 

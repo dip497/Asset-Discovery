@@ -60,18 +60,19 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     }
 
     @Override
-    public void save(NetworkScanRest networkScanRest) {
-        Optional<NetworkScan> networkScan =
+    public NetworkScanRest save(NetworkScanRest networkScanRest) {
+        Optional<NetworkScan> fetchNetworkScan =
                 customRepository.findByColumn("id", networkScanRest.getId(), NetworkScan.class);
-        if (networkScan.isPresent()) {
-            logger.info("NetworkScan already exists by id -> {}", networkScan.get().getId());
+        if (fetchNetworkScan.isPresent()) {
+            logger.info("NetworkScan already exists by id -> {}", fetchNetworkScan.get().getId());
             throw new ResourceAlreadyExistsException("NetworkScan", "id",
                     String.valueOf(networkScanRest.getId()));
         } else {
+            NetworkScan networkScan = new NetworkScan();
             networkScanRest.setEnabled(true);
-            customRepository.save(networkScanOps.restToEntity(new NetworkScan(), networkScanRest));
+             networkScan = customRepository.save(networkScanOps.restToEntity(networkScan, networkScanRest));
             logger.info("NetworkScan saved by id -> {}", networkScanRest.getId());
-
+            return networkScanOps.entityToRest(networkScan,networkScanRest);
         }
 
     }
@@ -91,14 +92,16 @@ public class NetworkScanServiceImpl implements NetworkScanService {
 
     @Override
     public List<NetworkScanRest> findAll() {
-        List<NetworkScanRest> list = customRepository.findAll(NetworkScan.class).stream()
-                .map(n -> networkScanOps.entityToRest(n, new NetworkScanRest())).toList();
+        List<NetworkScan> list = customRepository.findAll(NetworkScan.class);
+        if (list.isEmpty()) {
+            return List.of();
+        }
         logger.info("network scan find all fetched");
-        return list;
+        return list.stream().map(n -> networkScanOps.entityToRest(n, new NetworkScanRest())).toList();
     }
 
     @Override
-    public void updateById(long id, NetworkScanRest networkScanRest) {
+    public NetworkScanRest updateById(long id, NetworkScanRest networkScanRest) {
         Optional<NetworkScan> fetchNetworkScan = customRepository.findByColumn("id", id, NetworkScan.class);
         if (fetchNetworkScan.isEmpty()) {
             logger.error("networkScan not exist with id ->{}", id);
@@ -110,6 +113,7 @@ public class NetworkScanServiceImpl implements NetworkScanService {
             networkScan = networkScanOps.restToEntity(networkScan, networkScanRest);
             customRepository.save(networkScan);
             logger.info("network scan updated -> {}", networkScan.getId());
+            return networkScanOps.entityToRest(networkScan, networkScanRest);
         }
     }
 

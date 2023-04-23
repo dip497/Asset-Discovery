@@ -9,5 +9,4 @@ public interface UsersService {
 
     AuthenticationResponse authenticate(UsersRest usersRest);
 
-    boolean checkForUserInDB(String email);
 }

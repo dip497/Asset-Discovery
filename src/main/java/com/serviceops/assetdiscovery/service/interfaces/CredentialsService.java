@@ -14,7 +14,7 @@ public interface CredentialsService {
 
     List<CredentialsRest> findAll();
 
-    void update(long id, CredentialsRest credentialsRest);
+    CredentialsRest update(long id, CredentialsRest credentialsRest);
 
-    void deleteById(long id);
+    boolean deleteById(long id);
 }

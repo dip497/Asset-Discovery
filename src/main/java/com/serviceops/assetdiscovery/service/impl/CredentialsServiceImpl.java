@@ -70,7 +70,7 @@ public class CredentialsServiceImpl implements CredentialsService {
     }
 
     @Override
-    public void update(long id, CredentialsRest credentialsRest) {
+    public CredentialsRest update(long id, CredentialsRest credentialsRest) {
         Optional<Credentials> fetchCredential = customRepository.findByColumn("id", id, Credentials.class);
         if (fetchCredential.isEmpty()) {
             throw new ComponentNotFoundException("Credentials", "id", id);
@@ -79,17 +79,22 @@ public class CredentialsServiceImpl implements CredentialsService {
             credentialsRest.setPassword(PasswordEncoderSSH.encryptPassword(credentialsRest.getPassword()));
             credential = credentialsOps.restToEntity(credential, credentialsRest);
             customRepository.save(credential);
-
             logger.info("Updated credentials with id -> {}", credentialsRest.getId());
+            return credentialsOps.entityToRest(credential,credentialsRest);
         }
 
     }
 
     @Override
-    public void deleteById(long id) {
+    public boolean deleteById(long id) {
 
-        customRepository.deleteById(Credentials.class, id, "id");
-
-        logger.info("Credential deleted with id ->{}", id);
+        boolean isDeleted = customRepository.deleteById(Credentials.class, id, "id");
+        if(isDeleted){
+            logger.info("Credential deleted with id ->{}", id);
+            return true;
+        }else{
+            logger.info("Credential not deleted with id ->{}", id);
+            return false;
+        }
     }
 }
