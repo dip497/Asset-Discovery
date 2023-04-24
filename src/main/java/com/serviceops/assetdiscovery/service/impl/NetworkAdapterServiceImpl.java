@@ -19,9 +19,11 @@ import java.util.regex.Pattern;
 public class NetworkAdapterServiceImpl implements NetworkAdapterService {
     private static final Logger logger = LoggerFactory.getLogger(NetworkAdapterServiceImpl.class);
     private final CustomRepository customRepository;
+    private final NetworkAdapterOps networkAdapterOps;
 
     public NetworkAdapterServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        this.networkAdapterOps = new NetworkAdapterOps();
         setCommands();
     }
 
@@ -80,7 +82,6 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
         List<NetworkAdapterRest> networkAdapterRestList = new ArrayList<>();
         if (!networkAdapterList.isEmpty()) {
             for (NetworkAdapter networkAdapter : networkAdapterList) {
-                NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps();
                 networkAdapterRestList.add(networkAdapterOps.entityToRest(networkAdapter, new NetworkAdapterRest()));
                 logger.info("Fetched Network adapter with id: --> {}", refId);
             }
@@ -101,7 +102,6 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterService {
             logger.info("Could not found NetworkAdapter with id --> {} and refId -> {} ", id, refId);
             throw new ComponentNotFoundException("Network adapter", "id", id);
         } else {
-            NetworkAdapterOps networkAdapterOps = new NetworkAdapterOps();
             customRepository.save(networkAdapterOps.restToEntity(networkAdapters.get(0), networkAdapterRest));
             logger.info("NetworkAdapter Updated with Asset Id ->{}", networkAdapterRest.getRefId());
             return networkAdapterOps.entityToRest(networkAdapters.get(0), networkAdapterRest);

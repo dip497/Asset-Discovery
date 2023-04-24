@@ -20,9 +20,11 @@ import java.util.regex.Pattern;
 public class PointingDeviceServiceImpl implements PointingDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(PointingDeviceServiceImpl.class);
     private final CustomRepository customRepository;
+    private final PointingDeviceOps pointingDeviceOps;
 
     public PointingDeviceServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        this.pointingDeviceOps = new PointingDeviceOps();
         setCommands();
     }
 
@@ -76,7 +78,6 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
         if (!pointingDevices.isEmpty()) {
             List<PointingDeviceRest> pointingDeviceRestList = new ArrayList<>();
             for (PointingDevice pointingDevice : pointingDevices) {
-                PointingDeviceOps pointingDeviceOps = new PointingDeviceOps();
                 pointingDeviceRestList.add(pointingDeviceOps.entityToRest(pointingDevice, new PointingDeviceRest()));
                 logger.info("Fetched pointing device with id: --> {}", refId);
             }
@@ -94,7 +95,6 @@ public class PointingDeviceServiceImpl implements PointingDeviceService {
         List<PointingDevice> pointingDeices = customRepository.findByColumns(fields, PointingDevice.class);
 
         if (!pointingDeices.isEmpty()) {
-            PointingDeviceOps pointingDeviceOps = new PointingDeviceOps();
             logger.info("Updated PointingDevice with id --> {}", pointingDeviceRest.getId());
             customRepository.save(pointingDeviceOps.restToEntity(pointingDeices.get(0), pointingDeviceRest));
             return pointingDeviceOps.entityToRest(pointingDeices.get(0), pointingDeviceRest);

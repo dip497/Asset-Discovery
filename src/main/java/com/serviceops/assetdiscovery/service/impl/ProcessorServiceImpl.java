@@ -17,9 +17,11 @@ import java.util.*;
 public class ProcessorServiceImpl implements ProcessorService {
     private static final Logger logger = LoggerFactory.getLogger(ProcessorServiceImpl.class);
     private final CustomRepository customRepository;
+    private final ProcessorOps processorOps;
 
     public ProcessorServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        this.processorOps = new ProcessorOps();
         setCommands();
     }
 
@@ -45,7 +47,6 @@ public class ProcessorServiceImpl implements ProcessorService {
         List<ProcessorRest> processors = new ArrayList<>();
         if (optionalProcessor.isPresent()) {
             ProcessorRest processorRest = new ProcessorRest();
-            ProcessorOps processorOps = new ProcessorOps();
             processors.add(processorOps.entityToRest(optionalProcessor.get(), processorRest));
             logger.info("Processor found with id -->{}", id);
 
@@ -63,7 +64,6 @@ public class ProcessorServiceImpl implements ProcessorService {
 
         if (optionalProcessor.isPresent()) {
             Processor processor = optionalProcessor.get();
-            ProcessorOps processorOps = new ProcessorOps();
             customRepository.save(processorOps.restToEntity(processor, processorRest));
             logger.info("Processor updated with id -->{}", id);
             return processorOps.entityToRest(processor, processorRest);

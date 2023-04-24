@@ -19,9 +19,11 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
 
     private static final Logger logger = LoggerFactory.getLogger(PhysicalDiskServiceImpl.class);
     private final CustomRepository customRepository;
+    private final PhysicalDiskOps physicalDiskOps;
 
     public PhysicalDiskServiceImpl(CustomRepository customRepository) {
         this.customRepository = customRepository;
+        physicalDiskOps = new PhysicalDiskOps();
         setCommands();
     }
 
@@ -58,7 +60,6 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         List<PhysicalDiskRest> physicalDiskRests = new ArrayList<>();
         if (optionalPhysicalDisk.isPresent()) {
             PhysicalDiskRest physicalDiskRest = new PhysicalDiskRest();
-            PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps();
             physicalDiskRests.add(physicalDiskOps.entityToRest(optionalPhysicalDisk.get(), physicalDiskRest));
             logger.info("Fetched PhysicalDisk with Id : --> {}", refId);
         } else {
@@ -73,7 +74,6 @@ public class PhysicalDiskServiceImpl implements PhysicalDiskService {
         Optional<PhysicalDisk> optionalPhysicalDisk = customRepository.findByColumn("refId", refId, PhysicalDisk.class);
         if (optionalPhysicalDisk.isPresent()) {
             PhysicalDisk physicalDisk = optionalPhysicalDisk.get();
-            PhysicalDiskOps physicalDiskOps = new PhysicalDiskOps();
             customRepository.save(physicalDiskOps.restToEntity(physicalDisk, physicalDiskRest));
             logger.info("Updating PhysicalDisk with Id : --> {}", refId);
 
