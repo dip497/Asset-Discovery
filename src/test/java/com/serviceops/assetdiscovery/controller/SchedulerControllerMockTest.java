@@ -22,6 +22,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(SchedulerController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -60,7 +61,7 @@ class SchedulerControllerMockTest {
 
         when(schedulersService.findByNetworkScanId(anyLong())).thenReturn(schedulerRest);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/networkScan/1/addScheduler"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/networkScan/1/scheduler"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.networkScanRestId").value(networkScanRestId))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.scanType")
                         .value(schedulerRest.getScanType().toString()))
@@ -86,7 +87,7 @@ class SchedulerControllerMockTest {
 
         when(schedulersService.save(anyLong(), any(SchedulerRest.class))).thenReturn(schedulerRest);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/networkScan/1/addScheduler")
+        mockMvc.perform(MockMvcRequestBuilders.post("/networkScan/1/scheduler")
                         .contentType(MediaType.APPLICATION_JSON).content(asJsonString(schedulerRest)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.networkScanRestId").value(networkScanRestId))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.scanType")
@@ -114,8 +115,9 @@ class SchedulerControllerMockTest {
 
         when(schedulersService.update(anyLong(), any(SchedulerRest.class))).thenReturn(schedulerRest);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/networkScan/1/addScheduler")
-                        .contentType(MediaType.APPLICATION_JSON).content(asJsonString(schedulerRest)))
+        mockMvc.perform(
+                        MockMvcRequestBuilders.put("/networkScan/1/scheduler").contentType(MediaType.APPLICATION_JSON)
+                                .content(asJsonString(schedulerRest)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.networkScanRestId").value(networkScanRestId))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.scanType")
                         .value(schedulerRest.getScanType().toString()))
@@ -123,6 +125,17 @@ class SchedulerControllerMockTest {
 
         verify(schedulersService, times(1)).update(networkScanRestId, schedulerRest);
 
+    }
+
+    @Test
+    void deleteScheduler() throws Exception {
+        long refId = 1;
+        when(schedulersService.deleteByNetworkScanId(anyLong())).thenReturn(true);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/networkScan/1/scheduler", refId))
+                .andExpect(status().isOk());
+
+        verify(schedulersService, times(1)).deleteByNetworkScanId(refId);
     }
 
 
