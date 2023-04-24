@@ -44,7 +44,6 @@ class NetworkScanControllerTest {
     @MockBean
     SchedulersService schedulersService;
 
-
     @MockBean
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -63,7 +62,6 @@ class NetworkScanControllerTest {
         mockMvc.perform(get("/networkScan/scan/1")).andExpect(status().isOk());
 
         verify(networkScanService, times(1)).scan(1L);
-
     }
 
     @Test
@@ -78,8 +76,6 @@ class NetworkScanControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.ipRangeType").value("ENTIRE_NETWORK"));
 
         verify(networkScanService, times(1)).save(networkScanRest);
-
-
     }
 
     @Test
@@ -95,7 +91,6 @@ class NetworkScanControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.ipRangeType").value("ENTIRE_NETWORK"));
 
         verify(networkScanService, times(1)).updateById(1L,networkScanRest);
-
     }
 
     @Test
@@ -108,8 +103,6 @@ class NetworkScanControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(networkScanRest.getId()));
 
         verify(networkScanService, times(1)).findById(1L);
-
-
     }
 
 
@@ -126,8 +119,6 @@ class NetworkScanControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(networkScanRest.getId()));
 
         verify(networkScanService, times(1)).findAll();
-
-
     }
 
 
@@ -145,8 +136,6 @@ class NetworkScanControllerTest {
                         .value(schedulerRest.getNetworkScanRestId()));
 
         verify(schedulersService, times(1)).findAll();
-
-
     }
 
 
@@ -158,7 +147,6 @@ class NetworkScanControllerTest {
 
         verify(schedulersService,times(1)).deleteByNetworkScanId(1L);
         verify(networkScanService,times(1)).deleteById(1L);
-
     }
 
 

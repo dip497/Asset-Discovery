@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -84,7 +85,7 @@ class KeyBoardControllerMockTest {
         keyboardRest.setName("keyboard1");
         keyboardRest.setId(2L);
 
-        when(keyboardService.updateById(refId, 2L, keyboardRest)).thenReturn(keyboardRest);
+        when(keyboardService.updateById(anyLong(), anyLong(), any(KeyboardRest.class))).thenReturn(keyboardRest);
 
         mockMvc.perform(put("/1/keyboard/2").contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(keyboardRest))).andExpect(status().isOk())

@@ -18,7 +18,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(CredentialsController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class CredentialControllerTest {
+class CredentialControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -48,17 +52,19 @@ public class CredentialControllerTest {
     }
 
     @Test
-    public void testGetCredential() throws Exception {
+    void testGetCredential() throws Exception {
         CredentialsRest credentialsRest = new CredentialsRest();
         credentialsRest.setUsername("abc");
 
-        when(credentialsService.findById(1L)).thenReturn(credentialsRest);
+        when(credentialsService.findById(anyLong())).thenReturn(credentialsRest);
         this.mockMvc.perform(get("/credentials/{id}", 1L)).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.username").value(credentialsRest.getUsername()));
+
+        verify(credentialsService,times(1)).findById(1L);
     }
 
     @Test
-    public void testGetAllCredential() throws Exception {
+    void testGetAllCredential() throws Exception {
         CredentialsRest credentialsRest = new CredentialsRest();
         credentialsRest.setUsername("abc");
 
@@ -68,57 +74,66 @@ public class CredentialControllerTest {
         when(credentialsService.findAll()).thenReturn(credentialsRests);
         this.mockMvc.perform(get("/credentials")).andExpect(status().isOk()).andExpect(
                 MockMvcResultMatchers.jsonPath("$[0].username").value(credentialsRest.getUsername()));
+
+        verify(credentialsService,times(1)).findAll();
     }
 
     @Test
-    public void testConnection() throws Exception {
+    void testConnection() throws Exception {
 
         Map<String, String> map = new HashMap<>();
         map.put("ipAddress", "192.168.0.109");
         map.put("username", "vishwas");
         map.put("password", "Mind@123");
 
-        when(credentialsService.testConnection(map)).thenReturn(true);
+        when(credentialsService.testConnection(anyMap())).thenReturn(true);
 
         mockMvc.perform(post("/credentials/testConnection").contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(map))).andExpect(status().isOk());
 
+        verify(credentialsService,times(1)).testConnection(map);
+
+
     }
 
     @Test
-    public void testUpdateCredential() throws Exception {
+    void testUpdateCredential() throws Exception {
 
         CredentialsRest credentialsRest = new CredentialsRest();
         credentialsRest.setId(1L);
         credentialsRest.setUsername("abc");
 
-        when(credentialsService.update(1L, credentialsRest)).thenReturn(credentialsRest);
+        when(credentialsService.update(anyLong(), any(CredentialsRest.class))).thenReturn(credentialsRest);
 
         mockMvc.perform(put("/credentials/{id}", 1L).contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(credentialsRest))).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.username").value(credentialsRest.getUsername()));
+
+        verify(credentialsService,times(1)).update(1L,credentialsRest);
     }
 
     @Test
-    public void testAddCredentials() throws Exception {
+    void testAddCredentials() throws Exception {
 
         CredentialsRest credentialsRest = new CredentialsRest();
         credentialsRest.setUsername("abc");
 
 
-        when(credentialsService.save(credentialsRest)).thenReturn(credentialsRest);
+        when(credentialsService.save(any(CredentialsRest.class))).thenReturn(credentialsRest);
         mockMvc.perform(post("/credentials").contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(credentialsRest))).andExpect(status().is(201))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.username").value(credentialsRest.getUsername()));
 
+        verify(credentialsService,times(1)).save(credentialsRest);
     }
 
     @Test
-    public void testDeleteCredentialsById() throws Exception{
+    void testDeleteCredentialsById() throws Exception {
         when(credentialsService.deleteById(anyLong())).thenReturn(true);
-        this.mockMvc.perform(delete("/credentials/{id}", anyLong())).andExpect(status().isOk());
-    }
+        this.mockMvc.perform(delete("/credentials/1")).andExpect(status().isOk());
 
+        verify(credentialsService,times(1)).deleteById(1L);
+    }
 
 
 
