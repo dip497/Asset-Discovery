@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,32 +44,41 @@ public class ComputerSystemControllerMockTests {
             throw new RuntimeException(e);
         }
     }
+
     @Test
-    public void findByRefId() throws Exception {
+    void findByRefId() throws Exception {
         ComputerSystemRest computerSystemRest = new ComputerSystemRest();
-        computerSystemRest.setRefId(1l);
+        computerSystemRest.setRefId(1L);
         List<ComputerSystemRest> computerSystemRests = new ArrayList<>();
         computerSystemRests.add(computerSystemRest);
         when(computerSystemService.findByRefId(anyLong())).thenReturn(computerSystemRests);
-         this.mockMvc.perform(get("/{refId}/computersystem",1L)).andExpect(status().isOk());
+        this.mockMvc.perform(get("/{refId}/computersystem", 1L)).andExpect(status().isOk());
+
+        verify(computerSystemService).findByRefId(anyLong());
     }
+
     @Test
-    public void updateComputerSystem() throws Exception {
+    void updateComputerSystem() throws Exception {
         ComputerSystemRest computerSystemRest = new ComputerSystemRest();
-        computerSystemRest.setRefId(1l);
-        computerSystemRest.setId(1l);
+        computerSystemRest.setRefId(1L);
+        computerSystemRest.setId(1L);
         computerSystemRest.setManufacturer("Lenovo");
-        when(computerSystemService.updateByRefId(1l,computerSystemRest)).thenReturn(computerSystemRest);
-        mockMvc.perform(put("/{refId}/computersystem",1l).contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(computerSystemRest))).andExpect(status().isOk())
+        when(computerSystemService.updateByRefId(1L, computerSystemRest)).thenReturn(computerSystemRest);
+        mockMvc.perform(put("/{refId}/computersystem", 1L).contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(computerSystemRest))).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.refId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.manufacturer").value("Lenovo"));
+
+        verify(computerSystemService).updateByRefId(1L, computerSystemRest);
     }
+
     @Test
-    public void testDeleteByRefId() throws Exception{
+    void testDeleteByRefId() throws Exception {
         when(computerSystemService.deleteByRefId(anyLong())).thenReturn(true);
-        this.mockMvc.perform(delete("/{refId}/computersystem",anyLong())).andExpect(status().isOk());
+        this.mockMvc.perform(delete("/{refId}/computersystem", anyLong())).andExpect(status().isOk());
+
+        verify(computerSystemService).deleteByRefId(anyLong());
     }
 
 }
