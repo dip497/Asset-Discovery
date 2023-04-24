@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(MonitorController.class)
 
 @AutoConfigureMockMvc(addFilters = false)
-class MontiorControllerMockTests {
+class MonitorControllerMockTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -54,45 +54,46 @@ class MontiorControllerMockTests {
     }
 
     @Test
-    public void getMonitors() throws Exception {
+    void getMonitors() throws Exception {
         MonitorRest monitorRest = new MonitorRest();
-        monitorRest.setRefId(1l);
-        monitorRest.setId(1l);
+        monitorRest.setRefId(1L);
+        monitorRest.setId(1L);
         MonitorRest monitorRest1 = new MonitorRest();
-        monitorRest1.setRefId(1l);
-        monitorRest1.setId(2l);
+        monitorRest1.setRefId(1L);
+        monitorRest1.setId(2L);
         List<MonitorRest> monitorRestList = new ArrayList<>();
         monitorRestList.add(monitorRest);
         monitorRestList.add(monitorRest1);
 
         when(monitorService.findAllByRefId(anyLong())).thenReturn(monitorRestList);
 
-        this.mockMvc.perform(get("/{refId}/monitor",1l)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1l))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2l));
+        this.mockMvc.perform(get("/{refId}/monitor", 1L).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2L));
+        verify(monitorService).findAllByRefId(anyLong());
     }
 
     @Test
-    public void updateMonitor() throws Exception {
+    void updateMonitor() throws Exception {
         MonitorRest monitorRest = new MonitorRest();
-        monitorRest.setRefId(1l);
-        monitorRest.setId(1l);
+        monitorRest.setRefId(1L);
+        monitorRest.setId(1L);
         monitorRest.setManufacturer("Intel");
-        when(monitorService.updateById(1l,1l,monitorRest)).thenReturn(monitorRest);
-        this.mockMvc.perform(put("/{refId}/monitor/{id}",1l,1l).
-                contentType(MediaType.APPLICATION_JSON).content(asJsonString(monitorRest)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.refId").value(1l))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1l));
+        when(monitorService.updateById(1L, 1L, monitorRest)).thenReturn(monitorRest);
+        this.mockMvc.perform(put("/{refId}/monitor/{id}", 1L, 1L).contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(monitorRest)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.refId").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L));
 
-        verify(monitorService,times(1)).updateById(1l,1l,monitorRest);
+        verify(monitorService, times(1)).updateById(1L, 1L, monitorRest);
 
     }
+
     @Test
-    public void deleteMonitor() throws Exception {
-        when(monitorService.deleteById(anyLong(),anyLong())).thenReturn(true);
-        mockMvc.perform(MockMvcRequestBuilders.delete("/{refId}/monitor/{id}",anyLong(),anyLong()))
+    void deleteMonitor() throws Exception {
+        when(monitorService.deleteById(anyLong(), anyLong())).thenReturn(true);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/{refId}/monitor/{id}", anyLong(), anyLong()))
                 .andExpect(status().isOk());
+        verify(monitorService).deleteById(anyLong(), anyLong());
     }
 }

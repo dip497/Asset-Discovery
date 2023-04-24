@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -50,7 +52,7 @@ public class LogicalDiskControllerMockTest {
 
     }
     @Test
-    public void getLogicalDisks() throws Exception {
+    void getLogicalDisks() throws Exception {
         LogicalDiskRest logicalDiskRest = new LogicalDiskRest();
         logicalDiskRest.setRefId(1l);
         logicalDiskRest.setId(1l);
@@ -67,11 +69,12 @@ public class LogicalDiskControllerMockTest {
                 .content(asJsonString(logicalDiskRest))).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1l))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2l));
+        verify(logicalDiskService,times(1)).findAllByRefId(anyLong());
 
     }
 
     @Test
-    public void updateLogicalDisk() throws Exception {
+    void updateLogicalDisk() throws Exception {
         LogicalDiskRest logicalDiskRest = new LogicalDiskRest();
 
         logicalDiskRest.setRefId(1l);
@@ -81,18 +84,19 @@ public class LogicalDiskControllerMockTest {
         when(logicalDiskService.updateById(1l,1l,logicalDiskRest)).thenReturn(logicalDiskRest);
 
         this.mockMvc.perform(put("/{refId}/logicaldisk/{id}",1l,1l)
-                .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(logicalDiskRest)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1l))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.refId").value(1l))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("sda1"));
+        verify(logicalDiskService,times(1)).updateById(1l,1l,logicalDiskRest);
     }
     @Test
-    public void deleteLogicalDisk() throws Exception {
+    void deleteLogicalDisk() throws Exception {
         when(logicalDiskService.deleteById(anyLong(),anyLong())).thenReturn(true);
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/{refId}/logicaldisk/{id}",anyLong(),anyLong()))
                 .andExpect(status().isOk());
+        verify(logicalDiskService,times(1)).deleteById(anyLong(),anyLong());
     }
 
 }
