@@ -15,6 +15,6 @@ public interface NetworkScanService {
 
     NetworkScanRest updateById(long id, NetworkScanRest networkScanRest);
 
-    void deleteById(long id);
+    boolean deleteById(long id);
 
 }

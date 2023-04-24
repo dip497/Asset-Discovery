@@ -37,7 +37,7 @@ class KeyBoardControllerMockTest {
     @MockBean
     private KeyboardService keyboardService;
 
-    private static String asJsonString(final Object obj) {
+    static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
         } catch (Exception e) {

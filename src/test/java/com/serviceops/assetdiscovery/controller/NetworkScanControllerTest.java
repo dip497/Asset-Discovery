@@ -5,8 +5,8 @@ import com.serviceops.assetdiscovery.config.JwtAuthenticationFilter;
 import com.serviceops.assetdiscovery.entity.enums.IpRangeType;
 import com.serviceops.assetdiscovery.rest.NetworkScanRest;
 import com.serviceops.assetdiscovery.rest.SchedulerRest;
-import com.serviceops.assetdiscovery.service.impl.NetworkScanServiceImpl;
-import com.serviceops.assetdiscovery.service.impl.SchedulerServiceImpl;
+import com.serviceops.assetdiscovery.service.interfaces.NetworkScanService;
+import com.serviceops.assetdiscovery.service.interfaces.SchedulersService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +19,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,16 +33,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(NetworkScanController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class NetworkScanControllerTest {
+class NetworkScanControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    NetworkScanServiceImpl networkScanService;
+    NetworkScanService networkScanService;
 
     @MockBean
-    SchedulerServiceImpl schedulerService;
+    SchedulersService schedulersService;
 
 
     @MockBean
@@ -53,21 +57,28 @@ public class NetworkScanControllerTest {
     }
 
     @Test
-    public void testScan() throws Exception{
+    void testScan() throws Exception {
+        doNothing().when(networkScanService).scan(anyLong());
+
+        mockMvc.perform(get("/networkScan/scan/1")).andExpect(status().isOk());
+
+        verify(networkScanService, times(1)).scan(1L);
 
     }
 
     @Test
-    public void testSaveNetworkScan() throws Exception {
+    void testSaveNetworkScan() throws Exception {
 
         NetworkScanRest networkScanRest = new NetworkScanRest();
         networkScanRest.setIpRangeType(IpRangeType.ENTIRE_NETWORK);
 
-        when(networkScanService.save(networkScanRest)).thenReturn(networkScanRest);
-        mockMvc.perform(
-                        post("/networkScan").contentType(MediaType.APPLICATION_JSON).content(asJsonString(networkScanRest)))
-                .andExpect(status().is(201))
+        when(networkScanService.save(any(NetworkScanRest.class))).thenReturn(networkScanRest);
+        mockMvc.perform(post("/networkScan").contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(networkScanRest))).andExpect(status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.ipRangeType").value("ENTIRE_NETWORK"));
+
+        verify(networkScanService, times(1)).save(networkScanRest);
+
 
     }
 
@@ -76,28 +87,34 @@ public class NetworkScanControllerTest {
         NetworkScanRest networkScanRest = new NetworkScanRest();
         networkScanRest.setId(1L);
         networkScanRest.setIpRangeType(IpRangeType.ENTIRE_NETWORK);
-        when(networkScanService.updateById(1L, networkScanRest)).thenReturn(networkScanRest);
+        when(networkScanService.updateById(anyLong(), any(NetworkScanRest.class))).thenReturn(networkScanRest);
 
         mockMvc.perform(put("/networkScan/{id}", 1L).contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(networkScanRest))).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.ipRangeType").value("ENTIRE_NETWORK"));
+
+        verify(networkScanService, times(1)).updateById(1L,networkScanRest);
+
     }
 
     @Test
-    public void testGetAllNetworkScan() throws Exception {
+    void testGetAllNetworkScan() throws Exception {
         NetworkScanRest networkScanRest = new NetworkScanRest();
         networkScanRest.setId(1L);
 
-        when(networkScanService.findById(1L)).thenReturn(networkScanRest);
-        this.mockMvc.perform(get("/networkScan/{id}", 1L)).andExpect(status().isOk())
+        when(networkScanService.findById(anyLong())).thenReturn(networkScanRest);
+        mockMvc.perform(get("/networkScan/{id}", 1L)).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(networkScanRest.getId()));
+
+        verify(networkScanService, times(1)).findById(1L);
+
 
     }
 
 
     @Test
-    public void testGetNetworkScanById() throws Exception {
+    void testGetNetworkScanById() throws Exception {
         NetworkScanRest networkScanRest = new NetworkScanRest();
         networkScanRest.setId(1L);
 
@@ -105,33 +122,43 @@ public class NetworkScanControllerTest {
         networkScanRests.add(networkScanRest);
 
         when(networkScanService.findAll()).thenReturn(networkScanRests);
-        this.mockMvc.perform(get("/networkScan")).andExpect(status().isOk())
+        mockMvc.perform(get("/networkScan")).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(networkScanRest.getId()));
+
+        verify(networkScanService, times(1)).findAll();
+
 
     }
 
 
     @Test
-    public void testGetSchedulers() throws Exception {
+    void testGetSchedulers() throws Exception {
         SchedulerRest schedulerRest = new SchedulerRest();
         schedulerRest.setNetworkScanRestId(1L);
 
         List<SchedulerRest> schedulerRests = new ArrayList<>();
         schedulerRests.add(schedulerRest);
 
-        when(schedulerService.findAll()).thenReturn(schedulerRests);
-        this.mockMvc.perform(get("/schedulers")).andExpect(status().isOk()).andExpect(
+        when(schedulersService.findAll()).thenReturn(schedulerRests);
+        mockMvc.perform(get("/schedulers")).andExpect(status().isOk()).andExpect(
                 MockMvcResultMatchers.jsonPath("$[0].networkScanRestId")
                         .value(schedulerRest.getNetworkScanRestId()));
+
+        verify(schedulersService, times(1)).findAll();
+
 
     }
 
 
     @Test
-    public void testDeleteNetworkScanById() throws Exception {
-        doNothing().when(networkScanService).deleteById(1L);
-        when(schedulerService.deleteByNetworkScanId(1L)).thenReturn(true);
-        this.mockMvc.perform(delete("/networkScan/{id}",1L)).andExpect(status().isOk());
+    void testDeleteNetworkScanById() throws Exception {
+        when(networkScanService.deleteById(1L)).thenReturn(true);
+        when(schedulersService.deleteByNetworkScanId(1L)).thenReturn(true);
+        mockMvc.perform(delete("/networkScan/{id}", 1L)).andExpect(status().isOk());
+
+        verify(schedulersService,times(1)).deleteByNetworkScanId(1L);
+        verify(networkScanService,times(1)).deleteById(1L);
+
     }
 
 

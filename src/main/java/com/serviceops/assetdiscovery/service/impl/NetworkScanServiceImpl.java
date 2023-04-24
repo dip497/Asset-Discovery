@@ -118,9 +118,16 @@ public class NetworkScanServiceImpl implements NetworkScanService {
     }
 
     @Override
-    public void deleteById(long id) {
-        customRepository.deleteById(NetworkScan.class, id, "id");
-        logger.info("network scan delete with id -> {}", id);
+    public boolean deleteById(long id) {
+        boolean isDeleted = customRepository.deleteById(NetworkScan.class, id, "id");
+        if(isDeleted){
+            logger.info("network scan delete with id -> {}", id);
+            return true;
+        }else{
+            logger.info("network scan not delete with id -> {}", id);
+            return false;
+        }
+
     }
 
     private void performScanOnCredentialEntireNetwork(NetworkScanRest networkScanRest) {
