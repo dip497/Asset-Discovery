@@ -2,12 +2,9 @@ package com.serviceops.assetdiscovery.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serviceops.assetdiscovery.config.JwtAuthenticationFilter;
-import com.serviceops.assetdiscovery.entity.enums.Architecture;
 import com.serviceops.assetdiscovery.rest.AllAssetRest;
 import com.serviceops.assetdiscovery.rest.AssetRest;
-import com.serviceops.assetdiscovery.rest.OSRest;
 import com.serviceops.assetdiscovery.service.impl.AssetServiceImpl;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,7 +24,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AssetController.class)
@@ -65,14 +61,14 @@ public class AssetControllerTest {
         assetRest.setId(1L);
         when(assetService.findById(1L)).thenReturn(assetRest);
         System.out.println(MockMvcResultMatchers.jsonPath("$[1].id"));
-        this.mockMvc.perform(get("/asset/{id}",1L)).andExpect(status().isOk());
+        this.mockMvc.perform(get("/asset/{id}", 1L)).andExpect(status().isOk());
     }
 
     @Test
     void updateRam() throws Exception {
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("ipAddress","10.1.1.1");
+        Map<String, Object> map = new HashMap<>();
+        map.put("ipAddress", "10.1.1.1");
 
         AssetRest assetRest = new AssetRest();
         assetRest.setId(1L);

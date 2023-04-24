@@ -51,11 +51,12 @@ public class BiosControllerTest {
         List<BiosRest> biosRests = new ArrayList<>();
         biosRests.add(biosRest);
         when(biosService.findByRefId(1L)).thenReturn(biosRests);
-        this.mockMvc.perform(get("/{refId}/bios", 1L)).andExpect(status().isOk());
+        this.mockMvc.perform(get("/{refId}/bios", 1L)).andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].refId").value(biosRest.getRefId()));
     }
 
     @Test
-    void updateRam() throws Exception {
+    void testUpdateBios() throws Exception {
         BiosRest biosRest = new BiosRest();
         biosRest.setId(1L);
         biosRest.setRefId(1L);
