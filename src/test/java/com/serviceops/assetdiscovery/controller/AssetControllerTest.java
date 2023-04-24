@@ -65,7 +65,7 @@ public class AssetControllerTest {
     }
 
     @Test
-    void updateRam() throws Exception {
+    void testUpdateById() throws Exception {
 
         Map<String, Object> map = new HashMap<>();
         map.put("ipAddress", "10.1.1.1");
